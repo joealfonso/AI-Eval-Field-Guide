@@ -1,0 +1,287 @@
+[
+  {
+    "term": "Adaptive overfitting",
+    "definition": "Fitting a system to a specific test set by repeatedly making choices based on its results.",
+    "see": [
+      "Adaptive Overfitting"
+    ]
+  },
+  {
+    "term": "Aggregate metric",
+    "definition": "A single number that summarizes performance across all test cases, like overall accuracy.",
+    "see": [
+      "The Averaging Trap"
+    ]
+  },
+  {
+    "term": "AUC (area under the ROC curve)",
+    "definition": "A measure of how well a classifier separates positive from negative cases across all thresholds. 0.5 is chance, 1.0 is perfect.",
+    "see": []
+  },
+  {
+    "term": "Baseline",
+    "definition": "The comparison point for a result: a simpler method, an older model, or the current human workflow.",
+    "see": [
+      "The Baseline Rule"
+    ]
+  },
+  {
+    "term": "Behavioral testing",
+    "definition": "Checking specific behaviors with targeted test cases, like whether a model's answer stays the same when a name is changed (Ribeiro et al., 2020).",
+    "see": []
+  },
+  {
+    "term": "Benchmark",
+    "definition": "A fixed dataset and scoring method used to compare systems on a task.",
+    "see": []
+  },
+  {
+    "term": "Calibration",
+    "definition": "How well a system's confidence matches how often it's actually right. A calibrated model that says \"90% sure\" is right about 90% of the time. Modern neural networks are often overconfident (Guo et al., 2017).",
+    "see": []
+  },
+  {
+    "term": "Capability evaluation",
+    "definition": "Testing what a system can do, as opposed to how people use it or what effects it has.",
+    "see": []
+  },
+  {
+    "term": "Complementary performance",
+    "definition": "When a human-AI team does better than either the human or the AI alone (Bansal et al., 2021).",
+    "see": []
+  },
+  {
+    "term": "Confidence interval",
+    "definition": "A range that likely contains the true value of a measurement, given sampling noise.",
+    "see": [
+      "No Error Bars, No Result"
+    ]
+  },
+  {
+    "term": "Construct",
+    "definition": "An abstract quality you want to measure but can't observe directly, like reasoning or helpfulness (Cronbach & Meehl, 1955).",
+    "see": []
+  },
+  {
+    "term": "Construct validity",
+    "definition": "How well a measurement actually captures the construct it claims to measure (Messick, 1995).",
+    "see": [
+      "The Construct Gap"
+    ]
+  },
+  {
+    "term": "Contamination",
+    "definition": "When test data, or close copies of it, appear in a model's training data.",
+    "see": [
+      "Data Contamination"
+    ]
+  },
+  {
+    "term": "Criteria drift",
+    "definition": "The way evaluation criteria change as people grade real outputs.",
+    "see": [
+      "Criteria Drift"
+    ]
+  },
+  {
+    "term": "Datasheet",
+    "definition": "A standard document describing how a dataset was created, what's in it, and what it's suited for (Gebru et al., 2021).",
+    "see": []
+  },
+  {
+    "term": "Disaggregated evaluation",
+    "definition": "Reporting results separately for different groups or input types instead of only as an average.",
+    "see": []
+  },
+  {
+    "term": "Distribution shift",
+    "definition": "A difference between the data a system was built and tested on and the data it meets in use.",
+    "see": [
+      "Distribution Shift"
+    ]
+  },
+  {
+    "term": "Dynamic benchmark",
+    "definition": "A benchmark that keeps adding new examples, often written to defeat current models.",
+    "see": []
+  },
+  {
+    "term": "Elicitation",
+    "definition": "The effort put into drawing out a model's full capability, through prompting, tools, fine-tuning, or scaffolding.",
+    "see": [
+      "Presence, Not Absence"
+    ]
+  },
+  {
+    "term": "Error analysis",
+    "definition": "Grouping and studying a system's mistakes to understand their causes. Works best with precisely defined error groups, enough examples, and tested hypotheses (Wu et al., 2019).",
+    "see": [
+      "Being Pragmatic"
+    ]
+  },
+  {
+    "term": "Error budget",
+    "definition": "An agreed-on acceptable failure rate, with an agreed-on response when it's exceeded. Borrowed from site reliability engineering (Beyer et al., 2016).",
+    "see": [
+      "Being Pragmatic"
+    ]
+  },
+  {
+    "term": "Evaluation awareness",
+    "definition": "A model's ability to tell that it's being evaluated rather than used for real (Needham et al., 2025).",
+    "see": [
+      "Evaluation Awareness"
+    ]
+  },
+  {
+    "term": "External validation",
+    "definition": "Testing a system on data from a different setting than the one it was developed in, ideally by an independent team.",
+    "see": []
+  },
+  {
+    "term": "Ground truth",
+    "definition": "The answer treated as correct in an evaluation. Often a human judgment with its own error.",
+    "see": [
+      "The Gold Standard Myth"
+    ]
+  },
+  {
+    "term": "Holdout set",
+    "definition": "Data kept separate from training and tuning so it can give an unbiased estimate of performance (Dwork et al., 2015).",
+    "see": []
+  },
+  {
+    "term": "Inter-rater agreement",
+    "definition": "How often independent human raters give the same judgment. Low agreement means the task, the instructions, or the construct needs work.",
+    "see": []
+  },
+  {
+    "term": "Leaderboard",
+    "definition": "A public ranking of systems on one or more benchmarks.",
+    "see": [
+      "Campbell's Law"
+    ]
+  },
+  {
+    "term": "LLM-as-a-judge",
+    "definition": "Using a language model to grade or compare outputs from AI systems (Zheng et al., 2023).",
+    "see": [
+      "Judge Bias"
+    ]
+  },
+  {
+    "term": "Model card",
+    "definition": "A standard document describing a model's intended use, evaluation results, and limitations (Mitchell et al., 2019).",
+    "see": []
+  },
+  {
+    "term": "Online controlled experiment",
+    "definition": "Randomly exposing some users to a change and comparing outcomes against users who didn't get it, often called an A/B test (Kohavi et al., 2020).",
+    "see": []
+  },
+  {
+    "term": "Overreliance",
+    "definition": "Accepting AI output when it's wrong. Its opposite, underreliance, is ignoring AI output when it's right (Parasuraman & Riley, 1997).",
+    "see": [
+      "The Team Is the System"
+    ]
+  },
+  {
+    "term": "Pairwise comparison",
+    "definition": "Asking raters which of two outputs is better, instead of scoring each on its own. Used at scale by preference arenas (Chiang et al., 2024).",
+    "see": []
+  },
+  {
+    "term": "Pareto frontier",
+    "definition": "The set of options where you can't improve one metric, like accuracy, without making another, like cost, worse.",
+    "see": [
+      "The Cost Frontier"
+    ]
+  },
+  {
+    "term": "pass@k and pass^k",
+    "definition": "pass@k is the chance of at least one success in k attempts. pass^k is the chance of success on all k attempts, a measure of consistency (Yao et al., 2025).",
+    "see": [
+      "Once Is Not Reliable"
+    ]
+  },
+  {
+    "term": "Prompt sensitivity",
+    "definition": "How much a model's results change with small changes to how a prompt is worded or formatted.",
+    "see": [
+      "Prompt Sensitivity"
+    ]
+  },
+  {
+    "term": "Red teaming",
+    "definition": "Deliberately trying to make a system fail or cause harm, to find problems before others do.",
+    "see": []
+  },
+  {
+    "term": "Reliability (measurement)",
+    "definition": "How consistent a measurement is when repeated. A measurement can be reliable and still not valid.",
+    "see": []
+  },
+  {
+    "term": "Reward hacking",
+    "definition": "When an optimized system finds a way to score well on its objective without doing what the objective was meant to encourage.",
+    "see": [
+      "Goodhart's Law"
+    ]
+  },
+  {
+    "term": "Risk tier",
+    "definition": "A category that sets how much evaluation a system needs, based on its potential impact. Risk-based prioritization is central to the NIST AI Risk Management Framework (2023).",
+    "see": [
+      "Being Pragmatic"
+    ]
+  },
+  {
+    "term": "Sandbagging",
+    "definition": "Strategic underperformance on an evaluation (van der Weij et al., 2025).",
+    "see": []
+  },
+  {
+    "term": "Saturation",
+    "definition": "When top systems score near the maximum on a benchmark, so it no longer separates them.",
+    "see": [
+      "Benchmark Saturation"
+    ]
+  },
+  {
+    "term": "Shortcut learning",
+    "definition": "Learning a pattern that predicts the right answer on the test without the intended skill (Geirhos et al., 2020).",
+    "see": [
+      "The Clever Hans Effect"
+    ]
+  },
+  {
+    "term": "Sociotechnical evaluation",
+    "definition": "Evaluating a system together with the people, workflows, and institutions around it.",
+    "see": [
+      "The Lab-to-Field Gap"
+    ]
+  },
+  {
+    "term": "Staged rollout",
+    "definition": "Releasing a system to progressively larger groups of users while monitoring results at each step.",
+    "see": []
+  },
+  {
+    "term": "Statistical power",
+    "definition": "The chance an experiment detects a real difference of a given size. Small test sets have low power.",
+    "see": [
+      "No Error Bars, No Result"
+    ]
+  },
+  {
+    "term": "Validity",
+    "definition": "How well the evidence supports the interpretations and uses of a score (Messick, 1995).",
+    "see": []
+  },
+  {
+    "term": "Vibe check",
+    "definition": "Informal, exploratory trying-out of an AI system. Practitioners describe it as the first line of evaluation (van der Maden et al., 2026). Useful as a start, risky as the whole process.",
+    "see": []
+  }
+]

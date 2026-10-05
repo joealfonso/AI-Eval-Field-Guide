@@ -1,0 +1,57 @@
+/* Laws of AI Evaluation — design tokens (direction 1a / 4a, light theme).
+   Dark theme not yet designed; keep names stable so a [data-theme="dark"] block can override values. */
+:root {
+  /* Surfaces & ink */
+  --paper:        #f3eee4;  /* page background */
+  --surface:      #faf7f1;  /* cards, panels */
+  --surface-hi:   #fffdf8;  /* card hover, print sheet */
+  --ink:          #1f1b16;  /* body text, strong rules */
+  --ink-soft:     #3d362e;  /* intro paragraphs */
+  --ink-quote:    #453e35;  /* aphorisms on cards */
+  --muted:        #5f574c;  /* metadata, mono labels (AA on paper/surface) */
+  --muted-soon:   #665d51;  /* coming-soon text */
+  --rule:         #d6ccbb;  /* hairlines, card borders */
+  --rule-soon:    #c3b7a2;  /* dashed coming-soon border */
+  --rule-faint:   #e3dccf;  /* checklist row lines */
+  --overlay:      rgba(31, 27, 22, .45);
+
+  /* Accent */
+  --accent:       #9b2f1f;  /* oxblood: links, active nav, numbers, focus ring */
+  --on-accent:    #faf7f1;
+
+  /* Category tags: bg / fg pairs (fg ≥ 4.5:1 on bg) */
+  --cat-1-bg: #ebe1c8; --cat-1-fg: #5f4a1a;  /* I.   What you're measuring */
+  --cat-2-bg: #dde5d1; --cat-2-fg: #3a5029;  /* II.  The test itself */
+  --cat-3-bg: #d9e1ea; --cat-3-fg: #2f4560;  /* III. Running the eval */
+  --cat-4-bg: #e8dae3; --cat-4-fg: #5a3150;  /* IV.  Reading the results */
+  --cat-5-bg: #efd9cd; --cat-5-fg: #743820;  /* V.   Beyond the benchmark */
+
+  /* Evidence strength */
+  --evidence-strong:    #3a5029;
+  --evidence-mixed:     #5f4a1a;
+  --evidence-contested: #743820;
+
+  /* Type */
+  --font-display: 'Newsreader', Georgia, serif;          /* 400/500, italic 400 */
+  --font-body:    'Public Sans', system-ui, sans-serif;  /* 400/500/600 */
+  --font-mono:    'IBM Plex Mono', ui-monospace, monospace; /* 400/500 */
+
+  --fs-hero: 64px;  --fs-hero-compact: 44px;  --fs-h1-law: 76px;  --fs-quote: 34px;
+  --fs-h2-section: 26px; --fs-h2-category: 28px; --fs-card-title: 25px; --fs-card-quote: 17px;
+  --fs-body: 16px; --fs-small: 14px; --fs-xs: 13px; --fs-mono: 12px; --fs-mono-xs: 11px;
+  --lh-body: 1.65; --lh-tight: 1.1;
+
+  /* Space (px) */
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 20px;
+  --space-6: 24px; --space-7: 28px; --space-8: 40px; --space-9: 48px; --space-10: 56px; --space-11: 72px;
+  --page-gutter: 56px;  /* 16px at ≤ 600px */
+  --measure: 640px;     /* article column */
+
+  /* Shape & motion */
+  --radius: 0;          /* sharp, document-like corners everywhere */
+  --border: 1px solid var(--rule);
+  --focus-ring: 2px solid var(--accent);
+  --focus-offset: 2px;
+  --ease: ease;
+  --dur: .2s;           /* border/background transitions only */
+}

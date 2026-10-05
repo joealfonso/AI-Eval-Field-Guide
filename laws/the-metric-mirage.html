@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Metric Mirage · Laws of AI Evaluation</title>
+<meta name="description" content="Change the metric and you can change the conclusion. The scoring method is part of the result. Score the same outputs a different way and a sudden leap can turn into steady progress, or the reverse.">
+<meta property="og:title" content="The Metric Mirage · Laws of AI Evaluation">
+<meta property="og:description" content="Change the metric and you can change the conclusion. The scoring method is part of the result. Score the same outputs a different way and a sudden leap can turn into steady progress, or the reverse.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%239b2f1f'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%23faf7f1' font-family='Georgia,serif'%3E§%3C/text%3E%3C/svg%3E">
+<link rel="alternate" type="application/rss+xml" title="Laws of AI Evaluation changelog" href="../feed.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Public+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="" data-root="../">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <a class="wordmark" href="../index.html"><span class="wordmark__mark" aria-hidden="true">§</span><span class="wordmark__text">Laws of AI Evaluation</span></a>
+  <nav class="site-nav" id="site-nav" aria-label="Primary"><a href="../index.html" aria-current="page">Laws</a><a href="../claim-checker.html">Claim checker</a><a href="../design-rubric.html">Design Rubric</a><a href="../readiness-review.html">Readiness Review</a><a href="../changelog.html">Changelog</a><a href="../about.html">About</a></nav>
+  <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog"><span>Search laws</span><kbd data-kbd>⌘K</kbd></button>
+  <div class="header-actions">
+    <button class="icon-btn" type="button" data-search-open aria-haspopup="dialog">Find</button>
+    <button class="icon-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
+  </div>
+</header>
+<div class="crumbs"><nav aria-label="Breadcrumb"><ol>
+    <li><a href="../index.html">Laws</a></li><li><a href="../index.html#cat-I">I. What you’re measuring</a></li><li aria-current="page">No. 05</li></ol></nav>
+    <div class="crumbs__right"><span>5 of 5 in this category</span><a class="btn btn--outline btn--sm" href="benchmark-saturation.html">Next: 06 Benchmark Saturation →</a></div></div>
+<main id="main" class="law-layout cat-1" data-page="law" data-no="05" data-slug="the-metric-mirage">
+  <aside class="law-rail" aria-label="On this page">
+    <details class="toc" open><summary>On this page <span aria-hidden="true" class="toc__plus"></span></summary><ol><li><a href="#plain-terms" data-toc="plain-terms"><span class="toc__n">01</span><span>In plain terms</span></a></li><li><a href="#takeaways" data-toc="takeaways"><span class="toc__n">02</span><span>Takeaways</span></a></li><li><a href="#what-it-means" data-toc="what-it-means"><span class="toc__n">03</span><span>What it means</span></a></li><li><a href="#the-evidence" data-toc="the-evidence"><span class="toc__n">04</span><span>The evidence</span></a></li><li><a href="#use-it" data-toc="use-it"><span class="toc__n">05</span><span>Use it</span></a></li><li><a href="#questions-to-ask" data-toc="questions-to-ask"><span class="toc__n">06</span><span>Questions to ask</span></a></li><li><a href="#origins" data-toc="origins"><span class="toc__n">07</span><span>Origins</span></a></li><li><a href="#sources" data-toc="sources"><span class="toc__n">08</span><span>Sources</span></a></li><li><a href="#cite-this-law" data-toc="cite-this-law"><span class="toc__n">09</span><span>Cite this law</span></a></li><li><a href="#revision-history" data-toc="revision-history"><span class="toc__n">10</span><span>Revision history</span></a></li></ol></details>
+    <div class="related"><h2 class="rail-label">Related</h2><ul><li><a href="the-cost-frontier.html"><span class="related__n">15</span> <span class="related__t">The Cost Frontier</span></a></li><li><a href="the-benchmark-lottery.html"><span class="related__n">19</span> <span class="related__t">The Benchmark Lottery</span></a></li><li><a href="the-functionality-fallacy.html"><span class="related__n">04</span> <span class="related__t">The Functionality Fallacy</span></a></li></ul></div>
+  </aside>
+  <article class="law">
+    <div class="law__meta"><span class="law__no">No. 05</span><a class="tag" href="../index.html#cat-I">Measuring</a><span class="chip-ver">v1.0</span><span class="law__for">For: Building</span></div>
+    <h1 class="law__title">The Metric Mirage</h1>
+    <blockquote class="law__quote"><p>“Change the metric and you can change the conclusion.”</p></blockquote>
+    <dl class="trust"><div><dt>Last reviewed</dt><dd>15 Sep 2026</dd></div><div><dt>Sources</dt><dd><a href="#sources">4</a> · <a href="#cite-this-law">Cite</a></dd></div><div><dt>Source types</dt><dd class="trust__small">4 peer-reviewed or classic</dd></div><div><dt>Version</dt><dd>v1.0 <span class="trust__small">5 Oct 2026</span></dd></div></dl>
+    <section class="plain" aria-labelledby="plain-terms"><h2 class="plain__label" id="plain-terms">In plain terms</h2><p>The scoring method is part of the result. Score the same outputs a different way and a sudden leap can turn into steady progress, or the reverse.</p></section>
+    <section class="sec" aria-labelledby="takeaways"><div class="sec-head"><h2 id="takeaways">Takeaways <a class="permalink" href="#takeaways" aria-label="Link to Takeaways">#</a></h2></div><ul class="dash"><li>The same model outputs can look like steady progress or a sudden leap, depending on how you score them.</li><li>All-or-nothing metrics like exact match make gradual improvement look abrupt.</li><li>Cheap automatic metrics often disagree with people about quality.</li><li>Before believing a trend, re-score it with another reasonable metric and see if the story holds.</li></ul></section>
+    <section class="sec" aria-labelledby="what-it-means"><div class="sec-head"><h2 id="what-it-means">What it means <a class="permalink" href="#what-it-means" aria-label="Link to What it means">#</a></h2></div><p>The metric is part of the finding. Pick a strict pass/fail score and a model that gets closer and closer to right answers looks like it’s stuck at zero, then suddenly “gets it.” Pick a word-overlap score and a fluent, correct answer phrased differently than the reference looks wrong. Neither number is lying, exactly. Each answers a narrower question than the headline suggests.</p></section>
+    <section class="sec" aria-labelledby="the-evidence"><div class="sec-head"><h2 id="the-evidence">The evidence <a class="permalink" href="#the-evidence" aria-label="Link to The evidence">#</a></h2><span class="sec-head__note">reviewed 15 Sep 2026</span></div><p><strong>Emergence can be a scoring artifact.</strong> Schaeffer, Miranda, and Koyejo (2023) argue that many “emergent abilities” in large language models appear because of the researcher’s choice of metric. Nonlinear or discontinuous metrics produce sharp jumps. Linear or continuous metrics applied to the same models show smooth, predictable change.</p><p><strong>Automatic metrics have narrow validity.</strong> Reiter (2018) reviewed the evidence on BLEU and found it supports using BLEU for diagnostic evaluation of machine translation systems, not for evaluating individual texts or other language generation tasks.</p><p><strong>Overlap isn’t quality.</strong> Novikova et al. (2017) found that widely used word-overlap metrics correlate weakly with human judgments of generated text.</p><p><strong>One metric hides tradeoffs.</strong> Liang et al. (2023) built HELM around seven metrics (accuracy, calibration, robustness, fairness, bias, toxicity, efficiency) because accuracy alone hides the tradeoffs that matter in use.</p></section>
+    <section class="sec" aria-labelledby="use-it"><div class="sec-head"><h2 id="use-it">Use it <a class="permalink" href="#use-it" aria-label="Link to Use it">#</a></h2></div><ol class="num"><li>Report at least one continuous metric alongside any pass/fail metric.</li><li>Check automatic metrics against human judgment on a sample before relying on them.</li><li>When someone shows a dramatic curve, ask what the y-axis measures and what the curve looks like with a different metric.</li><li>Choose metrics before seeing results, and write down why.</li></ol></section>
+    <section class="sec" aria-labelledby="questions-to-ask"><div class="sec-head"><h2 id="questions-to-ask">Questions to ask <a class="permalink" href="#questions-to-ask" aria-label="Link to Questions to ask">#</a></h2><div class="sec-head__actions"><button class="btn btn--outline btn--sm" type="button" data-add-checklist>+ Add to checklist</button><a class="btn btn--ink btn--sm" href="../checklist.html?preset=custom&amp;laws=05" data-print-link>Print checklist</a></div></div><p class="sec__sub">For vendor reviews, model cards, and launch reviews.</p><ul class="qlist"><li><label class="qrow"><input type="checkbox"><span class="qrow__box" aria-hidden="true"></span><span>Does the result hold when it is re-scored with a second, continuous metric?</span></label></li><li><label class="qrow"><input type="checkbox"><span class="qrow__box" aria-hidden="true"></span><span>Were the metrics chosen, with the reasons written down, before the results were seen?</span></label></li></ul></section>
+    <section class="sec" aria-labelledby="origins"><div class="sec-head"><h2 id="origins">Origins <a class="permalink" href="#origins" aria-label="Link to Origins">#</a></h2></div><p>“The Metric Mirage” is the name this site uses, borrowed from the title of Schaeffer, Miranda, and Koyejo’s 2023 paper. The broader concern about automatic metrics goes back years in natural language generation research.</p></section>
+    <section class="sec" aria-labelledby="sources"><div class="sec-head"><h2 id="sources">Sources <a class="permalink" href="#sources" aria-label="Link to Sources">#</a></h2></div><ol class="sources"><li id="src-1"><span class="src__n">[1]</span><div class="src__body"><cite>Liang, P., et al. (2023). <em>Holistic evaluation of language models</em>.</cite><span class="src__venue">Transactions on Machine Learning Research (TMLR)</span></div><a class="src__open" href="https://arxiv.org/abs/2211.09110" target="_blank" rel="noopener">Open ↗<span class="visually-hidden"> (opens in a new tab)</span></a></li><li id="src-2"><span class="src__n">[2]</span><div class="src__body"><cite>Novikova, J., Dušek, O., Cercas Curry, A., &amp; Rieser, V. (2017). <em>Why we need new evaluation metrics for NLG</em>.</cite><span class="src__venue">Proceedings of EMNLP 2017</span></div><a class="src__open" href="https://arxiv.org/abs/1707.06875" target="_blank" rel="noopener">Open ↗<span class="visually-hidden"> (opens in a new tab)</span></a></li><li id="src-3"><span class="src__n">[3]</span><div class="src__body"><cite>Reiter, E. (2018). <em>A structured review of the validity of BLEU</em>.</cite><span class="src__venue">Computational Linguistics, 44(3), 393-401</span></div><a class="src__open" href="https://doi.org/10.1162/coli_a_00322" target="_blank" rel="noopener">Open ↗<span class="visually-hidden"> (opens in a new tab)</span></a></li><li id="src-4"><span class="src__n">[4]</span><div class="src__body"><cite>Schaeffer, R., Miranda, B., &amp; Koyejo, S. (2023). <em>Are emergent abilities of large language models a mirage?</em>.</cite><span class="src__venue">Advances in Neural Information Processing Systems (NeurIPS 2023)</span></div><a class="src__open" href="https://arxiv.org/abs/2304.15004" target="_blank" rel="noopener">Open ↗<span class="visually-hidden"> (opens in a new tab)</span></a></li></ol></section>
+    <section class="sec" aria-labelledby="cite-this-law"><div class="sec-head"><h2 id="cite-this-law">Cite this law <a class="permalink" href="#cite-this-law" aria-label="Link to Cite this law">#</a></h2></div><div class="cite" data-cite>
+  <div class="cite__tabs">
+    <div class="cite__tablist" role="tablist" aria-label="Citation format">
+      <button type="button" role="tab" id="tab-apa" aria-selected="true" aria-controls="panel-apa" data-tab="apa">APA</button>
+      <button type="button" role="tab" id="tab-bibtex" aria-selected="false" aria-controls="panel-bibtex" tabindex="-1" data-tab="bibtex">BibTeX</button>
+      <button type="button" role="tab" id="tab-link" aria-selected="false" aria-controls="panel-link" tabindex="-1" data-tab="link">Permalink</button>
+    </div>
+    <button class="btn btn--ink cite__copy" type="button" data-copy>Copy</button>
+  </div>
+  <div role="tabpanel" id="panel-apa" aria-labelledby="tab-apa" data-panel="apa"><pre><code>Laws of AI Evaluation. (2026, October 5). The Metric Mirage (v1.0). https://josephalfonso.com/laws-of-ai-evaluation/laws/the-metric-mirage.html</code></pre></div>
+  <div role="tabpanel" id="panel-bibtex" aria-labelledby="tab-bibtex" data-panel="bibtex" hidden><pre><code>@misc{lai-the-metric-mirage,
+  title        = {The Metric Mirage},
+  author       = {{Laws of AI Evaluation}},
+  year         = {2026},
+  month        = oct,
+  note         = {Version 1.0},
+  howpublished = {\url{https://josephalfonso.com/laws-of-ai-evaluation/laws/the-metric-mirage.html}}
+}</code></pre></div>
+  <div role="tabpanel" id="panel-link" aria-labelledby="tab-link" data-panel="link" hidden><pre><code>https://josephalfonso.com/laws-of-ai-evaluation/laws/the-metric-mirage.html</code></pre></div>
+</div></section>
+    <section class="sec" aria-labelledby="revision-history"><div class="sec-head"><h2 id="revision-history">Revision history <a class="permalink" href="#revision-history" aria-label="Link to Revision history">#</a></h2></div><ul class="rev"><li><span class="rev__v">v1.0</span><span class="rev__d">5 Oct 2026</span><span class="rev__t">Published.</span></li></ul><p class="rev__links"><a href="../changelog.html">Full changelog</a></p></section>
+    <nav class="pn-row" aria-label="Previous and next law"><a class="pn pn--prev" href="../index.html#cat-I"><span class="pn__k">← Back to category</span><span class="pn__t">I. What you’re measuring</span></a><a class="pn pn--next" href="benchmark-saturation.html"><span class="pn__k">Next law →</span><span class="pn__t">06 Benchmark Saturation</span></a></nav>
+  </article>
+  <aside class="law-aside" aria-label="Supporting material"><h2 class="aside-title">Supporting material</h2><details class="aside-block" open><summary>Take it with you</summary><ul class="takeaway"><li><a href="../checklist.html?preset=custom&amp;laws=05" data-print-link>Printable checklist <span>Print · PDF</span></a></li><li><a href="#cite-this-law">Cite this law <span>APA · BibTeX</span></a></li></ul></details></aside>
+</main>
+<div class="law-bar" aria-label="Law navigation"><a href="../index.html#cat-I">← Category</a><a href="#cite-this-law">Cite</a><a href="benchmark-saturation.html">Next: 06 →</a></div>
+
+<footer class="site-footer">
+  <p>Independent reference. No vendor funding. <a href="../about.html#editorial-policy">Editorial policy</a></p>
+  <p>CC BY 4.0 · <a href="../feed.xml">RSS</a> · Last updated 5 Oct 2026</p>
+</footer>
+<script src="../js/site.js" defer></script>
+<script src="../js/law.js" defer></script>
+</body>
+</html>

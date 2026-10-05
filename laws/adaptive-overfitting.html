@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adaptive Overfitting · Laws of AI Evaluation</title>
+<meta name="description" content="Every time you tune against the test set, it&#x27;s worth a little less. Each time you adjust a prompt or a model because of how it did on the test, the test tells you a little less. Keep a locked test that you use only to decide.">
+<meta property="og:title" content="Adaptive Overfitting · Laws of AI Evaluation">
+<meta property="og:description" content="Every time you tune against the test set, it&#x27;s worth a little less. Each time you adjust a prompt or a model because of how it did on the test, the test tells you a little less. Keep a locked test that you use only to decide.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%239b2f1f'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%23faf7f1' font-family='Georgia,serif'%3E§%3C/text%3E%3C/svg%3E">
+<link rel="alternate" type="application/rss+xml" title="Laws of AI Evaluation changelog" href="../feed.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Public+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="" data-root="../">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <a class="wordmark" href="../index.html"><span class="wordmark__mark" aria-hidden="true">§</span><span class="wordmark__text">Laws of AI Evaluation</span></a>
+  <nav class="site-nav" id="site-nav" aria-label="Primary"><a href="../index.html" aria-current="page">Laws</a><a href="../claim-checker.html">Claim checker</a><a href="../design-rubric.html">Design Rubric</a><a href="../readiness-review.html">Readiness Review</a><a href="../changelog.html">Changelog</a><a href="../about.html">About</a></nav>
+  <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog"><span>Search laws</span><kbd data-kbd>⌘K</kbd></button>
+  <div class="header-actions">
+    <button class="icon-btn" type="button" data-search-open aria-haspopup="dialog">Find</button>
+    <button class="icon-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
+  </div>
+</header>
+<div class="crumbs"><nav aria-label="Breadcrumb"><ol>
+    <li><a href="../index.html">Laws</a></li><li><a href="../index.html#cat-II">II. The test itself</a></li><li aria-current="page">No. 08</li></ol></nav>
+    <div class="crumbs__right"><span>3 of 5 in this category</span><a class="btn btn--outline btn--sm" href="the-clever-hans-effect.html">Next: 09 The Clever Hans Effect →</a></div></div>
+<main id="main" class="law-layout cat-2" data-page="law" data-no="08" data-slug="adaptive-overfitting">
+  <aside class="law-rail" aria-label="On this page">
+    <details class="toc" open><summary>On this page <span aria-hidden="true" class="toc__plus"></span></summary><ol><li><a href="#plain-terms" data-toc="plain-terms"><span class="toc__n">01</span><span>In plain terms</span></a></li><li><a href="#takeaways" data-toc="takeaways"><span class="toc__n">02</span><span>Takeaways</span></a></li><li><a href="#what-it-means" data-toc="what-it-means"><span class="toc__n">03</span><span>What it means</span></a></li><li><a href="#the-evidence" data-toc="the-evidence"><span class="toc__n">04</span><span>The evidence</span></a></li><li><a href="#use-it" data-toc="use-it"><span class="toc__n">05</span><span>Use it</span></a></li><li><a href="#questions-to-ask" data-toc="questions-to-ask"><span class="toc__n">06</span><span>Questions to ask</span></a></li><li><a href="#origins" data-toc="origins"><span class="toc__n">07</span><span>Origins</span></a></li><li><a href="#sources" data-toc="sources"><span class="toc__n">08</span><span>Sources</span></a></li><li><a href="#cite-this-law" data-toc="cite-this-law"><span class="toc__n">09</span><span>Cite this law</span></a></li><li><a href="#revision-history" data-toc="revision-history"><span class="toc__n">10</span><span>Revision history</span></a></li></ol></details>
+    <div class="related"><h2 class="rail-label">Related</h2><ul><li><a href="the-cost-frontier.html"><span class="related__n">15</span> <span class="related__t">The Cost Frontier</span></a></li><li><a href="the-reproducibility-rule.html"><span class="related__n">20</span> <span class="related__t">The Reproducibility Rule</span></a></li><li><a href="distribution-shift.html"><span class="related__n">23</span> <span class="related__t">Distribution Shift</span></a></li></ul></div>
+  </aside>
+  <article class="law">
+    <div class="law__meta"><span class="law__no">No. 08</span><a class="tag" href="../index.html#cat-II">The test</a><span class="chip-ver">v1.0</span><span class="law__for">For: Building</span></div>
+    <h1 class="law__title">Adaptive Overfitting</h1>
+    <blockquote class="law__quote"><p>“Every time you tune against the test set, it’s worth a little less.”</p></blockquote>
+    <dl class="trust"><div><dt>Last reviewed</dt><dd>15 Sep 2026</dd></div><div><dt>Sources</dt><dd><a href="#sources">4</a> · <a href="#cite-this-law">Cite</a></dd></div><div><dt>Source types</dt><dd class="trust__small">4 peer-reviewed or classic</dd></div><div><dt>Version</dt><dd>v1.0 <span class="trust__small">5 Oct 2026</span></dd></div></dl>
+    <section class="plain" aria-labelledby="plain-terms"><h2 class="plain__label" id="plain-terms">In plain terms</h2><p>Each time you adjust a prompt or a model because of how it did on the test, the test tells you a little less. Keep a locked test that you use only to decide.</p></section>
+    <section class="sec" aria-labelledby="takeaways"><div class="sec-head"><h2 id="takeaways">Takeaways <a class="permalink" href="#takeaways" aria-label="Link to Takeaways">#</a></h2></div><ul class="dash"><li>A test set gives an unbiased read only the first time you use it.</li><li>Choosing prompts, models, or settings based on test results slowly fits your system to that specific test.</li><li>The effect is sometimes smaller than people fear, but you can’t know without a fresh test.</li><li>Separate a dev set you iterate on from a locked test set you decide with.</li></ul></section>
+    <section class="sec" aria-labelledby="what-it-means"><div class="sec-head"><h2 id="what-it-means">What it means <a class="permalink" href="#what-it-means" aria-label="Link to What it means">#</a></h2></div><p>Standard statistical guarantees assume you pick your analysis before looking at the data. Real teams don’t work that way. They run the eval, tweak the prompt, run it again, try another model, run it again. Each look leaks a little information about the test set into the choices being made. After enough rounds, a high score partly reflects how well the team learned that particular test.</p></section>
+    <section class="sec" aria-labelledby="the-evidence"><div class="sec-head"><h2 id="the-evidence">The evidence <a class="permalink" href="#the-evidence" aria-label="Link to The evidence">#</a></h2><span class="sec-head__note">reviewed 15 Sep 2026</span></div><p><strong>Reuse breaks the math.</strong> Dwork et al. (2015) showed that adaptive reuse of a holdout set undermines its validity, and proposed a “reusable holdout” method that limits how much each query reveals.</p><p><strong>Rebuilt test sets score lower.</strong> Recht et al. (2019) rebuilt test sets for CIFAR-10 and ImageNet following the original procedures. Accuracy dropped 3% to 15% on CIFAR-10 and 11% to 14% on ImageNet. The model rankings mostly held, and the authors attribute the drop mainly to subtle differences in the new data rather than years of adaptive overfitting. That nuance matters: the law is real, and its size varies.</p><p><strong>Competitions held up better than expected.</strong> Roelofs et al. (2019) analyzed 120 Kaggle competitions and found little evidence of substantial overfitting from leaderboard reuse.</p><p><strong>Agent benchmarks are exposed.</strong> Kapoor et al. (2025) found many AI agent benchmarks have inadequate holdout sets, and sometimes none, which lets agents overfit and take shortcuts.</p></section>
+    <section class="sec" aria-labelledby="use-it"><div class="sec-head"><h2 id="use-it">Use it <a class="permalink" href="#use-it" aria-label="Link to Use it">#</a></h2></div><ol class="num"><li>Keep three splits: iterate on dev, check on validation, decide on a locked test.</li><li>Log each time someone looks at locked test results.</li><li>Refresh the locked test once it has driven many decisions.</li><li>Treat small wins on a heavily reused test with suspicion.</li></ol></section>
+    <section class="sec" aria-labelledby="questions-to-ask"><div class="sec-head"><h2 id="questions-to-ask">Questions to ask <a class="permalink" href="#questions-to-ask" aria-label="Link to Questions to ask">#</a></h2><div class="sec-head__actions"><button class="btn btn--outline btn--sm" type="button" data-add-checklist>+ Add to checklist</button><a class="btn btn--ink btn--sm" href="../checklist.html?preset=custom&amp;laws=08" data-print-link>Print checklist</a></div></div><p class="sec__sub">For vendor reviews, model cards, and launch reviews.</p><ul class="qlist"><li><label class="qrow"><input type="checkbox"><span class="qrow__box" aria-hidden="true"></span><span>Is there a locked test set, kept separate from the dev set used for iteration?</span></label></li><li><label class="qrow"><input type="checkbox"><span class="qrow__box" aria-hidden="true"></span><span>How many times has the locked test set been consulted to make decisions?</span></label></li></ul></section>
+    <section class="sec" aria-labelledby="origins"><div class="sec-head"><h2 id="origins">Origins <a class="permalink" href="#origins" aria-label="Link to Origins">#</a></h2></div><p>The holdout set is one of the oldest ideas in machine learning. “Adaptive data analysis” became its own research area in the 2010s as researchers formalized what happens when analysts reuse data across many decisions.</p></section>
+    <section class="sec" aria-labelledby="sources"><div class="sec-head"><h2 id="sources">Sources <a class="permalink" href="#sources" aria-label="Link to Sources">#</a></h2></div><ol class="sources"><li id="src-1"><span class="src__n">[1]</span><div class="src__body"><cite>Dwork, C., Feldman, V., Hardt, M., Pitassi, T., Reingold, O., &amp; Roth, A. (2015). <em>The reusable holdout: Preserving validity in adaptive data analysis</em>.</cite><span class="src__venue">Science, 349(6248), 636-638</span></div><a class="src__open" href="https://doi.org/10.1126/science.aaa9375" target="_blank" rel="noopener">Open ↗<span class="visually-hidden"> (opens in a new tab)</span></a></li><li id="src-2"><span class="src__n">[2]</span><div class="src__body"><cite>Kapoor, S., Stroebl, B., Siegel, Z. S., Nadgir, N., &amp; Narayanan, A. (2025). <em>AI agents that matter</em>.</cite><span class="src__venue">Transactions on Machine Learning Research (TMLR)</span></div><a class="src__open" href="https://arxiv.org/abs/2407.01502" target="_blank" rel="noopener">Open ↗<span class="visually-hidden"> (opens in a new tab)</span></a></li><li id="src-3"><span class="src__n">[3]</span><div class="src__body"><cite>Recht, B., Roelofs, R., Schmidt, L., &amp; Shankar, V. (2019). <em>Do ImageNet classifiers generalize to ImageNet?</em>.</cite><span class="src__venue">Proceedings of the International Conference on Machine Learning (ICML 2019)</span></div><a class="src__open" href="https://arxiv.org/abs/1902.10811" target="_blank" rel="noopener">Open ↗<span class="visually-hidden"> (opens in a new tab)</span></a></li><li id="src-4"><span class="src__n">[4]</span><div class="src__body"><cite>Roelofs, R., Shankar, V., Recht, B., Fridovich-Keil, S., Hardt, M., Miller, J., &amp; Schmidt, L. (2019). <em>A meta-analysis of overfitting in machine learning</em>.</cite><span class="src__venue">Advances in Neural Information Processing Systems (NeurIPS 2019)</span></div><span class="src__open src__open--none">No link</span></li></ol></section>
+    <section class="sec" aria-labelledby="cite-this-law"><div class="sec-head"><h2 id="cite-this-law">Cite this law <a class="permalink" href="#cite-this-law" aria-label="Link to Cite this law">#</a></h2></div><div class="cite" data-cite>
+  <div class="cite__tabs">
+    <div class="cite__tablist" role="tablist" aria-label="Citation format">
+      <button type="button" role="tab" id="tab-apa" aria-selected="true" aria-controls="panel-apa" data-tab="apa">APA</button>
+      <button type="button" role="tab" id="tab-bibtex" aria-selected="false" aria-controls="panel-bibtex" tabindex="-1" data-tab="bibtex">BibTeX</button>
+      <button type="button" role="tab" id="tab-link" aria-selected="false" aria-controls="panel-link" tabindex="-1" data-tab="link">Permalink</button>
+    </div>
+    <button class="btn btn--ink cite__copy" type="button" data-copy>Copy</button>
+  </div>
+  <div role="tabpanel" id="panel-apa" aria-labelledby="tab-apa" data-panel="apa"><pre><code>Laws of AI Evaluation. (2026, October 5). Adaptive Overfitting (v1.0). https://josephalfonso.com/laws-of-ai-evaluation/laws/adaptive-overfitting.html</code></pre></div>
+  <div role="tabpanel" id="panel-bibtex" aria-labelledby="tab-bibtex" data-panel="bibtex" hidden><pre><code>@misc{lai-adaptive-overfitting,
+  title        = {Adaptive Overfitting},
+  author       = {{Laws of AI Evaluation}},
+  year         = {2026},
+  month        = oct,
+  note         = {Version 1.0},
+  howpublished = {\url{https://josephalfonso.com/laws-of-ai-evaluation/laws/adaptive-overfitting.html}}
+}</code></pre></div>
+  <div role="tabpanel" id="panel-link" aria-labelledby="tab-link" data-panel="link" hidden><pre><code>https://josephalfonso.com/laws-of-ai-evaluation/laws/adaptive-overfitting.html</code></pre></div>
+</div></section>
+    <section class="sec" aria-labelledby="revision-history"><div class="sec-head"><h2 id="revision-history">Revision history <a class="permalink" href="#revision-history" aria-label="Link to Revision history">#</a></h2></div><ul class="rev"><li><span class="rev__v">v1.0</span><span class="rev__d">5 Oct 2026</span><span class="rev__t">Published.</span></li></ul><p class="rev__links"><a href="../changelog.html">Full changelog</a></p></section>
+    <nav class="pn-row" aria-label="Previous and next law"><a class="pn pn--prev" href="../index.html#cat-II"><span class="pn__k">← Back to category</span><span class="pn__t">II. The test itself</span></a><a class="pn pn--next" href="the-clever-hans-effect.html"><span class="pn__k">Next law →</span><span class="pn__t">09 The Clever Hans Effect</span></a></nav>
+  </article>
+  <aside class="law-aside" aria-label="Supporting material"><h2 class="aside-title">Supporting material</h2><details class="aside-block" open><summary>Terms used here</summary><dl class="terms"><dt>Adaptive overfitting</dt><dd>Fitting a system to a specific test set by repeatedly making choices based on its results.</dd></dl></details><details class="aside-block" open><summary>Take it with you</summary><ul class="takeaway"><li><a href="../checklist.html?preset=custom&amp;laws=08" data-print-link>Printable checklist <span>Print · PDF</span></a></li><li><a href="#cite-this-law">Cite this law <span>APA · BibTeX</span></a></li></ul></details></aside>
+</main>
+<div class="law-bar" aria-label="Law navigation"><a href="../index.html#cat-II">← Category</a><a href="#cite-this-law">Cite</a><a href="the-clever-hans-effect.html">Next: 09 →</a></div>
+
+<footer class="site-footer">
+  <p>Independent reference. No vendor funding. <a href="../about.html#editorial-policy">Editorial policy</a></p>
+  <p>CC BY 4.0 · <a href="../feed.xml">RSS</a> · Last updated 5 Oct 2026</p>
+</footer>
+<script src="../js/site.js" defer></script>
+<script src="../js/law.js" defer></script>
+</body>
+</html>

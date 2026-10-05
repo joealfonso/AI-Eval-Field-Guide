@@ -1,0 +1,346 @@
+{
+  "_note": "Editorial layer on top of data/laws.json (which is imported from the manuscript). Everything here was authored for the site build and needs editorial review: roles, plain-terms summaries, checklist questions, presets and claim-checker rules. Questions marked source=handoff came from the design handoff's content.json; source=derived were rewritten from each law's own 'Use it' section.",
+  "laws": {
+    "goodharts-law": {
+      "roles": ["Building", "Buying"],
+      "plainTerms": "If you reward people or models for hitting a number, they get good at the number. Whether they got better at the actual job is a separate question that needs its own check.",
+      "questionsSource": "handoff",
+      "questions": [
+        "Which metric did you optimize during training and model selection, and is the reported score on that same metric?",
+        "Was the reported test set ever used for tuning, prompt iteration, or choosing between checkpoints?",
+        "Show us five outputs that score highly but are still wrong. What do they have in common?",
+        "What will you measure after launch, and who decides when that metric has stopped being useful?"
+      ],
+      "alsoKnownAs": ["Campbell's law", "Reward hacking", "Specification gaming"],
+      "workedExample": {
+        "text": "A support assistant is tuned to raise CSAT. It learns to close tickets with a cheerful summary before the problem is solved. CSAT goes up; repeat contacts go up too.",
+        "note": "Illustrative · not a sourced case"
+      }
+    },
+    "campbells-law": {
+      "roles": ["Buying", "Building"],
+      "plainTerms": "The more a score decides who gets funded, hired, or bought, the more people bend their work around the score. The damage reaches the work itself, not just the number.",
+      "questionsSource": "derived",
+      "questions": [
+        "Does a real decision rest on a single ranking, or on at least two independent measures plus a qualitative review?",
+        "How many variants, seeds, or prompts were tried before this result was reported?"
+      ]
+    },
+    "the-construct-gap": {
+      "roles": ["Buying", "Designing"],
+      "plainTerms": "A test called \"reasoning\" only measures how a system does on that test's items, in that format. Whether that says anything about reasoning in general needs its own evidence.",
+      "questionsSource": "handoff",
+      "questions": [
+        "Which of our real tasks does this benchmark resemble, and how was that checked?",
+        "What would a high score here fail to tell us?"
+      ]
+    },
+    "the-functionality-fallacy": {
+      "roles": ["Buying", "Designing"],
+      "plainTerms": "Before asking whether an AI system is fair or safe, ask whether it works at all. Plenty of deployed systems fail at their stated job, and a vendor's claim is not evidence.",
+      "questionsSource": "derived",
+      "questions": [
+        "What evidence shows the system works on data like ours, gathered by someone other than the vendor?",
+        "What does the system do when it's wrong, and how often does that happen?"
+      ]
+    },
+    "the-metric-mirage": {
+      "roles": ["Building"],
+      "plainTerms": "The scoring method is part of the result. Score the same outputs a different way and a sudden leap can turn into steady progress, or the reverse.",
+      "questionsSource": "derived",
+      "questions": [
+        "Does the result hold when it is re-scored with a second, continuous metric?",
+        "Were the metrics chosen, with the reasons written down, before the results were seen?"
+      ]
+    },
+    "benchmark-saturation": {
+      "roles": ["Buying", "Building"],
+      "plainTerms": "Tests stop being useful once everyone scores near the top. The remaining differences are mostly noise, and the real gaps are somewhere else.",
+      "questionsSource": "handoff",
+      "questions": [
+        "How close are top systems to this benchmark's ceiling?",
+        "Is there a newer or harder test that still separates systems?"
+      ]
+    },
+    "data-contamination": {
+      "roles": ["Buying", "Building"],
+      "plainTerms": "If a model saw the test questions while it was training, a high score may only mean it remembers them. Fresh or private questions are the reliable check.",
+      "questionsSource": "handoff",
+      "questions": [
+        "What overlap analysis was run between the test set and the training data?",
+        "Were results confirmed on data created after the training cutoff?"
+      ]
+    },
+    "adaptive-overfitting": {
+      "roles": ["Building"],
+      "plainTerms": "Each time you adjust a prompt or a model because of how it did on the test, the test tells you a little less. Keep a locked test that you use only to decide.",
+      "questionsSource": "derived",
+      "questions": [
+        "Is there a locked test set, kept separate from the dev set used for iteration?",
+        "How many times has the locked test set been consulted to make decisions?"
+      ]
+    },
+    "the-clever-hans-effect": {
+      "roles": ["Building"],
+      "plainTerms": "A model can pass a test by picking up an accidental pattern, such as a watermark or a telltale word, instead of the skill you meant to test. Build cases where the shortcut fails.",
+      "questionsSource": "derived",
+      "questions": [
+        "Was a partial-input baseline run to see whether accuracy stays high without the part of the input that should matter?",
+        "Do contrast pairs or behavioral tests show the model gets the right answers for the right reasons?"
+      ]
+    },
+    "the-gold-standard-myth": {
+      "roles": ["Building", "Designing"],
+      "plainTerms": "The answer key and the human ratings are measurements too, and they contain errors and disagreement. Treat them as evidence, not as ground truth.",
+      "questionsSource": "derived",
+      "questions": [
+        "How often do independent raters agree on the labels, and was that measured before the labels were trusted?",
+        "Who audited the labels on the items where strong models disagree with the answer key?"
+      ]
+    },
+    "prompt-sensitivity": {
+      "roles": ["Building"],
+      "plainTerms": "Small changes in wording or formatting can swing a model's score. A result from one prompt is a result for that prompt.",
+      "questionsSource": "handoff",
+      "questions": [
+        "How much does the score move across reasonable rephrasings?",
+        "Was the prompt tuned on the test set?"
+      ]
+    },
+    "judge-bias": {
+      "roles": ["Building"],
+      "plainTerms": "Using an AI to grade AI is fast and cheap, but graders have favorites: the first answer, the longer answer, and answers that sound like their own. Check the grader against people.",
+      "questionsSource": "handoff",
+      "questions": [
+        "Was the AI grader checked against human judgments on a sample?",
+        "Were answer order and length controlled for, and is the grader from the same model family?"
+      ]
+    },
+    "criteria-drift": {
+      "roles": ["Designing", "Building"],
+      "plainTerms": "You work out what \"good\" means by reading real outputs, so your rubric will change as you grade. Version it, and re-grade a fixed set when it does.",
+      "questionsSource": "derived",
+      "questions": [
+        "Was the rubric written after reading real outputs, and is it versioned with a date and a reason for each change?",
+        "When the criteria changed, was a fixed reference set re-graded so trends stay comparable?"
+      ]
+    },
+    "once-is-not-reliable": {
+      "roles": ["Building", "Buying"],
+      "plainTerms": "A system that works once may fail the next time. Customers live with the all-runs-pass rate, not the best-run rate.",
+      "questionsSource": "handoff",
+      "questions": [
+        "How many runs per item, and what is the pass rate across all of them?",
+        "Is the result reported as pass@1, pass@k, or passing on every run?"
+      ]
+    },
+    "the-cost-frontier": {
+      "roles": ["Buying", "Building"],
+      "plainTerms": "You can buy accuracy with more compute, so a score without its cost is half a result. Compare systems at matched cost, or show the whole tradeoff.",
+      "questionsSource": "derived",
+      "questions": [
+        "What did each task cost in tokens or dollars, and what was the latency, next to every accuracy number?",
+        "Was a cheap baseline, such as a single call, a smaller model, or a simple retry loop, included at a matched budget?"
+      ]
+    },
+    "no-error-bars-no-result": {
+      "roles": ["Buying", "Building"],
+      "plainTerms": "Every score is an estimate. If two systems differ by less than the noise, nobody has shown that they differ.",
+      "questionsSource": "derived",
+      "questions": [
+        "What is the 95% confidence interval on each score, and how many items and runs does it rest on?",
+        "Is the gap between systems larger than the interval, using a paired comparison on the same items?"
+      ]
+    },
+    "the-averaging-trap": {
+      "roles": ["Designing", "Building", "Buying"],
+      "plainTerms": "A strong average can hide a group the system fails badly. Report results for the groups that matter, and show the worst one.",
+      "questionsSource": "derived",
+      "questions": [
+        "Which user groups, languages, or input types matter here, and were results reported for each?",
+        "What is the worst-performing slice, and does it have enough examples to support its own error bars?"
+      ]
+    },
+    "the-baseline-rule": {
+      "roles": ["Buying", "Designing"],
+      "plainTerms": "A win is only as strong as what it beat. Compare against the simplest thing that could work and today's actual process, with the same tuning effort.",
+      "questionsSource": "derived",
+      "questions": [
+        "Was the current process, or the simplest thing that could work, included as a baseline?",
+        "Did the baselines get the same tuning budget as the new method?"
+      ]
+    },
+    "the-benchmark-lottery": {
+      "roles": ["Buying"],
+      "plainTerms": "Which benchmarks get reported can decide who looks best. Pick the suite before you see results, and read the whole table.",
+      "questionsSource": "derived",
+      "questions": [
+        "Was the benchmark suite chosen and written down before any results were seen?",
+        "Which common benchmarks are missing from the results table, and why?"
+      ]
+    },
+    "the-reproducibility-rule": {
+      "roles": ["Building", "Buying"],
+      "plainTerms": "If nobody can rerun an evaluation, it is an anecdote. Record the model version, prompts, settings, data, and scoring code, and save the raw outputs.",
+      "questionsSource": "derived",
+      "questions": [
+        "Are the model version, system prompt, decoding settings, dataset version, and scoring code recorded so the eval can be rerun?",
+        "Are raw outputs saved, and is there a canary set to rerun whenever the vendor updates the model?"
+      ]
+    },
+    "presence-not-absence": {
+      "roles": ["Building", "Buying"],
+      "plainTerms": "An evaluation can show that a capability or a risk exists. It can't show that none does, only that it wasn't found with this much effort.",
+      "questionsSource": "derived",
+      "questions": [
+        "How hard did anyone try to elicit this capability or failure: which prompts, tools, fine-tuning, and how many attempts?",
+        "Who red-teamed this, and do they have real domain expertise?"
+      ]
+    },
+    "evaluation-awareness": {
+      "roles": ["Building"],
+      "plainTerms": "Models can often tell a test from real use, and may behave differently under test. Pair pre-launch tests with monitoring of real use.",
+      "questionsSource": "derived",
+      "questions": [
+        "Are the eval scenarios built from real, messy usage, or do they look obviously synthetic?",
+        "How does behavior in the eval compare with behavior in monitored real use?"
+      ]
+    },
+    "distribution-shift": {
+      "roles": ["Building", "Buying"],
+      "plainTerms": "A score measured on one group of people, places, or times doesn't automatically carry over to another. Test on data from where the system will actually run.",
+      "questionsSource": "handoff",
+      "questions": [
+        "When was the test data collected, and from which users?",
+        "How does it compare with current production inputs?"
+      ]
+    },
+    "the-lab-to-field-gap": {
+      "roles": ["Designing", "Building", "Buying"],
+      "plainTerms": "A system that works in the lab can fail in real conditions: workflows, time pressure, lighting, bandwidth, and people. Watch it in use before calling it validated.",
+      "questionsSource": "handoff",
+      "questions": [
+        "What changed for real users in a pilot, measured how?",
+        "Which lab results did not hold up in the pilot?"
+      ]
+    },
+    "the-team-is-the-system": {
+      "roles": ["Designing", "Building"],
+      "plainTerms": "When people work with AI, the person and the AI together produce the outcome. Test them together, including how often people accept advice that is wrong.",
+      "questionsSource": "derived",
+      "questions": [
+        "Was the person plus the AI tested together, and compared with the human alone and the AI alone?",
+        "How accurate are people on the cases where the AI is wrong?"
+      ]
+    },
+    "the-jagged-frontier": {
+      "roles": ["Designing", "Buying"],
+      "plainTerms": "AI can excel at a task that seems hard and fail at one that seems easy, and people can't see where the edge is. Map it for your own tasks with direct tests.",
+      "questionsSource": "handoff",
+      "questions": [
+        "Were tasks that are easy for people tested, not only hard ones?",
+        "Where are the known failure pockets, and are users told about them?"
+      ]
+    }
+  },
+  "presets": {
+    "_note": "Derived from the manuscript's Field Guide (Reading an AI claim, Building your own eval) and Being Pragmatic (high-risk tier). Needs editorial review.",
+    "buying": {
+      "label": "Buying a model or vendor",
+      "laws": ["goodharts-law", "campbells-law", "the-construct-gap", "the-functionality-fallacy", "benchmark-saturation", "data-contamination", "the-gold-standard-myth", "prompt-sensitivity", "judge-bias", "once-is-not-reliable", "the-cost-frontier", "no-error-bars-no-result", "the-averaging-trap", "the-baseline-rule", "the-benchmark-lottery", "the-reproducibility-rule", "distribution-shift", "the-lab-to-field-gap"]
+    },
+    "building": {
+      "label": "Building an evaluation",
+      "laws": ["goodharts-law", "the-construct-gap", "the-metric-mirage", "data-contamination", "adaptive-overfitting", "the-clever-hans-effect", "the-gold-standard-myth", "prompt-sensitivity", "judge-bias", "criteria-drift", "once-is-not-reliable", "the-cost-frontier", "no-error-bars-no-result", "the-averaging-trap", "the-baseline-rule", "the-reproducibility-rule", "presence-not-absence", "the-team-is-the-system"]
+    },
+    "launch": {
+      "label": "Launch review",
+      "laws": ["the-functionality-fallacy", "judge-bias", "once-is-not-reliable", "no-error-bars-no-result", "the-averaging-trap", "presence-not-absence", "evaluation-awareness", "distribution-shift", "the-lab-to-field-gap", "the-team-is-the-system", "the-jagged-frontier"]
+    },
+    "all": {
+      "label": "All published laws",
+      "laws": "all"
+    }
+  },
+  "claimChecker": {
+    "_note": "Rule-based matching, written from the manuscript's Field Guide (Reading an AI claim, Red flags). 'ask' is an index into the law's questions. Needs editorial review.",
+    "types": [
+      {
+        "id": "benchmark",
+        "label": "Benchmark score",
+        "detect": "(\\d{1,3}(\\.\\d+)?\\s?%)|\\b(mmlu|gsm8k|humaneval|swe-?bench|benchmark|leaderboard|accuracy|pass@\\d+|scores?)\\b",
+        "laws": [
+          { "slug": "data-contamination", "fit": "strong", "why": "The score is on a public benchmark. Check whether the test items overlap with the training data.", "ask": 0 },
+          { "slug": "no-error-bars-no-result", "fit": "strong", "why": "A headline number is reported without an interval or a count of items and runs.", "ask": 0 },
+          { "slug": "the-construct-gap", "fit": "likely", "why": "A benchmark measures what its items test, not what its name says.", "ask": 0 },
+          { "slug": "benchmark-saturation", "fit": "likely", "why": "Near the ceiling of a benchmark, small gaps carry little information.", "ask": 0 },
+          { "slug": "goodharts-law", "fit": "likely", "why": "If anyone iterated against this benchmark, it is a target rather than a measure.", "ask": 0 }
+        ]
+      },
+      {
+        "id": "comparison",
+        "label": "Comparison to other models",
+        "detect": "\\b(beats?|outperforms?|better than|vs\\.?|versus|surpass(es)?|ahead of|state[- ]of[- ]the[- ]art|sota|best|faster than|leading models?)\\b",
+        "laws": [
+          { "slug": "the-baseline-rule", "fit": "strong", "why": "A comparison is only as strong as the baseline it beats.", "ask": 0 },
+          { "slug": "no-error-bars-no-result", "fit": "strong", "why": "A win is claimed with no interval or number of runs.", "ask": 0 },
+          { "slug": "the-benchmark-lottery", "fit": "likely", "why": "Which benchmarks are reported can decide who wins.", "ask": 0 },
+          { "slug": "the-cost-frontier", "fit": "likely", "why": "Systems that cost very different amounts to run are not a fair comparison.", "ask": 0 },
+          { "slug": "the-averaging-trap", "fit": "worth", "why": "An average gap can hide the groups where the system loses.", "ask": 0 },
+          { "slug": "the-reproducibility-rule", "fit": "worth", "why": "Competitor numbers are only comparable if they came from the same prompts, settings, and scoring code.", "ask": 0 }
+        ]
+      },
+      {
+        "id": "preference",
+        "label": "Human-preference win rate",
+        "detect": "\\b(win[- ]?rates?|preferred|prefers?|human preference|arena|elo|side[- ]by[- ]side|users? (like|love|choose|picked))\\b",
+        "laws": [
+          { "slug": "campbells-law", "fit": "strong", "why": "Rankings that drive buying and press attention invite gaming, including selective reporting of variants.", "ask": 0 },
+          { "slug": "goodharts-law", "fit": "likely", "why": "Optimizing for votes can raise the number without raising quality.", "ask": 0 },
+          { "slug": "the-averaging-trap", "fit": "likely", "why": "A win rate averages over who voted and what they asked.", "ask": 0 },
+          { "slug": "the-gold-standard-myth", "fit": "likely", "why": "Human ratings are measurements with error, and raters disagree.", "ask": 0 },
+          { "slug": "no-error-bars-no-result", "fit": "likely", "why": "A win rate is an estimate and needs an interval.", "ask": 0 },
+          { "slug": "the-benchmark-lottery", "fit": "worth", "why": "Check which comparisons were left out.", "ask": 1 }
+        ]
+      },
+      {
+        "id": "aigraded",
+        "label": "AI-graded result",
+        "detect": "\\b(llm[- ]as[- ]a[- ]judge|ai[- ]graded|graded by|judge model|model[- ]graded|auto[- ]?graded|gpt-?\\d\\w* (as|judge))\\b|judged by (an? )?(ai|llm|model|gpt|claude)",
+        "laws": [
+          { "slug": "judge-bias", "fit": "strong", "why": "An AI grader has known biases: answer order, answer length, and a preference for its own writing.", "ask": 0 },
+          { "slug": "the-gold-standard-myth", "fit": "likely", "why": "A grader is only as good as the human labels it was checked against.", "ask": 0 },
+          { "slug": "no-error-bars-no-result", "fit": "likely", "why": "AI-graded scores are still estimates and need intervals.", "ask": 0 },
+          { "slug": "criteria-drift", "fit": "worth", "why": "Rubrics change as people read real outputs. Check whether the criteria were versioned.", "ask": 0 },
+          { "slug": "prompt-sensitivity", "fit": "worth", "why": "The grader's own prompt affects the scores it gives.", "ask": 0 }
+        ]
+      },
+      {
+        "id": "production",
+        "label": "Production accuracy",
+        "detect": "\\b(in production|production|real[- ]world|real users?|customers?|deployed|in the field|live traffic|pilot|in practice)\\b",
+        "laws": [
+          { "slug": "the-functionality-fallacy", "fit": "strong", "why": "Vendor-reported performance is a claim. Independent validation on your own population is evidence.", "ask": 0 },
+          { "slug": "distribution-shift", "fit": "likely", "why": "Performance on one population does not automatically carry over to another.", "ask": 0 },
+          { "slug": "the-lab-to-field-gap", "fit": "likely", "why": "Real use adds workflows, time pressure, and people that the lab left out.", "ask": 0 },
+          { "slug": "the-averaging-trap", "fit": "likely", "why": "Production accuracy is an average. Check the worst-performing groups.", "ask": 0 },
+          { "slug": "once-is-not-reliable", "fit": "likely", "why": "Customer-facing results depend on how often it works every time, not once.", "ask": 0 },
+          { "slug": "evaluation-awareness", "fit": "worth", "why": "Behavior under test may differ from behavior in real use, so check monitoring.", "ask": 1 }
+        ]
+      }
+    ],
+    "modifiers": [
+      { "detect": "\\b(internal|in-house|proprietary|our own|home-grown)\\b[^.]{0,30}\\b(benchmarks?|evals?|evaluations?|tests?|test sets?|datasets?)\\b", "slug": "goodharts-law", "fit": "strong", "why": "An internal benchmark that the team also iterated on is a target, not a measure.", "ask": 0 },
+      { "detect": "\\b(internal|in-house|proprietary|our own|home-grown)\\b[^.]{0,30}\\b(benchmarks?|evals?|evaluations?|tests?|test sets?|datasets?)\\b", "slug": "adaptive-overfitting", "fit": "likely", "why": "A test the team built and reuses is easy to tune against without noticing.", "ask": 0 },
+      { "detect": "\\b(superhuman|human[- ]level|exceeds? humans?|beats? humans?)\\b", "slug": "benchmark-saturation", "fit": "strong", "why": "\"Superhuman\" on a benchmark often signals saturation, contamination, or both.", "ask": 0 },
+      { "detect": "\\b(superhuman|human[- ]level|exceeds? humans?|beats? humans?)\\b", "slug": "data-contamination", "fit": "strong", "why": "\"Superhuman\" on a benchmark often signals saturation, contamination, or both.", "ask": 0 },
+      { "detect": "\\b(no (evidence|sign)s? of|no harmful|cannot|can't|is safe)\\b", "slug": "presence-not-absence", "fit": "likely", "why": "A failed attempt to find a risk says how hard someone tried, not whether the risk exists.", "ask": 0 },
+      { "detect": "\\b(explain(s|ed|able|ability)?|transparen(t|cy)|builds? trust|trustworthy)\\b", "slug": "the-team-is-the-system", "fit": "worth", "why": "Explanations can raise trust without raising accuracy.", "ask": 1 },
+      { "detect": "\\b(demos?|showcase[sd]?)\\b", "slug": "the-lab-to-field-gap", "fit": "strong", "why": "A demo is not evidence from real use.", "ask": 0 },
+      { "detect": "(\\b(no (hallucinations?|errors?|mistakes?)|always|never fails?)\\b)|100\\s?%", "slug": "once-is-not-reliable", "fit": "likely", "why": "Perfect-sounding claims need evidence from repeated runs.", "ask": 0 },
+      { "detect": "\\b(self[- ]evaluat\\w*|grad(es|ed) (its|their) own)\\b", "slug": "judge-bias", "fit": "strong", "why": "A model grading its own outputs tends to favor them.", "ask": 0 },
+      { "detect": "\\b(fair|unbiased|all users|every user|across (all )?(groups|languages|regions))\\b", "slug": "the-averaging-trap", "fit": "likely", "why": "An average cannot show who the system fails.", "ask": 0 },
+      { "detect": "\\b(cheap(er)?|costs?|latency|efficient|per token)\\b", "slug": "the-cost-frontier", "fit": "likely", "why": "Accuracy without cost is half a result.", "ask": 0 }
+    ]
+  }
+}

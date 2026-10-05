@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Reproducibility Rule · Laws of AI Evaluation</title>
+<meta name="description" content="An eval nobody can rerun is an anecdote. If nobody can rerun an evaluation, it is an anecdote. Record the model version, prompts, settings, data, and scoring code, and save the raw outputs.">
+<meta property="og:title" content="The Reproducibility Rule · Laws of AI Evaluation">
+<meta property="og:description" content="An eval nobody can rerun is an anecdote. If nobody can rerun an evaluation, it is an anecdote. Record the model version, prompts, settings, data, and scoring code, and save the raw outputs.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%239b2f1f'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%23faf7f1' font-family='Georgia,serif'%3E§%3C/text%3E%3C/svg%3E">
+<link rel="alternate" type="application/rss+xml" title="Laws of AI Evaluation changelog" href="../feed.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Public+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="" data-root="../">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <a class="wordmark" href="../index.html"><span class="wordmark__mark" aria-hidden="true">§</span><span class="wordmark__text">Laws of AI Evaluation</span></a>
+  <nav class="site-nav" id="site-nav" aria-label="Primary"><a href="../index.html" aria-current="page">Laws</a><a href="../claim-checker.html">Claim checker</a><a href="../design-rubric.html">Design Rubric</a><a href="../readiness-review.html">Readiness Review</a><a href="../changelog.html">Changelog</a><a href="../about.html">About</a></nav>
+  <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog"><span>Search laws</span><kbd data-kbd>⌘K</kbd></button>
+  <div class="header-actions">
+    <button class="icon-btn" type="button" data-search-open aria-haspopup="dialog">Find</button>
+    <button class="icon-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
+  </div>
+</header>
+<div class="crumbs"><nav aria-label="Breadcrumb"><ol>
+    <li><a href="../index.html">Laws</a></li><li><a href="../index.html#cat-IV">IV. Reading the results</a></li><li aria-current="page">No. 20</li></ol></nav>
+    <div class="crumbs__right"><span>5 of 5 in this category</span><a class="btn btn--outline btn--sm" href="presence-not-absence.html">Next: 21 Presence, Not Absence →</a></div></div>
+<main id="main" class="law-layout cat-4" data-page="law" data-no="20" data-slug="the-reproducibility-rule">
+  <aside class="law-rail" aria-label="On this page">
+    <details class="toc" open><summary>On this page <span aria-hidden="true" class="toc__plus"></span></summary><ol><li><a href="#plain-terms" data-toc="plain-terms"><span class="toc__n">01</span><span>In plain terms</span></a></li><li><a href="#takeaways" data-toc="takeaways"><span class="toc__n">02</span><span>Takeaways</span></a></li><li><a href="#what-it-means" data-toc="what-it-means"><span class="toc__n">03</span><span>What it means</span></a></li><li><a href="#the-evidence" data-toc="the-evidence"><span class="toc__n">04</span><span>The evidence</span></a></li><li><a href="#use-it" data-toc="use-it"><span class="toc__n">05</span><span>Use it</span></a></li><li><a href="#questions-to-ask" data-toc="questions-to-ask"><span class="toc__n">06</span><span>Questions to ask</span></a></li><li><a href="#origins" data-toc="origins"><span class="toc__n">07</span><span>Origins</span></a></li><li><a href="#sources" data-toc="sources"><span class="toc__n">08</span><span>Sources</span></a></li><li><a href="#cite-this-law" data-toc="cite-this-law"><span class="toc__n">09</span><span>Cite this law</span></a></li><li><a href="#revision-history" data-toc="revision-history"><span class="toc__n">10</span><span>Revision history</span></a></li></ol></details>
+    <div class="related"><h2 class="rail-label">Related</h2><ul><li><a href="the-averaging-trap.html"><span class="related__n">17</span> <span class="related__t">The Averaging Trap</span></a></li><li><a href="no-error-bars-no-result.html"><span class="related__n">16</span> <span class="related__t">No Error Bars, No Result</span></a></li><li><a href="the-cost-frontier.html"><span class="related__n">15</span> <span class="related__t">The Cost Frontier</span></a></li></ul></div>
+  </aside>
+  <article class="law">
+    <div class="law__meta"><span class="law__no">No. 20</span><a class="tag" href="../index.html#cat-IV">Results</a><span class="chip-ver">v1.0</span><span class="law__for">For: Building · Buying</span></div>
+    <h1 class="law__title">The Reproducibility Rule</h1>
+    <blockquote class="law__quote"><p>“An eval nobody can rerun is an anecdote.”</p></blockquote>
+    <dl class="trust"><div><dt>Last reviewed</dt><dd>15 Sep 2026</dd></div><div><dt>Sources</dt><dd><a href="#sources">6</a> · <a href="#cite-this-law">Cite</a></dd></div><div><dt>Source types</dt><dd class="trust__small">5 peer-reviewed or classic, 1 preprint</dd></div><div><dt>Version</dt><dd>v1.0 <span class="trust__small">5 Oct 2026</span></dd></div></dl>
+    <section class="plain" aria-labelledby="plain-terms"><h2 class="plain__label" id="plain-terms">In plain terms</h2><p>If nobody can rerun an evaluation, it is an anecdote. Record the model version, prompts, settings, data, and scoring code, and save the raw outputs.</p></section>
+    <section class="sec" aria-labelledby="takeaways"><div class="sec-head"><h2 id="takeaways">Takeaways <a class="permalink" href="#takeaways" aria-label="Link to Takeaways">#</a></h2></div><ul class="dash"><li>Eval results depend on details: prompts, decoding settings, data versions, scoring code, and the exact model version.</li><li>Without those details, nobody can check, compare, or build on a result.</li><li>Documentation standards like model cards and datasheets exist so results carry their context.</li><li>Save everything needed to rerun the eval, including raw outputs.</li></ul></section>
+    <section class="sec" aria-labelledby="what-it-means"><div class="sec-head"><h2 id="what-it-means">What it means <a class="permalink" href="#what-it-means" aria-label="Link to What it means">#</a></h2></div><p>Hosted AI models change under the same name. Prompts get tweaked. Scoring scripts get patched. Six months later, nobody can say why the number was 82% or whether today’s 79% is worse. A result you can’t reproduce can’t be trusted, and it can’t be compared to anything.</p></section>
+    <section class="sec" aria-labelledby="the-evidence"><div class="sec-head"><h2 id="the-evidence">The evidence <a class="permalink" href="#the-evidence" aria-label="Link to The evidence">#</a></h2><span class="sec-head__note">reviewed 15 Sep 2026</span></div><p><strong>The field built programs for it.</strong> Pineau et al. (2021) report on the NeurIPS 2019 reproducibility program, which introduced a code submission policy, a community reproducibility challenge, and a reproducibility checklist.</p><p><strong>Details change scores.</strong> Biderman et al. (2024) share lessons from maintaining a widely used language model evaluation harness and show how small methodological choices shift results. They recommend sharing code, prompts, and outputs.</p><p><strong>Benchmarks fall short.</strong> Reuel et al. (2024) found most of the 24 AI benchmarks they assessed can’t be easily replicated.</p><p><strong>Agents especially.</strong> Kapoor et al. (2025) describe a pervasive lack of reproducibility in AI agent evaluation caused by nonstandard practices.</p><p><strong>Standard formats exist.</strong> Mitchell et al. (2019) proposed model cards to document intended use and evaluation results. Gebru et al. (2021) proposed datasheets to document how datasets were created and what they’re suited for.</p></section>
+    <section class="sec" aria-labelledby="use-it"><div class="sec-head"><h2 id="use-it">Use it <a class="permalink" href="#use-it" aria-label="Link to Use it">#</a></h2></div><ol class="num"><li>Record the model name and version (or date), system prompt, decoding settings, dataset version, scoring code version, and run date.</li><li>Save raw outputs, not just scores.</li><li>Write a one-page eval card: purpose, data, metrics, slices, and known limits.</li><li>Keep a small canary set and rerun it whenever a vendor updates a model.</li></ol></section>
+    <section class="sec" aria-labelledby="questions-to-ask"><div class="sec-head"><h2 id="questions-to-ask">Questions to ask <a class="permalink" href="#questions-to-ask" aria-label="Link to Questions to ask">#</a></h2><div class="sec-head__actions"><button class="btn btn--outline btn--sm" type="button" data-add-checklist>+ Add to checklist</button><a class="btn btn--ink btn--sm" href="../checklist.html?preset=custom&amp;laws=20" data-print-link>Print checklist</a></div></div><p class="sec__sub">For vendor reviews, model cards, and launch reviews.</p><ul class="qlist"><li><label class="qrow"><input type="checkbox"><span class="qrow__box" aria-hidden="true"></span><span>Are the model version, system prompt, decoding settings, dataset version, and scoring code recorded so the eval can be rerun?</span></label></li><li><label class="qrow"><input type="checkbox"><span class="qrow__box" aria-hidden="true"></span><span>Are raw outputs saved, and is there a canary set to rerun whenever the vendor updates the model?</span></label></li></ul></section>
+    <section class="sec" aria-labelledby="origins"><div class="sec-head"><h2 id="origins">Origins <a class="permalink" href="#origins" aria-label="Link to Origins">#</a></h2></div><p>“The Reproducibility Rule” is this site’s name. Reproducibility has been a stated norm in science for centuries. Machine learning formalized it through checklists, model cards, and datasheets starting in the late 2010s.</p></section>
+    <section class="sec" aria-labelledby="sources"><div class="sec-head"><h2 id="sources">Sources <a class="permalink" href="#sources" aria-label="Link to Sources">#</a></h2></div><ol class="sources"><li id="src-1"><span class="src__n">[1]</span><div class="src__body"><cite>Biderman, S., et al. (2024). <em>Lessons from the trenches on reproducible evaluation of language models</em>.</cite><span class="src__venue">arXiv:2405.14782 <span class="src__label">Preprint</span></span></div><a class="src__open" href="https://arxiv.org/abs/2405.14782" target="_blank" rel="noopener">Open ↗<span class="visually-hidden"> (opens in a new tab)</span></a></li><li id="src-2"><span class="src__n">[2]</span><div class="src__body"><cite>Gebru, T., et al. (2021). <em>Datasheets for datasets</em>.</cite><span class="src__venue">Communications of the ACM, 64(12), 86-92</span></div><a class="src__open" href="https://arxiv.org/abs/1803.09010" target="_blank" rel="noopener">Open ↗<span class="visually-hidden"> (opens in a new tab)</span></a></li><li id="src-3"><span class="src__n">[3]</span><div class="src__body"><cite>Kapoor, S., Stroebl, B., Siegel, Z. S., Nadgir, N., &amp; Narayanan, A. (2025). <em>AI agents that matter</em>.</cite><span class="src__venue">Transactions on Machine Learning Research (TMLR)</span></div><a class="src__open" href="https://arxiv.org/abs/2407.01502" target="_blank" rel="noopener">Open ↗<span class="visually-hidden"> (opens in a new tab)</span></a></li><li id="src-4"><span class="src__n">[4]</span><div class="src__body"><cite>Mitchell, M., et al. (2019). <em>Model cards for model reporting</em>.</cite><span class="src__venue">Proceedings of the Conference on Fairness, Accountability, and Transparency (FAT* 2019)</span></div><a class="src__open" href="https://arxiv.org/abs/1810.03993" target="_blank" rel="noopener">Open ↗<span class="visually-hidden"> (opens in a new tab)</span></a></li><li id="src-5"><span class="src__n">[5]</span><div class="src__body"><cite>Pineau, J., et al. (2021). <em>Improving reproducibility in machine learning research (A report from the NeurIPS 2019 Reproducibility Program)</em>.</cite><span class="src__venue">Journal of Machine Learning Research, 22(164), 1-20</span></div><a class="src__open" href="https://arxiv.org/abs/2003.12206" target="_blank" rel="noopener">Open ↗<span class="visually-hidden"> (opens in a new tab)</span></a></li><li id="src-6"><span class="src__n">[6]</span><div class="src__body"><cite>Reuel, A., Hardy, A., Smith, C., Lamparth, M., Hardy, M., &amp; Kochenderfer, M. J. (2024). <em>BetterBench: Assessing AI benchmarks, uncovering issues, and establishing best practices</em>.</cite><span class="src__venue">NeurIPS 2024 Datasets and Benchmarks Track</span></div><a class="src__open" href="https://arxiv.org/abs/2411.12990" target="_blank" rel="noopener">Open ↗<span class="visually-hidden"> (opens in a new tab)</span></a></li></ol></section>
+    <section class="sec" aria-labelledby="cite-this-law"><div class="sec-head"><h2 id="cite-this-law">Cite this law <a class="permalink" href="#cite-this-law" aria-label="Link to Cite this law">#</a></h2></div><div class="cite" data-cite>
+  <div class="cite__tabs">
+    <div class="cite__tablist" role="tablist" aria-label="Citation format">
+      <button type="button" role="tab" id="tab-apa" aria-selected="true" aria-controls="panel-apa" data-tab="apa">APA</button>
+      <button type="button" role="tab" id="tab-bibtex" aria-selected="false" aria-controls="panel-bibtex" tabindex="-1" data-tab="bibtex">BibTeX</button>
+      <button type="button" role="tab" id="tab-link" aria-selected="false" aria-controls="panel-link" tabindex="-1" data-tab="link">Permalink</button>
+    </div>
+    <button class="btn btn--ink cite__copy" type="button" data-copy>Copy</button>
+  </div>
+  <div role="tabpanel" id="panel-apa" aria-labelledby="tab-apa" data-panel="apa"><pre><code>Laws of AI Evaluation. (2026, October 5). The Reproducibility Rule (v1.0). https://josephalfonso.com/laws-of-ai-evaluation/laws/the-reproducibility-rule.html</code></pre></div>
+  <div role="tabpanel" id="panel-bibtex" aria-labelledby="tab-bibtex" data-panel="bibtex" hidden><pre><code>@misc{lai-the-reproducibility-rule,
+  title        = {The Reproducibility Rule},
+  author       = {{Laws of AI Evaluation}},
+  year         = {2026},
+  month        = oct,
+  note         = {Version 1.0},
+  howpublished = {\url{https://josephalfonso.com/laws-of-ai-evaluation/laws/the-reproducibility-rule.html}}
+}</code></pre></div>
+  <div role="tabpanel" id="panel-link" aria-labelledby="tab-link" data-panel="link" hidden><pre><code>https://josephalfonso.com/laws-of-ai-evaluation/laws/the-reproducibility-rule.html</code></pre></div>
+</div></section>
+    <section class="sec" aria-labelledby="revision-history"><div class="sec-head"><h2 id="revision-history">Revision history <a class="permalink" href="#revision-history" aria-label="Link to Revision history">#</a></h2></div><ul class="rev"><li><span class="rev__v">v1.0</span><span class="rev__d">5 Oct 2026</span><span class="rev__t">Published.</span></li></ul><p class="rev__links"><a href="../changelog.html">Full changelog</a></p></section>
+    <nav class="pn-row" aria-label="Previous and next law"><a class="pn pn--prev" href="../index.html#cat-IV"><span class="pn__k">← Back to category</span><span class="pn__t">IV. Reading the results</span></a><a class="pn pn--next" href="presence-not-absence.html"><span class="pn__k">Next law →</span><span class="pn__t">21 Presence, Not Absence</span></a></nav>
+  </article>
+  <aside class="law-aside" aria-label="Supporting material"><h2 class="aside-title">Supporting material</h2><details class="aside-block" open><summary>Take it with you</summary><ul class="takeaway"><li><a href="../checklist.html?preset=custom&amp;laws=20" data-print-link>Printable checklist <span>Print · PDF</span></a></li><li><a href="#cite-this-law">Cite this law <span>APA · BibTeX</span></a></li></ul></details></aside>
+</main>
+<div class="law-bar" aria-label="Law navigation"><a href="../index.html#cat-IV">← Category</a><a href="#cite-this-law">Cite</a><a href="presence-not-absence.html">Next: 21 →</a></div>
+
+<footer class="site-footer">
+  <p>Independent reference. No vendor funding. <a href="../about.html#editorial-policy">Editorial policy</a></p>
+  <p>CC BY 4.0 · <a href="../feed.xml">RSS</a> · Last updated 5 Oct 2026</p>
+</footer>
+<script src="../js/site.js" defer></script>
+<script src="../js/law.js" defer></script>
+</body>
+</html>

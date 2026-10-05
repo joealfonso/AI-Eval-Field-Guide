@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claim checker · Laws of AI Evaluation</title>
+<meta name="description" content="Paste a claim about an AI system and see which laws apply, why, and what to ask.">
+<meta property="og:title" content="Claim checker · Laws of AI Evaluation">
+<meta property="og:description" content="Paste a claim about an AI system and see which laws apply, why, and what to ask.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%239b2f1f'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%23faf7f1' font-family='Georgia,serif'%3E§%3C/text%3E%3C/svg%3E">
+<link rel="alternate" type="application/rss+xml" title="Laws of AI Evaluation changelog" href="feed.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Public+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="" data-root="">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <a class="wordmark" href="index.html"><span class="wordmark__mark" aria-hidden="true">§</span><span class="wordmark__text">Laws of AI Evaluation</span></a>
+  <nav class="site-nav" id="site-nav" aria-label="Primary"><a href="index.html">Laws</a><a href="claim-checker.html" aria-current="page">Claim checker</a><a href="design-rubric.html">Design Rubric</a><a href="readiness-review.html">Readiness Review</a><a href="changelog.html">Changelog</a><a href="about.html">About</a></nav>
+  <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog"><span>Search laws</span><kbd data-kbd>⌘K</kbd></button>
+  <div class="header-actions">
+    <button class="icon-btn" type="button" data-search-open aria-haspopup="dialog">Find</button>
+    <button class="icon-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
+  </div>
+</header>
+<main id="main" class="page page--claim" data-page="claim">
+  <div class="claim">
+    <section class="claim__input" aria-labelledby="claim-h">
+      <p class="eyebrow eyebrow--muted">Tool</p>
+      <h1 id="claim-h">Check a claim</h1>
+      <p class="page__lede">Paste a claim about an AI system. You get the laws that apply, why, and a question to ask for each.</p>
+      <label class="field-label" for="claim-text">The claim</label>
+      <textarea id="claim-text" class="claim__text" rows="5" placeholder="Our assistant scores 94% on MMLU-Pro and beats leading models on our internal benchmark."></textarea>
+      <p class="field-label field-label--row" id="type-label">What kind of claim? <span class="muted-inline" data-detect-note>Detected from the text, edit if wrong</span></p>
+      <div class="chip-toggles" role="group" aria-labelledby="type-label"><button type="button" class="chip-toggle" data-type="benchmark" aria-pressed="false">Benchmark score</button><button type="button" class="chip-toggle" data-type="comparison" aria-pressed="false">Comparison to other models</button><button type="button" class="chip-toggle" data-type="preference" aria-pressed="false">Human-preference win rate</button><button type="button" class="chip-toggle" data-type="aigraded" aria-pressed="false">AI-graded result</button><button type="button" class="chip-toggle" data-type="production" aria-pressed="false">Production accuracy</button></div>
+      <div class="claim__buttons"><button class="btn btn--accent" type="button" data-find>Find laws that apply</button><button class="btn btn--outline" type="button" data-export disabled>Export questions</button><button class="btn btn--ghost" type="button" data-example>Try an example</button></div>
+      <p class="claim__note">Matching is rule-based against the laws’ published criteria. <a href="#how-matching-works">How matching works</a></p>
+    </section>
+    <section class="claim__results" aria-live="polite" aria-labelledby="results-h" data-results>
+      <h2 id="results-h" class="visually-hidden">Results</h2>
+      <p class="claim__empty">Results appear here. Paste a claim and choose Find laws that apply.</p>
+    </section>
+  </div>
+  <section class="claim__rules" id="how-matching-works"><h2>How matching works</h2>
+    <p>Each claim type maps to the laws a careful reader would check first, using the manuscript’s Field Guide and red-flag table. A few phrases (such as “internal benchmark” or “superhuman”) add matches of their own. A law that matches more than one type moves up a step. This is a reading aid, not an assessment of the claim.</p>
+    <details><summary>Show the rules</summary><h3>Benchmark score</h3><ul><li><a href="laws/data-contamination.html">Data Contamination</a> <span class="rules__fit">strong match</span> The score is on a public benchmark. Check whether the test items overlap with the training data.</li><li><a href="laws/no-error-bars-no-result.html">No Error Bars, No Result</a> <span class="rules__fit">strong match</span> A headline number is reported without an interval or a count of items and runs.</li><li><a href="laws/the-construct-gap.html">The Construct Gap</a> <span class="rules__fit">likely</span> A benchmark measures what its items test, not what its name says.</li><li><a href="laws/benchmark-saturation.html">Benchmark Saturation</a> <span class="rules__fit">likely</span> Near the ceiling of a benchmark, small gaps carry little information.</li><li><a href="laws/goodharts-law.html">Goodhart’s Law</a> <span class="rules__fit">likely</span> If anyone iterated against this benchmark, it is a target rather than a measure.</li></ul><h3>Comparison to other models</h3><ul><li><a href="laws/the-baseline-rule.html">The Baseline Rule</a> <span class="rules__fit">strong match</span> A comparison is only as strong as the baseline it beats.</li><li><a href="laws/no-error-bars-no-result.html">No Error Bars, No Result</a> <span class="rules__fit">strong match</span> A win is claimed with no interval or number of runs.</li><li><a href="laws/the-benchmark-lottery.html">The Benchmark Lottery</a> <span class="rules__fit">likely</span> Which benchmarks are reported can decide who wins.</li><li><a href="laws/the-cost-frontier.html">The Cost Frontier</a> <span class="rules__fit">likely</span> Systems that cost very different amounts to run are not a fair comparison.</li><li><a href="laws/the-averaging-trap.html">The Averaging Trap</a> <span class="rules__fit">worth checking</span> An average gap can hide the groups where the system loses.</li><li><a href="laws/the-reproducibility-rule.html">The Reproducibility Rule</a> <span class="rules__fit">worth checking</span> Competitor numbers are only comparable if they came from the same prompts, settings, and scoring code.</li></ul><h3>Human-preference win rate</h3><ul><li><a href="laws/campbells-law.html">Campbell’s Law</a> <span class="rules__fit">strong match</span> Rankings that drive buying and press attention invite gaming, including selective reporting of variants.</li><li><a href="laws/goodharts-law.html">Goodhart’s Law</a> <span class="rules__fit">likely</span> Optimizing for votes can raise the number without raising quality.</li><li><a href="laws/the-averaging-trap.html">The Averaging Trap</a> <span class="rules__fit">likely</span> A win rate averages over who voted and what they asked.</li><li><a href="laws/the-gold-standard-myth.html">The Gold Standard Myth</a> <span class="rules__fit">likely</span> Human ratings are measurements with error, and raters disagree.</li><li><a href="laws/no-error-bars-no-result.html">No Error Bars, No Result</a> <span class="rules__fit">likely</span> A win rate is an estimate and needs an interval.</li><li><a href="laws/the-benchmark-lottery.html">The Benchmark Lottery</a> <span class="rules__fit">worth checking</span> Check which comparisons were left out.</li></ul><h3>AI-graded result</h3><ul><li><a href="laws/judge-bias.html">Judge Bias</a> <span class="rules__fit">strong match</span> An AI grader has known biases: answer order, answer length, and a preference for its own writing.</li><li><a href="laws/the-gold-standard-myth.html">The Gold Standard Myth</a> <span class="rules__fit">likely</span> A grader is only as good as the human labels it was checked against.</li><li><a href="laws/no-error-bars-no-result.html">No Error Bars, No Result</a> <span class="rules__fit">likely</span> AI-graded scores are still estimates and need intervals.</li><li><a href="laws/criteria-drift.html">Criteria Drift</a> <span class="rules__fit">worth checking</span> Rubrics change as people read real outputs. Check whether the criteria were versioned.</li><li><a href="laws/prompt-sensitivity.html">Prompt Sensitivity</a> <span class="rules__fit">worth checking</span> The grader’s own prompt affects the scores it gives.</li></ul><h3>Production accuracy</h3><ul><li><a href="laws/the-functionality-fallacy.html">The Functionality Fallacy</a> <span class="rules__fit">strong match</span> Vendor-reported performance is a claim. Independent validation on your own population is evidence.</li><li><a href="laws/distribution-shift.html">Distribution Shift</a> <span class="rules__fit">likely</span> Performance on one population does not automatically carry over to another.</li><li><a href="laws/the-lab-to-field-gap.html">The Lab-to-Field Gap</a> <span class="rules__fit">likely</span> Real use adds workflows, time pressure, and people that the lab left out.</li><li><a href="laws/the-averaging-trap.html">The Averaging Trap</a> <span class="rules__fit">likely</span> Production accuracy is an average. Check the worst-performing groups.</li><li><a href="laws/once-is-not-reliable.html">Once Is Not Reliable</a> <span class="rules__fit">likely</span> Customer-facing results depend on how often it works every time, not once.</li><li><a href="laws/evaluation-awareness.html">Evaluation Awareness</a> <span class="rules__fit">worth checking</span> Behavior under test may differ from behavior in real use, so check monitoring.</li></ul></details>
+  </section>
+</main>
+<footer class="site-footer">
+  <p>Independent reference. No vendor funding. <a href="about.html#editorial-policy">Editorial policy</a></p>
+  <p>CC BY 4.0 · <a href="feed.xml">RSS</a> · Last updated 5 Oct 2026</p>
+</footer>
+<script src="js/data.js"></script>
+<script src="js/site.js" defer></script>
+<script src="js/claim-checker.js" defer></script>
+</body>
+</html>

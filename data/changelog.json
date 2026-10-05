@@ -1,0 +1,17 @@
+{
+  "entries": [
+    {
+      "date": "2026-10-05",
+      "text": "Launched with all 26 laws, the claim checker, the printable checklist builder, and search.",
+      "links": [{ "label": "Browse the laws", "href": "index.html" }]
+    },
+    {
+      "date": "2026-10-05",
+      "text": "Added the Design Rubric and the Readiness Review as reference pages. Interactive scoring is not built yet.",
+      "links": [
+        { "label": "Design Rubric", "href": "design-rubric.html" },
+        { "label": "Readiness Review", "href": "readiness-review.html" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,442 @@
+{
+  "instrument": {
+    "id": "AIRR",
+    "name": "AI Readiness Review",
+    "version": "1.0"
+  },
+  "record": {
+    "feature": "",
+    "organization": "",
+    "stage": "",
+    "reviewer": "",
+    "date": "",
+    "artifact": ""
+  },
+  "screening": [
+    {
+      "id": "s1",
+      "question": "Does the output influence a decision about a person's employment, finances, health, housing, legal status, education, or benefits?",
+      "answer": null
+    },
+    {
+      "id": "s2",
+      "question": "Can the system take an action, or commit a result, without a human confirming it first?",
+      "answer": null
+    },
+    {
+      "id": "s3",
+      "question": "Does the feature process personal, sensitive, or identifiable data?",
+      "answer": null
+    },
+    {
+      "id": "s4",
+      "question": "Will non-expert, vulnerable, or unsupported users rely on the output without a specialist intermediary?",
+      "answer": null
+    },
+    {
+      "id": "s5",
+      "question": "Are the effects of a wrong output slow, costly, or impossible to reverse?",
+      "answer": null
+    }
+  ],
+  "tier": null,
+  "thresholds": null,
+  "verdict": "Not scored",
+  "composite": null,
+  "points": {
+    "earned": 0,
+    "possible": 0
+  },
+  "coverage": {
+    "scored": 0,
+    "total": 27
+  },
+  "dimensions": [
+    {
+      "code": "D1",
+      "title": "Capability disclosure",
+      "earned": 0,
+      "possible": 0,
+      "pct": null
+    },
+    {
+      "code": "D2",
+      "title": "Output legibility",
+      "earned": 0,
+      "possible": 0,
+      "pct": null
+    },
+    {
+      "code": "D3",
+      "title": "Human agency and oversight",
+      "earned": 0,
+      "possible": 0,
+      "pct": null
+    },
+    {
+      "code": "D4",
+      "title": "Uncertainty and failure design",
+      "earned": 0,
+      "possible": 0,
+      "pct": null
+    },
+    {
+      "code": "D5",
+      "title": "Equity and accessibility",
+      "earned": 0,
+      "possible": 0,
+      "pct": null
+    },
+    {
+      "code": "D6",
+      "title": "Demonstrated value",
+      "earned": 0,
+      "possible": 0,
+      "pct": null
+    },
+    {
+      "code": "D7",
+      "title": "Accountability record",
+      "earned": 0,
+      "possible": 0,
+      "pct": null
+    }
+  ],
+  "gateFailures": [],
+  "evidenceGaps": [],
+  "criteria": [
+    {
+      "id": "D1.1",
+      "dimension": "D1",
+      "criterion": "Users are told they are interacting with an AI system, clearly and at or before first interaction.",
+      "gateTier": 2,
+      "references": [
+        "AI Act Art. 50",
+        "HAX G1–G18"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D1.2",
+      "dimension": "D1",
+      "criterion": "Expected reliability is communicated in terms the user can act on, not as an unqualified capability claim.",
+      "gateTier": null,
+      "references": [
+        "HAX G1–G18",
+        "AI Act Art. 13",
+        "NIST AI 100-1"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D1.3",
+      "dimension": "D1",
+      "criterion": "Scope boundaries are stated: the interface communicates what the system is not for.",
+      "gateTier": null,
+      "references": [
+        "HAX G1–G18",
+        "PAIR Guidebook",
+        "AI Act Art. 13"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D1.4",
+      "dimension": "D1",
+      "criterion": "Expectation-setting is staged across the experience rather than front-loaded into a single disclaimer.",
+      "gateTier": null,
+      "references": [
+        "PAIR Guidebook"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D2.1",
+      "dimension": "D2",
+      "criterion": "Uncertainty is expressed per output and reflects actual model confidence rather than a fixed decorative label.",
+      "gateTier": null,
+      "references": [
+        "NIST AI 100-1",
+        "HAX G1–G18",
+        "NIST AI 600-1"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D2.2",
+      "dimension": "D2",
+      "criterion": "The reason for a given output is available at the point of decision, in plain language.",
+      "gateTier": 2,
+      "references": [
+        "HAX G1–G18",
+        "AI Act Art. 13",
+        "NIST AI 100-1"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D2.3",
+      "dimension": "D2",
+      "criterion": "Output is traceable to the inputs, records, or rules that produced it.",
+      "gateTier": null,
+      "references": [
+        "NIST AI 100-1",
+        "ISO/IEC 42001",
+        "AI Act Art. 13"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D2.4",
+      "dimension": "D2",
+      "criterion": "Confidence signals and explanations are conveyed non-visually as well as visually.",
+      "gateTier": 2,
+      "references": [
+        "WCAG 2.2",
+        "AI Act Art. 50",
+        "W3C AI-A11y"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D3.1",
+      "dimension": "D3",
+      "criterion": "The user can see what the system proposes to do before it takes effect.",
+      "gateTier": 2,
+      "references": [
+        "AI Act Art. 14",
+        "HAX G1–G18"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D3.2",
+      "dimension": "D3",
+      "criterion": "A person can disregard, override, or reverse the output without engineering assistance.",
+      "gateTier": 2,
+      "references": [
+        "AI Act Art. 14",
+        "HAX G1–G18"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D3.3",
+      "dimension": "D3",
+      "criterion": "Consequential actions require explicit human confirmation; the system does not execute them silently.",
+      "gateTier": 2,
+      "references": [
+        "AI Act Art. 14"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D3.4",
+      "dimension": "D3",
+      "criterion": "The design actively counters automation bias rather than encouraging uncritical acceptance.",
+      "gateTier": 3,
+      "references": [
+        "AI Act Art. 14",
+        "Parasuraman 1997",
+        "Mosier 1996",
+        "NIST AI 600-1"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D4.1",
+      "dimension": "D4",
+      "criterion": "An explicit \"cannot determine\" state exists and is structurally distinct from a confident answer.",
+      "gateTier": 2,
+      "references": [
+        "PAIR Guidebook",
+        "HAX G1–G18",
+        "NIST AI 600-1"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D4.2",
+      "dimension": "D4",
+      "criterion": "Low-confidence output receives different visual and interaction treatment from high-confidence output.",
+      "gateTier": null,
+      "references": [
+        "HAX G1–G18",
+        "PAIR Guidebook"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D4.3",
+      "dimension": "D4",
+      "criterion": "A designed recovery path exists for AI-specific errors, separate from generic system error handling.",
+      "gateTier": 2,
+      "references": [
+        "PAIR Guidebook",
+        "HAX G1–G18"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D4.4",
+      "dimension": "D4",
+      "criterion": "Failure is contained: one bad output does not block, corrupt, or silently alter unrelated work.",
+      "gateTier": null,
+      "references": [
+        "NIST AI 100-1",
+        "PAIR Guidebook"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D5.1",
+      "dimension": "D5",
+      "criterion": "The AI-specific interface has been tested with assistive technology, not only reviewed visually or inherited from a component library.",
+      "gateTier": 2,
+      "references": [
+        "WCAG 2.2",
+        "W3C AI-A11y"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D5.2",
+      "dimension": "D5",
+      "criterion": "Performance disparities across user subgroups, languages, or regions have been measured rather than assumed absent.",
+      "gateTier": 3,
+      "references": [
+        "NIST AI 100-1",
+        "NIST AI 600-1",
+        "AI Act Art. 13",
+        "HAX G1–G18"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D5.3",
+      "dimension": "D5",
+      "criterion": "AI-generated accessibility content is human-reviewed before it is relied upon.",
+      "gateTier": null,
+      "references": [
+        "W3C AI-A11y",
+        "WCAG 2.2"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D5.4",
+      "dimension": "D5",
+      "criterion": "The experience adapts to user context and stakes rather than offering one undifferentiated path.",
+      "gateTier": null,
+      "references": [
+        "HAX G1–G18",
+        "PAIR Guidebook"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D6.1",
+      "dimension": "D6",
+      "criterion": "The efficiency or quality claim is measured against a real pre-AI baseline, not estimated.",
+      "gateTier": null,
+      "references": [
+        "NIST AI 100-1",
+        "ISO/IEC 42001"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D6.2",
+      "dimension": "D6",
+      "criterion": "Complexity is genuinely removed rather than displaced into a downstream step, another team, or a later moment.",
+      "gateTier": null,
+      "references": [
+        "NIST AI 100-1",
+        "PAIR Guidebook"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D6.3",
+      "dimension": "D6",
+      "criterion": "A granular feedback mechanism exists and demonstrably routes into system improvement.",
+      "gateTier": null,
+      "references": [
+        "HAX G1–G18",
+        "PAIR Guidebook"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D6.4",
+      "dimension": "D6",
+      "criterion": "Post-deployment monitoring is defined, with a named owner and a threshold that triggers action.",
+      "gateTier": null,
+      "references": [
+        "NIST AI 100-1",
+        "ISO/IEC 42001"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D7.1",
+      "dimension": "D7",
+      "criterion": "Known limitations are documented in a form that actually reaches the people who deploy and use the system.",
+      "gateTier": 2,
+      "references": [
+        "AI Act Art. 13",
+        "ISO/IEC 42001"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D7.2",
+      "dimension": "D7",
+      "criterion": "A named human owner is accountable for this feature's behavior in production.",
+      "gateTier": null,
+      "references": [
+        "NIST AI 100-1",
+        "ISO/IEC 42001"
+      ],
+      "score": null,
+      "evidence": null
+    },
+    {
+      "id": "D7.3",
+      "dimension": "D7",
+      "criterion": "An impact assessment covering affected individuals and groups was completed before launch.",
+      "gateTier": 3,
+      "references": [
+        "ISO/IEC 42001",
+        "NIST AI 100-1"
+      ],
+      "score": null,
+      "evidence": null
+    }
+  ]
+}
