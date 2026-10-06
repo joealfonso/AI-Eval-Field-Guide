@@ -275,7 +275,7 @@
           lines.push('  Do this: ' + l.doIt);
         }
         lines.push('  Ask: ' + typo(l.questions[0]));
-        lines.push('  ' + base + '/laws/' + l.slug + '.html');
+        lines.push('  ' + base + '/laws/' + l.slug);
         lines.push('');
       });
     });

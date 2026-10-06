@@ -172,7 +172,7 @@
         lh.appendChild(el('span', 'sheet__lawname', typo(l.name)));
         block.appendChild(lh);
         block.appendChild(el('p', 'sheet__quote', '“' + typo(l.aphorism) + '”'));
-        block.appendChild(el('p', 'sheet__url', base + '/laws/' + l.slug + '.html'));
+        block.appendChild(el('p', 'sheet__url', base + '/laws/' + l.slug));
         l.questions.forEach(function (text) {
           n += 1;
           var qrow = el('div', 'sheet__q');
@@ -224,7 +224,7 @@
     var fcell = el('td');
     var foot = el('div', 'sheet__foot');
     foot.appendChild(el('span', '', 'Laws of AI Evaluation · Evaluation checklist · ' + label));
-    foot.appendChild(el('span', '', base + '/checklist.html · ' + LAI.site.version));
+    foot.appendChild(el('span', '', base + '/checklist · ' + LAI.site.version));
     fcell.appendChild(foot);
     frow.appendChild(fcell);
     tfoot.appendChild(frow);
