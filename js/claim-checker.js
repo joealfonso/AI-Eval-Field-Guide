@@ -177,7 +177,7 @@
       lines.push((i + 1) + '. No. ' + r.no + ' ' + law.name + ' (' + FIT_LABEL[r.fit] + ')');
       lines.push('   Why: ' + r.why);
       lines.push('   Ask: ' + law.questions[Math.min(r.ask, law.questions.length - 1)]);
-      lines.push('   ' + LAI.site.baseUrl + '/laws/' + law.slug + '.html');
+      lines.push('   ' + LAI.site.baseUrl + '/laws/' + law.slug);
       lines.push('');
     });
     var blob = new Blob([lines.join('\n')], { type: 'text/plain' });

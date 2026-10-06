@@ -341,6 +341,10 @@ def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, ski
 
 
 def write(rel, content):
+    if rel.endswith(".html"):
+        url = SITE["baseUrl"] + "/" + ("" if rel == "index.html" else rel[: -len(".html")])
+        tags = '<link rel="canonical" href="%s">\n<meta property="og:url" content="%s">\n' % (url, url)
+        content = content.replace("</head>", tags + "</head>", 1)
     path = ROOT / rel
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")
@@ -504,14 +508,14 @@ def source_mix(law):
 
 def apa(law):
     d = datetime.date.fromisoformat(law["published"])
-    return "Laws of AI Evaluation. (%d, %s %d). %s (%s). %s/laws/%s.html" % (d.year, d.strftime("%B"), d.day, law["name"], law["version"], SITE["baseUrl"], law["slug"])
+    return "Laws of AI Evaluation. (%d, %s %d). %s (%s). %s/laws/%s" % (d.year, d.strftime("%B"), d.day, law["name"], law["version"], SITE["baseUrl"], law["slug"])
 
 
 def bibtex(law):
     d = datetime.date.fromisoformat(law["published"])
     return (
         "@misc{lai-%s,\n  title        = {%s},\n  author       = {{Laws of AI Evaluation}},\n  year         = {%d},\n  month        = %s,\n"
-        "  note         = {Version %s},\n  howpublished = {\\url{%s/laws/%s.html}}\n}"
+        "  note         = {Version %s},\n  howpublished = {\\url{%s/laws/%s}}\n}"
         % (law["slug"], law["name"], d.year, d.strftime("%b").lower(), law["version"].lstrip("v"), SITE["baseUrl"], law["slug"])
     )
 
@@ -521,7 +525,7 @@ def build_law(i, law):
     cat_laws = [l for l in LAWS if l["category"] == law["category"]]
     pos = cat_laws.index(law) + 1
     nxt = LAWS[i + 1] if i + 1 < len(LAWS) else None
-    url = "%s/laws/%s.html" % (SITE["baseUrl"], law["slug"])
+    url = "%s/laws/%s" % (SITE["baseUrl"], law["slug"])
     cat_href = "../index.html#cat-%s" % cat["id"]
 
     toc = "".join(
@@ -998,7 +1002,7 @@ def build_feed():
     for e in sorted(CHANGELOG, key=lambda x: x["date"], reverse=True):
         d = datetime.date.fromisoformat(e["date"])
         pub = d.strftime("%a, %d %b %Y 00:00:00 +0000")
-        items += "<item><title>%s</title><link>%s/changelog.html</link><guid isPermaLink=\"false\">%s-%s</guid><pubDate>%s</pubDate><description>%s</description></item>\n" % (
+        items += "<item><title>%s</title><link>%s/changelog</link><guid isPermaLink=\"false\">%s-%s</guid><pubDate>%s</pubDate><description>%s</description></item>\n" % (
             esc(e["text"]), SITE["baseUrl"], e["date"], hashlib.md5(e["text"].encode("utf-8")).hexdigest()[:8], pub, esc(e["text"]))
     feed = '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>%s: changelog</title><link>%s/</link><description>What changed on %s.</description>\n%s</channel></rss>\n' % (
         esc(SITE["title"]), SITE["baseUrl"], esc(SITE["title"]), items)
