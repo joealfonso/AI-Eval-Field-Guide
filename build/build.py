@@ -739,6 +739,26 @@ def build_rubric():
     write("design-rubric.html", tool_page("AI Design Evaluation Rubric", "An 18-check rubric for evaluating an AI feature across agency, transparency, honesty, equity, real reduction, and failure design.", "rubric", intro, "".join(secs), note))
 
 
+REVIEW_SOURCES = {
+    "HAX G1\u2013G18": "Microsoft\u2019s Guidelines for Human-AI Interaction, eighteen guidelines for how an AI feature should behave with the people using it.",
+    "NIST AI 100-1": "NIST\u2019s AI Risk Management Framework 1.0, a U.S. framework for identifying and managing AI risk.",
+    "NIST AI 600-1": "NIST\u2019s Generative AI Profile, which applies the AI Risk Management Framework to generative AI.",
+    "PAIR Guidebook": "Google\u2019s People + AI Guidebook, design guidance for AI-powered products.",
+    "AI Act Art. 13": "EU AI Act, Article 13: transparency and the information a system must provide to the people who deploy it.",
+    "AI Act Art. 14": "EU AI Act, Article 14: human oversight of high-risk AI systems.",
+    "AI Act Art. 50": "EU AI Act, Article 50: transparency duties, including telling people when they are interacting with an AI system.",
+    "ISO/IEC 42001": "The international standard for AI management systems.",
+    "WCAG 2.2": "W3C\u2019s Web Content Accessibility Guidelines, version 2.2.",
+    "W3C AI-A11y": "W3C work on accessibility and AI.",
+    "Parasuraman 1997": "Parasuraman and Riley (1997), research on how people use, over-rely on, and neglect automation.",
+    "Mosier 1996": "Mosier and Skitka (1996), research on automation bias in human decision-making.",
+}
+
+
+def src_id(ref):
+    return "src-" + re.sub(r"[^a-z0-9]+", "-", ref.lower()).strip("-")
+
+
 def build_review():
     dims = {d["code"]: d for d in AIRR["dimensions"]}
     screening = "".join('<li id="%s"><span class="crit__id">%s</span><span class="crit__text">%s</span></li>' % (s["id"], s["id"].upper(), esc(typo(s["question"]))) for s in AIRR["screening"])
@@ -748,17 +768,24 @@ def build_review():
         rows = ""
         for c in crits:
             gate = '<span class="gate">Gate \u00b7 T%d</span>' % c["gateTier"] if c["gateTier"] else ""
-            refs = "".join("<li>%s</li>" % esc(r) for r in c["references"])
-            rows += '<li id="%s"><span class="crit__id">%s</span><span class="crit__text">%s<span class="crit__meta">%s<ul class="refs">%s</ul></span></span></li>' % (c["id"], c["id"], esc(typo(c["criterion"])), gate, refs)
+            refs = "".join('<li><a href="#%s">%s</a></li>' % (src_id(r), esc(r)) for r in c["references"])
+            rows += '<li id="%s"><span class="crit__id">%s</span><span class="crit__text">%s<span class="crit__meta">%s<span class="crit__label" id="%s-src">Based on</span><ul class="refs" aria-labelledby="%s-src">%s</ul></span></span></li>' % (c["id"], c["id"], esc(typo(c["criterion"])), gate, c["id"], c["id"], refs)
         secs.append(
             '<section class="tool-sec" aria-labelledby="%s"><h2 id="%s"><span class="tool-sec__code">%s</span>%s</h2><ol class="crit">%s</ol></section>'
             % (code, code, code, esc(typo(dims[code]["title"])), rows)
         )
     intro = (
         '<p class="page__lede">A more rigorous instrument for launch review. Five screening questions come first, then 27 criteria across seven dimensions. '
-        'Each criterion cites the standards behind it, and some are marked as gates.</p>'
+        'Under each criterion, the labels marked "Based on" name the standards and guidelines it draws on; the key at the bottom of the page explains each one. Some criteria are marked as gates.</p>'
     )
     note = "This page lists the instrument (AIRR v%s). Tier routing and scoring are not built here yet; see the <a href=\"changelog.html\">Changelog</a>. A Gate badge shows the risk tier recorded for that criterion in the instrument." % esc(AIRR["instrument"]["version"])
+    used = []
+    for c in AIRR["criteria"]:
+        for r in c["references"]:
+            if r not in used:
+                used.append(r)
+    key = "".join('<li id="%s"><strong>%s</strong> <span>%s</span></li>' % (src_id(r), esc(r), esc(REVIEW_SOURCES.get(r, ""))) for r in used)
+    secs.append('<section class="tool-sec" aria-labelledby="sources"><h2 id="sources"><span class="tool-sec__code">Key</span>Sources <span class="tool-sec__tag">\u2014 what each \u201cBased on\u201d label refers to</span></h2><ul class="src-key">%s</ul></section>' % key)
     write("readiness-review.html", tool_page("AI Readiness Review", "A 27-criterion readiness review for AI features, with screening questions and references to the EU AI Act, NIST, ISO/IEC 42001, WCAG 2.2, and HAX/PAIR guidelines.", "review", intro, "".join(secs), note))
 
 
