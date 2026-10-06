@@ -341,6 +341,10 @@ def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, ski
 
 
 def write(rel, content):
+    if rel.endswith(".html"):
+        url = SITE["baseUrl"] + "/" + ("" if rel == "index.html" else rel)
+        tags = '<link rel="canonical" href="%s">\n<meta property="og:url" content="%s">\n' % (url, url)
+        content = content.replace("</head>", tags + "</head>", 1)
     path = ROOT / rel
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")
