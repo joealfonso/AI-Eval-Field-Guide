@@ -1,4 +1,4 @@
-/* Law page: scroll-spy, permalinks, cite box, add to checklist. */
+/* Law page: scroll-spy, permalinks, and the cite box. */
 (function () {
   'use strict';
 
@@ -108,38 +108,4 @@
       timer = window.setTimeout(function () { copyBtn.textContent = 'Copy'; }, 2000);
     });
   }
-
-  /* ---------- add to checklist ---------- */
-  var KEY = 'lai.checklist';
-  var no = parseInt(main.getAttribute('data-no'), 10);
-  var addBtn = document.querySelector('[data-add-checklist]');
-  var printLinks = document.querySelectorAll('[data-print-link]');
-  function read() {
-    try { return JSON.parse(window.localStorage.getItem(KEY) || '[]').filter(Number.isInteger); } catch (e) { return []; }
-  }
-  function write(list) {
-    try { window.localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) { /* storage unavailable */ }
-  }
-  function refresh() {
-    var list = read();
-    var has = list.indexOf(no) !== -1;
-    if (addBtn) {
-      addBtn.textContent = has ? 'Added ✓ (' + list.length + ')' : '+ Add to checklist';
-      addBtn.setAttribute('aria-pressed', String(has));
-    }
-    var set = has ? list : list.concat([no]);
-    set.sort(function (a, b) { return a - b; });
-    Array.prototype.forEach.call(printLinks, function (a) { a.href = '../checklist.html?preset=custom&laws=' + set.join(','); });
-  }
-  if (addBtn) {
-    addBtn.addEventListener('click', function () {
-      var list = read();
-      var i = list.indexOf(no);
-      if (i === -1) list.push(no); else list.splice(i, 1);
-      write(list);
-      refresh();
-      announce(i === -1 ? 'Added to checklist' : 'Removed from checklist');
-    });
-  }
-  refresh();
 })();

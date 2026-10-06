@@ -243,6 +243,47 @@
       ]
     }
   },
+  "categories": {
+    "_note": "One-line thread per part, used in the quick brief's overview. Authored for the build; needs editorial review.",
+    "I": { "thread": "A score stands in for something you care about, so check what it really measures and what is pushing on it." },
+    "II": { "thread": "The test can be stale, leaked, tuned against, or wrong, so decide how far to trust it before you trust the score." },
+    "III": { "thread": "How you run an evaluation changes the number: prompts, graders, criteria, repeat runs, and cost all matter." },
+    "IV": { "thread": "How you read the numbers changes the conclusion: noise, averages, baselines, selection, and whether anyone can rerun it." },
+    "V": { "thread": "A benchmark cannot show what happens when real people use the system in real conditions." }
+  },
+  "briefPresets": {
+    "_note": "Starting sets on the quick brief page. 'tour' is one law from each part. The role sets reuse the checklist presets.",
+    "tour": { "label": "Five-law tour", "laws": ["goodharts-law", "data-contamination", "prompt-sensitivity", "no-error-bars-no-result", "the-lab-to-field-gap"] }
+  },
+  "briefEvidence": {
+    "_note": "[evidence item index, sentence indexes]. The brief quotes these sentences verbatim from the manuscript's evidence.",
+    "goodharts-law": [0, [0, 1]],
+    "campbells-law": [1, [0, 1]],
+    "the-construct-gap": [1, [0]],
+    "the-functionality-fallacy": [1, [0, 1, 2]],
+    "the-metric-mirage": [0, [0, 1, 2]],
+    "benchmark-saturation": [0, [0, 1]],
+    "data-contamination": [0, [0, 1]],
+    "adaptive-overfitting": [1, [0, 1]],
+    "the-clever-hans-effect": [0, [0]],
+    "the-gold-standard-myth": [0, [0, 1]],
+    "prompt-sensitivity": [0, [0, 1]],
+    "judge-bias": [0, [0, 1]],
+    "criteria-drift": [0, [0]],
+    "once-is-not-reliable": [0, [0, 1, 2]],
+    "the-cost-frontier": [0, [0, 1]],
+    "no-error-bars-no-result": [2, [0]],
+    "the-averaging-trap": [0, [0]],
+    "the-baseline-rule": [2, [0, 1]],
+    "the-benchmark-lottery": [0, [0]],
+    "the-reproducibility-rule": [2, [0]],
+    "presence-not-absence": [1, [0, 1]],
+    "evaluation-awareness": [0, [0, 1, 2]],
+    "distribution-shift": [0, [0, 1, 2]],
+    "the-lab-to-field-gap": [0, [0, 1, 2]],
+    "the-team-is-the-system": [0, [0, 1]],
+    "the-jagged-frontier": [0, [0, 1, 2]]
+  },
   "presets": {
     "_note": "Derived from the manuscript's Field Guide (Reading an AI claim, Building your own eval) and Being Pragmatic (high-risk tier). Needs editorial review.",
     "buying": {

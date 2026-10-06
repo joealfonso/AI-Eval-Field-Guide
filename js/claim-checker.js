@@ -85,6 +85,22 @@
     if (counts[2]) parts.push(counts[2] + ' likely');
     if (counts[1]) parts.push(counts[1] + ' worth checking');
     head.appendChild(el('p', '', parts.join(' · ')));
+    if (window.LAIC) {
+      var nos = results.map(function (r) { return parseInt(r.no, 10); });
+      var tools = el('div', 'result-tools');
+      var addAll = el('button', 'btn btn--outline btn--sm', 'Add these ' + results.length + ' to My laws');
+      addAll.type = 'button';
+      addAll.addEventListener('click', function () {
+        window.LAIC.addMany(nos);
+        addAll.textContent = 'Added to My laws';
+        window.LAIC.announce('Added ' + results.length + ' laws to My laws.');
+      });
+      var brief = el('a', 'btn btn--outline btn--sm', 'Quick brief of these');
+      brief.href = 'brief.html?laws=' + nos.slice().sort(function (a, b) { return a - b; }).join(',');
+      tools.appendChild(addAll);
+      tools.appendChild(brief);
+      head.appendChild(tools);
+    }
     resultsEl.appendChild(head);
     var more = null;
     results.forEach(function (r, idx) {

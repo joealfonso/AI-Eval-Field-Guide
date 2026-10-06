@@ -401,6 +401,7 @@ kbd { font: 400 var(--fs-mono-xs)/1 var(--font-mono); border: var(--border); pad
 .result-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--space-4); padding-bottom: var(--space-3); border-bottom: 1px solid var(--ink); }
 .result-head h2 { font: 400 28px/1.1 var(--font-display); color: var(--accent); }
 .result-head p { font: 400 var(--fs-mono)/1.4 var(--font-mono); color: var(--muted); }
+.result-tools { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-left: auto; }
 .result { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: var(--space-4); padding: var(--space-5) 0; border-bottom: 1px solid var(--rule); }
 .result__fit { font: 500 var(--fs-mono)/1.6 var(--font-mono); color: var(--accent); }
 .result__fit span { display: block; color: var(--muted); font-weight: 400; }
@@ -497,6 +498,84 @@ kbd { font: 400 var(--fs-mono-xs)/1 var(--font-mono); border: var(--border); pad
 mark { background: var(--cat-5-bg); color: var(--cat-5-fg); padding: 0 1px; }
 .search-empty { padding: var(--space-6) 18px; color: var(--muted); font-size: var(--fs-small); }
 .search-hints { display: flex; gap: var(--space-5); padding: 10px 18px; border-top: var(--border); font: 400 var(--fs-mono-xs)/1 var(--font-mono); color: var(--muted); }
+
+/* ------------------------------------------------------------ 8b My laws and the quick brief */
+.law-item { position: relative; }
+.pick {
+  display: inline-flex; align-items: center; gap: 6px; background: var(--surface-hi); border: 1px solid var(--rule); color: var(--ink);
+  padding: 5px 9px; font: 500 var(--fs-mono)/1 var(--font-mono); white-space: nowrap;
+  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+.pick:hover { border-color: var(--ink); }
+.pick[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.pick__mark { font-size: 13px; line-height: 1; }
+.law-item > .law-card { padding-bottom: 56px; }
+.law-item > .law-card .law-card__cta { position: absolute; left: 22px; bottom: 22px; margin: 0; }
+.law-item > .pick { position: absolute; right: 22px; bottom: 14px; }
+.law-item > .pick--corner { right: 10px; top: 8px; bottom: auto; padding: 3px 7px; }
+.pick--inline { padding: 3px 8px; }
+.pick--btn { padding: 6px 10px; background: transparent; border-color: var(--ink); font: 500 var(--fs-mono)/1.2 var(--font-body); }
+.toolbar__brief { margin-left: 0; }
+
+.tray {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+  padding: 10px var(--page-gutter); background: var(--ink); color: var(--paper); border-top: 2px solid var(--accent);
+}
+.tray__count { font: 500 var(--fs-xs)/1.2 var(--font-body); }
+.tray__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.tray .btn--outline { color: var(--paper); border-color: var(--paper); }
+.tray .btn--outline:hover { background: var(--ink-soft); }
+.tray .btn--ghost { color: var(--paper); }
+body.has-tray { padding-bottom: 64px; }
+
+.page--brief { max-width: calc(920px + 2 * var(--page-gutter)); }
+.brief__picker { border: var(--border); background: var(--surface); margin-bottom: var(--space-6); }
+.brief__picker summary { padding: 12px 14px; cursor: pointer; font: 500 var(--fs-xs)/1.2 var(--font-body); }
+.brief__presets { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); padding: 0 14px var(--space-3); }
+.brief__presets .btn[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.picker { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4) var(--space-5); padding: var(--space-2) 14px var(--space-4); border-top: 1px solid var(--rule-faint); }
+.picker__group { border: 0; padding: 0; margin: 0; min-width: 0; }
+.picker__group legend { font: 500 var(--fs-mono-xs)/1.3 var(--font-mono); color: var(--accent); text-transform: uppercase; letter-spacing: .04em; padding: var(--space-2) 0 4px; }
+.picker__group label { display: flex; gap: var(--space-2); align-items: flex-start; font-size: var(--fs-small); line-height: 1.35; padding: 3px 0; }
+.picker input { margin-top: 3px; accent-color: var(--accent); }
+.brief__bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); padding: var(--space-3) 0; border-top: 1px solid var(--ink); border-bottom: var(--border); }
+.brief__count { margin-right: auto; font: 500 var(--fs-mono)/1.4 var(--font-mono); color: var(--muted); }
+.brief__actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.brief__summary { margin-top: var(--space-6); background: var(--surface); border: var(--border); border-left: 3px solid var(--accent); padding: 20px 22px; }
+.brief__label { font: 500 var(--fs-mono-xs)/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--space-3); }
+.brief__lead { font: 400 var(--fs-plain)/1.5 var(--font-display); }
+.brief__threads { margin-top: var(--space-3); display: grid; gap: var(--space-2); }
+.brief__threads li { font-size: var(--fs-body); line-height: 1.55; }
+.brief__start { margin-top: var(--space-3); font: 600 var(--fs-small)/1.5 var(--font-body); }
+.brief__laws { margin-top: var(--space-8); }
+.brief__part + .brief__part { margin-top: var(--space-8); }
+.brief__part-title { font: 500 22px/1.2 var(--font-display); padding-bottom: var(--space-2); border-bottom: 1px solid var(--ink); margin-bottom: var(--space-4); }
+.brief__part-title span { font: 500 var(--fs-mono)/1 var(--font-mono); color: var(--accent); }
+.brief-law { background: var(--surface); border: var(--border); padding: 16px 18px; }
+.brief-law + .brief-law { margin-top: var(--space-3); }
+.brief-law__head { display: flex; align-items: baseline; gap: var(--space-3); }
+.brief-law__no { font: 500 var(--fs-mono-xs)/1 var(--font-mono); color: var(--accent); }
+.brief-law__name { margin-right: auto; font: 500 22px/1.15 var(--font-display); }
+.link-btn { background: none; border: 0; padding: 4px 6px; font: 400 var(--fs-mono)/1 var(--font-mono); color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+.link-btn:hover { color: var(--accent); }
+.brief-law__quote { margin-top: var(--space-2); font: italic 400 17px/1.4 var(--font-display); color: var(--ink-quote); }
+.brief-law__plain { margin-top: var(--space-2); font-size: var(--fs-body); line-height: 1.6; }
+.brief-law__more { margin-top: var(--space-3); display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 6px var(--space-3); font-size: var(--fs-small); line-height: 1.5; }
+.brief-law__more dt { font: 500 var(--fs-mono-xs)/1.7 var(--font-mono); color: var(--accent); text-transform: uppercase; }
+.brief-law__more dd { color: var(--ink-soft); }
+.brief-law__read { display: inline-block; margin-top: var(--space-3); font: 500 var(--fs-xs)/1 var(--font-body); }
+.brief__block { margin-top: var(--space-8); }
+.brief__sub { font-size: var(--fs-small); color: var(--ink-soft); margin: 0 0 var(--space-3); }
+.brief__pairs li, .brief__next li { padding: 10px 0; border-bottom: 1px solid var(--rule-faint); display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-3); }
+.brief__pairs { border-top: 1px solid var(--ink); }
+.brief__next { border-top: 1px solid var(--ink); }
+.brief__pairs a, .brief__next-name { font: 500 17px/1.3 var(--font-display); }
+.brief__pair-n { margin-left: auto; font: 400 var(--fs-mono)/1 var(--font-mono); color: var(--muted); }
+.brief__next-quote { flex: 1 1 260px; font: italic 400 15px/1.4 var(--font-display); color: var(--ink-quote); }
+.brief__questions { list-style: decimal; padding-left: 24px; margin-bottom: var(--space-4); }
+.brief__questions li { margin-bottom: var(--space-2); line-height: 1.5; }
+.brief__empty { padding: var(--space-6); border: 1px dashed var(--rule-soon); color: var(--ink-soft); }
+.brief__empty h2 { font: 500 22px/1.2 var(--font-display); margin-bottom: var(--space-2); }
 
 /* ------------------------------------------------------------ 9 Responsive */
 @media (max-width: 1099px) {
@@ -595,6 +674,25 @@ mark { background: var(--cat-5-bg); color: var(--cat-5-fg); padding: 0 1px; }
   .seg button, .chip-toggle, .btn { min-height: 44px; }
   .btn--sm { min-height: 44px; }
   .wordmark__text { font-size: 18px; }
+}
+@media (max-width: 899px) {
+  .picker { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .law-item > .pick--corner { top: 50%; transform: translateY(-50%); right: 12px; }
+  .catcol__entry { padding-right: 88px; }
+}
+@media (max-width: 699px) {
+  .picker { grid-template-columns: minmax(0, 1fr); }
+  .brief-law__more { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .brief-law__more dd { margin-bottom: var(--space-2); }
+  .brief__count { width: 100%; }
+  .tray { flex-wrap: wrap; row-gap: var(--space-2); }
+  body.has-tray { padding-bottom: 96px; }
+  .pick { min-height: 36px; }
+  .law-item > .pick { bottom: 12px; }
+  .law-item > .law-card .law-card__cta { bottom: 24px; }
+}
+@media print {
+  .tray, .pick, .link-btn, .brief__actions, .brief__picker { display: none !important; }
 }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; scroll-behavior: auto !important; }

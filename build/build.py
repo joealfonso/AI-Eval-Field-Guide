@@ -36,6 +36,8 @@ CATS = [
     {"id": "IV", "name": "Reading the results", "short": "Results", "n": 4},
     {"id": "V", "name": "Beyond the benchmark", "short": "Beyond", "n": 5},
 ]
+for _c in CATS:
+    _c["thread"] = EDIT["categories"][_c["id"]]["thread"]
 CAT = {c["id"]: c for c in CATS}
 NAV = [
     ("Laws", "index.html", "laws"),
@@ -123,6 +125,11 @@ def fmt_date(iso, short=False):
 
 
 # ---------------------------------------------------------------- data prep
+def sentences(text):
+    """Split into sentences without breaking after 'et al.' or inside '(2016)'."""
+    return re.split(r'(?<!al\.)(?<=[.?!])\s+(?=[A-Z\u201c"])', text)
+
+
 def prep_laws():
     glossary_by_law = collections.defaultdict(list)
     for g in GLOSS:
@@ -153,6 +160,11 @@ def prep_laws():
             if shared:
                 same_cat = 1 if other["category"] == law["category"] else 0
                 scores.append((-shared, -same_cat, abs(j - i), j))
+        law["shared"] = [[LAWS[j]["no"], n] for n, j in sorted(((len(keysets[i] & keysets[j]), j) for j in range(len(LAWS)) if j != i and keysets[i] & keysets[j]), key=lambda t: (-t[0], t[1]))]
+        item, idxs = EDIT["briefEvidence"][law["slug"]]
+        ev_sentences = sentences(plain(law["evidence"][item]["text"]))
+        law["evidenceLine"] = typo(" ".join(ev_sentences[k] for k in idxs))
+        law["doIt"] = typo(plain(law["useIt"][0]))
         scores.sort()
         related = [LAWS[s[3]]["slug"] for s in scores[:3]]
         fill = sorted((j for j in range(len(LAWS)) if j != i and LAWS[j]["slug"] not in related), key=lambda j: (LAWS[j]["category"] != law["category"], abs(j - i)))
@@ -272,6 +284,7 @@ def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, ski
     scripts_html = ""
     if data:
         scripts_html += '<script src="%sjs/data.js"></script>\n' % p
+    scripts_html += '<script src="%sjs/collection.js" defer></script>\n' % p
     scripts_html += '<script src="%sjs/site.js" defer></script>\n' % p
     for s in scripts:
         scripts_html += '<script src="%sjs/%s" defer></script>\n' % (p, s)
@@ -338,15 +351,23 @@ def roman_label(cat_id):
 
 
 # ---------------------------------------------------------------- index
+def pick_button(law, cls="pick", off="Add", on="Added"):
+    name = esc(typo(law["name"]))
+    return (
+        '<button class="%s" type="button" data-pick="%d" data-name="%s" data-label-off="%s" data-label-on="%s" aria-pressed="false">'
+        '<span class="pick__mark" aria-hidden="true">+</span><span class="pick__text">%s</span><span class="visually-hidden"> (%s)</span></button>' % (cls, int(law["no"]), name, off, on, off, name)
+    )
+
+
 def law_card(law, prefix=""):
     cat = CAT[law["category"]]
     return (
-        '<li><a class="law-card cat-%d" href="%s" data-no="%s" data-roles="%s" data-published="%s" data-revised="%s">'
+        '<li class="law-item"><a class="law-card cat-%d" href="%s" data-no="%s" data-roles="%s" data-published="%s" data-revised="%s">'
         '<span class="law-card__row"><span class="law-card__no">No. %s</span><span class="badge" data-badge hidden></span>'
         '<span class="tag">%s</span></span>'
         '<span class="law-card__title">%s</span>'
         '<span class="law-card__quote">\u201c%s\u201d</span>'
-        '<span class="law-card__cta">Read the law \u2192</span></a></li>'
+        '<span class="law-card__cta">Read the law \u2192</span></a>%s</li>'
         % (
             cat["n"],
             law_url(law["slug"], prefix),
@@ -358,6 +379,7 @@ def law_card(law, prefix=""):
             esc(cat["short"]),
             esc(typo(law["name"])),
             esc(typo(law["aphorism"])),
+            pick_button(law),
         )
     )
 
@@ -376,10 +398,10 @@ def build_index():
             '<ul class="card-grid">%s</ul></section>' % (c["n"], c["id"], c["id"], roman_label(c["id"]), c["id"], esc(typo(c["name"])), len(laws), len(laws), len(laws), cards)
         )
         entries = "".join(
-            '<li><a class="catcol__entry" href="%s" data-no="%s" data-roles="%s" data-published="%s" data-revised="%s">'
+            '<li class="law-item"><a class="catcol__entry" href="%s" data-no="%s" data-roles="%s" data-published="%s" data-revised="%s">'
             '<span class="catcol__no">No. %s<span class="badge" data-badge hidden></span></span>'
-            '<span class="catcol__title">%s</span><span class="catcol__quote">\u201c%s\u201d</span></a></li>'
-            % (law_url(l["slug"]), l["no"], esc(" ".join(r.lower() for r in l["roles"])), l["published"], l["revised"] or "", l["no"], esc(typo(l["name"])), esc(typo(l["aphorism"])))
+            '<span class="catcol__title">%s</span><span class="catcol__quote">\u201c%s\u201d</span></a>%s</li>'
+            % (law_url(l["slug"]), l["no"], esc(" ".join(r.lower() for r in l["roles"])), l["published"], l["revised"] or "", l["no"], esc(typo(l["name"])), esc(typo(l["aphorism"])), pick_button(l, "pick pick--corner", "Add", "Added"))
             for l in laws
         )
         columns.append(
@@ -418,12 +440,21 @@ def build_index():
       <button type="button" data-role-btn="buying" aria-pressed="false">Buying</button>
       <button type="button" data-role-btn="designing" aria-pressed="false">Designing</button>
     </div>
+    <a class="btn btn--outline btn--sm toolbar__brief" href="brief.html" data-collection-link="brief.html">Quick brief<span data-collection-badge hidden> (<span data-collection-count>0</span>)</span></a>
     <div class="toolbar__jump" data-jump><span class="toolbar__label">Jump to</span>%(chips)s</div>
     <p class="visually-hidden" role="status" aria-live="polite" data-status></p>
   </div>
   <div data-view-panel="grid">%(sections)s</div>
   <div class="catview" data-view-panel="category" hidden><ul class="catview__grid">%(columns)s</ul></div>
 </main>
+<div class="tray no-print" data-tray hidden role="region" aria-label="My laws">
+  <p class="tray__count"><strong data-collection-count>0</strong> <span data-tray-word>laws</span> in My laws</p>
+  <div class="tray__actions">
+    <a class="btn btn--accent btn--sm" href="brief.html" data-collection-link="brief.html">Quick brief</a>
+    <a class="btn btn--outline btn--sm" href="checklist.html?preset=custom" data-collection-link="checklist.html?preset=custom">Checklist</a>
+    <button class="btn btn--ghost btn--sm" type="button" data-tray-clear>Clear</button>
+  </div>
+</div>
 """ % {
         "total": total,
         "updated": SITE["updated"],
@@ -564,8 +595,9 @@ def build_law(i, law):
         aside.append('<details class="aside-block" open><summary>Also known as</summary><ul class="chips">%s</ul></details>' % "".join("<li>%s</li>" % esc(typo(a)) for a in law["alsoKnownAs"]))
     aside.append(
         '<details class="aside-block" open><summary>Take it with you</summary><ul class="takeaway">'
-        '<li><a href="../checklist.html?preset=custom&amp;laws=%s" data-print-link>Printable checklist <span>Print \u00b7 PDF</span></a></li>'
-        '<li><a href="#cite-this-law">Cite this law <span>APA \u00b7 BibTeX</span></a></li></ul></details>' % law["no"]
+        '<li><a href="../brief.html?laws=%s" data-collection-link="../brief.html" data-collection-extra="%s">Quick brief <span>Short overview</span></a></li>'
+        '<li><a href="../checklist.html?preset=custom&amp;laws=%s" data-collection-link="../checklist.html?preset=custom" data-collection-extra="%s">Printable checklist <span>Print \u00b7 PDF</span></a></li>'
+        '<li><a href="#cite-this-law">Cite this law <span>APA \u00b7 BibTeX</span></a></li></ul></details>' % (law["no"], law["no"], law["no"], law["no"])
     )
 
     prev_box = '<a class="pn pn--prev" href="%s"><span class="pn__k">\u2190 Back to category</span><span class="pn__t">%s. %s</span></a>' % (cat_href, cat["id"], esc(typo(cat["name"])))
@@ -587,7 +619,7 @@ def build_law(i, law):
     <div class="related"><h2 class="rail-label">Related</h2><ul>%(related)s</ul></div>
   </aside>
   <article class="law">
-    <div class="law__meta"><span class="law__no">No. %(no)s</span><a class="tag" href="%(cat_href)s">%(cat_short)s</a><span class="chip-ver">%(version)s</span><span class="law__for">For: %(roles)s</span></div>
+    <div class="law__meta"><span class="law__no">No. %(no)s</span><a class="tag" href="%(cat_href)s">%(cat_short)s</a><span class="chip-ver">%(version)s</span>%(pick)s<span class="law__for">For: %(roles)s</span></div>
     <h1 class="law__title">%(name)s</h1>
     <blockquote class="law__quote"><p>\u201c%(aphorism)s\u201d</p></blockquote>
     %(trust)s
@@ -619,6 +651,7 @@ def build_law(i, law):
         "toc": toc,
         "related": related,
         "version": esc(law["version"]),
+        "pick": pick_button(law, "pick pick--inline", "Add to My laws", "In My laws"),
         "roles": " \u00b7 ".join(law["roles"]),
         "name": esc(typo(law["name"])),
         "aphorism": esc(typo(law["aphorism"])),
@@ -633,7 +666,7 @@ def build_law(i, law):
         "evidence": evidence,
         "h_use": h2("use-it", "Use it"),
         "use_it": use_it,
-        "h_q": h2("questions-to-ask", "Questions to ask", '<div class="sec-head__actions"><button class="btn btn--outline btn--sm" type="button" data-add-checklist>+ Add to checklist</button><a class="btn btn--ink btn--sm" href="../checklist.html?preset=custom&amp;laws=%s" data-print-link>Print checklist</a></div>' % law["no"]),
+        "h_q": h2("questions-to-ask", "Questions to ask", '<div class="sec-head__actions">%s<a class="btn btn--ink btn--sm" href="../checklist.html?preset=custom&amp;laws=%s" data-collection-link="../checklist.html?preset=custom" data-collection-extra="%s">Print checklist</a></div>' % (pick_button(law, "pick pick--btn", "Add to My laws", "In My laws"), law["no"], law["no"])),
         "questions": questions,
         "h_orig": h2("origins", "Origins"),
         "origins": origins,
@@ -756,7 +789,7 @@ def build_about():
   <section><h2 id="who">Who maintains it</h2>
   <p>Maintained by <a href="https://josephalfonso.com">Joseph Alfonso</a>, a UX design lead. To suggest a correction or a source, use the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>.</p></section>
   <section><h2 id="how-to-use">How to use it</h2>
-  <p>Start with the <a href="guide.html">guide</a>, browse the <a href="index.html">laws</a>, or paste a claim into the <a href="claim-checker.html">claim checker</a> to see which laws apply. The <a href="checklist.html">checklist builder</a> turns the laws into a printable sheet.</p></section>
+  <p>Start with the <a href="guide.html">guide</a>, browse the <a href="index.html">laws</a>, or paste a claim into the <a href="claim-checker.html">claim checker</a> to see which laws apply. Collect any laws with the Add buttons to get a <a href="brief.html">quick brief</a>, or turn them into a printable sheet with the <a href="checklist.html">checklist builder</a>.</p></section>
 </main>"""
     write("about.html", layout("About", "About Laws of AI Evaluation: what a law means here, the editorial policy, and who maintains it.", body, current="about"))
 
@@ -874,6 +907,20 @@ def build_claim_checker():
     write("claim-checker.html", layout("Claim checker", "Paste a claim about an AI system and see which laws apply, why, and what to ask.", body, current="claim", data=True, scripts=("claim-checker.js",)))
 
 
+def build_brief():
+    body = """<main id="main" class="page page--brief" data-page="brief">
+  <header class="page__head"><p class="eyebrow eyebrow--muted">Learn</p><h1>Quick brief</h1>
+  <p class="page__lede">Pick any laws and get a short overview you can read in a few minutes. It links to the full law pages and their sources.</p></header>
+  <details class="brief__picker no-print" data-brief-picker><summary data-picker-summary>Choose laws</summary>
+    <div class="brief__presets" data-brief-presets></div>
+    <div class="picker" data-brief-grid></div></details>
+  <div class="brief__out" data-brief-out></div>
+  <noscript><p class="page__note">The quick brief needs JavaScript. You can read each law on the <a href="index.html">laws page</a> instead.</p></noscript>
+  <p class="page__note">Assembled in your browser from each law\u2019s own text. The plain-terms summaries were drafted with AI and are starting points: read the full law and its sources before you rely on one.</p>
+</main>"""
+    write("brief.html", layout("Quick brief", "Pick any laws and get a short overview you can read in a few minutes, built from each law's own text.", body, current="laws", data=True, scripts=("brief.js",)))
+
+
 def build_checklist():
     body = """<main id="main" class="page page--checklist" data-page="checklist">
   <div class="checklist-controls no-print">
@@ -898,11 +945,21 @@ def build_data_js():
         if key.startswith("_"):
             continue
         presets[key] = {"label": p["label"], "laws": [l["no"] for l in LAWS] if p["laws"] == "all" else sorted(nums[s] for s in p["laws"])}
+    brief_presets = [{"id": "tour", "label": EDIT["briefPresets"]["tour"]["label"], "laws": sorted(nums[x] for x in EDIT["briefPresets"]["tour"]["laws"])}]
+    for key in ("buying", "building", "launch"):
+        brief_presets.append({"id": key, "label": presets[key]["label"], "laws": presets[key]["laws"]})
     data = {
         "site": {"baseUrl": SITE["baseUrl"], "version": SITE["version"], "updated": SITE["updated"]},
-        "categories": [{"id": c["id"], "name": c["name"], "n": c["n"]} for c in CATS],
-        "laws": [{"no": l["no"], "slug": l["slug"], "name": l["name"], "aphorism": l["aphorism"], "cat": l["category"], "questions": l["questions"]} for l in LAWS],
+        "categories": [{"id": c["id"], "name": c["name"], "n": c["n"], "thread": c["thread"]} for c in CATS],
+        "laws": [
+            {
+                "no": l["no"], "slug": l["slug"], "name": l["name"], "aphorism": l["aphorism"], "cat": l["category"], "questions": l["questions"],
+                "plain": typo(l["plainTerms"]), "evidence": l["evidenceLine"], "doIt": l["doIt"], "shared": l["shared"],
+            }
+            for l in LAWS
+        ],
         "presets": presets,
+        "briefPresets": brief_presets,
         "claim": {
             "types": [{"id": t["id"], "label": t["label"], "detect": t["detect"], "laws": [dict(r, no=nums[r["slug"]]) for r in t["laws"]]} for t in EDIT["claimChecker"]["types"]],
             "modifiers": [dict(m, no=nums[m["slug"]]) for m in EDIT["claimChecker"]["modifiers"]],
@@ -959,6 +1016,7 @@ def main():
     build_guide_pages()
     build_claim_checker()
     build_checklist()
+    build_brief()
     build_data_js()
     build_search_index()
     build_feed()

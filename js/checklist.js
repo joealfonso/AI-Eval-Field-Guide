@@ -21,7 +21,7 @@
   function toNums(list) { return list.map(function (n) { return parseInt(n, 10); }); }
 
   function readStored() {
-    try { return JSON.parse(window.localStorage.getItem('lai.checklist') || '[]').filter(Number.isInteger); } catch (e) { return []; }
+    return window.LAIC ? window.LAIC.get() : [];
   }
 
   var params = new URLSearchParams(window.location.search);
