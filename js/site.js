@@ -21,7 +21,7 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && nav.classList.contains('is-open')) { setMenu(false); menuBtn.focus(); }
     });
-    window.matchMedia('(min-width: 1001px)').addEventListener('change', function (e) { if (e.matches) setMenu(false); });
+    window.matchMedia('(min-width: 1181px)').addEventListener('change', function (e) { if (e.matches) setMenu(false); });
   }
 
   /* ---------- <details> that are always open on wide screens ---------- */
