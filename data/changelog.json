@@ -1,6 +1,20 @@
 {
   "entries": [
     {
+      "date": "2026-10-07",
+      "text": "Checked the figures and findings on the law pages against their sources (no discrepancies found) and tested every source link. Added Methodology and Privacy pages, a “Where this doesn’t apply” section on every law, and a “Report it” link for corrections.",
+      "links": [
+        {
+          "label": "Methodology",
+          "href": "methodology.html"
+        },
+        {
+          "label": "Privacy",
+          "href": "privacy.html"
+        }
+      ]
+    },
+    {
       "date": "2026-10-06",
       "text": "Added Find your laws: describe your situation with an AI system and get the laws worth checking first, why each applies, and a question to ask.",
       "links": [

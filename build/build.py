@@ -7,6 +7,7 @@ js/data.js, js/search-index.js and feed.xml. Python 3 standard library only.
     python3 build/import_manuscript.py   # only after editing the manuscript
     python3 build/build.py
 """
+import urllib.parse
 import datetime
 import hashlib
 import html
@@ -28,6 +29,7 @@ LAWS = load("laws.json")
 EDIT = load("editorial.json")
 ROOM = load("room.json")
 NAMING = load("naming.json")
+LIMITS = load("limits.json")
 GLOSS = load("glossary.json")
 CHANGELOG = load("changelog.json")["entries"]
 
@@ -58,6 +60,7 @@ GUIDE_PAGES = [
     ("field-guide.html", "Field Guide"),
     ("glossary.html", "Glossary"),
     ("bibliography.html", "Bibliography"),
+    ("methodology.html", "Methodology"),
 ]
 FONTS = (
     "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500"
@@ -323,6 +326,12 @@ def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, ski
 <meta property="og:title" content="%(title)s">
 <meta property="og:description" content="%(desc)s">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="%(site)s">
+<meta property="og:image" content="%(og)s">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="%(title)s">
+<meta name="twitter:description" content="%(desc)s">
+<meta name="twitter:image" content="%(og)s">
 <link rel="icon" href="data:image/svg+xml,%%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%%3E%%3Crect width='32' height='32' fill='%%239b2f1f'/%%3E%%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%%23faf7f1' font-family='Georgia,serif'%%3E\u00a7%%3C/text%%3E%%3C/svg%%3E">
 <link rel="alternate" type="application/rss+xml" title="%(site)s changelog" href="%(p)sfeed.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -345,12 +354,13 @@ def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, ski
 %(body)s
 <footer class="site-footer">
   <p>Independent reference. No vendor funding. <a href="%(p)sabout.html#editorial-policy">Editorial policy</a></p>
-  <p>CC BY 4.0 \u00b7 <a href="%(p)schangelog.html">Changelog</a> \u00b7 <a href="%(p)sfeed.xml">RSS</a> \u00b7 Last updated %(updated)s</p>
+  <p>CC BY 4.0 \u00b7 <a href="%(p)smethodology.html">Methodology</a> \u00b7 <a href="%(p)sprivacy.html">Privacy</a> \u00b7 <a href="%(p)schangelog.html">Changelog</a> \u00b7 <a href="%(p)sfeed.xml">RSS</a> \u00b7 Last updated %(updated)s</p>
 </footer>
 %(scripts)s</body>
 </html>
 """ % {
         "analytics": analytics,
+        "og": SITE["baseUrl"] + "/img/og.png",
         "title": esc(full_title),
         "desc": esc(desc),
         "site": esc(SITE["title"]),
@@ -370,6 +380,8 @@ def write(rel, content):
     if rel.endswith(".html"):
         url = SITE["baseUrl"] + "/" + ("" if rel == "index.html" else rel[: -len(".html")])
         tags = '<link rel="canonical" href="%s">\n<meta property="og:url" content="%s">\n' % (url, url)
+        if rel == "index.html":
+            tags += '<script type="application/ld+json">%s</script>\n' % json.dumps({"@context": "https://schema.org", "@type": "WebSite", "name": SITE["title"], "url": SITE["baseUrl"], "description": "26 short, sourced laws for judging whether an AI system actually holds up.", "inLanguage": "en", "author": {"@type": "Person", "name": "Joseph Alfonso", "url": "https://josephalfonso.com"}}, ensure_ascii=False)
         content = content.replace("</head>", tags + "</head>", 1)
     path = ROOT / rel
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -514,6 +526,7 @@ SECTION_TOC = [
     ("the-evidence", "The evidence"),
     ("use-it", "Use it"),
     ("questions-to-ask", "Questions to ask"),
+    ("limits", "Where this doesn\u2019t apply"),
     ("origins", "Origins"),
     ("sources", "Sources"),
     ("cite-this-law", "Cite this law"),
@@ -546,6 +559,35 @@ def bibtex(law):
     )
 
 
+ISSUES = "https://github.com/joealfonso/laws-of-ai-evaluation/issues/new"
+
+
+def report_url(law):
+    title = "Correction: %s" % law["name"]
+    body = "Law page: %s/laws/%s\n\nWhat looks wrong, or what source should be added:\n\n" % (SITE["baseUrl"], law["slug"])
+    return "%s?title=%s&body=%s" % (ISSUES, urllib.parse.quote(title), urllib.parse.quote(body))
+
+
+def law_jsonld(law):
+    data = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": law["name"],
+        "description": law["aphorism"],
+        "url": "%s/laws/%s" % (SITE["baseUrl"], law["slug"]),
+        "datePublished": law["published"],
+        "dateModified": law.get("revised") or law["published"],
+        "version": law["version"],
+        "inLanguage": "en",
+        "license": "https://creativecommons.org/licenses/by/4.0/",
+        "author": {"@type": "Person", "name": "Joseph Alfonso", "url": "https://josephalfonso.com"},
+        "publisher": {"@type": "Organization", "name": SITE["title"], "url": SITE["baseUrl"]},
+        "isPartOf": {"@type": "WebSite", "name": SITE["title"], "url": SITE["baseUrl"]},
+        "citation": ["%s (%s). %s." % (txt(x["authors"]), x["year"], txt(x["title"])) for x in law["sources"]],
+    }
+    return '<script type="application/ld+json">%s</script>\n' % json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
+
+
 def build_law(i, law):
     cat = CAT[law["category"]]
     cat_laws = [l for l in LAWS if l["category"] == law["category"]]
@@ -570,6 +612,7 @@ def build_law(i, law):
     means = "".join("<p>%s</p>" % inline(p) for p in law["whatItMeans"])
     evidence = "".join("<p>%s%s</p>" % ("<strong>%s</strong> " % inline(e["lead"]) if e["lead"] else "", inline(e["text"])) for e in law["evidence"])
     use_it = "".join("<li>%s</li>" % inline(t) for t in law["useIt"])
+    limits = "<p>%s</p>" % esc(typo(LIMITS[law["slug"]]))
     questions = "".join(
         '<li><label class="qrow"><input type="checkbox"><span class="qrow__box" aria-hidden="true"></span><span>%s</span></label></li>' % esc(typo(q)) for q in law["questions"]
     )
@@ -664,10 +707,11 @@ def build_law(i, law):
     <section class="sec" aria-labelledby="the-evidence">%(h_evid)s%(evidence)s</section>
     <section class="sec" aria-labelledby="use-it">%(h_use)s<ol class="num">%(use_it)s</ol></section>
     <section class="sec" aria-labelledby="questions-to-ask">%(h_q)s<p class="sec__sub">For vendor reviews, model cards, and launch reviews.</p><ul class="qlist">%(questions)s</ul></section>
+    <section class="sec" aria-labelledby="limits">%(h_lim)s%(limits)s</section>
     <section class="sec" aria-labelledby="origins">%(h_orig)s%(origins)s</section>
     <section class="sec" aria-labelledby="sources">%(h_src)s<ol class="sources">%(sources)s</ol></section>
     <section class="sec" aria-labelledby="cite-this-law">%(h_cite)s%(cite)s</section>
-    <section class="sec" aria-labelledby="revision-history">%(h_rev)s<ul class="rev">%(history)s</ul><p class="rev__links"><a href="../changelog.html">Full changelog</a></p></section>
+    <section class="sec" aria-labelledby="revision-history">%(h_rev)s<ul class="rev">%(history)s</ul><p class="rev__links"><a href="../changelog.html">Full changelog</a> \u00b7 Spot a mistake or a better source? <a href="%(report)s">Report it</a>. Corrections are logged in the changelog.</p></section>
     <nav class="pn-row" aria-label="Previous and next law">%(prev_box)s%(next_box)s</nav>
   </article>
   <aside class="law-aside" aria-label="Supporting material"><h2 class="aside-title">Supporting material</h2>%(aside)s</aside>
@@ -703,6 +747,9 @@ def build_law(i, law):
         "use_it": use_it,
         "h_q": h2("questions-to-ask", "Questions to ask", '<div class="sec-head__actions">%s<a class="btn btn--ink btn--sm" href="../checklist.html?preset=custom&amp;laws=%s" data-collection-link="../checklist.html?preset=custom" data-collection-extra="%s">Print checklist</a></div>' % (pick_button(law, "pick pick--btn", "Add to My laws", "In My laws"), law["no"], law["no"])),
         "questions": questions,
+        "report": esc(report_url(law)),
+        "h_lim": h2("limits", "Where this doesn\u2019t apply"),
+        "limits": limits,
         "h_orig": h2("origins", "Origins"),
         "origins": origins,
         "h_src": h2("sources", "Sources"),
@@ -716,7 +763,7 @@ def build_law(i, law):
         "aside": "".join(aside),
         "bar_next": bar_next,
     }
-    page = layout(law["name"], "%s %s" % (law["aphorism"], law["plainTerms"]), body, depth=1, current="laws", scripts=("law.js",))
+    page = layout(law["name"], "%s %s" % (law["aphorism"], law["plainTerms"]), body, depth=1, current="laws", scripts=("law.js",), head_extra=law_jsonld(law))
     write("laws/%s.html" % law["slug"], page)
 
 
@@ -766,7 +813,7 @@ def build_rubric():
         '<p class="page__lede">A quick scoring checklist for judging a single AI feature or design. Each of the six groups has three checks. '
         'Use it in a design critique or before a launch review, then follow the checks that fail back to the laws.</p>'
     )
-    note = "This page lists the checks. Interactive scoring is planned; see the <a href=\"changelog.html\">Changelog</a>. Check numbers (A1, T2, and so on) are labels used on this site."
+    note = "This page is a reference list of the checks: it does not calculate a score. Check numbers (A1, T2, and so on) are labels used on this site."
     write("design-rubric.html", tool_page("AI Design Evaluation Rubric", "An 18-check rubric for evaluating an AI feature across agency, transparency, honesty, equity, real reduction, and failure design.", "rubric", intro, "".join(secs), note))
 
 
@@ -809,7 +856,7 @@ def build_review():
         '<p class="page__lede">A more rigorous instrument for launch review. Five screening questions come first, then 27 criteria across seven dimensions. '
         'Under each criterion, the labels marked "Based on" name the standards and guidelines it draws on; the key at the bottom of the page explains each one. Some criteria are marked as gates.</p>'
     )
-    note = "This page lists the instrument (AIRR v%s). Tier routing and scoring are not built here yet; see the <a href=\"changelog.html\">Changelog</a>. A Gate badge shows the risk tier recorded for that criterion in the instrument." % esc(AIRR["instrument"]["version"])
+    note = "This page lists the instrument (AIRR v%s). This page does not score a system or assign a tier; use it as a checklist. A Gate badge shows the risk tier recorded for that criterion in the instrument." % esc(AIRR["instrument"]["version"])
     used = []
     for c in AIRR["criteria"]:
         for r in c["references"]:
@@ -847,7 +894,7 @@ def build_about():
     <li><strong>Named on this site (%(n_here)d):</strong> %(here)s. Please do not cite these as established terms. Cite the sources linked on each page instead.</li>
   </ul>
   <h3>Review</h3>
-  <p>No outside reviewer has signed off on any law yet. If you work in evaluation, statistics, or a related field and see something wrong, or a better source, please say so on the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. Corrections are recorded in the <a href="changelog.html">Changelog</a>.</p></section>
+  <p>See the <a href="methodology.html">methodology</a> for how sources were chosen and checked. No outside reviewer has signed off on any law yet. If you work in evaluation, statistics, or a related field and see something wrong, or a better source, please say so on the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. Corrections are recorded in the <a href="changelog.html">Changelog</a>.</p></section>
 ''' % {"n_est": len(NAMING["established"]), "est": esc(typo(est)), "n_here": len(NAMING["namedHere"]), "here": esc(typo(here))}
     body = """<main id="main" class="page page--prose">
   <header class="page__head"><p class="eyebrow">About</p><h1>About this guide</h1>
@@ -1116,6 +1163,7 @@ def build_search_index():
             ("what-it-means", "What it means", " ".join(plain(t) for t in l["whatItMeans"])),
             ("the-evidence", "The evidence", " ".join(plain(e["lead"] + " " + e["text"]) for e in l["evidence"])),
             ("use-it", "Use it", " ".join(plain(t) for t in l["useIt"])),
+            ("limits", "Where this doesn\u2019t apply", LIMITS[l["slug"]]),
             ("origins", "Origins", " ".join(plain(t) for t in l["origins"])),
         ]
         for sid, label, text in sections:
@@ -1129,6 +1177,60 @@ def build_search_index():
     for e in CHANGELOG:
         entries.append({"k": "Changelog", "n": fmt_date(e["date"], short=True), "t": e["text"], "u": "changelog.html"})
     write("js/search-index.js", "/* Generated by build/build.py. Do not edit. */\nwindow.LAI_SEARCH = %s;\n" % json.dumps(entries, ensure_ascii=False, separators=(",", ":")))
+
+
+def build_methodology():
+    srcs = [x for l in LAWS for x in l["sources"]]
+    c = collections.Counter(x["label"] or "peer" for x in srcs)
+    mix = "%d are peer-reviewed or classic works, %d are preprints, %d are reports, %d is a working paper, and %d is a book" % (c["peer"], c["Preprint"], c["Report"], c["Working paper"], c["Book"])
+    body = """<main id="main" class="page page--prose">
+  %(nav)s
+  <header class="page__head"><p class="eyebrow">Guide</p><h1>Methodology</h1>
+  <p class="page__lede">How the laws were chosen, what counts as a source, how the evidence was checked, and what this guide does not claim to be.</p></header>
+  <section><h2 id="selection">How laws are chosen</h2>
+  <p>The %(n_laws)d laws are an editorial selection of recurring ways AI evaluation goes wrong, each with published research behind it. They are not the result of a systematic review, and another reasonable list would differ. Each law page says whether its name is an established term or this site\u2019s own name for an established idea. The full list is on the <a href="about.html#status">About page</a>.</p></section>
+  <section><h2 id="sources">What counts as a source</h2>
+  <p>The guide cites %(n_src)d sources across all laws. Of these, %(mix)s. Anything that is not peer reviewed or a classic in its field is labeled on the law page. The Evidence section reports what the authors found, and where results are mixed or limited the page says so, for example in <a href="laws/adaptive-overfitting.html">Adaptive Overfitting</a> and <a href="laws/data-contamination.html">Data Contamination</a>. Every law also has a \u201cWhere this doesn\u2019t apply\u201d section.</p></section>
+  <section><h2 id="checking">How the evidence was checked</h2>
+  <p>Each law shows when its evidence was last reviewed. In October 2026, more than 40 specific figures and findings on the law pages were compared with the source\u2019s abstract or full text, covering at least one claim in 25 of the 26 laws. No discrepancies were found. Every source link was also tested, and every DOI resolves.</p>
+  <p>The limits of that check: it covered numbers and the main finding of each source, not whether every interpretation or piece of advice goes beyond the source. A few details were confirmed through secondary descriptions rather than the paper itself, such as the exact \u201c19 percentage points\u201d figure in <a href="laws/the-jagged-frontier.html">The Jagged Frontier</a>. It was a spot-check, not an audit.</p></section>
+  <section><h2 id="tools">The tools</h2>
+  <p>The claim checker, Find your laws, the checklist, the quick brief, and Use it now are reading aids. The claim checker and Find your laws match your text against published rules, which you can read on each page. They do not assess a system, and they run in your browser. The Design Rubric and Readiness Review are checklists. They do not calculate a score.</p></section>
+  <section><h2 id="not">What this guide is not</h2>
+  <ul>
+    <li>It is not a ranking or benchmark of any AI model or vendor.</li>
+    <li>It is not legal, regulatory, or compliance advice, though the Readiness Review points to standards that are relevant.</li>
+    <li>It is not peer reviewed, and no outside reviewer has signed off on any law yet.</li>
+  </ul></section>
+  <section><h2 id="changes">How it changes</h2>
+  <p>Each law has a version number and a revision history, and site-wide changes are in the <a href="changelog.html">changelog</a>. Corrections are made in the open and logged there. If you find a mistake or a better source, every law page has a \u201cReport it\u201d link, or you can use the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>.</p></section>
+</main>""" % {"nav": guide_nav("methodology.html"), "n_laws": len(LAWS), "n_src": len(srcs), "mix": mix}
+    write("methodology.html", layout("Methodology", "How the laws were chosen, what counts as a source, how the evidence was checked, and what this guide does not claim to be.", body, current=None))
+
+
+def build_privacy():
+    body = """<main id="main" class="page page--prose">
+  <header class="page__head"><p class="eyebrow">Policy</p><h1>Privacy</h1>
+  <p class="page__lede">There are no accounts and no ads, and nothing here is sold. This page lists what is collected and by whom.</p></header>
+  <section><h2 id="analytics">Analytics</h2>
+  <p>The site uses Google Analytics to count visits: which pages are viewed, roughly where visitors are, and what device and browser they use. It sets cookies to do this. For visitors in the EU, the European Economic Area, the UK, and Switzerland, analytics storage is denied by default, so Google Analytics does not set analytics cookies there. Google may still receive limited signals that do not use cookies.</p></section>
+  <section><h2 id="fonts">Fonts</h2>
+  <p>The fonts load from Google Fonts. Loading them sends your IP address and browser details to Google.</p></section>
+  <section><h2 id="your-device">What stays on your device</h2>
+  <p>The claim checker, Find your laws, the checklist, the quick brief, and Use it now run in your browser. What you type into them is not sent anywhere. The laws you add to My laws, and some view preferences, are saved in your browser\u2019s local storage on your device. Clearing your browser data removes them.</p></section>
+  <section><h2 id="contact">Questions</h2>
+  <p>Use the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. Last updated %s.</p></section>
+</main>""" % fmt_date(SITE["updated"])
+    write("privacy.html", layout("Privacy", "What this site collects, who receives it, and what stays on your device.", body, current=None))
+
+
+def build_seo():
+    urls = ["index.html"] + sorted(p.name for p in ROOT.glob("*.html") if p.name != "index.html") + ["laws/%s.html" % l["slug"] for l in LAWS]
+    def loc(rel):
+        return SITE["baseUrl"] + "/" + ("" if rel == "index.html" else rel[: -len(".html")])
+    entries = "".join("<url><loc>%s</loc><lastmod>%s</lastmod></url>\n" % (loc(u), SITE["updated"]) for u in urls)
+    write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n%s</urlset>\n' % entries)
+    write("robots.txt", "User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n" % SITE["baseUrl"])
 
 
 def build_feed():
@@ -1160,6 +1262,9 @@ def main():
     build_data_js()
     build_search_index()
     build_feed()
+    build_methodology()
+    build_privacy()
+    build_seo()
     print("built: %d laws, %d pages" % (len(LAWS), len(list(ROOT.glob("*.html"))) + len(LAWS)))
 
 
