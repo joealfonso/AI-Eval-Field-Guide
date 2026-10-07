@@ -77,7 +77,7 @@
     var counts = { 3: 0, 2: 0, 1: 0 };
     results.forEach(function (r) { counts[r.fit] += 1; });
     var head = el('div', 'result-head');
-    var h2 = el('h2', '', results.length + (results.length === 1 ? ' law applies' : ' laws apply'));
+    var h2 = el('h2', '', results.length + (results.length === 1 ? ' pattern applies' : ' patterns apply'));
     h2.id = 'results-h';
     head.appendChild(h2);
     var parts = [];
@@ -88,12 +88,12 @@
     if (window.LAIC) {
       var nos = results.map(function (r) { return parseInt(r.no, 10); });
       var tools = el('div', 'result-tools');
-      var addAll = el('button', 'btn btn--outline btn--sm', 'Add these ' + results.length + ' to My laws');
+      var addAll = el('button', 'btn btn--outline btn--sm', 'Add these ' + results.length + ' to My patterns');
       addAll.type = 'button';
       addAll.addEventListener('click', function () {
         window.LAIC.addMany(nos);
-        addAll.textContent = 'Added to My laws';
-        window.LAIC.announce('Added ' + results.length + ' laws to My laws.');
+        addAll.textContent = 'Added to My patterns';
+        window.LAIC.announce('Added ' + results.length + ' patterns to My patterns.');
       });
       var brief = el('a', 'btn btn--outline btn--sm', 'Quick brief of these');
       brief.href = 'brief.html?laws=' + nos.slice().sort(function (a, b) { return a - b; }).join(',');
@@ -113,7 +113,7 @@
       var body = el('div');
       var title = el('div', 'result__law');
       var a = el('a', '', typo(law.name));
-      a.href = 'laws/' + law.slug + '.html';
+      a.href = 'patterns/' + law.slug + '.html';
       title.appendChild(a);
       body.appendChild(title);
       body.appendChild(el('p', 'result__why', typo(r.why)));
@@ -139,12 +139,12 @@
 
   function find() {
     var text = textEl.value.trim();
-    if (!text) { message('Paste a claim first, then choose Find laws that apply.'); textEl.focus(); return; }
+    if (!text) { message('Paste a claim first, then choose Find patterns that apply.'); textEl.focus(); return; }
     if (!userEdited) setChips(detect(text));
     var types = active();
     var results = compute(text, types);
     if (!types.length && !results.length) { message('Choose at least one kind of claim above, then try again.'); return; }
-    if (!results.length) { message('No laws matched this claim. Try choosing a claim type above.'); return; }
+    if (!results.length) { message('No patterns matched this claim. Try choosing a claim type above.'); return; }
     show(results, text);
   }
 
@@ -171,13 +171,13 @@
   });
   exportBtn.addEventListener('click', function () {
     if (!last) return;
-    var lines = ['Claim under review:', last.text, '', 'Laws that apply and what to ask:', ''];
+    var lines = ['Claim under review:', last.text, '', 'Patterns that apply and what to ask:', ''];
     last.results.forEach(function (r, i) {
       var law = byNo[r.no];
       lines.push((i + 1) + '. No. ' + r.no + ' ' + law.name + ' (' + FIT_LABEL[r.fit] + ')');
       lines.push('   Why: ' + r.why);
       lines.push('   Ask: ' + law.questions[Math.min(r.ask, law.questions.length - 1)]);
-      lines.push('   ' + LAI.site.baseUrl + '/laws/' + law.slug);
+      lines.push('   ' + LAI.site.baseUrl + '/patterns/' + law.slug);
       lines.push('');
     });
     var blob = new Blob([lines.join('\n')], { type: 'text/plain' });

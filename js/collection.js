@@ -80,7 +80,7 @@
       tray.hidden = count === 0;
       document.body.classList.toggle('has-tray', count > 0);
       var word = tray.querySelector('[data-tray-word]');
-      if (word) word.textContent = count === 1 ? 'law' : 'laws';
+      if (word) word.textContent = count === 1 ? 'pattern' : 'patterns';
     }
     listeners.forEach(function (f) { f(memory.slice()); });
   }
@@ -125,15 +125,15 @@
     var pick = e.target.closest ? e.target.closest('[data-pick]') : null;
     if (pick) {
       e.preventDefault();
-      var name = pick.getAttribute('data-name') || 'Law';
+      var name = pick.getAttribute('data-name') || 'Pattern';
       var added = api.toggle(pick.getAttribute('data-pick'));
-      announce((added ? 'Added ' : 'Removed ') + name + '. ' + memory.length + (memory.length === 1 ? ' law' : ' laws') + ' in My laws.');
+      announce((added ? 'Added ' : 'Removed ') + name + '. ' + memory.length + (memory.length === 1 ? ' pattern' : ' patterns') + ' in My patterns.');
       return;
     }
     if (e.target.closest && e.target.closest('[data-tray-clear]')) {
-      if (memory.length > 1 && !window.confirm('Remove all ' + memory.length + ' laws from My laws?')) return;
+      if (memory.length > 1 && !window.confirm('Remove all ' + memory.length + ' patterns from My patterns?')) return;
       api.clear();
-      announce('My laws cleared.');
+      announce('My patterns cleared.');
     }
   });
 

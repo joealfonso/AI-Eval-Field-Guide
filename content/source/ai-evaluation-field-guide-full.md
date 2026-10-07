@@ -5,7 +5,7 @@ Seed content. Last reviewed 2026-09-15.
 ## Contents
 
 1. AI Evaluation, an Overview  
-2. The Laws  
+2. The Patterns  
 3. Being Pragmatic  
 4. Playbook  
 5. Glossary  
@@ -53,7 +53,7 @@ When two people argue about whether a model is "good at reasoning," they're usua
 
 ### Methods at a glance
 
-| Method | What it tells you | Watch out for | Related laws |
+| Method | What it tells you | Watch out for | Related patterns |
 | :---- | :---- | :---- | :---- |
 | Static benchmarks | Performance on a fixed, shared set of tasks | Saturation, contamination, construct gaps | Benchmark Saturation, Data Contamination, The Construct Gap |
 | Dynamic or adversarial benchmarks | Performance on fresh, hard examples, often written to beat current models (Kiela et al., 2021\) | Can overweight adversarial cases that rarely occur in real use | The Clever Hans Effect |
@@ -77,9 +77,9 @@ Different people need different evidence from the same system.
 - **Buyers** want to know if a vendor's claims hold up on their own data.  
 - **Auditors and regulators** want evidence that a system is valid, reliable, and safe for its intended use. The NIST AI Risk Management Framework (2023) makes "Measure" one of its four core functions.
 
-Hutchinson et al. (2022) found that ML evaluation practice often serves the first group and underserves the rest. A lot of the laws on this site are about closing that gap.
+Hutchinson et al. (2022) found that ML evaluation practice often serves the first group and underserves the rest. A lot of the patterns on this site are about closing that gap.
 
-### How to use the laws
+### How to use the patterns
 
 **To learn,** read them by category:
 
@@ -93,9 +93,9 @@ Hutchinson et al. (2022) found that ML evaluation practice often serves the firs
 
 **In a team,** start with Being Pragmatic. It covers how to match rigor to stakes, fit evaluation into existing rituals, and bring people along without becoming the eval police.
 
-### A note on the word "law"
+### A note on the word "pattern"
 
-A law here means a reliable pattern with research behind it, not a law of physics. Some have established names, like Goodhart's Law. Others are named on this site to make a well-documented idea easier to remember, and each page says which. Every page links to its sources, and preprints are labeled as preprints.
+A pattern here means a reliable way evaluation goes wrong, with research behind it. It is not a law of physics. Some have established names, like Goodhart's Law. Others are named on this site to make a well-documented idea easier to remember, and each page says which. Every page links to its sources, and preprints are labeled as preprints.
 
 ### Good starting reads
 
@@ -134,7 +134,7 @@ A law here means a reliable pattern with research behind it, not a law of physic
 - Weidinger, L., Rauh, M., Marchal, N., Manzini, A., et al. (2023). [Sociotechnical safety evaluation of generative AI systems](https://arxiv.org/abs/2310.11986). arXiv:2310.11986. *(Preprint)*  
 - Zheng, L., Chiang, W.-L., Sheng, Y., Zhuang, S., Wu, Z., et al. (2023). [Judging LLM-as-a-judge with MT-Bench and Chatbot Arena](https://arxiv.org/abs/2306.05685). NeurIPS 2023 Datasets and Benchmarks Track.
 
-## The Laws
+## The Patterns
 
 ### What you're measuring
 
@@ -456,7 +456,7 @@ Standard statistical guarantees assume you pick your analysis before looking at 
 ##### The evidence
 
 - **Reuse breaks the math.** Dwork et al. (2015) showed that adaptive reuse of a holdout set undermines its validity, and proposed a "reusable holdout" method that limits how much each query reveals.  
-- **Rebuilt test sets score lower.** Recht et al. (2019) rebuilt test sets for CIFAR-10 and ImageNet following the original procedures. Accuracy dropped 3% to 15% on CIFAR-10 and 11% to 14% on ImageNet. The model rankings mostly held, and the authors attribute the drop mainly to subtle differences in the new data rather than years of adaptive overfitting. That nuance matters: the law is real, and its size varies.  
+- **Rebuilt test sets score lower.** Recht et al. (2019) rebuilt test sets for CIFAR-10 and ImageNet following the original procedures. Accuracy dropped 3% to 15% on CIFAR-10 and 11% to 14% on ImageNet. The model rankings mostly held, and the authors attribute the drop mainly to subtle differences in the new data rather than years of adaptive overfitting. That nuance matters: the pattern is real, and its size varies.  
 - **Competitions held up better than expected.** Roelofs et al. (2019) analyzed 120 Kaggle competitions and found little evidence of substantial overfitting from leaderboard reuse.  
 - **Agent benchmarks are exposed.** Kapoor et al. (2025) found many AI agent benchmarks have inadequate holdout sets, and sometimes none, which lets agents overfit and take shortcuts.
 
@@ -1212,7 +1212,7 @@ The term comes from Fabrizio Dell'Acqua, Ethan Mollick, Karim Lakhani, and colle
 
 ## Being Pragmatic
 
-The laws on this site describe the ways evaluation goes wrong. This page is about doing it anyway, inside a team with deadlines, limited budget, and a model that changed last Tuesday.
+The patterns on this site describe the ways evaluation goes wrong. This page is about doing it anyway, inside a team with deadlines, limited budget, and a model that changed last Tuesday.
 
 Perfect evaluation doesn't exist. What you're after is evidence that's good enough for the decision in front of you, gathered in a way the team will keep doing next quarter. Research on how practitioners actually work backs this up. Teams start with informal checks, struggle to turn results into changes, and feel constant pressure to ship (van der Maden et al., 2026; Madaio et al., 2022). A pragmatic approach works with those realities instead of pretending they aren't there.
 
@@ -1222,7 +1222,7 @@ Perfect evaluation doesn't exist. What you're after is evidence that's good enou
 
 Not every AI feature needs a full evaluation program. A tool that drafts internal meeting notes and a tool that flags patients for sepsis don't deserve the same process. The NIST AI Risk Management Framework (2023) says policies and resources should be prioritized by risk level and potential impact, and notes that trying to eliminate all negative risk can be counterproductive. The European Union's AI Act (2024) takes the same risk-based approach, with its heaviest requirements reserved for high-risk uses.
 
-| Tier | Looks like | Minimum evidence before launch | Laws to lean on |
+| Tier | Looks like | Minimum evidence before launch | Patterns to lean on |
 | :---- | :---- | :---- | :---- |
 | Low | Internal, easy to undo, a person reviews every output | A saved set of real examples, a team review of outputs, a named owner | The Construct Gap, Criteria Drift |
 | Medium | Customer-facing, reversible, moderate cost of errors | A locked test set, a rubric, a baseline, multiple runs, one or two slices, an eval card, a staged rollout | Prompt Sensitivity, Once Is Not Reliable, The Baseline Rule, The Averaging Trap |
@@ -1299,9 +1299,9 @@ That's not an excuse to skip pre-launch testing. It's a reason to plan for what 
 - **Set an error budget.** Borrowed from site reliability engineering (Beyer et al., 2016): agree ahead of time on an acceptable failure rate, and on what the team does when it's exceeded.  
 - **Don't wait for complaints.** In a survey of industry practitioners, about half said their teams had found serious fairness issues only after deploying a system. One engineer described the default as putting the model out there, and "then you'll know if there's fairness issues if someone raises hell online" (Holstein et al., 2019). Internal audits across the development lifecycle are the proactive alternative (Raji et al., 2020).
 
-#### 10\. Use the laws as questions, not weapons
+#### 10\. Use the patterns as questions, not weapons
 
-Nobody wants the coworker who quotes Goodhart's Law in every meeting. The laws work best as questions, asked at the right moment, about the two or three risks that matter for the decision at hand.
+Nobody wants the coworker who quotes Goodhart's Law in every meeting. The patterns work best as questions, asked at the right moment, about the two or three risks that matter for the decision at hand.
 
 - Instead of "That's the Construct Gap," try "What would a user need to be able to do for this score to mean what we want?"  
 - Instead of "No error bars, no result," try "How much would this number move if we ran it again?"  
@@ -1414,7 +1414,7 @@ A practical sequence for product teams. Scale each step to the stakes.
 
 ### 3\. Red flags
 
-| You see | It might mean | Law |
+| You see | It might mean | Pattern |
 | :---- | :---- | :---- |
 | One headline number, no interval | The difference could be noise | No Error Bars, No Result |
 | "Superhuman" on a benchmark that's several years old | Saturation, contamination, or both | Benchmark Saturation, Data Contamination |

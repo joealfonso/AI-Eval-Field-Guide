@@ -15,7 +15,7 @@ d.text((190, 110), "AI Evaluation Field Guide", font=m, fill="#1b1b1b", anchor="
 d.text((80, 210), "Principles for judging", font=t, fill="#1b1b1b")
 d.text((80, 305), "whether an AI system", font=t, fill="#1b1b1b")
 d.text((80, 400), "actually holds up.", font=t, fill="#9b2f1f")
-d.text((80, 565), "26 short, sourced laws  ·  lawsofaievaluation.com", font=s, fill="#555555", anchor="lm")
+d.text((80, 565), "26 short, sourced patterns  ·  lawsofaievaluation.com", font=s, fill="#555555", anchor="lm")
 (ROOT / "img").mkdir(exist_ok=True)
 im.save(ROOT / "img" / "og.png", optimize=True)
 

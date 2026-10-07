@@ -63,8 +63,8 @@
 
     if (status) {
       status.textContent = state.role === 'all'
-        ? 'Showing all ' + main.getAttribute('data-total') + ' laws.'
-        : 'Showing ' + visible + ' laws for ' + state.role + '.';
+        ? 'Showing all ' + main.getAttribute('data-total') + ' patterns.'
+        : 'Showing ' + visible + ' patterns for ' + state.role + '.';
     }
   }
 
@@ -107,7 +107,7 @@
     });
     if (!added && !revised) return;
     var parts = [];
-    if (added) parts.push(added + (added === 1 ? ' new law' : ' new laws'));
+    if (added) parts.push(added + (added === 1 ? ' new pattern' : ' new patterns'));
     if (revised) parts.push(revised + ' revised');
     var d = new Date(seen + 'T00:00:00');
     bar.querySelector('[data-since-badge]').textContent = 'Since ' + d.getDate() + ' ' + months[d.getMonth()];

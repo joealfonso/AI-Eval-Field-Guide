@@ -130,7 +130,7 @@
     pickerSummary.textContent = summaryText();
   }
   function summaryText() {
-    return 'Choose laws · ' + state.laws.length + ' of ' + LAI.laws.length + ' selected';
+    return 'Choose patterns · ' + state.laws.length + ' of ' + LAI.laws.length + ' selected';
   }
 
   /* ---------- building blocks ---------- */
@@ -154,12 +154,12 @@
     var words = 0;
     if (laws.length === 1) {
       var only = laws[0];
-      var p = el('p', 'brief__lead', 'One law: ' + typo(only.name) + '. ' + only.plain);
+      var p = el('p', 'brief__lead', 'One pattern: ' + typo(only.name) + '. ' + only.plain);
       words += p.textContent.split(/\s+/).length;
       box.appendChild(p);
       return { node: box, words: words };
     }
-    var lead = 'You picked ' + plural(laws.length, 'law', 'laws') + ' from ' + plural(parts.length, 'part', 'parts') + ' of an evaluation.';
+    var lead = 'You picked ' + plural(laws.length, 'pattern', 'patterns') + ' from ' + plural(parts.length, 'part', 'parts') + ' of an evaluation.';
     var pl = el('p', 'brief__lead', lead);
     words += lead.split(/\s+/).length;
     box.appendChild(pl);
@@ -182,7 +182,7 @@
         if (d > bestDeg) { best = l; bestDeg = d; }
       });
       if (best) {
-        var start = 'Start with ' + typo(best.name) + ': it shares research with ' + plural(bestDeg, 'other law', 'other laws') + ' in your set.';
+        var start = 'Start with ' + typo(best.name) + ': it shares research with ' + plural(bestDeg, 'other pattern', 'other patterns') + ' in your set.';
         box.appendChild(el('p', 'brief__start', start));
         words += start.split(/\s+/).length;
       }
@@ -219,8 +219,8 @@
       });
       art.appendChild(dl);
     }
-    var a = el('a', 'brief-law__read', 'Read the full law →');
-    a.href = 'laws/' + l.slug + '.html';
+    var a = el('a', 'brief-law__read', 'Read the full pattern →');
+    a.href = 'patterns/' + l.slug + '.html';
     art.appendChild(a);
     return { node: art, words: words };
   }
@@ -262,7 +262,7 @@
   /* ---------- text export ---------- */
   function asText(laws) {
     var base = LAI.site.baseUrl;
-    var lines = ['Quick brief: ' + plural(laws.length, 'law', 'laws') + ' (AI Evaluation Field Guide)', ''];
+    var lines = ['Quick brief: ' + plural(laws.length, 'pattern', 'patterns') + ' (AI Evaluation Field Guide)', ''];
     partsIn(laws).forEach(function (c) {
       lines.push(c.id + '. ' + typo(c.name));
       lines.push(c.thread);
@@ -275,7 +275,7 @@
           lines.push('  Do this: ' + l.doIt);
         }
         lines.push('  Ask: ' + typo(l.questions[0]));
-        lines.push('  ' + base + '/laws/' + l.slug);
+        lines.push('  ' + base + '/patterns/' + l.slug);
         lines.push('');
       });
     });
@@ -296,7 +296,7 @@
     if (!laws.length) {
       var empty = el('div', 'brief__empty');
       empty.appendChild(el('h2', '', 'Nothing selected yet'));
-      empty.appendChild(el('p', '', 'Pick a starting set above, choose laws from the list, or collect laws with the + Add buttons on the laws index. Your brief appears here.'));
+      empty.appendChild(el('p', '', 'Pick a starting set above, choose patterns from the list, or collect patterns with the + Add buttons on the patterns index. Your brief appears here.'));
       outEl.appendChild(empty);
       pickerEl.open = true;
       return;
@@ -325,7 +325,7 @@
 
     var minutes = Math.max(1, Math.round(total / 200));
     var bar = el('div', 'brief__bar');
-    bar.appendChild(el('p', 'brief__count', plural(laws.length, 'law', 'laws') + ' · about ' + plural(minutes, 'minute', 'minutes') + ' to read'));
+    bar.appendChild(el('p', 'brief__count', plural(laws.length, 'pattern', 'patterns') + ' · about ' + plural(minutes, 'minute', 'minutes') + ' to read'));
 
     var seg = el('div', 'seg seg--rule');
     seg.setAttribute('role', 'group');
@@ -354,11 +354,11 @@
     actions.appendChild(copyLink);
     actions.appendChild(copyText);
     if (state.laws.some(function (n) { return !LAIC.has(n); })) {
-      var save = el('button', 'btn btn--outline btn--sm', 'Save to My laws');
+      var save = el('button', 'btn btn--outline btn--sm', 'Save to My patterns');
       save.type = 'button';
       save.addEventListener('click', function () {
         LAIC.addMany(state.laws);
-        LAIC.announce('Saved to My laws.');
+        LAIC.announce('Saved to My patterns.');
         var count = outEl.querySelector('.brief__count');
         if (count) { count.tabIndex = -1; count.focus(); }
       });
@@ -380,8 +380,8 @@
       var ul = el('ul', 'brief__pairs');
       pairs.forEach(function (p) {
         var li = el('li');
-        var a1 = el('a', '', typo(p.a.name)); a1.href = 'laws/' + p.a.slug + '.html';
-        var a2 = el('a', '', typo(p.b.name)); a2.href = 'laws/' + p.b.slug + '.html';
+        var a1 = el('a', '', typo(p.a.name)); a1.href = 'patterns/' + p.a.slug + '.html';
+        var a2 = el('a', '', typo(p.b.name)); a2.href = 'patterns/' + p.b.slug + '.html';
         li.appendChild(a1);
         li.appendChild(document.createTextNode(' ↔ '));
         li.appendChild(a2);
@@ -403,7 +403,7 @@
       var nl = el('ul', 'brief__next');
       next.forEach(function (l) {
         var li = el('li');
-        var a = el('a', 'brief__next-name', typo(l.name)); a.href = 'laws/' + l.slug + '.html';
+        var a = el('a', 'brief__next-name', typo(l.name)); a.href = 'patterns/' + l.slug + '.html';
         li.appendChild(a);
         li.appendChild(el('span', 'brief__next-quote', '“' + typo(l.aphorism) + '”'));
         var add = el('button', 'pick pick--inline', '+ Add to brief');

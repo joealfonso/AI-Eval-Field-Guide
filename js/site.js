@@ -64,10 +64,10 @@
   syncDetails('.aside-block', '(min-width: 700px)', true);
 
   /* ---------- search ---------- */
-  var KIND_ORDER = { Law: 0, Section: 1, Rubric: 2, Review: 3, Changelog: 4 };
+  var KIND_ORDER = { Pattern: 0, Section: 1, Rubric: 2, Review: 3, Changelog: 4 };
   var TYPE_FILTERS = [
     { id: 'all', label: 'All', kinds: null },
-    { id: 'laws', label: 'Laws', kinds: ['Law'] },
+    { id: 'laws', label: 'Patterns', kinds: ['Pattern'] },
     { id: 'sections', label: 'Sections', kinds: ['Section'] },
     { id: 'tools', label: 'Tools', kinds: ['Rubric', 'Review'] },
     { id: 'changelog', label: 'Changelog', kinds: ['Changelog'] }
@@ -123,7 +123,7 @@
     var tokens = norm(state.query).split(/\s+/).filter(Boolean);
     var all = [];
     if (!tokens.length) {
-      all = searchData.filter(function (e) { return e.k === 'Law'; }).map(function (e) { return { e: e, score: 0 }; });
+      all = searchData.filter(function (e) { return e.k === 'Pattern'; }).map(function (e) { return { e: e, score: 0 }; });
     } else {
       searchData.forEach(function (e) {
         var title = norm(e.t), sub = norm(e.s || ''), body = norm(e.x || '');
@@ -132,7 +132,7 @@
         var score = 1;
         if (title.indexOf(norm(state.query).trim()) !== -1) score += 100;
         tokens.forEach(function (t) { if (title.indexOf(t) !== -1) score += 20; if (sub.indexOf(t) !== -1) score += 5; });
-        if (e.k === 'Law') score += 10;
+        if (e.k === 'Pattern') score += 10;
         all.push({ e: e, score: score });
       });
     }
@@ -163,7 +163,7 @@
     });
     var list = dlg.querySelector('.search-results');
     if (!state.results.length) {
-      list.innerHTML = '<p class="search-empty">No matches for “' + escapeHtml(state.query) + '”. Try a law name or a word from its text.</p>';
+      list.innerHTML = '<p class="search-empty">No matches for “' + escapeHtml(state.query) + '”. Try a pattern name or a word from its text.</p>';
       dlg.querySelector('input').removeAttribute('aria-activedescendant');
       return;
     }
@@ -195,9 +195,9 @@
     var wrap = document.createElement('div');
     wrap.className = 'search-overlay';
     wrap.innerHTML =
-      '<div class="search-dialog" role="dialog" aria-modal="true" aria-label="Search the laws">' +
+      '<div class="search-dialog" role="dialog" aria-modal="true" aria-label="Search the patterns">' +
       '<div class="search-dialog__input"><input type="text" role="combobox" aria-expanded="true" aria-controls="search-list" aria-autocomplete="list" ' +
-      'placeholder="Search laws, sections, tools" autocomplete="off" spellcheck="false" aria-label="Search"><kbd>esc</kbd></div>' +
+      'placeholder="Search patterns, sections, tools" autocomplete="off" spellcheck="false" aria-label="Search"><kbd>esc</kbd></div>' +
       '<div class="search-types" role="group" aria-label="Result type"></div>' +
       '<div class="search-results" id="search-list" role="listbox" aria-label="Results"></div>' +
       '<div class="search-hints"><span>↑↓ move</span><span>↵ open</span><span>' + (isMac ? '⌘' : 'Ctrl') + '↵ new tab</span></div></div>';
@@ -245,7 +245,7 @@
     var s = document.createElement('script');
     s.src = root + 'js/search-index.js';
     s.onload = function () { loading = false; searchData = window.LAI_SEARCH; if (dlg) { state.query = input.value; start(); } };
-    s.onerror = function () { loading = false; if (dlg) dlg.querySelector('.search-results').innerHTML = '<p class="search-empty">Search could not load. Use the laws index instead.</p>'; };
+    s.onerror = function () { loading = false; if (dlg) dlg.querySelector('.search-results').innerHTML = '<p class="search-empty">Search could not load. Use the patterns index instead.</p>'; };
     document.head.appendChild(s);
   }
 
