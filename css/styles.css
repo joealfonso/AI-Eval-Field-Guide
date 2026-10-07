@@ -1,4 +1,4 @@
-/* Laws of AI Evaluation. Layout and components. Values come from tokens.css.
+/* AI Evaluation Field Guide. Layout and components. Values come from tokens.css.
    1 Base · 2 Chrome · 3 Index · 4 Law page · 5 Pages and tools · 6 Claim checker · 7 Checklist and print · 8 Search · 9 Responsive */
 
 /* Component sizes that tokens.css does not define (from the design handoff). */
@@ -687,6 +687,10 @@ body.has-tray { padding-bottom: 64px; }
   .seg button, .chip-toggle, .btn { min-height: 44px; }
   .btn--sm { min-height: 44px; }
   .wordmark__text { font-size: 18px; }
+}
+@media (max-width: 420px) {
+  .wordmark { gap: 8px; }
+  .wordmark__text { font-size: 15px; }
 }
 @media (max-width: 899px) {
   .picker { grid-template-columns: repeat(2, minmax(0, 1fr)); }

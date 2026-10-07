@@ -3,25 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Benchmark Saturation in AI evaluation · Laws of AI Evaluation</title>
+<title>Benchmark Saturation in AI evaluation · AI Evaluation Field Guide</title>
 <meta name="description" content="Every benchmark has a shelf life. Tests stop being useful once everyone scores near the top. The remaining differences are mostly noise, and the real gaps are somewhere else.">
-<meta property="og:title" content="Benchmark Saturation in AI evaluation · Laws of AI Evaluation">
+<meta property="og:title" content="Benchmark Saturation in AI evaluation · AI Evaluation Field Guide">
 <meta property="og:description" content="Every benchmark has a shelf life. Tests stop being useful once everyone scores near the top. The remaining differences are mostly noise, and the real gaps are somewhere else.">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Laws of AI Evaluation">
+<meta property="og:site_name" content="AI Evaluation Field Guide">
 <meta property="og:image" content="https://lawsofaievaluation.com/img/og/benchmark-saturation.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Benchmark Saturation in AI evaluation · Laws of AI Evaluation">
+<meta name="twitter:title" content="Benchmark Saturation in AI evaluation · AI Evaluation Field Guide">
 <meta name="twitter:description" content="Every benchmark has a shelf life. Tests stop being useful once everyone scores near the top. The remaining differences are mostly noise, and the real gaps are somewhere else.">
 <meta name="twitter:image" content="https://lawsofaievaluation.com/img/og/benchmark-saturation.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%239b2f1f'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%23faf7f1' font-family='Georgia,serif'%3E§%3C/text%3E%3C/svg%3E">
-<link rel="alternate" type="application/rss+xml" title="Laws of AI Evaluation changelog" href="../feed.xml">
+<link rel="alternate" type="application/rss+xml" title="AI Evaluation Field Guide changelog" href="../feed.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Public+Sans:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../css/tokens.css">
 <link rel="stylesheet" href="../css/styles.css">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Benchmark Saturation", "description": "Every benchmark has a shelf life.", "url": "https://lawsofaievaluation.com/laws/benchmark-saturation", "datePublished": "2026-10-05", "dateModified": "2026-10-05", "version": "v1.0", "inLanguage": "en", "license": "https://creativecommons.org/licenses/by/4.0/", "author": {"@type": "Person", "name": "Joseph Alfonso", "url": "https://josephalfonso.com"}, "publisher": {"@type": "Organization", "name": "Laws of AI Evaluation", "url": "https://lawsofaievaluation.com"}, "isPartOf": {"@type": "WebSite", "name": "Laws of AI Evaluation", "url": "https://lawsofaievaluation.com"}, "citation": ["Bowman, S. R., & Dahl, G. E. (2021). What will it take to fix benchmarking in natural language understanding?.", "Kiela, D., et al. (2021). Dynabench: Rethinking benchmarking in NLP.", "Northcutt, C. G., Athalye, A., & Mueller, J. (2021). Pervasive label errors in test sets destabilize machine learning benchmarks.", "Ott, S., Barbosa-Silva, A., Blagec, K., Brauner, J., & Samwald, M. (2022). Mapping global dynamics of benchmark creation and saturation in artificial intelligence."]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Benchmark Saturation", "description": "Every benchmark has a shelf life.", "url": "https://lawsofaievaluation.com/laws/benchmark-saturation", "datePublished": "2026-10-05", "dateModified": "2026-10-05", "version": "v1.0", "inLanguage": "en", "license": "https://creativecommons.org/licenses/by/4.0/", "author": {"@type": "Person", "name": "Joseph Alfonso", "url": "https://josephalfonso.com"}, "publisher": {"@type": "Organization", "name": "AI Evaluation Field Guide", "url": "https://lawsofaievaluation.com"}, "isPartOf": {"@type": "WebSite", "name": "AI Evaluation Field Guide", "url": "https://lawsofaievaluation.com"}, "citation": ["Bowman, S. R., & Dahl, G. E. (2021). What will it take to fix benchmarking in natural language understanding?.", "Kiela, D., et al. (2021). Dynabench: Rethinking benchmarking in NLP.", "Northcutt, C. G., Athalye, A., & Mueller, J. (2021). Pervasive label errors in test sets destabilize machine learning benchmarks.", "Ott, S., Barbosa-Silva, A., Blagec, K., Brauner, J., & Samwald, M. (2022). Mapping global dynamics of benchmark creation and saturation in artificial intelligence."]}</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y7P4TJ9J52"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']});gtag('js',new Date());gtag('config','G-Y7P4TJ9J52');</script>
 <link rel="canonical" href="https://lawsofaievaluation.com/laws/benchmark-saturation">
@@ -30,7 +30,7 @@
 <body class="" data-root="../">
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
-  <a class="wordmark" href="../index.html"><span class="wordmark__mark" aria-hidden="true">§</span><span class="wordmark__text">Laws of AI Evaluation</span></a>
+  <a class="wordmark" href="../index.html"><span class="wordmark__mark" aria-hidden="true">§</span><span class="wordmark__text">AI Evaluation Field Guide</span></a>
   <nav class="site-nav" id="site-nav" aria-label="Primary"><a href="../index.html" aria-current="page">Laws</a><a href="../use-it-now.html">Use it now</a><div class="nav-group"><button type="button" class="nav-group__btn" aria-expanded="false" aria-controls="nav-tools" data-nav-group>Tools</button><div class="nav-group__menu" id="nav-tools"><a href="../situation-finder.html">Find your laws</a><a href="../claim-checker.html">Claim checker</a><a href="../design-rubric.html">Design Rubric</a><a href="../readiness-review.html">Readiness Review</a></div></div><a href="../about.html">About</a></nav>
   <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog"><span>Search laws</span><kbd data-kbd>⌘K</kbd></button>
   <div class="header-actions">
@@ -69,10 +69,10 @@
     </div>
     <button class="btn btn--ink cite__copy" type="button" data-copy>Copy</button>
   </div>
-  <div role="tabpanel" id="panel-apa" aria-labelledby="tab-apa" data-panel="apa"><pre><code>Laws of AI Evaluation. (2026, October 5). Benchmark Saturation (v1.0). https://lawsofaievaluation.com/laws/benchmark-saturation</code></pre></div>
+  <div role="tabpanel" id="panel-apa" aria-labelledby="tab-apa" data-panel="apa"><pre><code>AI Evaluation Field Guide. (2026, October 5). Benchmark Saturation (v1.0). https://lawsofaievaluation.com/laws/benchmark-saturation</code></pre></div>
   <div role="tabpanel" id="panel-bibtex" aria-labelledby="tab-bibtex" data-panel="bibtex" hidden><pre><code>@misc{lai-benchmark-saturation,
   title        = {Benchmark Saturation},
-  author       = {{Laws of AI Evaluation}},
+  author       = {{AI Evaluation Field Guide}},
   year         = {2026},
   month        = oct,
   note         = {Version 1.0},

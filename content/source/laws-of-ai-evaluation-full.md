@@ -1,4 +1,4 @@
-# **Laws of AI Evaluation**
+# **AI Evaluation Field Guide**
 
 Seed content. Last reviewed 2026-09-15.
 
@@ -7,7 +7,7 @@ Seed content. Last reviewed 2026-09-15.
 1. AI Evaluation, an Overview  
 2. The Laws  
 3. Being Pragmatic  
-4. Field Guide  
+4. Playbook  
 5. Glossary  
 6. Bibliography
 
@@ -89,7 +89,7 @@ Hutchinson et al. (2022) found that ML evaluation practice often serves the firs
 - **Reading the results:** No Error Bars, No Result, The Averaging Trap, The Baseline Rule, The Benchmark Lottery, The Reproducibility Rule  
 - **Beyond the benchmark:** Presence, Not Absence, Evaluation Awareness, Distribution Shift, The Lab-to-Field Gap, The Team Is the System, The Jagged Frontier
 
-**As a tool,** use the Field Guide when you're reading an AI claim, designing an eval, or reviewing a launch.
+**As a tool,** use the Playbook when you're reading an AI claim, designing an eval, or reviewing a launch.
 
 **In a team,** start with Being Pragmatic. It covers how to match rigor to stakes, fit evaluation into existing rituals, and bring people along without becoming the eval police.
 
@@ -1376,7 +1376,7 @@ Small teams will combine these. What matters is that each job has a name next to
 - Wallach, H., Desai, M., Cooper, A. F., Wang, A., Atalla, C., et al. (2025). [Position: Evaluating generative AI systems is a social science measurement challenge](https://arxiv.org/abs/2502.00561). Proceedings of the International Conference on Machine Learning (ICML 2025), PMLR 267\.  
 - Wu, T., Ribeiro, M. T., Heer, J., & Weld, D. (2019). [Errudite: Scalable, reproducible, and testable error analysis](https://aclanthology.org/P19-1073/). Proceedings of ACL 2019\.
 
-## Field Guide
+## Playbook
 
 For how to introduce these practices to a team without slowing it down, see Being Pragmatic.
 
@@ -1741,9 +1741,9 @@ Next rerun trigger:
 - Messick, S. (1995). [Validity of psychological assessment: Validation of inferences from persons' responses and performances as scientific inquiry into score meaning](https://doi.org/10.1037/0003-066X.50.9.741). American Psychologist, 50(9), 741-749.  
   Cited in: The Construct Gap, Glossary, Overview  
 - Miller, E. (2024). [Adding error bars to evals: A statistical approach to language model evaluations](https://arxiv.org/abs/2411.00640). arXiv:2411.00640. *(Preprint)*  
-  Cited in: No Error Bars, No Result, Field Guide  
+  Cited in: No Error Bars, No Result, Playbook  
 - Mitchell, M., et al. (2019). [Model cards for model reporting](https://arxiv.org/abs/1810.03993). Proceedings of the Conference on Fairness, Accountability, and Transparency (FAT\* 2019).  
-  Cited in: The Averaging Trap, The Reproducibility Rule, Field Guide, Glossary, Overview  
+  Cited in: The Averaging Trap, The Reproducibility Rule, Playbook, Glossary, Overview  
 - Mizrahi, M., et al. (2024). [State of what art? A call for multi-prompt LLM evaluation](https://aclanthology.org/2024.tacl-1.52/). Transactions of the Association for Computational Linguistics, 12\.  
   Cited in: Prompt Sensitivity  
 - Moravec, H. (1988). Mind children: The future of robot and human intelligence. Harvard University Press. *(Book)*  
@@ -1799,13 +1799,13 @@ Next rerun trigger:
 - Schaeffer, R., Miranda, B., & Koyejo, S. (2023). [Are emergent abilities of large language models a mirage?](https://arxiv.org/abs/2304.15004) Advances in Neural Information Processing Systems (NeurIPS 2023).  
   Cited in: The Metric Mirage  
 - Sclar, M., Choi, Y., Tsvetkov, Y., & Suhr, A. (2024). [Quantifying language models' sensitivity to spurious features in prompt design or: How I learned to start worrying about prompt formatting](https://arxiv.org/abs/2310.11324). International Conference on Learning Representations (ICLR 2024).  
-  Cited in: Prompt Sensitivity, Field Guide  
+  Cited in: Prompt Sensitivity, Playbook  
 - Selbst, A. D., boyd, d., Friedler, S. A., Venkatasubramanian, S., & Vertesi, J. (2019). [Fairness and abstraction in sociotechnical systems](https://doi.org/10.1145/3287560.3287598). Proceedings of the Conference on Fairness, Accountability, and Transparency (FAT\* 2019).  
   Cited in: The Lab-to-Field Gap  
 - Shankar, S., Garcia, R., Hellerstein, J. M., & Parameswaran, A. G. (2024). ["We have no idea how models will behave in production until production": How engineers operationalize machine learning](https://doi.org/10.1145/3653697). Proceedings of the ACM on Human-Computer Interaction, 8(CSCW1), Article 206\.  
   Cited in: Being Pragmatic  
 - Shankar, S., Zamfirescu-Pereira, J. D., Hartmann, B., Parameswaran, A. G., & Arawjo, I. (2024). [Who validates the validators? Aligning LLM-assisted evaluation of LLM outputs with human preferences](https://doi.org/10.1145/3654777.3676450). Proceedings of the ACM Symposium on User Interface Software and Technology (UIST 2024).  
-  Cited in: Judge Bias, Criteria Drift, Being Pragmatic, Field Guide  
+  Cited in: Judge Bias, Criteria Drift, Being Pragmatic, Playbook  
 - Shevlane, T., et al. (2023). [Model evaluation for extreme risks](https://arxiv.org/abs/2305.15324). arXiv:2305.15324. *(Preprint)*  
   Cited in: Presence, Not Absence, Overview  
 - Singh, S., Nan, Y., Wang, A., D'Souza, D., Kapoor, S., et al. (2025). [The leaderboard illusion](https://arxiv.org/abs/2504.20879). Advances in Neural Information Processing Systems (NeurIPS 2025).  
@@ -1813,7 +1813,7 @@ Next rerun trigger:
 - Strathern, M. (1997). 'Improving ratings': Audit in the British university system. European Review, 5(3), 305-321.  
   Cited in: Goodhart's Law  
 - Vaccaro, M., Almaatouq, A., & Malone, T. (2024). [When combinations of humans and AI are useful: A systematic review and meta-analysis](https://doi.org/10.1038/s41562-024-02024-1). Nature Human Behaviour, 8, 2293-2303.  
-  Cited in: The Team Is the System, The Jagged Frontier, Field Guide  
+  Cited in: The Team Is the System, The Jagged Frontier, Playbook  
 - van der Lee, C., Gatt, A., van Miltenburg, E., & Krahmer, E. (2021). [Human evaluation of automatically generated text: Current trends and best practice guidelines](https://doi.org/10.1016/j.csl.2020.101151). Computer Speech & Language, 67, 101151\.  
   Cited in: The Gold Standard Myth, Overview  
 - van der Maden, W., Sadek, M., Xiao, Z., Mottelson, A., Liao, Q. V., & Zhu, J. (2026). [Results-actionability gap: Understanding how practitioners evaluate LLM products in the wild](https://doi.org/10.1145/3772318.3791069). Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2026).  
@@ -1831,10 +1831,10 @@ Next rerun trigger:
 - Wu, T., Ribeiro, M. T., Heer, J., & Weld, D. (2019). [Errudite: Scalable, reproducible, and testable error analysis](https://aclanthology.org/P19-1073/). Proceedings of ACL 2019\.  
   Cited in: Being Pragmatic, Glossary  
 - Yao, S., Shinn, N., Razavi, P., & Narasimhan, K. (2025). [τ-bench: A benchmark for tool-agent-user interaction in real-world domains](https://arxiv.org/abs/2406.12045). International Conference on Learning Representations (ICLR 2025).  
-  Cited in: Once Is Not Reliable, Field Guide, Glossary  
+  Cited in: Once Is Not Reliable, Playbook, Glossary  
 - Zhang, H., Da, J., Lee, D., Robinson, V., Wu, C., et al. (2024). [A careful examination of large language model performance on grade school arithmetic](https://arxiv.org/abs/2405.00332). NeurIPS 2024 Datasets and Benchmarks Track.  
   Cited in: Data Contamination  
 - Zheng, L., Chiang, W.-L., Sheng, Y., Zhuang, S., Wu, Z., et al. (2023). [Judging LLM-as-a-judge with MT-Bench and Chatbot Arena](https://arxiv.org/abs/2306.05685). NeurIPS 2023 Datasets and Benchmarks Track.  
-  Cited in: Judge Bias, Field Guide, Glossary, Overview
+  Cited in: Judge Bias, Playbook, Glossary, Overview
 
 &nbsp;

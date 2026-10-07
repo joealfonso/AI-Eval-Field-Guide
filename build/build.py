@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the Laws of AI Evaluation static pages.
+"""Generate the AI Evaluation Field Guide static pages.
 
 Reads data/*.json and content/source/*, writes HTML into the site folder plus
 js/data.js, js/search-index.js and feed.xml. Python 3 standard library only.
@@ -58,7 +58,7 @@ NAV = [
 GUIDE_PAGES = [
     ("guide.html", "Overview"),
     ("being-pragmatic.html", "Being Pragmatic"),
-    ("field-guide.html", "Field Guide"),
+    ("playbook.html", "Playbook"),
     ("glossary.html", "Glossary"),
     ("bibliography.html", "Bibliography"),
     ("methodology.html", "Methodology"),
@@ -185,14 +185,14 @@ def prep_laws():
 BY_SLUG = prep_laws()
 BY_SLUG_NAMES = {l["name"] for l in LAWS}
 NAMES = sorted([(l["name"], l["slug"]) for l in LAWS], key=lambda t: -len(t[0]))
-PAGE_LINKS = {"Overview": "guide.html", "Being Pragmatic": "being-pragmatic.html", "Field Guide": "field-guide.html", "Glossary": "glossary.html"}
+PAGE_LINKS = {"Overview": "guide.html", "Being Pragmatic": "being-pragmatic.html", "Playbook": "playbook.html", "Glossary": "glossary.html"}
 
 
 def link_laws(h, prefix=""):
     """Link law names and guide page names found in text nodes (outside existing anchors)."""
     parts = re.split(r"(<[^>]+>)", h)
     out, in_a = [], 0
-    targets = [(typo(n), "laws/%s.html" % s) for n, s in NAMES] + [(typo(n), href) for n, href in PAGE_LINKS.items() if n in ("Being Pragmatic", "Field Guide")]
+    targets = [(typo(n), "laws/%s.html" % s) for n, s in NAMES] + [(typo(n), href) for n, href in PAGE_LINKS.items() if n in ("Being Pragmatic", "Playbook")]
     targets.sort(key=lambda t: -len(t[0]))
     pattern = re.compile("|".join(re.escape(n) for n, _ in targets))
     lookup = dict(targets)
@@ -297,7 +297,7 @@ def analytics_inline_js():
 
 TITLE_TAGS = {
     "Glossary": "AI evaluation glossary: key terms explained",
-    "Field Guide": "Field guide to reading AI claims and building evals",
+    "Playbook": "Playbook for reading AI claims and building evals",
     "Being Pragmatic": "AI evaluation on a real team: being pragmatic",
     "Claim checker": "AI claim checker: which laws apply to a claim",
     "Find your laws": "Find the AI evaluation laws that fit your situation",
@@ -370,7 +370,7 @@ def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, ski
 <body class="%(page_class)s" data-root="%(p)s">
 <a class="skip-link" href="#main">%(skip)s</a>
 <header class="site-header">
-  <a class="wordmark" href="%(p)sindex.html"><span class="wordmark__mark" aria-hidden="true">\u00a7</span><span class="wordmark__text">Laws of AI Evaluation</span></a>
+  <a class="wordmark" href="%(p)sindex.html"><span class="wordmark__mark" aria-hidden="true">\u00a7</span><span class="wordmark__text">AI Evaluation Field Guide</span></a>
   <nav class="site-nav" id="site-nav" aria-label="Primary">%(nav)s</nav>
   <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog"><span>Search laws</span><kbd data-kbd>\u2318K</kbd></button>
   <div class="header-actions">
@@ -574,13 +574,13 @@ def source_mix(law):
 
 def apa(law):
     d = datetime.date.fromisoformat(law["published"])
-    return "Laws of AI Evaluation. (%d, %s %d). %s (%s). %s/laws/%s" % (d.year, d.strftime("%B"), d.day, law["name"], law["version"], SITE["baseUrl"], law["slug"])
+    return "AI Evaluation Field Guide. (%d, %s %d). %s (%s). %s/laws/%s" % (d.year, d.strftime("%B"), d.day, law["name"], law["version"], SITE["baseUrl"], law["slug"])
 
 
 def bibtex(law):
     d = datetime.date.fromisoformat(law["published"])
     return (
-        "@misc{lai-%s,\n  title        = {%s},\n  author       = {{Laws of AI Evaluation}},\n  year         = {%d},\n  month        = %s,\n"
+        "@misc{lai-%s,\n  title        = {%s},\n  author       = {{AI Evaluation Field Guide}},\n  year         = {%d},\n  month        = %s,\n"
         "  note         = {Version %s},\n  howpublished = {\\url{%s/laws/%s}}\n}"
         % (law["slug"], law["name"], d.year, d.strftime("%b").lower(), law["version"].lstrip("v"), SITE["baseUrl"], law["slug"])
     )
@@ -906,7 +906,7 @@ def build_changelog():
   <ol class="changelog">%s</ol>
   <p class="page__note"><a href="feed.xml">RSS feed</a></p>
 </main>""" % items
-    write("changelog.html", layout("Changelog", "What changed on Laws of AI Evaluation, and when.", body, current="changelog"))
+    write("changelog.html", layout("Changelog", "What changed on the AI Evaluation Field Guide, and when.", body, current="changelog"))
 
 
 def build_about():
@@ -942,7 +942,7 @@ def build_about():
   <section><h2 id="how-to-use">How to use it</h2>
   <p>Start with the <a href="guide.html">guide</a>, browse the <a href="index.html">laws</a>, describe your circumstances to <a href="situation-finder.html">find your laws</a>, or paste a claim into the <a href="claim-checker.html">claim checker</a> to see which laws apply. Collect any laws with the Add buttons to get a <a href="brief.html">quick brief</a>, or turn them into a printable sheet with the <a href="checklist.html">checklist builder</a>. For ready-made question lists, see <a href="questions-to-ask-ai-vendor.html">buying an AI model or vendor</a>, <a href="ai-launch-review-questions.html">a launch review</a>, and <a href="how-to-build-an-ai-evaluation.html">building an evaluation</a>.</p></section>
 </main>""" % {"status": status}
-    write("about.html", layout("About", "About Laws of AI Evaluation: what a law means here, the editorial policy, and who maintains it.", body, current="about"))
+    write("about.html", layout("About", "About the AI Evaluation Field Guide: what a law means here, the editorial policy, and who maintains it.", body, current="about"))
 
 
 def guide_nav(active):
@@ -975,10 +975,10 @@ def build_guide_pages():
         "",
         md_blocks(overview),
     )
-    pragmatic = manuscript_region("## Being Pragmatic", "## Field Guide")
+    pragmatic = manuscript_region("## Being Pragmatic", "## Playbook")
     guide_page("being-pragmatic.html", "Being Pragmatic", "Guide", "How to do AI evaluation inside a real team with deadlines, limited budget, and a model that changed last Tuesday.", "", md_blocks(pragmatic))
 
-    field = manuscript_region("## Field Guide", "## Glossary")
+    field = manuscript_region("## Playbook", "## Glossary")
     # split the eval card template out of the regular flow
     start = next(i for i, l in enumerate(field) if l.startswith("### 4"))
     end = next(i for i, l in enumerate(field) if i > start and l.startswith("### References"))
@@ -999,7 +999,7 @@ def build_guide_pages():
     card = '<div class="evalcard" role="group" aria-label="Eval card template"><p class="evalcard__title">Eval card</p>%s</div>' % "".join(card_rows)
     before = md_blocks(field[:start])
     after = md_blocks(field[end:])
-    guide_page("field-guide.html", "Field Guide", "Guide", "Questions for reading an AI claim, a sequence for building your own eval, red flags, and an eval card template.", "", before + '<h2 id="4-eval-card-template">4. Eval card template</h2><p>Copy this into any eval you run. It borrows from model cards (Mitchell et al., 2019).</p>' + card + after)
+    guide_page("playbook.html", "Playbook", "Guide", "Questions for reading an AI claim, a sequence for building your own eval, red flags, and an eval card template.", "", before + '<h2 id="4-eval-card-template">4. Eval card template</h2><p>Copy this into any eval you run. It borrows from model cards (Mitchell et al., 2019).</p>' + card + after)
 
     gl = "".join('<div class="gloss__row"><dt id="%s">%s</dt><dd>%s%s</dd></div>' % (
         slugify(g["term"]), esc(typo(g["term"])), inline(g["definition"]),
@@ -1058,7 +1058,7 @@ def build_situation_finder():
     </section>
   </div>
   <section class="claim__rules" id="how-matching-works"><h2>How matching works</h2>
-    <p>Your description is scanned for situations a careful reader would recognize, such as buying a model, using an AI grader, or launching to real users. You can add or remove any of them. Each situation maps to the laws that matter most for it, using the manuscript\u2019s Field Guide and Being Pragmatic. Laws are ranked by how many of your situations point to them and how strongly: the top five are where to start, the next six are likely to matter, and the rest are worth a look. This is a reading aid, not an assessment of your system.</p>
+    <p>Your description is scanned for situations a careful reader would recognize, such as buying a model, using an AI grader, or launching to real users. You can add or remove any of them. Each situation maps to the laws that matter most for it, using the manuscript\u2019s Playbook and Being Pragmatic. Laws are ranked by how many of your situations point to them and how strongly: the top five are where to start, the next six are likely to matter, and the rest are worth a look. This is a reading aid, not an assessment of your system.</p>
     <details><summary>Show the rules</summary>%s</details>
   </section>
 </main>""" % (esc(sf["example"]), chips, rules)
@@ -1114,7 +1114,7 @@ def build_claim_checker():
     </section>
   </div>
   <section class="claim__rules" id="how-matching-works"><h2>How matching works</h2>
-    <p>Each claim type maps to the laws a careful reader would check first, using the manuscript\u2019s Field Guide and red-flag table. A few phrases (such as \u201cinternal benchmark\u201d or \u201csuperhuman\u201d) add matches of their own. A law that matches more than one type moves up a step. This is a reading aid, not an assessment of the claim.</p>
+    <p>Each claim type maps to the laws a careful reader would check first, using the manuscript\u2019s Playbook and red-flag table. A few phrases (such as \u201cinternal benchmark\u201d or \u201csuperhuman\u201d) add matches of their own. A law that matches more than one type moves up a step. This is a reading aid, not an assessment of the claim.</p>
     <details><summary>Show the rules</summary>%s</details>
   </section>
 </main>""" % (chips, rules)
@@ -1324,6 +1324,7 @@ def build_security():
         "  Cross-Origin-Opener-Policy: same-origin\n" % csp
     )
     write("_headers", headers)
+    write("_redirects", "# Generated by build/build.py. Old URLs kept alive after renames.\n/field-guide.html /playbook.html 301\n/field-guide /playbook 301\n")
     expires = (datetime.date.fromisoformat(SITE["updated"]) + datetime.timedelta(days=365)).isoformat()
     write(".well-known/security.txt", "Contact: https://josephalfonso.com/pages/contact.html\nExpires: %sT00:00:00.000Z\nPreferred-Languages: en\nCanonical: %s/.well-known/security.txt\n" % (expires, SITE["baseUrl"]))
 

@@ -1,4 +1,4 @@
-# Laws of AI Evaluation
+# AI Evaluation Field Guide
 
 **Live site: [lawsofaievaluation.com](https://lawsofaievaluation.com)**
 
@@ -11,7 +11,7 @@ It is written for people who build, buy, or design with AI, and for anyone who w
 - **26 laws**, each with a plain-terms summary, the evidence, questions to ask, where the law does not apply, and sources.
 - **Tools:** a claim checker, a "find your laws" situation finder, a printable checklist builder, a quick brief, a design rubric, and a readiness review.
 - **Use it now:** friendly questions to ask when someone shares an AI result at work.
-- **Guide pages:** overview, field guide, being pragmatic, glossary, bibliography, and [methodology](https://lawsofaievaluation.com/methodology).
+- **Guide pages:** overview, playbook, being pragmatic, glossary, bibliography, and [methodology](https://lawsofaievaluation.com/methodology).
 
 ## Status
 

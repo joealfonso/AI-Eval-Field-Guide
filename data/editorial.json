@@ -285,7 +285,7 @@
     "the-jagged-frontier": [0, [0, 1, 2]]
   },
   "presets": {
-    "_note": "Derived from the manuscript's Field Guide (Reading an AI claim, Building your own eval) and Being Pragmatic (high-risk tier). Needs editorial review.",
+    "_note": "Derived from the manuscript's Playbook (Reading an AI claim, Building your own eval) and Being Pragmatic (high-risk tier). Needs editorial review.",
     "buying": {
       "label": "Buying a model or vendor",
       "laws": ["goodharts-law", "campbells-law", "the-construct-gap", "the-functionality-fallacy", "benchmark-saturation", "data-contamination", "the-gold-standard-myth", "prompt-sensitivity", "judge-bias", "once-is-not-reliable", "the-cost-frontier", "no-error-bars-no-result", "the-averaging-trap", "the-baseline-rule", "the-benchmark-lottery", "the-reproducibility-rule", "distribution-shift", "the-lab-to-field-gap"]
@@ -304,7 +304,7 @@
     }
   },
   "claimChecker": {
-    "_note": "Rule-based matching, written from the manuscript's Field Guide (Reading an AI claim, Red flags). 'ask' is an index into the law's questions. Needs editorial review.",
+    "_note": "Rule-based matching, written from the manuscript's Playbook (Reading an AI claim, Red flags). 'ask' is an index into the law's questions. Needs editorial review.",
     "types": [
       {
         "id": "benchmark",

@@ -2,6 +2,16 @@
   "entries": [
     {
       "date": "2026-10-07",
+      "text": "The site is now called the AI Evaluation Field Guide. The old Field Guide page is now the Playbook, and its old address redirects.",
+      "links": [
+        {
+          "label": "Playbook",
+          "href": "playbook.html"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-07",
       "text": "Added question lists for buying an AI model or vendor, running a launch review, and building an evaluation, each drawn from the laws.",
       "links": [
         {

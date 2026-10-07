@@ -262,7 +262,7 @@
   /* ---------- text export ---------- */
   function asText(laws) {
     var base = LAI.site.baseUrl;
-    var lines = ['Quick brief: ' + plural(laws.length, 'law', 'laws') + ' (Laws of AI Evaluation)', ''];
+    var lines = ['Quick brief: ' + plural(laws.length, 'law', 'laws') + ' (AI Evaluation Field Guide)', ''];
     partsIn(laws).forEach(function (c) {
       lines.push(c.id + '. ' + typo(c.name));
       lines.push(c.thread);

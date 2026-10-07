@@ -11,7 +11,7 @@ t, s, m, mk = (ImageFont.truetype(f, n) for n in (84, 34, 32, 64))
 d.rectangle([0, 0, W, 16], fill="#9b2f1f")
 d.rectangle([80, 70, 160, 150], fill="#9b2f1f")
 d.text((120, 110), "§", font=mk, fill="#faf7f1", anchor="mm")
-d.text((190, 110), "Laws of AI Evaluation", font=m, fill="#1b1b1b", anchor="lm")
+d.text((190, 110), "AI Evaluation Field Guide", font=m, fill="#1b1b1b", anchor="lm")
 d.text((80, 210), "Principles for judging", font=t, fill="#1b1b1b")
 d.text((80, 305), "whether an AI system", font=t, fill="#1b1b1b")
 d.text((80, 400), "actually holds up.", font=t, fill="#9b2f1f")
@@ -50,7 +50,7 @@ for l in laws:
     d2.rectangle([0, 0, W, 16], fill="#9b2f1f")
     d2.rectangle([80, 60, 140, 120], fill="#9b2f1f")
     d2.text((110, 90), "§", font=ImageFont.truetype(f, 48), fill="#faf7f1", anchor="mm")
-    d2.text((165, 90), "Laws of AI Evaluation", font=small, fill="#1b1b1b", anchor="lm")
+    d2.text((165, 90), "AI Evaluation Field Guide", font=small, fill="#1b1b1b", anchor="lm")
     d2.text((80, 175), "No. %s  ·  %s" % (l["no"], cats.get(l["category"], "")), font=small, fill="#9b2f1f")
     size = 86
     name_font = big

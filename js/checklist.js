@@ -139,7 +139,7 @@
     var left = el('div');
     var brand = el('div', 'sheet__brand');
     brand.appendChild(el('span', 'sheet__mark', '§'));
-    brand.appendChild(el('span', '', 'Laws of AI Evaluation'));
+    brand.appendChild(el('span', '', 'AI Evaluation Field Guide'));
     left.appendChild(brand);
     left.appendChild(el('h2', '', 'Evaluation checklist'));
     left.appendChild(el('p', 'sheet__sub', label + ' · ' + state.selected.length + (state.selected.length === 1 ? ' law' : ' laws') + ' · ' + q + (q === 1 ? ' question' : ' questions')));
@@ -223,7 +223,7 @@
     var frow = el('tr');
     var fcell = el('td');
     var foot = el('div', 'sheet__foot');
-    foot.appendChild(el('span', '', 'Laws of AI Evaluation · Evaluation checklist · ' + label));
+    foot.appendChild(el('span', '', 'AI Evaluation Field Guide · Evaluation checklist · ' + label));
     foot.appendChild(el('span', '', base + '/checklist · ' + LAI.site.version));
     fcell.appendChild(foot);
     frow.appendChild(fcell);
