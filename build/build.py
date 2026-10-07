@@ -862,7 +862,9 @@ def build_about():
     <li>Role tags, plain-terms summaries, checklist questions, and claim-checker rules are editorial work built from the laws themselves. They are starting points, not authority.</li>
   </ul></section>
 %(status)s  <section><h2 id="who">Who maintains it</h2>
-  <p>Maintained by <a href="https://josephalfonso.com">Joseph Alfonso</a>, a UX design lead. This is a practitioner\u2019s reference, not an academic or research-lab publication. To suggest a correction or a source, use the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>.</p></section>
+  <p>I\u2019m <a href="https://josephalfonso.com">Joseph Alfonso</a>, a UX design lead. I built this guide to teach myself how AI evaluation works, and to share what I learned so it helps other people too.</p>
+  <p>AI is complicated, and it is easy to feel like a bystander. I think we are better off when we understand how it works and how it fails. Knowing the mechanisms behind AI, and how to judge claims about it, helps us use it with more confidence and ask better questions.</p>
+  <p>It is a practitioner\u2019s reference, not an academic or research-lab publication. If you spot a mistake or know a better source, please use the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. I would like to hear from you.</p></section>
   <section><h2 id="how-to-use">How to use it</h2>
   <p>Start with the <a href="guide.html">guide</a>, browse the <a href="index.html">laws</a>, describe your circumstances to <a href="situation-finder.html">find your laws</a>, or paste a claim into the <a href="claim-checker.html">claim checker</a> to see which laws apply. Collect any laws with the Add buttons to get a <a href="brief.html">quick brief</a>, or turn them into a printable sheet with the <a href="checklist.html">checklist builder</a>.</p></section>
 </main>""" % {"status": status}
