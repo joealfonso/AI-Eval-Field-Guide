@@ -24,6 +24,22 @@
     window.matchMedia('(min-width: 1181px)').addEventListener('change', function (e) { if (e.matches) setMenu(false); });
   }
 
+  /* ---------- Tools group in the nav ---------- */
+  var group = document.querySelector('.nav-group');
+  var groupBtn = group && group.querySelector('[data-nav-group]');
+  if (groupBtn) {
+    var setGroup = function (open) {
+      group.classList.toggle('is-open', open);
+      groupBtn.setAttribute('aria-expanded', String(open));
+    };
+    groupBtn.addEventListener('click', function () { setGroup(!group.classList.contains('is-open')); });
+    document.addEventListener('click', function (e) { if (!group.contains(e.target)) setGroup(false); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && group.classList.contains('is-open')) { setGroup(false); groupBtn.focus(); }
+    });
+    group.addEventListener('focusout', function (e) { if (!group.contains(e.relatedTarget)) setGroup(false); });
+  }
+
   /* ---------- <details> that are always open on wide screens ---------- */
   function syncDetails(selector, query, mobileFirstOpen) {
     var items = document.querySelectorAll(selector);
