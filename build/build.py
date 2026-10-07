@@ -1048,7 +1048,7 @@ def build_brief():
     <div class="picker" data-brief-grid></div></details>
   <div class="brief__out" data-brief-out></div>
   <noscript><p class="page__note">The quick brief needs JavaScript. You can read each law on the <a href="index.html">laws page</a> instead.</p></noscript>
-  <p class="page__note">Assembled in your browser from each law\u2019s own text. The plain-terms summaries were drafted with AI and are starting points: read the full law and its sources before you rely on one.</p>
+  <p class="page__note">Assembled in your browser from each law\u2019s own text. Read the full law and its sources before you rely on one.</p>
 </main>"""
     write("brief.html", layout("Quick brief", "Pick any laws and get a short overview you can read in a few minutes, built from each law's own text.", body, current="laws", data=True, scripts=("brief.js",)))
 
