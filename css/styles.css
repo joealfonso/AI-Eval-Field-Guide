@@ -689,8 +689,9 @@ body.has-tray { padding-bottom: 64px; }
   .wordmark__text { font-size: 18px; }
 }
 @media (max-width: 420px) {
-  .wordmark { gap: 8px; }
-  .wordmark__text { font-size: 15px; }
+  .wordmark { gap: 6px; }
+  .header-actions { gap: 6px; }
+  .wordmark__text { font-size: 14px; }
 }
 @media (max-width: 899px) {
   .picker { grid-template-columns: repeat(2, minmax(0, 1fr)); }
