@@ -288,6 +288,16 @@ def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, ski
     scripts_html += '<script src="%sjs/site.js" defer></script>\n' % p
     for s in scripts:
         scripts_html += '<script src="%sjs/%s" defer></script>\n' % (p, s)
+    analytics = ""
+    if SITE.get("gaId"):
+        # Consent defaults to denied in the EEA, UK and Switzerland (no banner, so no tracking there).
+        analytics = (
+            '<script async src="https://www.googletagmanager.com/gtag/js?id=%(id)s"></script>\n'
+            "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}"
+            "gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',"
+            "region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']});"
+            "gtag('js',new Date());gtag('config','%(id)s');</script>\n" % {"id": SITE["gaId"]}
+        )
     return """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -305,7 +315,7 @@ def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, ski
 <link rel="stylesheet" href="%(fonts)s">
 <link rel="stylesheet" href="%(p)scss/tokens.css">
 <link rel="stylesheet" href="%(p)scss/styles.css">
-%(head_extra)s</head>
+%(head_extra)s%(analytics)s</head>
 <body class="%(page_class)s" data-root="%(p)s">
 <a class="skip-link" href="#main">%(skip)s</a>
 <header class="site-header">
@@ -325,6 +335,7 @@ def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, ski
 %(scripts)s</body>
 </html>
 """ % {
+        "analytics": analytics,
         "title": esc(full_title),
         "desc": esc(desc),
         "site": esc(SITE["title"]),
