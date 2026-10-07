@@ -1,0 +1,33 @@
+{
+  "_note": "established = the term is used in the literature; named-here = the underlying idea is established but the name is this site's. Derived from each law's Origins text.",
+  "established": [
+    "goodharts-law",
+    "campbells-law",
+    "the-functionality-fallacy",
+    "benchmark-saturation",
+    "data-contamination",
+    "adaptive-overfitting",
+    "the-clever-hans-effect",
+    "prompt-sensitivity",
+    "criteria-drift",
+    "the-benchmark-lottery",
+    "evaluation-awareness",
+    "distribution-shift",
+    "the-jagged-frontier"
+  ],
+  "namedHere": [
+    "the-construct-gap",
+    "the-metric-mirage",
+    "the-gold-standard-myth",
+    "judge-bias",
+    "once-is-not-reliable",
+    "the-cost-frontier",
+    "no-error-bars-no-result",
+    "the-averaging-trap",
+    "the-baseline-rule",
+    "the-reproducibility-rule",
+    "presence-not-absence",
+    "the-lab-to-field-gap",
+    "the-team-is-the-system"
+  ]
+}

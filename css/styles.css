@@ -742,3 +742,6 @@ body.has-tray { padding-bottom: 64px; }
   .nav-group__menu { display: flex; position: static; border: 0; padding: 0; min-width: 0; }
   .site-nav.is-open .nav-group__menu a { padding-left: var(--space-4); }
 }
+
+/* Status notes */
+.law__status { margin-top: var(--space-3, 12px); font: 400 var(--fs-xs)/1.4 var(--font-body); color: var(--ink-soft); }

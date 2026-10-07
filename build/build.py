@@ -27,6 +27,7 @@ SITE = load("site.json")
 LAWS = load("laws.json")
 EDIT = load("editorial.json")
 ROOM = load("room.json")
+NAMING = load("naming.json")
 GLOSS = load("glossary.json")
 CHANGELOG = load("changelog.json")["entries"]
 
@@ -601,6 +602,11 @@ def build_law(i, law):
 
     plain_box = '<section class="plain" aria-labelledby="plain-terms"><h2 class="plain__label" id="plain-terms">In plain terms</h2><p>%s</p></section>' % esc(typo(law["plainTerms"]))
 
+    name_note = (
+        "Established term: this name is used in the research literature."
+        if law["slug"] in NAMING["established"]
+        else "The idea is established. The name is this site\u2019s, chosen to make it easier to remember."
+    )
     trust = (
         '<dl class="trust">'
         '<div><dt>Last reviewed</dt><dd>%s</dd></div>'
@@ -608,7 +614,7 @@ def build_law(i, law):
         '<div><dt>Source types</dt><dd class="trust__small">%s</dd></div>'
         '<div><dt>Version</dt><dd>%s <span class="trust__small">%s</span></dd></div></dl>'
         % (fmt_date(law["evidenceChecked"]), len(law["sources"]), esc(source_mix(law)), esc(law["version"]), fmt_date(law["published"]))
-    )
+    ) + '<p class="law__status">%s <a href="../about.html#status">About this guide\u2019s status</a></p>' % esc(name_note)
 
     # right column
     aside = []
@@ -830,6 +836,19 @@ def build_changelog():
 
 
 def build_about():
+    est = "; ".join(BY_SLUG[x]["name"] for x in NAMING["established"])
+    here = "; ".join(BY_SLUG[x]["name"] for x in NAMING["namedHere"])
+    status = '''  <section><h2 id="status">Status of this guide</h2>
+  <p>This is an independent, self-published reference built from published research. It has not been through formal peer review. Every law links to its sources, so you can check the evidence for yourself.</p>
+  <h3>Established terms and names from this site</h3>
+  <p>Not every law name is standard. The idea behind each law is established in the research, but for some the name is this site\u2019s own.</p>
+  <ul>
+    <li><strong>Established terms (%(n_est)d):</strong> %(est)s.</li>
+    <li><strong>Named on this site (%(n_here)d):</strong> %(here)s. Please do not cite these as established terms. Cite the sources linked on each page instead.</li>
+  </ul>
+  <h3>Review</h3>
+  <p>No outside reviewer has signed off on any law yet. If you work in evaluation, statistics, or a related field and see something wrong, or a better source, please say so on the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. Corrections are recorded in the <a href="changelog.html">Changelog</a>.</p></section>
+''' % {"n_est": len(NAMING["established"]), "est": esc(typo(est)), "n_here": len(NAMING["namedHere"]), "here": esc(typo(here))}
     body = """<main id="main" class="page page--prose">
   <header class="page__head"><p class="eyebrow">About</p><h1>About this guide</h1>
   <p class="page__lede">An independent reference for people who build, buy, or design with AI. It collects the reliable ways AI evaluation goes wrong, with the research behind each one.</p></header>
@@ -842,11 +861,13 @@ def build_about():
     <li>The <a href="changelog.html">Changelog</a> records what changed and when. Corrections are made in the open.</li>
     <li>Role tags, plain-terms summaries, checklist questions, and claim-checker rules are editorial work built from the laws themselves. They are starting points, not authority.</li>
   </ul></section>
-  <section><h2 id="who">Who maintains it</h2>
-  <p>Maintained by <a href="https://josephalfonso.com">Joseph Alfonso</a>, a UX design lead. To suggest a correction or a source, use the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>.</p></section>
+%(status)s  <section><h2 id="who">Who maintains it</h2>
+  <p>Hi, I\u2019m <a href="https://josephalfonso.com">Joseph Alfonso</a>, a UX design lead. I made this guide because I wanted to understand how AI really gets judged, and how those judgments go wrong. Writing it down was how I learned.</p>
+  <p>I care about this because AI can feel like something that happens to us. I don\u2019t think it has to. The more we understand how it works and why it fails, the more we can use it on our own terms and ask better questions of the people selling it, building it, or telling us to trust it.</p>
+  <p>I\u2019m still learning, and I\u2019ve tried to be honest about what I know and don\u2019t. If you find a mistake, or a better source, please tell me through the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. I\u2019d be grateful, and I\u2019ll fix it. I hope this helps you the way making it helped me.</p></section>
   <section><h2 id="how-to-use">How to use it</h2>
   <p>Start with the <a href="guide.html">guide</a>, browse the <a href="index.html">laws</a>, describe your circumstances to <a href="situation-finder.html">find your laws</a>, or paste a claim into the <a href="claim-checker.html">claim checker</a> to see which laws apply. Collect any laws with the Add buttons to get a <a href="brief.html">quick brief</a>, or turn them into a printable sheet with the <a href="checklist.html">checklist builder</a>.</p></section>
-</main>"""
+</main>""" % {"status": status}
     write("about.html", layout("About", "About Laws of AI Evaluation: what a law means here, the editorial policy, and who maintains it.", body, current="about"))
 
 
@@ -1029,7 +1050,7 @@ def build_brief():
     <div class="picker" data-brief-grid></div></details>
   <div class="brief__out" data-brief-out></div>
   <noscript><p class="page__note">The quick brief needs JavaScript. You can read each law on the <a href="index.html">laws page</a> instead.</p></noscript>
-  <p class="page__note">Assembled in your browser from each law\u2019s own text. The plain-terms summaries were drafted with AI and are starting points: read the full law and its sources before you rely on one.</p>
+  <p class="page__note">Assembled in your browser from each law\u2019s own text. Read the full law and its sources before you rely on one.</p>
 </main>"""
     write("brief.html", layout("Quick brief", "Pick any laws and get a short overview you can read in a few minutes, built from each law's own text.", body, current="laws", data=True, scripts=("brief.js",)))
 
