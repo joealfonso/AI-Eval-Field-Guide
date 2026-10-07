@@ -745,4 +745,3 @@ body.has-tray { padding-bottom: 64px; }
 
 /* Status notes */
 .law__status { margin-top: var(--space-3, 12px); font: 400 var(--fs-xs)/1.4 var(--font-body); color: var(--ink-soft); }
-.plain__note { margin-top: var(--space-2, 8px); font: 400 var(--fs-xs)/1.4 var(--font-body) !important; color: var(--ink-soft); }

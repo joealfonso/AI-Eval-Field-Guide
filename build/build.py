@@ -600,7 +600,7 @@ def build_law(i, law):
   <div role="tabpanel" id="panel-link" aria-labelledby="tab-link" data-panel="link" hidden><pre><code>%s</code></pre></div>
 </div>""" % (esc(cite_apa), esc(cite_bib), esc(url))
 
-    plain_box = '<section class="plain" aria-labelledby="plain-terms"><h2 class="plain__label" id="plain-terms">In plain terms</h2><p>%s</p><p class="plain__note">Drafted with AI. Check it against the evidence and sources below.</p></section>' % esc(typo(law["plainTerms"]))
+    plain_box = '<section class="plain" aria-labelledby="plain-terms"><h2 class="plain__label" id="plain-terms">In plain terms</h2><p>%s</p></section>' % esc(typo(law["plainTerms"]))
 
     name_note = (
         "Established term: this name is used in the research literature."
@@ -662,8 +662,8 @@ def build_law(i, law):
     <section class="sec" aria-labelledby="takeaways">%(h_take)s<ul class="dash">%(takeaways)s</ul></section>
     <section class="sec" aria-labelledby="what-it-means">%(h_means)s%(means)s</section>
     <section class="sec" aria-labelledby="the-evidence">%(h_evid)s%(evidence)s</section>
-    <section class="sec" aria-labelledby="use-it">%(h_use)s<p class="sec__sub">Editorial judgment, not a finding from the sources.</p><ol class="num">%(use_it)s</ol></section>
-    <section class="sec" aria-labelledby="questions-to-ask">%(h_q)s<p class="sec__sub">For vendor reviews, model cards, and launch reviews. Written for this site, not taken from the sources.</p><ul class="qlist">%(questions)s</ul></section>
+    <section class="sec" aria-labelledby="use-it">%(h_use)s<ol class="num">%(use_it)s</ol></section>
+    <section class="sec" aria-labelledby="questions-to-ask">%(h_q)s<p class="sec__sub">For vendor reviews, model cards, and launch reviews.</p><ul class="qlist">%(questions)s</ul></section>
     <section class="sec" aria-labelledby="origins">%(h_orig)s%(origins)s</section>
     <section class="sec" aria-labelledby="sources">%(h_src)s<ol class="sources">%(sources)s</ol></section>
     <section class="sec" aria-labelledby="cite-this-law">%(h_cite)s%(cite)s</section>
@@ -839,18 +839,12 @@ def build_about():
     est = "; ".join(BY_SLUG[x]["name"] for x in NAMING["established"])
     here = "; ".join(BY_SLUG[x]["name"] for x in NAMING["namedHere"])
     status = '''  <section><h2 id="status">Status of this guide</h2>
-  <p>This is an independent, self-published reference. It has not been peer reviewed and it is not research. Its authority comes from the sources it cites, so check those before you rely on anything here.</p>
+  <p>This is an independent, self-published reference built from published research. It has not been through formal peer review. Every law links to its sources, so you can check the evidence for yourself.</p>
   <h3>Established terms and names from this site</h3>
   <p>Not every law name is standard. The idea behind each law is established in the research, but for some the name is this site\u2019s own.</p>
   <ul>
     <li><strong>Established terms (%(n_est)d):</strong> %(est)s.</li>
     <li><strong>Named on this site (%(n_here)d):</strong> %(here)s. Please do not cite these as established terms. Cite the sources linked on each page instead.</li>
-  </ul>
-  <h3>Evidence versus editorial judgment</h3>
-  <ul>
-    <li>The <strong>Evidence</strong> and <strong>Sources</strong> sections report published work.</li>
-    <li>The <strong>In plain terms</strong> summaries were drafted with AI. Treat them as starting points.</li>
-    <li><strong>How to use it</strong>, <strong>Questions to ask</strong>, role tags, and the tools (claim checker, situation finder, checklist, Use it now) are editorial judgment built from the laws. They are suggestions, not findings.</li>
   </ul>
   <h3>Review</h3>
   <p>No outside reviewer has signed off on any law yet. If you work in evaluation, statistics, or a related field and see something wrong, or a better source, please say so on the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. Corrections are recorded in the <a href="changelog.html">Changelog</a>.</p></section>
