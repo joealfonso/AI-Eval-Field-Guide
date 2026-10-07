@@ -418,6 +418,9 @@ kbd { font: 400 var(--fs-mono-xs)/1 var(--font-mono); border: var(--border); pad
 .result__why { margin-top: var(--space-2); font-size: 15px; line-height: 1.5; }
 .result__ask { margin-top: var(--space-3); padding: 10px 14px; background: var(--surface); border: var(--border); font-size: var(--fs-small); line-height: 1.45; }
 .result__ask b { font: 500 var(--fs-mono-xs)/1 var(--font-mono); color: var(--accent); margin-right: var(--space-2); }
+.result-group { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); padding-bottom: var(--space-2); border-bottom: 1px solid var(--ink); font: 500 var(--fs-sec-title)/1.15 var(--font-display); }
+.result-group span { font: 400 var(--fs-mono)/1.4 var(--font-mono); color: var(--muted); }
+.result__from { margin-top: var(--space-3); font: 400 var(--fs-mono-xs)/1.5 var(--font-mono); color: var(--muted); }
 .claim__more { margin-top: var(--space-5); }
 .claim__rules { margin-top: var(--space-10); border-top: 1px solid var(--ink); padding-top: var(--space-5); max-width: 760px; }
 .claim__rules h2 { font: 500 var(--fs-sec-title)/1.15 var(--font-display); margin-bottom: var(--space-3); }
@@ -602,7 +605,7 @@ body.has-tray { padding-bottom: 64px; }
   .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .claim { grid-template-columns: minmax(0, 1fr); gap: var(--space-8); }
 }
-@media (max-width: 1000px) {
+@media (max-width: 1180px) {
   .site-nav, .search-trigger { display: none; }
   .header-actions { display: flex; }
   .site-nav.is-open {
@@ -610,6 +613,8 @@ body.has-tray { padding-bottom: 64px; }
     border-bottom: 1px solid var(--ink); padding: var(--space-2) var(--page-gutter) var(--space-4); margin: 0;
   }
   .site-nav.is-open a { padding: 14px 0; min-height: 44px; border-bottom: 1px solid var(--rule-faint); }
+}
+@media (max-width: 1000px) {
   .hero { flex-direction: column; align-items: flex-start; }
   .hero__meta { text-align: left; }
 }

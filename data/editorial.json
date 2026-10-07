@@ -383,5 +383,512 @@
       { "detect": "\\b(fair|unbiased|all users|every user|across (all )?(groups|languages|regions))\\b", "slug": "the-averaging-trap", "fit": "likely", "why": "An average cannot show who the system fails.", "ask": 0 },
       { "detect": "\\b(cheap(er)?|costs?|latency|efficient|per token)\\b", "slug": "the-cost-frontier", "fit": "likely", "why": "Accuracy without cost is half a result.", "ask": 0 }
     ]
+  },
+  "situationFinder": {
+    "_note": "Situation finder rules. Each situation maps a described circumstance to the laws a careful reader would check first, in the same shape as the claim-checker types. Authored for the site build and needs editorial review.",
+    "example": "We are about to launch an AI assistant that helps recruiters screen resumes. We tested it on our own benchmark and had another model grade the answers, but nobody has checked how it does for different groups of applicants.",
+    "situations": [
+      {
+        "id": "choosing",
+        "label": "Choosing a model or vendor",
+        "detect": "\\b(buy(ing)?|procure(ment)?|vendors?|rfp|which (model|vendor|provider|llm)|choos(e|ing) (a |an |between )?(model|vendor|provider|llm)|select(ing)? (a |an )?(model|vendor|provider|llm)|compar(e|ing) (models|vendors|providers|llms)|evaluat(e|ing) (models|vendors|providers))\\b",
+        "laws": [
+          {
+            "slug": "the-functionality-fallacy",
+            "fit": "strong",
+            "why": "You are deciding whether to rely on a system you did not build. Before comparing options, ask for evidence that any of them works on data like yours.",
+            "ask": 0
+          },
+          {
+            "slug": "the-construct-gap",
+            "fit": "strong",
+            "why": "Vendors usually show scores on tests with impressive names. Check that those tests resemble the work you need done.",
+            "ask": 0
+          },
+          {
+            "slug": "the-baseline-rule",
+            "fit": "likely",
+            "why": "A vendor's win only counts against a fair comparison. Ask what it beat, and whether your current process was in the comparison.",
+            "ask": 0
+          },
+          {
+            "slug": "the-benchmark-lottery",
+            "fit": "likely",
+            "why": "Which benchmarks appear in a vendor's table can decide who looks best. Ask which common ones are missing.",
+            "ask": 0
+          },
+          {
+            "slug": "data-contamination",
+            "fit": "likely",
+            "why": "Public benchmark scores may reflect memorized test items. Ask how overlap with training data was ruled out.",
+            "ask": 0
+          },
+          {
+            "slug": "the-cost-frontier",
+            "fit": "likely",
+            "why": "Two options can score the same at very different cost. Ask for cost and latency next to every accuracy number.",
+            "ask": 0
+          },
+          {
+            "slug": "the-reproducibility-rule",
+            "fit": "worth",
+            "why": "A vendor's result you cannot rerun is an anecdote. Check that the setup is recorded well enough for you to repeat it.",
+            "ask": 0
+          }
+        ]
+      },
+      {
+        "id": "buildeval",
+        "label": "Building our own evaluation",
+        "detect": "\\b((build|building|design|designing|create|creating|set up|setting up|start(ing)?|write|writing|develop(ing)?)\\b[^.]{0,25}\\b(evals?|evaluations?|test sets?|benchmarks?|golden sets?|rubrics?|eval suite)|no evals?|don'?t have (any )?(evals?|tests?)|how (do|should) we (test|evaluate|measure))\\b",
+        "laws": [
+          {
+            "slug": "adaptive-overfitting",
+            "fit": "strong",
+            "why": "Your own test set stops being a fair test once you iterate against it. Lock a portion away before you start tuning.",
+            "ask": 0
+          },
+          {
+            "slug": "the-gold-standard-myth",
+            "fit": "strong",
+            "why": "The answer key you build is a measurement with errors. Check how often independent raters agree before you trust it.",
+            "ask": 0
+          },
+          {
+            "slug": "no-error-bars-no-result",
+            "fit": "strong",
+            "why": "A small eval set gives a wide range of plausible scores. Decide how many items and runs you need before comparing anything.",
+            "ask": 0
+          },
+          {
+            "slug": "criteria-drift",
+            "fit": "likely",
+            "why": "You will learn what good means by reading real outputs, so your rubric will change. Version it and keep a fixed reference set.",
+            "ask": 0
+          },
+          {
+            "slug": "prompt-sensitivity",
+            "fit": "likely",
+            "why": "Your results will depend on the prompt you choose. Test rephrasings before treating a score as a property of the model.",
+            "ask": 0
+          },
+          {
+            "slug": "the-metric-mirage",
+            "fit": "likely",
+            "why": "Pick and justify your metrics before you see results, so the scoring method does not decide the conclusion.",
+            "ask": 1
+          },
+          {
+            "slug": "the-reproducibility-rule",
+            "fit": "likely",
+            "why": "Record the model version, prompts, settings and data from the start, so the eval can be rerun later.",
+            "ask": 0
+          }
+        ]
+      },
+      {
+        "id": "prelaunch",
+        "label": "About to launch or pilot",
+        "detect": "\\b(launch(ing|es)?|ship(ping)?|releas(e|ing)|go(ing)? live|go[- ]live|roll(ing)? ?out|rollout|pilot(ing)?|before (we )?(deploy|go|launch|ship)|production[- ]ready|beta)\\b",
+        "laws": [
+          {
+            "slug": "the-lab-to-field-gap",
+            "fit": "strong",
+            "why": "Testing before launch happens in conditions that are cleaner than real use. Plan a pilot and measure what changes for real users.",
+            "ask": 0
+          },
+          {
+            "slug": "distribution-shift",
+            "fit": "strong",
+            "why": "Your test data comes from a past population. Check how it compares with the inputs you will actually receive.",
+            "ask": 0
+          },
+          {
+            "slug": "the-averaging-trap",
+            "fit": "likely",
+            "why": "A good overall score can hide a group the system fails. Decide which user groups matter and report each.",
+            "ask": 0
+          },
+          {
+            "slug": "once-is-not-reliable",
+            "fit": "likely",
+            "why": "Users meet the all-runs pass rate, not your best run. Measure how often it works every time.",
+            "ask": 0
+          },
+          {
+            "slug": "evaluation-awareness",
+            "fit": "likely",
+            "why": "Models can behave differently when they can tell they are being tested. Build launch tests from messy, real usage.",
+            "ask": 0
+          },
+          {
+            "slug": "presence-not-absence",
+            "fit": "likely",
+            "why": "A clean pre-launch test shows you did not find a problem, not that none exists. Ask how hard anyone tried.",
+            "ask": 0
+          },
+          {
+            "slug": "the-jagged-frontier",
+            "fit": "worth",
+            "why": "Capability is uneven. Test tasks that seem easy to people, not only the hard ones, and tell users where the known gaps are.",
+            "ask": 0
+          }
+        ]
+      },
+      {
+        "id": "live",
+        "label": "Already in production",
+        "detect": "\\b(already (in production|live|deployed|launched|shipped)|in production|(is|are|was|were) (live|deployed|shipped)|(our )?(users|customers) (are|have|keep|say|report|complain)|complaints?|since (we )?(launch|launched|shipped|release)|monitor(ing)?|drift(ing|ed)?|got worse|getting worse|regress(ion|ed|ing)?)\\b",
+        "laws": [
+          {
+            "slug": "distribution-shift",
+            "fit": "strong",
+            "why": "Real inputs change over time. Compare current production inputs with the data you tested on.",
+            "ask": 1
+          },
+          {
+            "slug": "the-lab-to-field-gap",
+            "fit": "strong",
+            "why": "What users report may not show up in your earlier tests. Find which lab results did not hold in real use.",
+            "ask": 1
+          },
+          {
+            "slug": "goodharts-law",
+            "fit": "likely",
+            "why": "Once a metric guides decisions it stops being a good measure. Decide who judges when your live metric has stopped being useful.",
+            "ask": 3
+          },
+          {
+            "slug": "evaluation-awareness",
+            "fit": "likely",
+            "why": "Compare behavior in your tests with behavior in monitored real use, because the two can differ.",
+            "ask": 1
+          },
+          {
+            "slug": "the-averaging-trap",
+            "fit": "likely",
+            "why": "An average over all users can hide the group that is complaining. Look at the worst-performing slice.",
+            "ask": 1
+          }
+        ]
+      },
+      {
+        "id": "llmjudge",
+        "label": "Using an AI to grade outputs",
+        "detect": "\\b(llm[- ]as[- ]a[- ]judge|ai[- ]graded|ai grader|judge model|model[- ]graded|auto[- ]?grad(ed|er|ing)|(gpt|claude|gemini|an? llm|a model|another model)\\b[^.]{0,25}\\b(grad(e|es|ing)|judg(e|es|ing)|scor(e|es|ing)|rat(e|es|ing))\\b)",
+        "laws": [
+          {
+            "slug": "judge-bias",
+            "fit": "strong",
+            "why": "AI graders have favorites, such as longer answers or their own model family. Check the grader against human judgments on a sample.",
+            "ask": 0
+          },
+          {
+            "slug": "criteria-drift",
+            "fit": "likely",
+            "why": "The grading prompt is your rubric, and it will change as you read outputs. Version it and re-grade a fixed reference set.",
+            "ask": 0
+          },
+          {
+            "slug": "the-gold-standard-myth",
+            "fit": "likely",
+            "why": "Human ratings used to check the grader also contain errors and disagreement. Measure how often raters agree.",
+            "ask": 0
+          },
+          {
+            "slug": "prompt-sensitivity",
+            "fit": "worth",
+            "why": "The grader is a prompt too. Small changes in how it is asked to score can move results.",
+            "ask": 0
+          }
+        ]
+      },
+      {
+        "id": "noisy",
+        "label": "Scores are noisy or inconsistent",
+        "detect": "\\b((scores?|results?|numbers?|accuracy|outputs?) (keep |kept )?(chang(e|es|ing|ed)|fluctuat(e|es|ing)|jump(s|ing)?|vary|varies|varying|differ(s)?|(is|are) inconsistent)|different (each|every) (time|run)|can'?t (reproduce|replicate)|sometimes (works?|fails?|passes)|flaky|non-?determinis(m|tic)|re-?run(ning)?|run(ning)? (it )?(again|twice|multiple times)|second run)\\b",
+        "laws": [
+          {
+            "slug": "once-is-not-reliable",
+            "fit": "strong",
+            "why": "If results change between runs, one run is not a result. Report the pass rate across repeated runs.",
+            "ask": 0
+          },
+          {
+            "slug": "no-error-bars-no-result",
+            "fit": "strong",
+            "why": "Differences smaller than the noise are not differences. Put an interval on each score and compare on the same items.",
+            "ask": 0
+          },
+          {
+            "slug": "prompt-sensitivity",
+            "fit": "likely",
+            "why": "Small changes in wording or formatting can swing a score. Measure how much it moves across reasonable rephrasings.",
+            "ask": 0
+          },
+          {
+            "slug": "the-reproducibility-rule",
+            "fit": "likely",
+            "why": "If you cannot reproduce a result, record the model version, settings and data so you can find out why.",
+            "ask": 0
+          }
+        ]
+      },
+      {
+        "id": "highstakes",
+        "label": "Affects people's decisions or safety",
+        "detect": "\\b(hir(e|es|ing)|recruit(ing|er|ers|ment)?|resum(e|es)|applicants?|loans?|credit|lending|underwrit(e|ing)|insurance|medical|clinical|clinicians?|patients?|diagnos(is|es|tic)|health(care)?|legal|court|benefits?|housing|admissions?|student(s)?|safety|child(ren)?|vulnerable|high[- ]stakes|regulat(ed|ion|ory|or)|compliance|audit(s|ed)?)\\b",
+        "laws": [
+          {
+            "slug": "the-functionality-fallacy",
+            "fit": "strong",
+            "why": "When a system affects people, whether it works comes before whether it is fair. Ask what it does when it is wrong, and how often.",
+            "ask": 1
+          },
+          {
+            "slug": "the-averaging-trap",
+            "fit": "strong",
+            "why": "A strong average can hide a group the system fails badly. Report results for the groups that matter.",
+            "ask": 0
+          },
+          {
+            "slug": "the-team-is-the-system",
+            "fit": "likely",
+            "why": "If a person reviews the output, test the person and the AI together, not the AI alone.",
+            "ask": 0
+          },
+          {
+            "slug": "presence-not-absence",
+            "fit": "likely",
+            "why": "An evaluation cannot prove a harm is absent. Ask who tried to find it and whether they had domain expertise.",
+            "ask": 1
+          },
+          {
+            "slug": "the-gold-standard-myth",
+            "fit": "worth",
+            "why": "In high-stakes areas the labels are often contested. Ask who audited the items where strong models disagree with the answer key.",
+            "ask": 1
+          }
+        ]
+      },
+      {
+        "id": "humans",
+        "label": "People work alongside the AI",
+        "detect": "\\b(human[- ]in[- ]the[- ]loop|co-?pilots?|(humans?|people|reviewers?|agents?|clinicians?|analysts?|employees|staff|operators?|users?)\\b[^.]{0,30}\\b(review|approve|check|oversee|oversight|rel(y|ies|ying) on|trust(s|ing)?|work(s|ing)? with|use(s|d)? (it|the (tool|assistant|system|model)))|assistant for|decision support|augment(s|ing)?)\\b",
+        "laws": [
+          {
+            "slug": "the-team-is-the-system",
+            "fit": "strong",
+            "why": "The person and the AI together produce the outcome. Compare the pair with the human alone and the AI alone.",
+            "ask": 0
+          },
+          {
+            "slug": "the-jagged-frontier",
+            "fit": "likely",
+            "why": "People cannot see where the AI's edges are. Tell users the known failure pockets, and check which tasks they over-trust it on.",
+            "ask": 1
+          },
+          {
+            "slug": "the-lab-to-field-gap",
+            "fit": "worth",
+            "why": "Real workflows add time pressure and interruptions. Measure what changes when people use it for real.",
+            "ask": 0
+          }
+        ]
+      },
+      {
+        "id": "benchmarks",
+        "label": "Relying on public benchmarks or leaderboards",
+        "detect": "\\b(mmlu|gsm8k|humaneval|swe-?bench|hellaswag|big-?bench|leaderboards?|public benchmarks?|benchmarks?|state[- ]of[- ]the[- ]art|sota|lmarena|arena)\\b",
+        "laws": [
+          {
+            "slug": "the-construct-gap",
+            "fit": "strong",
+            "why": "A benchmark measures what it measures, not what its name says. Check how it resembles your real tasks.",
+            "ask": 0
+          },
+          {
+            "slug": "benchmark-saturation",
+            "fit": "strong",
+            "why": "Tests stop separating systems once everyone scores near the top. Check how close the leaders are to the ceiling.",
+            "ask": 0
+          },
+          {
+            "slug": "data-contamination",
+            "fit": "strong",
+            "why": "Public test items can end up in training data. Ask how overlap was checked and whether newer data confirms the result.",
+            "ask": 0
+          },
+          {
+            "slug": "the-benchmark-lottery",
+            "fit": "likely",
+            "why": "Which benchmarks are shown can decide who wins. Ask which common ones are missing from the table.",
+            "ask": 1
+          },
+          {
+            "slug": "goodharts-law",
+            "fit": "likely",
+            "why": "Systems get tuned toward well-known benchmarks. Check whether the reported metric was also the one optimized.",
+            "ask": 0
+          }
+        ]
+      },
+      {
+        "id": "groups",
+        "label": "Many users, languages or groups",
+        "detect": "\\b(languages?|multi-?lingual|global(ly)?|international|countries|regions?|locales?|demographics?|accessib(le|ility)|user (groups?|segments?)|different (users|customers|markets|populations|groups)|fair(ness)?|bias(ed)?|equit(y|able)|underserved|minorit(y|ies))\\b",
+        "laws": [
+          {
+            "slug": "the-averaging-trap",
+            "fit": "strong",
+            "why": "An overall score can hide the language or group that fails. Name the groups that matter and report each with its own error bars.",
+            "ask": 0
+          },
+          {
+            "slug": "distribution-shift",
+            "fit": "likely",
+            "why": "Results on one population do not automatically carry over to another. Check how your test data compares with each group you serve.",
+            "ask": 0
+          },
+          {
+            "slug": "the-jagged-frontier",
+            "fit": "worth",
+            "why": "Capability is uneven across tasks and groups. Document the known failure pockets and tell users.",
+            "ask": 1
+          }
+        ]
+      },
+      {
+        "id": "metricpressure",
+        "label": "The team is chasing a number",
+        "detect": "\\b(targets?|okrs?|kpis?|bonus(es)?|incentives?|quota|(improve|raise|increase|boost|move) (the |our )?(score|metric|number|accuracy)|optimi[sz](e|ing|ed) (for|against|on)|hit(ting)? (the|a|our) (number|target|score)|goal (is|of)[^.]{0,25}(score|metric|%))\\b",
+        "laws": [
+          {
+            "slug": "goodharts-law",
+            "fit": "strong",
+            "why": "When a measure becomes a target it stops being a good measure. Check whether the metric you report is the one you optimized.",
+            "ask": 0
+          },
+          {
+            "slug": "campbells-law",
+            "fit": "strong",
+            "why": "The more a number drives decisions, the more people bend their work around it. Back important decisions with independent measures.",
+            "ask": 0
+          },
+          {
+            "slug": "adaptive-overfitting",
+            "fit": "likely",
+            "why": "Repeated tuning against the same test set makes it worth less each time. Keep a locked set you rarely consult.",
+            "ask": 0
+          },
+          {
+            "slug": "the-metric-mirage",
+            "fit": "likely",
+            "why": "The scoring method is part of the result. Check that the gain holds under a second metric.",
+            "ask": 0
+          }
+        ]
+      },
+      {
+        "id": "agents",
+        "label": "Agents, multi-step workflows or cost",
+        "detect": "\\b(agents?|agentic|tool[- ]use|tool calls?|multi-?step|workflows?|pipelines?|retrieval|rag|token (cost|spend|usage)|latency|expensive|compute budget|cheaper|inference cost|cost)\\b",
+        "laws": [
+          {
+            "slug": "the-cost-frontier",
+            "fit": "strong",
+            "why": "You can buy accuracy with more compute. Report cost and latency next to every accuracy number and compare at matched cost.",
+            "ask": 0
+          },
+          {
+            "slug": "once-is-not-reliable",
+            "fit": "likely",
+            "why": "Multi-step systems compound small failure rates. Measure the pass rate across repeated runs of the whole task.",
+            "ask": 0
+          },
+          {
+            "slug": "the-baseline-rule",
+            "fit": "likely",
+            "why": "A complex system should beat a simple one tuned just as hard. Give simple baselines the same tuning budget.",
+            "ask": 1
+          }
+        ]
+      },
+      {
+        "id": "safety",
+        "label": "Safety, red-teaming or 'it never does X'",
+        "detect": "\\b(red[- ]?team(ing|ed)?|jailbreaks?|safety|harm(s|ful)?|never (does|do|says?|will|produces?|outputs?)|no evidence of|dangerous|misuse|guardrails?|refus(e|es|al|als)|prompt injection|adversarial)\\b",
+        "laws": [
+          {
+            "slug": "presence-not-absence",
+            "fit": "strong",
+            "why": "A test can show a risk exists but not that none does. Ask how hard anyone tried and with which tools.",
+            "ask": 0
+          },
+          {
+            "slug": "evaluation-awareness",
+            "fit": "likely",
+            "why": "A model that can tell it is being tested may behave differently in real use. Compare test behavior with monitored real behavior.",
+            "ask": 0
+          },
+          {
+            "slug": "prompt-sensitivity",
+            "fit": "worth",
+            "why": "Whether a jailbreak works can depend on small wording changes. A single attempt is not coverage.",
+            "ask": 0
+          }
+        ]
+      },
+      {
+        "id": "labels",
+        "label": "Labels, raters or ground truth",
+        "detect": "\\b(labels?|labell?ed|labell?ing|annotat(e|ed|ion|ions|ors?)|raters?|ground truth|gold (set|standard|labels?)|human (ratings?|evals?|evaluations?|judg(e)?ments?)|answer key|inter-?annotator|crowd-?work(ers)?)\\b",
+        "laws": [
+          {
+            "slug": "the-gold-standard-myth",
+            "fit": "strong",
+            "why": "Labels and human ratings are measurements with error. Measure how often independent raters agree before trusting the answer key.",
+            "ask": 0
+          },
+          {
+            "slug": "the-clever-hans-effect",
+            "fit": "likely",
+            "why": "A model can match the labels for the wrong reason. Run partial-input baselines to check it uses the part of the input that should matter.",
+            "ask": 0
+          },
+          {
+            "slug": "criteria-drift",
+            "fit": "likely",
+            "why": "If the rating guidelines changed, re-grade a fixed reference set so trends stay comparable.",
+            "ask": 1
+          }
+        ]
+      },
+      {
+        "id": "shortcut",
+        "label": "Suspiciously good results",
+        "detect": "\\b(shortcuts?|spurious|artifacts?|too good to be true|suspicious(ly)? (high|good)|surprisingly (high|good)|near[- ]perfect|memori[sz](e|ed|ing|ation)|leak(s|ed|age)?|right answer for the wrong)\\b",
+        "laws": [
+          {
+            "slug": "the-clever-hans-effect",
+            "fit": "strong",
+            "why": "A model can get the right answer for the wrong reason. Check whether accuracy holds when the part that should matter is removed.",
+            "ask": 0
+          },
+          {
+            "slug": "data-contamination",
+            "fit": "strong",
+            "why": "If the test was in the training data, the score measures memory. Ask what overlap analysis was run and confirm on newer data.",
+            "ask": 0
+          },
+          {
+            "slug": "adaptive-overfitting",
+            "fit": "likely",
+            "why": "Repeated tuning against the same test makes it flatter you. Check for a locked test set that was rarely used.",
+            "ask": 0
+          }
+        ]
+      }
+    ]
   }
 }

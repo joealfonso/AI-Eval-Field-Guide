@@ -41,6 +41,7 @@ for _c in CATS:
 CAT = {c["id"]: c for c in CATS}
 NAV = [
     ("Laws", "index.html", "laws"),
+    ("Find your laws", "situation-finder.html", "situation"),
     ("Claim checker", "claim-checker.html", "claim"),
     ("Design Rubric", "design-rubric.html", "rubric"),
     ("Readiness Review", "readiness-review.html", "review"),
@@ -820,7 +821,7 @@ def build_about():
   <section><h2 id="who">Who maintains it</h2>
   <p>Maintained by <a href="https://josephalfonso.com">Joseph Alfonso</a>, a UX design lead. To suggest a correction or a source, use the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>.</p></section>
   <section><h2 id="how-to-use">How to use it</h2>
-  <p>Start with the <a href="guide.html">guide</a>, browse the <a href="index.html">laws</a>, or paste a claim into the <a href="claim-checker.html">claim checker</a> to see which laws apply. Collect any laws with the Add buttons to get a <a href="brief.html">quick brief</a>, or turn them into a printable sheet with the <a href="checklist.html">checklist builder</a>.</p></section>
+  <p>Start with the <a href="guide.html">guide</a>, browse the <a href="index.html">laws</a>, describe your circumstances to <a href="situation-finder.html">find your laws</a>, or paste a claim into the <a href="claim-checker.html">claim checker</a> to see which laws apply. Collect any laws with the Add buttons to get a <a href="brief.html">quick brief</a>, or turn them into a printable sheet with the <a href="checklist.html">checklist builder</a>.</p></section>
 </main>"""
     write("about.html", layout("About", "About Laws of AI Evaluation: what a law means here, the editorial policy, and who maintains it.", body, current="about"))
 
@@ -904,6 +905,41 @@ def build_guide_pages():
     guide_page("bibliography.html", "Bibliography", "Guide", "Every source cited on this site.", '<p class="page__lede">%s</p>' % inline(intro), '<ul class="bib">%s</ul>' % items)
 
 
+# ---------------------------------------------------------------- situation finder
+def build_situation_finder():
+    sf = EDIT["situationFinder"]
+    sigs = sf["situations"]
+    chips = "".join('<button type="button" class="chip-toggle" data-type="%s" aria-pressed="false">%s</button>' % (t["id"], esc(t["label"])) for t in sigs)
+    rules = ""
+    for t in sigs:
+        rows = "".join("<li><a href=\"%s\">%s</a> <span class=\"rules__fit\">%s</span> %s</li>" % (law_url(r["slug"]), esc(typo(BY_SLUG[r["slug"]]["name"])), {"strong": "strong match", "likely": "likely", "worth": "worth checking"}[r["fit"]], esc(typo(r["why"]))) for r in t["laws"])
+        rules += "<h3>%s</h3><ul>%s</ul>" % (esc(t["label"]), rows)
+    body = """<main id="main" class="page page--claim" data-page="situation">
+  <div class="claim">
+    <section class="claim__input" aria-labelledby="sit-h">
+      <p class="eyebrow eyebrow--muted">Tool</p>
+      <h1 id="sit-h">Find your laws</h1>
+      <p class="page__lede">Describe where you are with an AI system: what you are building or buying, how you test it, who it affects. You get the laws worth checking first, why each applies, and a question to ask.</p>
+      <label class="field-label" for="sit-text">Your situation</label>
+      <textarea id="sit-text" class="claim__text" rows="6" placeholder="%s"></textarea>
+      <p class="field-label field-label--row" id="sit-type-label">What we picked up <span class="muted-inline" data-detect-note>Detected from your description, edit if wrong</span></p>
+      <div class="chip-toggles" role="group" aria-labelledby="sit-type-label">%s</div>
+      <div class="claim__buttons"><button class="btn btn--accent" type="button" data-find>Find my laws</button><button class="btn btn--outline" type="button" data-export disabled>Export questions</button><button class="btn btn--ghost" type="button" data-example>Try an example</button></div>
+      <p class="claim__note">Runs in your browser; nothing you type is sent anywhere. Matching is rule-based. <a href="#how-matching-works">How matching works</a></p>
+    </section>
+    <section class="claim__results" aria-live="polite" aria-labelledby="sit-results-h" data-results>
+      <h2 id="sit-results-h" class="visually-hidden">Results</h2>
+      <p class="claim__empty">Results appear here. Describe your situation, or choose what applies, then choose Find my laws.</p>
+    </section>
+  </div>
+  <section class="claim__rules" id="how-matching-works"><h2>How matching works</h2>
+    <p>Your description is scanned for situations a careful reader would recognize, such as buying a model, using an AI grader, or launching to real users. You can add or remove any of them. Each situation maps to the laws that matter most for it, using the manuscript\u2019s Field Guide and Being Pragmatic. Laws are ranked by how many of your situations point to them and how strongly: the top five are where to start, the next six are likely to matter, and the rest are worth a look. This is a reading aid, not an assessment of your system.</p>
+    <details><summary>Show the rules</summary>%s</details>
+  </section>
+</main>""" % (esc(sf["example"]), chips, rules)
+    write("situation-finder.html", layout("Find your laws", "Describe your situation with an AI system and see which laws to check first, why each applies, and what to ask.", body, current="situation", data=True, scripts=("situation.js",)))
+
+
 # ---------------------------------------------------------------- claim checker, checklist
 def build_claim_checker():
     types = EDIT["claimChecker"]["types"]
@@ -917,7 +953,7 @@ def build_claim_checker():
     <section class="claim__input" aria-labelledby="claim-h">
       <p class="eyebrow eyebrow--muted">Tool</p>
       <h1 id="claim-h">Check a claim</h1>
-      <p class="page__lede">Paste a claim about an AI system. You get the laws that apply, why, and a question to ask for each.</p>
+      <p class="page__lede">Paste a claim about an AI system. You get the laws that apply, why, and a question to ask for each. Not checking a claim? <a href="situation-finder.html">Describe your situation</a> instead.</p>
       <label class="field-label" for="claim-text">The claim</label>
       <textarea id="claim-text" class="claim__text" rows="5" placeholder="Our assistant scores 94%% on MMLU-Pro and beats leading models on our internal benchmark."></textarea>
       <p class="field-label field-label--row" id="type-label">What kind of claim? <span class="muted-inline" data-detect-note>Detected from the text, edit if wrong</span></p>
@@ -995,6 +1031,10 @@ def build_data_js():
             "types": [{"id": t["id"], "label": t["label"], "detect": t["detect"], "laws": [dict(r, no=nums[r["slug"]]) for r in t["laws"]]} for t in EDIT["claimChecker"]["types"]],
             "modifiers": [dict(m, no=nums[m["slug"]]) for m in EDIT["claimChecker"]["modifiers"]],
         },
+        "situation": {
+            "example": EDIT["situationFinder"]["example"],
+            "types": [{"id": t["id"], "label": t["label"], "detect": t["detect"], "laws": [dict(r, no=nums[r["slug"]]) for r in t["laws"]]} for t in EDIT["situationFinder"]["situations"]],
+        },
     }
     write("js/data.js", "/* Generated by build/build.py. Do not edit. */\nwindow.LAI = %s;\n" % json.dumps(data, ensure_ascii=False, separators=(",", ":")))
 
@@ -1045,6 +1085,7 @@ def main():
     build_changelog()
     build_about()
     build_guide_pages()
+    build_situation_finder()
     build_claim_checker()
     build_checklist()
     build_brief()
