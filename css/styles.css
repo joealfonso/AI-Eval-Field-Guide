@@ -710,3 +710,17 @@ body.has-tray { padding-bottom: 64px; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Use it now */
+.room__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+.room__card { border: 1px solid var(--border, currentColor); background: var(--surface, transparent); padding: var(--space-5, 20px); }
+.room__label { font: var(--fs-mono, 0.8rem) var(--font-mono, monospace); text-transform: uppercase; letter-spacing: .06em; opacity: .7; margin: 0 0 6px; }
+.room__heard { font: 400 1.35rem/1.25 var(--font-display); margin: 0 0 var(--space-3, 12px); }
+.room__qs { list-style: none; margin: 0 0 var(--space-3, 12px); padding: 0; display: grid; gap: 8px; }
+.room__q { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; width: 100%; text-align: left; font: inherit; color: inherit; background: transparent; border: 1px solid var(--border, currentColor); padding: 10px 12px; min-height: 44px; cursor: pointer; }
+.room__q:hover { background: rgba(0,0,0,.04); }
+.room__copy { flex: none; font: var(--fs-mono, 0.8rem) var(--font-mono, monospace); color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.room__good, .room__laws { margin: 6px 0 0; font-size: .95rem; }
+.room__foot { margin-top: var(--space-6, 24px); }
+.room__status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+@media (max-width: 899px) { .room__grid { grid-template-columns: 1fr; } }

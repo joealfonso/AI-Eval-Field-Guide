@@ -1,0 +1,93 @@
+{
+  "intro": "You do not need anyone's buy-in to ask a good question. These are phrased as curiosity, not challenge, so you can use them in a meeting, a Slack thread, or a vendor call tomorrow. Tap a question to copy it.",
+  "moments": [
+    {
+      "id": "score",
+      "heard": "“It scores 94% on the benchmark.”",
+      "questions": [
+        "What does that benchmark measure, and how close is it to what we'll use this for?",
+        "Is that one run or an average across several? What was the spread?",
+        "Do we know the model hasn't seen those test questions before?"
+      ],
+      "good": "Names the task, gives a range or number of runs, and says how contamination was checked, or admits it wasn't.",
+      "laws": ["the-construct-gap", "once-is-not-reliable", "data-contamination"]
+    },
+    {
+      "id": "better",
+      "heard": "“Model A beats Model B.”",
+      "questions": [
+        "Were both run the same way: same prompts, same settings, same data?",
+        "How big is the gap compared with the run-to-run noise?",
+        "What does each one cost per task, and does the gap justify it?"
+      ],
+      "good": "Same setup for both, a gap larger than the noise, and a cost number next to the quality number.",
+      "laws": ["prompt-sensitivity", "no-error-bars-no-result", "the-cost-frontier"]
+    },
+    {
+      "id": "demo",
+      "heard": "A great demo, or “it worked on my examples.”",
+      "questions": [
+        "How were these examples picked?",
+        "Can we try a few messy ones from our own work?",
+        "Where does it fail? Can you show me one?"
+      ],
+      "good": "Examples were chosen before seeing results, our own data gets tried, and failures are shown without being asked twice.",
+      "laws": ["the-jagged-frontier", "distribution-shift", "presence-not-absence"]
+    },
+    {
+      "id": "judge",
+      "heard": "“We had an AI grade the answers.”",
+      "questions": [
+        "Has anyone compared the AI's grades with a person's on a sample?",
+        "Is the grader a different model from the one being graded?",
+        "What does the grader reward: correct answers, or longer, more confident ones?"
+      ],
+      "good": "A human spot-check exists, the grader is separate, and there is a known list of biases it was checked for.",
+      "laws": ["judge-bias", "the-gold-standard-myth"]
+    },
+    {
+      "id": "users",
+      "heard": "“Users love it” or “the win rate is 70%.”",
+      "questions": [
+        "Who was asked, and how many?",
+        "Did they judge the answers blind, without knowing which was which?",
+        "Is that preference the same as getting the task done correctly?"
+      ],
+      "good": "A described group, blind comparison, and a separate check for correctness.",
+      "laws": ["the-metric-mirage", "criteria-drift", "the-construct-gap"]
+    },
+    {
+      "id": "ship",
+      "heard": "“It's ready to ship.”",
+      "questions": [
+        "What did we test, and what did we decide not to test?",
+        "Who is responsible when it's wrong, and how will we find out?",
+        "How will we know in a month if it's getting worse?"
+      ],
+      "good": "A named owner, a monitoring plan, and a stated list of known gaps.",
+      "laws": ["the-lab-to-field-gap", "the-team-is-the-system", "presence-not-absence"]
+    },
+    {
+      "id": "number",
+      "heard": "“It's 95% accurate.”",
+      "questions": [
+        "95% of what? Which cases, and how common are they?",
+        "What is a simple baseline score on the same data?",
+        "Which kinds of mistakes matter most, and how often do those happen?"
+      ],
+      "good": "A defined population, a baseline for comparison, and error types broken out instead of one average.",
+      "laws": ["the-averaging-trap", "the-baseline-rule"]
+    },
+    {
+      "id": "target",
+      "heard": "“We're improving the metric every week.”",
+      "questions": [
+        "Is the metric itself still the thing we care about?",
+        "Have we been tuning against the same test set?",
+        "Is there anything we stopped measuring because the number was fine?"
+      ],
+      "good": "A fresh test set is held back, and someone has looked at what the metric leaves out.",
+      "laws": ["goodharts-law", "adaptive-overfitting", "campbells-law"]
+    }
+  ]
+}
