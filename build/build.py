@@ -182,6 +182,7 @@ def prep_laws():
 
 
 BY_SLUG = prep_laws()
+BY_SLUG_NAMES = {l["name"] for l in LAWS}
 NAMES = sorted([(l["name"], l["slug"]) for l in LAWS], key=lambda t: -len(t[0]))
 PAGE_LINKS = {"Overview": "guide.html", "Being Pragmatic": "being-pragmatic.html", "Field Guide": "field-guide.html", "Glossary": "glossary.html"}
 
@@ -283,9 +284,28 @@ def manuscript_region(start, end):
 
 
 # ---------------------------------------------------------------- layout
-def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, skip="Skip to content", page_class="", head_extra=""):
+TITLE_TAGS = {
+    "Glossary": "AI evaluation glossary: key terms explained",
+    "Field Guide": "Field guide to reading AI claims and building evals",
+    "Being Pragmatic": "AI evaluation on a real team: being pragmatic",
+    "Claim checker": "AI claim checker: which laws apply to a claim",
+    "Find your laws": "Find the AI evaluation laws that fit your situation",
+    "Use it now": "Questions to ask when someone shares an AI result",
+    "AI Design Evaluation Rubric": "AI design evaluation rubric: 18 checks",
+    "AI Readiness Review": "AI readiness review: a 27-criterion launch checklist",
+    "Checklist builder": "Printable AI evaluation checklist builder",
+}
+
+
+def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, skip="Skip to content", page_class="", head_extra="", og_image=None):
     p = "../" * depth
-    full_title = title if title == SITE["title"] else "%s \u00b7 %s" % (title, SITE["title"])
+    if title == SITE["title"]:
+        full_title = "%s: %d sourced principles for judging AI claims" % (SITE["title"], len(LAWS))
+    else:
+        tag = TITLE_TAGS.get(title) or ("%s in AI evaluation" % title if title in BY_SLUG_NAMES else title)
+        full_title = "%s \u00b7 %s" % (tag, SITE["title"])
+        if len(full_title) > 72:
+            full_title = tag
     def _link(href, label, key):
         return '<a href="%s%s"%s>%s</a>' % (p, href, ' aria-current="page"' if key == current else "", label)
 
@@ -360,7 +380,7 @@ def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, ski
 </html>
 """ % {
         "analytics": analytics,
-        "og": SITE["baseUrl"] + "/img/og.png",
+        "og": SITE["baseUrl"] + "/" + (og_image or "img/og.png"),
         "title": esc(full_title),
         "desc": esc(desc),
         "site": esc(SITE["title"]),
@@ -763,7 +783,7 @@ def build_law(i, law):
         "aside": "".join(aside),
         "bar_next": bar_next,
     }
-    page = layout(law["name"], "%s %s" % (law["aphorism"], law["plainTerms"]), body, depth=1, current="laws", scripts=("law.js",), head_extra=law_jsonld(law))
+    page = layout(law["name"], "%s %s" % (law["aphorism"], law["plainTerms"]), body, depth=1, current="laws", scripts=("law.js",), head_extra=law_jsonld(law), og_image="img/og/%s.png" % law["slug"])
     write("laws/%s.html" % law["slug"], page)
 
 
@@ -913,7 +933,7 @@ def build_about():
   <p>I care about this because AI can feel like something that happens to us. I don\u2019t think it has to. The more we understand how it works and why it fails, the more we can use it on our own terms and ask better questions of the people selling it, building it, or telling us to trust it.</p>
   <p>I\u2019m still learning, and I\u2019ve tried to be honest about what I know and don\u2019t. If you find a mistake, or a better source, please tell me through the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. I\u2019d be grateful, and I\u2019ll fix it. I hope this helps you the way making it helped me.</p></section>
   <section><h2 id="how-to-use">How to use it</h2>
-  <p>Start with the <a href="guide.html">guide</a>, browse the <a href="index.html">laws</a>, describe your circumstances to <a href="situation-finder.html">find your laws</a>, or paste a claim into the <a href="claim-checker.html">claim checker</a> to see which laws apply. Collect any laws with the Add buttons to get a <a href="brief.html">quick brief</a>, or turn them into a printable sheet with the <a href="checklist.html">checklist builder</a>.</p></section>
+  <p>Start with the <a href="guide.html">guide</a>, browse the <a href="index.html">laws</a>, describe your circumstances to <a href="situation-finder.html">find your laws</a>, or paste a claim into the <a href="claim-checker.html">claim checker</a> to see which laws apply. Collect any laws with the Add buttons to get a <a href="brief.html">quick brief</a>, or turn them into a printable sheet with the <a href="checklist.html">checklist builder</a>. For ready-made question lists, see <a href="questions-to-ask-ai-vendor.html">buying an AI model or vendor</a>, <a href="ai-launch-review-questions.html">a launch review</a>, and <a href="how-to-build-an-ai-evaluation.html">building an evaluation</a>.</p></section>
 </main>""" % {"status": status}
     write("about.html", layout("About", "About Laws of AI Evaluation: what a law means here, the editorial policy, and who maintains it.", body, current="about"))
 
@@ -930,6 +950,12 @@ def guide_page(fname, title, eyebrow, desc, lede, blocks_html, extra=""):
   %s%s
 </main>""" % (guide_nav(fname), esc(eyebrow), esc(title), lede, blocks_html, extra)
     write(fname, layout(title, desc, body, current=None))
+
+
+def glossary_jsonld():
+    terms = [{"@type": "DefinedTerm", "name": g["term"], "description": plain(g["definition"]), "url": "%s/glossary#%s" % (SITE["baseUrl"], slugify(g["term"]))} for g in GLOSS]
+    data = {"@context": "https://schema.org", "@type": "DefinedTermSet", "name": "AI evaluation glossary", "url": SITE["baseUrl"] + "/glossary", "hasDefinedTerm": terms}
+    return '<script type="application/ld+json">%s</script>' % json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
 
 
 def build_guide_pages():
@@ -971,7 +997,7 @@ def build_guide_pages():
     gl = "".join('<div class="gloss__row"><dt id="%s">%s</dt><dd>%s%s</dd></div>' % (
         slugify(g["term"]), esc(typo(g["term"])), inline(g["definition"]),
         (" See " + ", ".join(link_laws(inline(n)) for n in g["see"]) + ".") if g["see"] else "") for g in GLOSS)
-    guide_page("glossary.html", "Glossary", "Guide", "Definitions of the terms used across the laws.", "", '<dl class="gloss">%s</dl>' % gl)
+    guide_page("glossary.html", "Glossary", "Guide", "Definitions of the terms used across the laws.", "", '<dl class="gloss">%s</dl>' % gl + glossary_jsonld())
 
     bib_lines = manuscript_region("## Bibliography", "\u0000end")
     entries, cur = [], None
@@ -1049,7 +1075,7 @@ def build_room():
   <header class="page__head"><p class="eyebrow eyebrow--muted">Tool</p><h1>Use it now</h1>
   <p class="page__lede">%s</p></header>
   <div class="room__grid">%s</div>
-  <p class="room__foot">Want the full reasoning? Each law page has the evidence and sources. Reviewing a specific claim? Try the <a href="claim-checker.html">claim checker</a>.</p>
+  <p class="room__foot">Want the full reasoning? Each law page has the evidence and sources. Reviewing a specific claim? Try the <a href="claim-checker.html">claim checker</a>. Longer lists: <a href="questions-to-ask-ai-vendor.html">buying an AI model or vendor</a>, <a href="ai-launch-review-questions.html">a launch review</a>, <a href="how-to-build-an-ai-evaluation.html">building an evaluation</a>.</p>
   <p class="room__status" role="status" aria-live="polite" data-room-status></p>
 </main>""" % (esc(typo(ROOM["intro"])), cards)
     write("use-it-now.html", layout("Use it now", "Friendly questions you can use today when someone shares an AI result at work, with what a good answer sounds like.", body, current="room", data=True, scripts=("room.js",)))
@@ -1179,6 +1205,50 @@ def build_search_index():
     write("js/search-index.js", "/* Generated by build/build.py. Do not edit. */\nwindow.LAI_SEARCH = %s;\n" % json.dumps(entries, ensure_ascii=False, separators=(",", ":")))
 
 
+INTENT_PAGES = [
+    {
+        "file": "questions-to-ask-ai-vendor.html",
+        "preset": "buying",
+        "title": "Questions to ask when buying an AI model or vendor",
+        "desc": "Questions to put to an AI vendor or internal team before you rely on a model, each tied to a documented pattern in AI evaluation research.",
+        "lede": "A vendor\u2019s numbers answer the questions the vendor chose to ask. These questions are drawn from the laws on this site. Each one comes from a documented pattern in the research, with the evidence one click away.",
+    },
+    {
+        "file": "ai-launch-review-questions.html",
+        "preset": "launch",
+        "title": "Questions for an AI launch review",
+        "desc": "Questions to ask before launching an AI feature, covering reliability, edge cases, real-world conditions, and how people will use it.",
+        "lede": "A launch review is the last cheap moment to ask what the evaluation did not cover. These questions come from the laws most relevant to shipping an AI feature, each with its evidence.",
+    },
+    {
+        "file": "how-to-build-an-ai-evaluation.html",
+        "preset": "building",
+        "title": "Questions to ask when building an AI evaluation",
+        "desc": "What to ask while designing your own AI evaluation, from choosing the metric to reporting uncertainty, drawn from documented evaluation pitfalls.",
+        "lede": "Most evaluation mistakes are made before the first score is computed. These questions, drawn from the laws, help you check the design before you trust the result.",
+    },
+]
+
+
+def build_intent_pages():
+    for pg in INTENT_PAGES:
+        slugs = EDIT["presets"][pg["preset"]]["laws"]
+        secs = ""
+        for sl in slugs:
+            l = BY_SLUG[sl]
+            qs = "".join("<li>%s</li>" % esc(typo(q)) for q in l["questions"])
+            secs += '<section><h2 id="%s">%s</h2><p>%s</p><ul class="dash">%s</ul><p><a href="%s">Read the evidence: %s</a></p></section>' % (
+                sl, esc(typo(l["name"])), esc(typo(l["plainTerms"])), qs, law_url(sl), esc(typo(l["name"])))
+        body = """<main id="main" class="page page--prose">
+  <header class="page__head"><p class="eyebrow">Guide</p><h1>%(title)s</h1>
+  <p class="page__lede">%(lede)s</p>
+  <p><a class="btn btn--ink btn--sm" href="checklist.html?preset=%(preset)s">Print this as a one-page checklist</a></p></header>
+  %(secs)s
+  <p class="page__note">Looking for something shorter? <a href="use-it-now.html">Use it now</a> has friendly questions for common moments. To see which laws fit your situation, try <a href="situation-finder.html">Find your laws</a>.</p>
+</main>""" % {"title": esc(pg["title"]), "lede": esc(typo(pg["lede"])), "preset": pg["preset"], "secs": secs}
+        write(pg["file"], layout(pg["title"], pg["desc"], body, current=None))
+
+
 def build_methodology():
     srcs = [x for l in LAWS for x in l["sources"]]
     c = collections.Counter(x["label"] or "peer" for x in srcs)
@@ -1263,6 +1333,7 @@ def main():
     build_search_index()
     build_feed()
     build_methodology()
+    build_intent_pages()
     build_privacy()
     build_seo()
     print("built: %d laws, %d pages" % (len(LAWS), len(list(ROOT.glob("*.html"))) + len(LAWS)))

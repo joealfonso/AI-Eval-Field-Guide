@@ -2,6 +2,24 @@
   "entries": [
     {
       "date": "2026-10-07",
+      "text": "Added question lists for buying an AI model or vendor, running a launch review, and building an evaluation, each drawn from the laws.",
+      "links": [
+        {
+          "label": "Buying AI",
+          "href": "questions-to-ask-ai-vendor.html"
+        },
+        {
+          "label": "Launch review",
+          "href": "ai-launch-review-questions.html"
+        },
+        {
+          "label": "Building an evaluation",
+          "href": "how-to-build-an-ai-evaluation.html"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-07",
       "text": "Checked the figures and findings on the law pages against their sources (no discrepancies found) and tested every source link. Added Methodology and Privacy pages, a “Where this doesn’t apply” section on every law, and a “Report it” link for corrections.",
       "links": [
         {
