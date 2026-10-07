@@ -42,12 +42,13 @@ for _c in CATS:
 CAT = {c["id"]: c for c in CATS}
 NAV = [
     ("Laws", "index.html", "laws"),
-    ("Find your laws", "situation-finder.html", "situation"),
-    ("Claim checker", "claim-checker.html", "claim"),
     ("Use it now", "use-it-now.html", "room"),
-    ("Design Rubric", "design-rubric.html", "rubric"),
-    ("Readiness Review", "readiness-review.html", "review"),
-    ("Changelog", "changelog.html", "changelog"),
+    ("Tools", [
+        ("Find your laws", "situation-finder.html", "situation"),
+        ("Claim checker", "claim-checker.html", "claim"),
+        ("Design Rubric", "design-rubric.html", "rubric"),
+        ("Readiness Review", "readiness-review.html", "review"),
+    ], None),
     ("About", "about.html", "about"),
 ]
 GUIDE_PAGES = [
@@ -281,9 +282,19 @@ def manuscript_region(start, end):
 def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, skip="Skip to content", page_class="", head_extra=""):
     p = "../" * depth
     full_title = title if title == SITE["title"] else "%s \u00b7 %s" % (title, SITE["title"])
-    nav = "".join(
-        '<a href="%s%s"%s>%s</a>' % (p, href, ' aria-current="page"' if key == current else "", label) for label, href, key in NAV
-    )
+    def _link(href, label, key):
+        return '<a href="%s%s"%s>%s</a>' % (p, href, ' aria-current="page"' if key == current else "", label)
+
+    nav = ""
+    for label, href, key in NAV:
+        if isinstance(href, list):
+            here = any(k == current for _, _, k in href)
+            nav += (
+                '<div class="nav-group"><button type="button" class="nav-group__btn"%s aria-expanded="false" aria-controls="nav-tools" data-nav-group>%s</button>'
+                '<div class="nav-group__menu" id="nav-tools">%s</div></div>'
+            ) % (' aria-current="true"' if here else "", label, "".join(_link(h, l, k) for l, h, k in href))
+        else:
+            nav += _link(href, label, key)
     scripts_html = ""
     if data:
         scripts_html += '<script src="%sjs/data.js"></script>\n' % p
@@ -333,7 +344,7 @@ def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, ski
 %(body)s
 <footer class="site-footer">
   <p>Independent reference. No vendor funding. <a href="%(p)sabout.html#editorial-policy">Editorial policy</a></p>
-  <p>CC BY 4.0 \u00b7 <a href="%(p)sfeed.xml">RSS</a> \u00b7 Last updated %(updated)s</p>
+  <p>CC BY 4.0 \u00b7 <a href="%(p)schangelog.html">Changelog</a> \u00b7 <a href="%(p)sfeed.xml">RSS</a> \u00b7 Last updated %(updated)s</p>
 </footer>
 %(scripts)s</body>
 </html>
