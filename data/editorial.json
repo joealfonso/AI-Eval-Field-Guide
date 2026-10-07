@@ -1,5 +1,5 @@
 {
-  "_note": "Editorial layer on top of data/laws.json (which is imported from the manuscript). Everything here was authored for the site build and needs editorial review: roles, plain-terms summaries, checklist questions, presets and claim-checker rules. Questions marked source=handoff came from the design handoff's content.json; source=derived were rewritten from each law's own 'Use it' section.",
+  "_note": "Editorial layer on top of data/laws.json (which is imported from the manuscript). Everything here was authored for the site build and needs editorial review: roles, plain-terms summaries, checklist questions, presets and claim-checker rules. Questions marked source=handoff came from the design handoff's content.json; source=derived were rewritten from each pattern's own 'Use it' section.",
   "laws": {
     "goodharts-law": {
       "roles": ["Building", "Buying"],
@@ -252,8 +252,8 @@
     "V": { "thread": "A benchmark cannot show what happens when real people use the system in real conditions." }
   },
   "briefPresets": {
-    "_note": "Starting sets on the quick brief page. 'tour' is one law from each part. The role sets reuse the checklist presets.",
-    "tour": { "label": "Five-law tour", "laws": ["goodharts-law", "data-contamination", "prompt-sensitivity", "no-error-bars-no-result", "the-lab-to-field-gap"] }
+    "_note": "Starting sets on the quick brief page. 'tour' is one pattern from each part. The role sets reuse the checklist presets.",
+    "tour": { "label": "Five-pattern tour", "laws": ["goodharts-law", "data-contamination", "prompt-sensitivity", "no-error-bars-no-result", "the-lab-to-field-gap"] }
   },
   "briefEvidence": {
     "_note": "[evidence item index, sentence indexes]. The brief quotes these sentences verbatim from the manuscript's evidence.",
@@ -285,7 +285,7 @@
     "the-jagged-frontier": [0, [0, 1, 2]]
   },
   "presets": {
-    "_note": "Derived from the manuscript's Field Guide (Reading an AI claim, Building your own eval) and Being Pragmatic (high-risk tier). Needs editorial review.",
+    "_note": "Derived from the manuscript's Playbook (Reading an AI claim, Building your own eval) and Being Pragmatic (high-risk tier). Needs editorial review.",
     "buying": {
       "label": "Buying a model or vendor",
       "laws": ["goodharts-law", "campbells-law", "the-construct-gap", "the-functionality-fallacy", "benchmark-saturation", "data-contamination", "the-gold-standard-myth", "prompt-sensitivity", "judge-bias", "once-is-not-reliable", "the-cost-frontier", "no-error-bars-no-result", "the-averaging-trap", "the-baseline-rule", "the-benchmark-lottery", "the-reproducibility-rule", "distribution-shift", "the-lab-to-field-gap"]
@@ -299,12 +299,12 @@
       "laws": ["the-functionality-fallacy", "judge-bias", "once-is-not-reliable", "no-error-bars-no-result", "the-averaging-trap", "presence-not-absence", "evaluation-awareness", "distribution-shift", "the-lab-to-field-gap", "the-team-is-the-system", "the-jagged-frontier"]
     },
     "all": {
-      "label": "All published laws",
+      "label": "All published patterns",
       "laws": "all"
     }
   },
   "claimChecker": {
-    "_note": "Rule-based matching, written from the manuscript's Field Guide (Reading an AI claim, Red flags). 'ask' is an index into the law's questions. Needs editorial review.",
+    "_note": "Rule-based matching, written from the manuscript's Playbook (Reading an AI claim, Red flags). 'ask' is an index into the pattern's questions. Needs editorial review.",
     "types": [
       {
         "id": "benchmark",
@@ -385,7 +385,7 @@
     ]
   },
   "situationFinder": {
-    "_note": "Situation finder rules. Each situation maps a described circumstance to the laws a careful reader would check first, in the same shape as the claim-checker types. Authored for the site build and needs editorial review.",
+    "_note": "Situation finder rules. Each situation maps a described circumstance to the patterns a careful reader would check first, in the same shape as the claim-checker types. Authored for the site build and needs editorial review.",
     "example": "We are about to launch an AI assistant that helps recruiters screen resumes. We tested it on our own benchmark and had another model grade the answers, but nobody has checked how it does for different groups of applicants.",
     "situations": [
       {

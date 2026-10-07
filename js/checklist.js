@@ -109,7 +109,7 @@
   }
 
   function renderCounts() {
-    summaryEl.textContent = 'Customise laws · ' + state.selected.length + ' of ' + LAI.laws.length + ' selected';
+    summaryEl.textContent = 'Customise patterns · ' + state.selected.length + ' of ' + LAI.laws.length + ' selected';
 
     var q = questionCount();
     printBtn.textContent = 'Print / save PDF · ' + q + (q === 1 ? ' question' : ' questions');
@@ -139,14 +139,14 @@
     var left = el('div');
     var brand = el('div', 'sheet__brand');
     brand.appendChild(el('span', 'sheet__mark', '§'));
-    brand.appendChild(el('span', '', 'Laws of AI Evaluation'));
+    brand.appendChild(el('span', '', 'AI Evaluation Field Guide'));
     left.appendChild(brand);
     left.appendChild(el('h2', '', 'Evaluation checklist'));
-    left.appendChild(el('p', 'sheet__sub', label + ' · ' + state.selected.length + (state.selected.length === 1 ? ' law' : ' laws') + ' · ' + q + (q === 1 ? ' question' : ' questions')));
+    left.appendChild(el('p', 'sheet__sub', label + ' · ' + state.selected.length + (state.selected.length === 1 ? ' pattern' : ' patterns') + ' · ' + q + (q === 1 ? ' question' : ' questions')));
     var right = el('p', 'sheet__gen');
     right.appendChild(document.createTextNode('Generated ' + dateText()));
     right.appendChild(document.createElement('br'));
-    right.appendChild(document.createTextNode('Laws as of ' + LAI.site.version));
+    right.appendChild(document.createTextNode('Patterns as of ' + LAI.site.version));
     top.appendChild(left);
     top.appendChild(right);
     inner.appendChild(top);
@@ -154,7 +154,7 @@
     var fields = el('div', 'sheet__fields');
     ['System or claim under review', 'Reviewer', 'Date'].forEach(function (f) { fields.appendChild(el('div', 'sheet__field', f)); });
     inner.appendChild(fields);
-    inner.appendChild(el('p', 'sheet__intro', 'For each question, write down the evidence you were given, then mark Yes, No, or N/A. A No or an N/A is a finding: note what would change your decision. Each law is explained at the address shown under its name.'));
+    inner.appendChild(el('p', 'sheet__intro', 'For each question, write down the evidence you were given, then mark Yes, No, or N/A. A No or an N/A is a finding: note what would change your decision. Each pattern is explained at the address shown under its name.'));
 
     var n = 0;
     LAI.categories.forEach(function (c) {
@@ -172,7 +172,7 @@
         lh.appendChild(el('span', 'sheet__lawname', typo(l.name)));
         block.appendChild(lh);
         block.appendChild(el('p', 'sheet__quote', '“' + typo(l.aphorism) + '”'));
-        block.appendChild(el('p', 'sheet__url', base + '/laws/' + l.slug));
+        block.appendChild(el('p', 'sheet__url', base + '/patterns/' + l.slug));
         l.questions.forEach(function (text) {
           n += 1;
           var qrow = el('div', 'sheet__q');
@@ -223,7 +223,7 @@
     var frow = el('tr');
     var fcell = el('td');
     var foot = el('div', 'sheet__foot');
-    foot.appendChild(el('span', '', 'Laws of AI Evaluation · Evaluation checklist · ' + label));
+    foot.appendChild(el('span', '', 'AI Evaluation Field Guide · Evaluation checklist · ' + label));
     foot.appendChild(el('span', '', base + '/checklist · ' + LAI.site.version));
     fcell.appendChild(foot);
     frow.appendChild(fcell);

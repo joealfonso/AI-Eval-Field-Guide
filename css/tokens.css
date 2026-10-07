@@ -1,4 +1,4 @@
-/* Laws of AI Evaluation — design tokens (direction 1a / 4a, light theme).
+/* AI Evaluation Field Guide — design tokens (direction 1a / 4a, light theme).
    Dark theme not yet designed; keep names stable so a [data-theme="dark"] block can override values. */
 :root {
   /* Surfaces & ink */

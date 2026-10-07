@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the Laws of AI Evaluation static pages.
+"""Generate the AI Evaluation Field Guide static pages.
 
 Reads data/*.json and content/source/*, writes HTML into the site folder plus
 js/data.js, js/search-index.js and feed.xml. Python 3 standard library only.
@@ -45,10 +45,10 @@ for _c in CATS:
     _c["thread"] = EDIT["categories"][_c["id"]]["thread"]
 CAT = {c["id"]: c for c in CATS}
 NAV = [
-    ("Laws", "index.html", "laws"),
+    ("Patterns", "index.html", "laws"),
     ("Use it now", "use-it-now.html", "room"),
     ("Tools", [
-        ("Find your laws", "situation-finder.html", "situation"),
+        ("Find your patterns", "situation-finder.html", "situation"),
         ("Claim checker", "claim-checker.html", "claim"),
         ("Design Rubric", "design-rubric.html", "rubric"),
         ("Readiness Review", "readiness-review.html", "review"),
@@ -58,7 +58,7 @@ NAV = [
 GUIDE_PAGES = [
     ("guide.html", "Overview"),
     ("being-pragmatic.html", "Being Pragmatic"),
-    ("field-guide.html", "Field Guide"),
+    ("playbook.html", "Playbook"),
     ("glossary.html", "Glossary"),
     ("bibliography.html", "Bibliography"),
     ("methodology.html", "Methodology"),
@@ -185,14 +185,14 @@ def prep_laws():
 BY_SLUG = prep_laws()
 BY_SLUG_NAMES = {l["name"] for l in LAWS}
 NAMES = sorted([(l["name"], l["slug"]) for l in LAWS], key=lambda t: -len(t[0]))
-PAGE_LINKS = {"Overview": "guide.html", "Being Pragmatic": "being-pragmatic.html", "Field Guide": "field-guide.html", "Glossary": "glossary.html"}
+PAGE_LINKS = {"Overview": "guide.html", "Being Pragmatic": "being-pragmatic.html", "Playbook": "playbook.html", "Glossary": "glossary.html"}
 
 
 def link_laws(h, prefix=""):
-    """Link law names and guide page names found in text nodes (outside existing anchors)."""
+    """Link pattern names and guide page names found in text nodes (outside existing anchors)."""
     parts = re.split(r"(<[^>]+>)", h)
     out, in_a = [], 0
-    targets = [(typo(n), "laws/%s.html" % s) for n, s in NAMES] + [(typo(n), href) for n, href in PAGE_LINKS.items() if n in ("Being Pragmatic", "Field Guide")]
+    targets = [(typo(n), "patterns/%s.html" % s) for n, s in NAMES] + [(typo(n), href) for n, href in PAGE_LINKS.items() if n in ("Being Pragmatic", "Playbook")]
     targets.sort(key=lambda t: -len(t[0]))
     pattern = re.compile("|".join(re.escape(n) for n, _ in targets))
     lookup = dict(targets)
@@ -211,7 +211,7 @@ def link_laws(h, prefix=""):
 
 
 def law_url(slug, prefix=""):
-    return "%slaws/%s.html" % (prefix, slug)
+    return "%spatterns/%s.html" % (prefix, slug)
 
 
 # ---------------------------------------------------------------- markdown blocks
@@ -275,7 +275,7 @@ def md_blocks(lines, prefix="", h2="###"):
     return "\n".join(out)
 
 
-MANUSCRIPT = (SRC / "laws-of-ai-evaluation-full.md").read_text(encoding="utf-8").split("\n")
+MANUSCRIPT = (SRC / "ai-evaluation-field-guide-full.md").read_text(encoding="utf-8").split("\n")
 
 
 def manuscript_region(start, end):
@@ -297,10 +297,10 @@ def analytics_inline_js():
 
 TITLE_TAGS = {
     "Glossary": "AI evaluation glossary: key terms explained",
-    "Field Guide": "Field guide to reading AI claims and building evals",
+    "Playbook": "Playbook for reading AI claims and building evals",
     "Being Pragmatic": "AI evaluation on a real team: being pragmatic",
-    "Claim checker": "AI claim checker: which laws apply to a claim",
-    "Find your laws": "Find the AI evaluation laws that fit your situation",
+    "Claim checker": "AI claim checker: which patterns apply to a claim",
+    "Find your patterns": "Find the AI evaluation patterns that fit your situation",
     "Use it now": "Questions to ask when someone shares an AI result",
     "AI Design Evaluation Rubric": "AI design evaluation rubric: 18 checks",
     "AI Readiness Review": "AI readiness review: a 27-criterion launch checklist",
@@ -370,9 +370,9 @@ def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, ski
 <body class="%(page_class)s" data-root="%(p)s">
 <a class="skip-link" href="#main">%(skip)s</a>
 <header class="site-header">
-  <a class="wordmark" href="%(p)sindex.html"><span class="wordmark__mark" aria-hidden="true">\u00a7</span><span class="wordmark__text">Laws of AI Evaluation</span></a>
+  <a class="wordmark" href="%(p)sindex.html"><span class="wordmark__mark" aria-hidden="true">\u00a7</span><span class="wordmark__text">AI Evaluation Field Guide</span></a>
   <nav class="site-nav" id="site-nav" aria-label="Primary">%(nav)s</nav>
-  <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog"><span>Search laws</span><kbd data-kbd>\u2318K</kbd></button>
+  <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog"><span>Search patterns</span><kbd data-kbd>\u2318K</kbd></button>
   <div class="header-actions">
     <button class="icon-btn" type="button" data-search-open aria-haspopup="dialog">Find</button>
     <button class="icon-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
@@ -408,7 +408,7 @@ def write(rel, content):
         url = SITE["baseUrl"] + "/" + ("" if rel == "index.html" else rel[: -len(".html")])
         tags = '<link rel="canonical" href="%s">\n<meta property="og:url" content="%s">\n' % (url, url)
         if rel == "index.html":
-            tags += '<script type="application/ld+json">%s</script>\n' % json.dumps({"@context": "https://schema.org", "@type": "WebSite", "name": SITE["title"], "url": SITE["baseUrl"], "description": "26 short, sourced laws for judging whether an AI system actually holds up.", "inLanguage": "en", "author": {"@type": "Person", "name": "Joseph Alfonso", "url": "https://josephalfonso.com"}}, ensure_ascii=False)
+            tags += '<script type="application/ld+json">%s</script>\n' % json.dumps({"@context": "https://schema.org", "@type": "WebSite", "name": SITE["title"], "url": SITE["baseUrl"], "description": "26 short, sourced patterns for judging whether an AI system actually holds up.", "inLanguage": "en", "author": {"@type": "Person", "name": "Joseph Alfonso", "url": "https://josephalfonso.com"}}, ensure_ascii=False)
         content = content.replace("</head>", tags + "</head>", 1)
     path = ROOT / rel
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -436,7 +436,7 @@ def law_card(law, prefix=""):
         '<span class="tag">%s</span></span>'
         '<span class="law-card__title">%s</span>'
         '<span class="law-card__quote">\u201c%s\u201d</span>'
-        '<span class="law-card__cta">Read the law \u2192</span></a>%s</li>'
+        '<span class="law-card__cta">Read the pattern \u2192</span></a>%s</li>'
         % (
             cat["n"],
             law_url(law["slug"], prefix),
@@ -485,12 +485,12 @@ def build_index():
   <section class="hero" data-hero="grid">
     <div class="hero__text">
       <h1>Principles for judging whether an AI system <em>actually</em> holds up.</h1>
-      <p class="hero__sub">%(total)d short, sourced laws for people who build, buy, or design with AI. <a href="guide.html">How to use this guide</a></p>
+      <p class="hero__sub">%(total)d short, sourced patterns for people who build, buy, or design with AI. <a href="guide.html">How to use this guide</a></p>
     </div>
     <p class="hero__meta"><span data-published-count>%(total)d of %(total)d published</span><br>Updated %(updated_h)s \u00b7 <a href="feed.xml">RSS</a></p>
   </section>
   <section class="hero hero--category" data-hero="category" hidden>
-    <h1>All laws, by where they bite</h1>
+    <h1>All patterns, by where they bite</h1>
   </section>
   <div class="since" data-since hidden>
     <span class="since__badge" data-since-badge></span>
@@ -516,8 +516,8 @@ def build_index():
   <div data-view-panel="grid">%(sections)s</div>
   <div class="catview" data-view-panel="category" hidden><ul class="catview__grid">%(columns)s</ul></div>
 </main>
-<div class="tray no-print" data-tray hidden role="region" aria-label="My laws">
-  <p class="tray__count"><strong data-collection-count>0</strong> <span data-tray-word>laws</span> in My laws</p>
+<div class="tray no-print" data-tray hidden role="region" aria-label="My patterns">
+  <p class="tray__count"><strong data-collection-count>0</strong> <span data-tray-word>patterns</span> in My patterns</p>
   <div class="tray__actions">
     <a class="btn btn--accent btn--sm" href="brief.html" data-collection-link="brief.html">Quick brief</a>
     <a class="btn btn--outline btn--sm" href="checklist.html?preset=custom" data-collection-link="checklist.html?preset=custom">Checklist</a>
@@ -536,11 +536,11 @@ def build_index():
         "index.html",
         layout(
             SITE["title"],
-            "%d short, sourced laws for people who build, buy, or design with AI: principles for judging whether an AI system actually holds up." % len(LAWS),
+            "%d short, sourced patterns for people who build, buy, or design with AI: principles for judging whether an AI system actually holds up." % len(LAWS),
             body,
             current="laws",
             scripts=("index.js",),
-            skip="Skip to laws",
+            skip="Skip to patterns",
         ),
     )
 
@@ -556,7 +556,7 @@ SECTION_TOC = [
     ("limits", "Where this doesn\u2019t apply"),
     ("origins", "Origins"),
     ("sources", "Sources"),
-    ("cite-this-law", "Cite this law"),
+    ("cite-this-law", "Cite this pattern"),
     ("revision-history", "Revision history"),
 ]
 
@@ -574,14 +574,14 @@ def source_mix(law):
 
 def apa(law):
     d = datetime.date.fromisoformat(law["published"])
-    return "Laws of AI Evaluation. (%d, %s %d). %s (%s). %s/laws/%s" % (d.year, d.strftime("%B"), d.day, law["name"], law["version"], SITE["baseUrl"], law["slug"])
+    return "AI Evaluation Field Guide. (%d, %s %d). %s (%s). %s/patterns/%s" % (d.year, d.strftime("%B"), d.day, law["name"], law["version"], SITE["baseUrl"], law["slug"])
 
 
 def bibtex(law):
     d = datetime.date.fromisoformat(law["published"])
     return (
-        "@misc{lai-%s,\n  title        = {%s},\n  author       = {{Laws of AI Evaluation}},\n  year         = {%d},\n  month        = %s,\n"
-        "  note         = {Version %s},\n  howpublished = {\\url{%s/laws/%s}}\n}"
+        "@misc{lai-%s,\n  title        = {%s},\n  author       = {{AI Evaluation Field Guide}},\n  year         = {%d},\n  month        = %s,\n"
+        "  note         = {Version %s},\n  howpublished = {\\url{%s/patterns/%s}}\n}"
         % (law["slug"], law["name"], d.year, d.strftime("%b").lower(), law["version"].lstrip("v"), SITE["baseUrl"], law["slug"])
     )
 
@@ -591,7 +591,7 @@ ISSUES = "https://github.com/joealfonso/laws-of-ai-evaluation/issues/new"
 
 def report_url(law):
     title = "Correction: %s" % law["name"]
-    body = "Law page: %s/laws/%s\n\nWhat looks wrong, or what source should be added:\n\n" % (SITE["baseUrl"], law["slug"])
+    body = "Pattern page: %s/patterns/%s\n\nWhat looks wrong, or what source should be added:\n\n" % (SITE["baseUrl"], law["slug"])
     return "%s?title=%s&body=%s" % (ISSUES, urllib.parse.quote(title), urllib.parse.quote(body))
 
 
@@ -601,7 +601,7 @@ def law_jsonld(law):
         "@type": "Article",
         "headline": law["name"],
         "description": law["aphorism"],
-        "url": "%s/laws/%s" % (SITE["baseUrl"], law["slug"]),
+        "url": "%s/patterns/%s" % (SITE["baseUrl"], law["slug"]),
         "datePublished": law["published"],
         "dateModified": law.get("revised") or law["published"],
         "version": law["version"],
@@ -620,7 +620,7 @@ def build_law(i, law):
     cat_laws = [l for l in LAWS if l["category"] == law["category"]]
     pos = cat_laws.index(law) + 1
     nxt = LAWS[i + 1] if i + 1 < len(LAWS) else None
-    url = "%s/laws/%s" % (SITE["baseUrl"], law["slug"])
+    url = "%s/patterns/%s" % (SITE["baseUrl"], law["slug"])
     cat_href = "../index.html#cat-%s" % cat["id"]
 
     toc = "".join(
@@ -702,21 +702,21 @@ def build_law(i, law):
         '<details class="aside-block" open><summary>Take it with you</summary><ul class="takeaway">'
         '<li><a href="../brief.html?laws=%s" data-collection-link="../brief.html" data-collection-extra="%s">Quick brief <span>Short overview</span></a></li>'
         '<li><a href="../checklist.html?preset=custom&amp;laws=%s" data-collection-link="../checklist.html?preset=custom" data-collection-extra="%s">Printable checklist <span>Print \u00b7 PDF</span></a></li>'
-        '<li><a href="#cite-this-law">Cite this law <span>APA \u00b7 BibTeX</span></a></li></ul></details>' % (law["no"], law["no"], law["no"], law["no"])
+        '<li><a href="#cite-this-law">Cite this pattern <span>APA \u00b7 BibTeX</span></a></li></ul></details>' % (law["no"], law["no"], law["no"], law["no"])
     )
 
     prev_box = '<a class="pn pn--prev" href="%s"><span class="pn__k">\u2190 Back to category</span><span class="pn__t">%s. %s</span></a>' % (cat_href, cat["id"], esc(typo(cat["name"])))
     if nxt:
-        next_box = '<a class="pn pn--next" href="%s.html"><span class="pn__k">Next law \u2192</span><span class="pn__t">%s %s</span></a>' % (nxt["slug"], nxt["no"], esc(typo(nxt["name"])))
+        next_box = '<a class="pn pn--next" href="%s.html"><span class="pn__k">Next pattern \u2192</span><span class="pn__t">%s %s</span></a>' % (nxt["slug"], nxt["no"], esc(typo(nxt["name"])))
         crumb_next = '<a class="btn btn--outline btn--sm" href="%s.html">Next: %s %s \u2192</a>' % (nxt["slug"], nxt["no"], esc(typo(nxt["name"])))
         bar_next = '<a href="%s.html">Next: %s \u2192</a>' % (nxt["slug"], nxt["no"])
     else:
-        next_box = '<a class="pn pn--next" href="../index.html"><span class="pn__k">All laws \u2192</span><span class="pn__t">Back to the index</span></a>'
-        crumb_next = '<a class="btn btn--outline btn--sm" href="../index.html">All laws \u2192</a>'
-        bar_next = '<a href="../index.html">All laws \u2192</a>'
+        next_box = '<a class="pn pn--next" href="../index.html"><span class="pn__k">All patterns \u2192</span><span class="pn__t">Back to the index</span></a>'
+        crumb_next = '<a class="btn btn--outline btn--sm" href="../index.html">All patterns \u2192</a>'
+        bar_next = '<a href="../index.html">All patterns \u2192</a>'
 
     body = """<div class="crumbs"><nav aria-label="Breadcrumb"><ol>
-    <li><a href="../index.html">Laws</a></li><li><a href="%(cat_href)s">%(cat_id)s. %(cat_name)s</a></li><li aria-current="page">No. %(no)s</li></ol></nav>
+    <li><a href="../index.html">Patterns</a></li><li><a href="%(cat_href)s">%(cat_id)s. %(cat_name)s</a></li><li aria-current="page">No. %(no)s</li></ol></nav>
     <div class="crumbs__right"><span>%(pos)d of %(cat_total)d in this category</span>%(crumb_next)s</div></div>
 <main id="main" class="law-layout cat-%(cat_n)d" data-page="law" data-no="%(no)s" data-slug="%(slug)s">
   <aside class="law-rail" aria-label="On this page">
@@ -739,11 +739,11 @@ def build_law(i, law):
     <section class="sec" aria-labelledby="sources">%(h_src)s<ol class="sources">%(sources)s</ol></section>
     <section class="sec" aria-labelledby="cite-this-law">%(h_cite)s%(cite)s</section>
     <section class="sec" aria-labelledby="revision-history">%(h_rev)s<ul class="rev">%(history)s</ul><p class="rev__links"><a href="../changelog.html">Full changelog</a> \u00b7 Spot a mistake or a better source? <a href="%(report)s">Report it</a>. Corrections are logged in the changelog.</p></section>
-    <nav class="pn-row" aria-label="Previous and next law">%(prev_box)s%(next_box)s</nav>
+    <nav class="pn-row" aria-label="Previous and next pattern">%(prev_box)s%(next_box)s</nav>
   </article>
   <aside class="law-aside" aria-label="Supporting material"><h2 class="aside-title">Supporting material</h2>%(aside)s</aside>
 </main>
-<div class="law-bar" aria-label="Law navigation"><a href="%(cat_href)s">\u2190 Category</a><a href="#cite-this-law">Cite</a>%(bar_next)s</div>
+<div class="law-bar" aria-label="Pattern navigation"><a href="%(cat_href)s">\u2190 Category</a><a href="#cite-this-law">Cite</a>%(bar_next)s</div>
 """ % {
         "cat_href": cat_href,
         "cat_id": cat["id"],
@@ -757,7 +757,7 @@ def build_law(i, law):
         "toc": toc,
         "related": related,
         "version": esc(law["version"]),
-        "pick": pick_button(law, "pick pick--inline", "Add to My laws", "In My laws"),
+        "pick": pick_button(law, "pick pick--inline", "Add to My patterns", "In My patterns"),
         "roles": " \u00b7 ".join(law["roles"]),
         "name": esc(typo(law["name"])),
         "aphorism": esc(typo(law["aphorism"])),
@@ -772,7 +772,7 @@ def build_law(i, law):
         "evidence": evidence,
         "h_use": h2("use-it", "Use it"),
         "use_it": use_it,
-        "h_q": h2("questions-to-ask", "Questions to ask", '<div class="sec-head__actions">%s<a class="btn btn--ink btn--sm" href="../checklist.html?preset=custom&amp;laws=%s" data-collection-link="../checklist.html?preset=custom" data-collection-extra="%s">Print checklist</a></div>' % (pick_button(law, "pick pick--btn", "Add to My laws", "In My laws"), law["no"], law["no"])),
+        "h_q": h2("questions-to-ask", "Questions to ask", '<div class="sec-head__actions">%s<a class="btn btn--ink btn--sm" href="../checklist.html?preset=custom&amp;laws=%s" data-collection-link="../checklist.html?preset=custom" data-collection-extra="%s">Print checklist</a></div>' % (pick_button(law, "pick pick--btn", "Add to My patterns", "In My patterns"), law["no"], law["no"])),
         "questions": questions,
         "report": esc(report_url(law)),
         "h_lim": h2("limits", "Where this doesn\u2019t apply"),
@@ -781,7 +781,7 @@ def build_law(i, law):
         "origins": origins,
         "h_src": h2("sources", "Sources"),
         "sources": sources,
-        "h_cite": h2("cite-this-law", "Cite this law"),
+        "h_cite": h2("cite-this-law", "Cite this pattern"),
         "cite": cite,
         "h_rev": h2("revision-history", "Revision history"),
         "history": history,
@@ -791,7 +791,7 @@ def build_law(i, law):
         "bar_next": bar_next,
     }
     page = layout(law["name"], "%s %s" % (law["aphorism"], law["plainTerms"]), body, depth=1, current="laws", scripts=("law.js",), head_extra=law_jsonld(law), og_image="img/og/%s.png" % law["slug"])
-    write("laws/%s.html" % law["slug"], page)
+    write("patterns/%s.html" % law["slug"], page)
 
 
 # ---------------------------------------------------------------- tools data
@@ -838,7 +838,7 @@ def build_rubric():
         )
     intro = (
         '<p class="page__lede">A quick scoring checklist for judging a single AI feature or design. Each of the six groups has three checks. '
-        'Use it in a design critique or before a launch review, then follow the checks that fail back to the laws.</p>'
+        'Use it in a design critique or before a launch review, then follow the checks that fail back to the patterns.</p>'
     )
     note = "This page is a reference list of the checks: it does not calculate a score. Check numbers (A1, T2, and so on) are labels used on this site."
     write("design-rubric.html", tool_page("AI Design Evaluation Rubric", "An 18-check rubric for evaluating an AI feature across agency, transparency, honesty, equity, real reduction, and failure design.", "rubric", intro, "".join(secs), note))
@@ -902,47 +902,47 @@ def build_changelog():
         items += '<li><time datetime="%s">%s</time><p>%s %s</p></li>' % (e["date"], fmt_date(e["date"]), esc(typo(e["text"])), links)
     body = """<main id="main" class="page">
   <header class="page__head"><p class="eyebrow">Record</p><h1>Changelog</h1>
-  <p class="page__lede">What changed on this site and when. Corrections and revisions to a law also appear in that law's revision history.</p></header>
+  <p class="page__lede">What changed on this site and when. Corrections and revisions to a pattern also appear in that pattern's revision history.</p></header>
   <ol class="changelog">%s</ol>
   <p class="page__note"><a href="feed.xml">RSS feed</a></p>
 </main>""" % items
-    write("changelog.html", layout("Changelog", "What changed on Laws of AI Evaluation, and when.", body, current="changelog"))
+    write("changelog.html", layout("Changelog", "What changed on the AI Evaluation Field Guide, and when.", body, current="changelog"))
 
 
 def build_about():
     est = "; ".join(BY_SLUG[x]["name"] for x in NAMING["established"])
     here = "; ".join(BY_SLUG[x]["name"] for x in NAMING["namedHere"])
     status = '''  <section><h2 id="status">Status of this guide</h2>
-  <p>This is an independent, self-published reference built from published research. It has not been through formal peer review. Every law links to its sources, so you can check the evidence for yourself.</p>
+  <p>This is an independent, self-published reference built from published research. It has not been through formal peer review. Every pattern links to its sources, so you can check the evidence for yourself.</p>
   <h3>Established terms and names from this site</h3>
-  <p>Not every law name is standard. The idea behind each law is established in the research, but for some the name is this site\u2019s own.</p>
+  <p>Not every pattern name is standard. The idea behind each pattern is established in the research, but for some the name is this site\u2019s own.</p>
   <ul>
     <li><strong>Established terms (%(n_est)d):</strong> %(est)s.</li>
     <li><strong>Named on this site (%(n_here)d):</strong> %(here)s. Please do not cite these as established terms. Cite the sources linked on each page instead.</li>
   </ul>
   <h3>Review</h3>
-  <p>See the <a href="methodology.html">methodology</a> for how sources were chosen and checked. No outside reviewer has signed off on any law yet. If you work in evaluation, statistics, or a related field and see something wrong, or a better source, please say so on the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. Corrections are recorded in the <a href="changelog.html">Changelog</a>.</p></section>
+  <p>See the <a href="methodology.html">methodology</a> for how sources were chosen and checked. No outside reviewer has signed off on any pattern yet. If you work in evaluation, statistics, or a related field and see something wrong, or a better source, please say so on the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. Corrections are recorded in the <a href="changelog.html">Changelog</a>.</p></section>
 ''' % {"n_est": len(NAMING["established"]), "est": esc(typo(est)), "n_here": len(NAMING["namedHere"]), "here": esc(typo(here))}
     body = """<main id="main" class="page page--prose">
   <header class="page__head"><p class="eyebrow">About</p><h1>About this guide</h1>
   <p class="page__lede">An independent reference for people who build, buy, or design with AI. It collects the reliable ways AI evaluation goes wrong, with the research behind each one.</p></header>
-  <section><h2 id="what-a-law-is">What a \u201claw\u201d means here</h2>
-  <p>A law here is a reliable pattern with research behind it, not a law of physics. Some have established names, like Goodhart\u2019s Law. Others are named on this site to make a well-documented idea easier to remember, and each page says which.</p></section>
+  <section><h2 id="what-a-pattern-is">What a \u201cpattern\u201d means here</h2>
+  <p>A pattern here is a reliable way evaluation goes wrong, with research behind it. It is not a law of physics. Some have established names, like Goodhart\u2019s Law. Others are named on this site to make a well-documented idea easier to remember, and each page says which.</p></section>
   <section><h2 id="editorial-policy">Editorial policy</h2>
   <ul>
-    <li>Every law links to its sources. Preprints, reports, working papers, and books are labeled as such. Everything else is peer-reviewed or a classic in its field.</li>
-    <li>Each law shows when its evidence was last checked and carries a version number and revision history.</li>
+    <li>Every pattern links to its sources. Preprints, reports, working papers, and books are labeled as such. Everything else is peer-reviewed or a classic in its field.</li>
+    <li>Each pattern shows when its evidence was last checked and carries a version number and revision history.</li>
     <li>The <a href="changelog.html">Changelog</a> records what changed and when. Corrections are made in the open.</li>
-    <li>Role tags, plain-terms summaries, checklist questions, and claim-checker rules are editorial work built from the laws themselves. They are starting points, not authority.</li>
+    <li>Role tags, plain-terms summaries, checklist questions, and claim-checker rules are editorial work built from the patterns themselves. They are starting points, not authority.</li>
   </ul></section>
 %(status)s  <section><h2 id="who">Who maintains it</h2>
   <p>Hi, I\u2019m <a href="https://josephalfonso.com">Joseph Alfonso</a>, a UX design lead. I made this guide because I wanted to understand how AI really gets judged, and how those judgments go wrong. Writing it down was how I learned.</p>
   <p>I care about this because AI can feel like something that happens to us. I don\u2019t think it has to. The more we understand how it works and why it fails, the more we can use it on our own terms and ask better questions of the people selling it, building it, or telling us to trust it.</p>
   <p>I\u2019m still learning, and I\u2019ve tried to be honest about what I know and don\u2019t. If you find a mistake, or a better source, please tell me through the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. I\u2019d be grateful, and I\u2019ll fix it. I hope this helps you the way making it helped me.</p></section>
   <section><h2 id="how-to-use">How to use it</h2>
-  <p>Start with the <a href="guide.html">guide</a>, browse the <a href="index.html">laws</a>, describe your circumstances to <a href="situation-finder.html">find your laws</a>, or paste a claim into the <a href="claim-checker.html">claim checker</a> to see which laws apply. Collect any laws with the Add buttons to get a <a href="brief.html">quick brief</a>, or turn them into a printable sheet with the <a href="checklist.html">checklist builder</a>. For ready-made question lists, see <a href="questions-to-ask-ai-vendor.html">buying an AI model or vendor</a>, <a href="ai-launch-review-questions.html">a launch review</a>, and <a href="how-to-build-an-ai-evaluation.html">building an evaluation</a>.</p></section>
+  <p>Start with the <a href="guide.html">guide</a>, browse the <a href="index.html">patterns</a>, describe your circumstances to <a href="situation-finder.html">find your patterns</a>, or paste a claim into the <a href="claim-checker.html">claim checker</a> to see which patterns apply. Collect any patterns with the Add buttons to get a <a href="brief.html">quick brief</a>, or turn them into a printable sheet with the <a href="checklist.html">checklist builder</a>. For ready-made question lists, see <a href="questions-to-ask-ai-vendor.html">buying an AI model or vendor</a>, <a href="ai-launch-review-questions.html">a launch review</a>, and <a href="how-to-build-an-ai-evaluation.html">building an evaluation</a>.</p></section>
 </main>""" % {"status": status}
-    write("about.html", layout("About", "About Laws of AI Evaluation: what a law means here, the editorial policy, and who maintains it.", body, current="about"))
+    write("about.html", layout("About", "About the AI Evaluation Field Guide: what a pattern means here, the editorial policy, and who maintains it.", body, current="about"))
 
 
 def guide_nav(active):
@@ -966,19 +966,19 @@ def glossary_jsonld():
 
 
 def build_guide_pages():
-    overview = manuscript_region("## AI Evaluation, an Overview", "## The Laws")
+    overview = manuscript_region("## AI Evaluation, an Overview", "## The Patterns")
     guide_page(
         "guide.html",
         "AI Evaluation, an Overview",
         "How to use this guide",
-        "What AI evaluation is, why it is hard, and how to use the laws.",
+        "What AI evaluation is, why it is hard, and how to use the patterns.",
         "",
         md_blocks(overview),
     )
-    pragmatic = manuscript_region("## Being Pragmatic", "## Field Guide")
+    pragmatic = manuscript_region("## Being Pragmatic", "## Playbook")
     guide_page("being-pragmatic.html", "Being Pragmatic", "Guide", "How to do AI evaluation inside a real team with deadlines, limited budget, and a model that changed last Tuesday.", "", md_blocks(pragmatic))
 
-    field = manuscript_region("## Field Guide", "## Glossary")
+    field = manuscript_region("## Playbook", "## Glossary")
     # split the eval card template out of the regular flow
     start = next(i for i, l in enumerate(field) if l.startswith("### 4"))
     end = next(i for i, l in enumerate(field) if i > start and l.startswith("### References"))
@@ -999,12 +999,12 @@ def build_guide_pages():
     card = '<div class="evalcard" role="group" aria-label="Eval card template"><p class="evalcard__title">Eval card</p>%s</div>' % "".join(card_rows)
     before = md_blocks(field[:start])
     after = md_blocks(field[end:])
-    guide_page("field-guide.html", "Field Guide", "Guide", "Questions for reading an AI claim, a sequence for building your own eval, red flags, and an eval card template.", "", before + '<h2 id="4-eval-card-template">4. Eval card template</h2><p>Copy this into any eval you run. It borrows from model cards (Mitchell et al., 2019).</p>' + card + after)
+    guide_page("playbook.html", "Playbook", "Guide", "Questions for reading an AI claim, a sequence for building your own eval, red flags, and an eval card template.", "", before + '<h2 id="4-eval-card-template">4. Eval card template</h2><p>Copy this into any eval you run. It borrows from model cards (Mitchell et al., 2019).</p>' + card + after)
 
     gl = "".join('<div class="gloss__row"><dt id="%s">%s</dt><dd>%s%s</dd></div>' % (
         slugify(g["term"]), esc(typo(g["term"])), inline(g["definition"]),
         (" See " + ", ".join(link_laws(inline(n)) for n in g["see"]) + ".") if g["see"] else "") for g in GLOSS)
-    guide_page("glossary.html", "Glossary", "Guide", "Definitions of the terms used across the laws.", "", '<dl class="gloss">%s</dl>' % gl + glossary_jsonld())
+    guide_page("glossary.html", "Glossary", "Guide", "Definitions of the terms used across the patterns.", "", '<dl class="gloss">%s</dl>' % gl + glossary_jsonld())
 
     bib_lines = manuscript_region("## Bibliography", "\u0000end")
     entries, cur = [], None
@@ -1021,7 +1021,7 @@ def build_guide_pages():
         rest = e["cited"]
         for n, s in NAMES:
             if n in rest:
-                cited.append('<a href="laws/%s.html">%s</a>' % (s, esc(typo(n))))
+                cited.append('<a href="patterns/%s.html">%s</a>' % (s, esc(typo(n))))
                 rest = rest.replace(n, "")
         for label, href in PAGE_LINKS.items():
             if label in rest:
@@ -1043,26 +1043,26 @@ def build_situation_finder():
   <div class="claim">
     <section class="claim__input" aria-labelledby="sit-h">
       <p class="eyebrow eyebrow--muted">Tool</p>
-      <h1 id="sit-h">Find your laws</h1>
-      <p class="page__lede">Describe where you are with an AI system: what you are building or buying, how you test it, who it affects. You get the laws worth checking first, why each applies, and a question to ask.</p>
+      <h1 id="sit-h">Find your patterns</h1>
+      <p class="page__lede">Describe where you are with an AI system: what you are building or buying, how you test it, who it affects. You get the patterns worth checking first, why each applies, and a question to ask.</p>
       <label class="field-label" for="sit-text">Your situation</label>
       <textarea id="sit-text" class="claim__text" rows="6" placeholder="%s"></textarea>
       <p class="field-label field-label--row" id="sit-type-label">What we picked up <span class="muted-inline" data-detect-note>Detected from your description, edit if wrong</span></p>
       <div class="chip-toggles" role="group" aria-labelledby="sit-type-label">%s</div>
-      <div class="claim__buttons"><button class="btn btn--accent" type="button" data-find>Find my laws</button><button class="btn btn--outline" type="button" data-export disabled>Export questions</button><button class="btn btn--ghost" type="button" data-example>Try an example</button></div>
+      <div class="claim__buttons"><button class="btn btn--accent" type="button" data-find>Find my patterns</button><button class="btn btn--outline" type="button" data-export disabled>Export questions</button><button class="btn btn--ghost" type="button" data-example>Try an example</button></div>
       <p class="claim__note">Runs in your browser; nothing you type is sent anywhere. Matching is rule-based. <a href="#how-matching-works">How matching works</a></p>
     </section>
     <section class="claim__results" aria-live="polite" aria-labelledby="sit-results-h" data-results>
       <h2 id="sit-results-h" class="visually-hidden">Results</h2>
-      <p class="claim__empty">Results appear here. Describe your situation, or choose what applies, then choose Find my laws.</p>
+      <p class="claim__empty">Results appear here. Describe your situation, or choose what applies, then choose Find my patterns.</p>
     </section>
   </div>
   <section class="claim__rules" id="how-matching-works"><h2>How matching works</h2>
-    <p>Your description is scanned for situations a careful reader would recognize, such as buying a model, using an AI grader, or launching to real users. You can add or remove any of them. Each situation maps to the laws that matter most for it, using the manuscript\u2019s Field Guide and Being Pragmatic. Laws are ranked by how many of your situations point to them and how strongly: the top five are where to start, the next six are likely to matter, and the rest are worth a look. This is a reading aid, not an assessment of your system.</p>
+    <p>Your description is scanned for situations a careful reader would recognize, such as buying a model, using an AI grader, or launching to real users. You can add or remove any of them. Each situation maps to the patterns that matter most for it, using the manuscript\u2019s Playbook and Being Pragmatic. Patterns are ranked by how many of your situations point to them and how strongly: the top five are where to start, the next six are likely to matter, and the rest are worth a look. This is a reading aid, not an assessment of your system.</p>
     <details><summary>Show the rules</summary>%s</details>
   </section>
 </main>""" % (esc(sf["example"]), chips, rules)
-    write("situation-finder.html", layout("Find your laws", "Describe your situation with an AI system and see which laws to check first, why each applies, and what to ask.", body, current="situation", data=True, scripts=("situation.js",)))
+    write("situation-finder.html", layout("Find your patterns", "Describe your situation with an AI system and see which patterns to check first, why each applies, and what to ask.", body, current="situation", data=True, scripts=("situation.js",)))
 
 
 # ---------------------------------------------------------------- claim checker, checklist
@@ -1082,7 +1082,7 @@ def build_room():
   <header class="page__head"><p class="eyebrow eyebrow--muted">Tool</p><h1>Use it now</h1>
   <p class="page__lede">%s</p></header>
   <div class="room__grid">%s</div>
-  <p class="room__foot">Want the full reasoning? Each law page has the evidence and sources. Reviewing a specific claim? Try the <a href="claim-checker.html">claim checker</a>. Longer lists: <a href="questions-to-ask-ai-vendor.html">buying an AI model or vendor</a>, <a href="ai-launch-review-questions.html">a launch review</a>, <a href="how-to-build-an-ai-evaluation.html">building an evaluation</a>.</p>
+  <p class="room__foot">Want the full reasoning? Each pattern page has the evidence and sources. Reviewing a specific claim? Try the <a href="claim-checker.html">claim checker</a>. Longer lists: <a href="questions-to-ask-ai-vendor.html">buying an AI model or vendor</a>, <a href="ai-launch-review-questions.html">a launch review</a>, <a href="how-to-build-an-ai-evaluation.html">building an evaluation</a>.</p>
   <p class="room__status" role="status" aria-live="polite" data-room-status></p>
 </main>""" % (esc(typo(ROOM["intro"])), cards)
     write("use-it-now.html", layout("Use it now", "Friendly questions you can use today when someone shares an AI result at work, with what a good answer sounds like.", body, current="room", data=True, scripts=("room.js",)))
@@ -1100,39 +1100,39 @@ def build_claim_checker():
     <section class="claim__input" aria-labelledby="claim-h">
       <p class="eyebrow eyebrow--muted">Tool</p>
       <h1 id="claim-h">Check a claim</h1>
-      <p class="page__lede">Paste a claim about an AI system. You get the laws that apply, why, and a question to ask for each. Not checking a claim? <a href="situation-finder.html">Describe your situation</a> instead.</p>
+      <p class="page__lede">Paste a claim about an AI system. You get the patterns that apply, why, and a question to ask for each. Not checking a claim? <a href="situation-finder.html">Describe your situation</a> instead.</p>
       <label class="field-label" for="claim-text">The claim</label>
       <textarea id="claim-text" class="claim__text" rows="5" placeholder="Our assistant scores 94%% on MMLU-Pro and beats leading models on our internal benchmark."></textarea>
       <p class="field-label field-label--row" id="type-label">What kind of claim? <span class="muted-inline" data-detect-note>Detected from the text, edit if wrong</span></p>
       <div class="chip-toggles" role="group" aria-labelledby="type-label">%s</div>
-      <div class="claim__buttons"><button class="btn btn--accent" type="button" data-find>Find laws that apply</button><button class="btn btn--outline" type="button" data-export disabled>Export questions</button><button class="btn btn--ghost" type="button" data-example>Try an example</button></div>
-      <p class="claim__note">Matching is rule-based against the laws\u2019 published criteria. <a href="#how-matching-works">How matching works</a></p>
+      <div class="claim__buttons"><button class="btn btn--accent" type="button" data-find>Find patterns that apply</button><button class="btn btn--outline" type="button" data-export disabled>Export questions</button><button class="btn btn--ghost" type="button" data-example>Try an example</button></div>
+      <p class="claim__note">Matching is rule-based against the patterns\u2019 published criteria. <a href="#how-matching-works">How matching works</a></p>
     </section>
     <section class="claim__results" aria-live="polite" aria-labelledby="results-h" data-results>
       <h2 id="results-h" class="visually-hidden">Results</h2>
-      <p class="claim__empty">Results appear here. Paste a claim and choose Find laws that apply.</p>
+      <p class="claim__empty">Results appear here. Paste a claim and choose Find patterns that apply.</p>
     </section>
   </div>
   <section class="claim__rules" id="how-matching-works"><h2>How matching works</h2>
-    <p>Each claim type maps to the laws a careful reader would check first, using the manuscript\u2019s Field Guide and red-flag table. A few phrases (such as \u201cinternal benchmark\u201d or \u201csuperhuman\u201d) add matches of their own. A law that matches more than one type moves up a step. This is a reading aid, not an assessment of the claim.</p>
+    <p>Each claim type maps to the patterns a careful reader would check first, using the manuscript\u2019s Playbook and red-flag table. A few phrases (such as \u201cinternal benchmark\u201d or \u201csuperhuman\u201d) add matches of their own. A pattern that matches more than one type moves up a step. This is a reading aid, not an assessment of the claim.</p>
     <details><summary>Show the rules</summary>%s</details>
   </section>
 </main>""" % (chips, rules)
-    write("claim-checker.html", layout("Claim checker", "Paste a claim about an AI system and see which laws apply, why, and what to ask.", body, current="claim", data=True, scripts=("claim-checker.js",)))
+    write("claim-checker.html", layout("Claim checker", "Paste a claim about an AI system and see which patterns apply, why, and what to ask.", body, current="claim", data=True, scripts=("claim-checker.js",)))
 
 
 def build_brief():
     body = """<main id="main" class="page page--brief" data-page="brief">
   <header class="page__head"><p class="eyebrow eyebrow--muted">Learn</p><h1>Quick brief</h1>
-  <p class="page__lede">Pick any laws and get a short overview you can read in a few minutes. It links to the full law pages and their sources.</p></header>
-  <details class="brief__picker no-print" data-brief-picker><summary data-picker-summary>Choose laws</summary>
+  <p class="page__lede">Pick any patterns and get a short overview you can read in a few minutes. It links to the full pattern pages and their sources.</p></header>
+  <details class="brief__picker no-print" data-brief-picker><summary data-picker-summary>Choose patterns</summary>
     <div class="brief__presets" data-brief-presets></div>
     <div class="picker" data-brief-grid></div></details>
   <div class="brief__out" data-brief-out></div>
-  <noscript><p class="page__note">The quick brief needs JavaScript. You can read each law on the <a href="index.html">laws page</a> instead.</p></noscript>
-  <p class="page__note">Assembled in your browser from each law\u2019s own text. Read the full law and its sources before you rely on one.</p>
+  <noscript><p class="page__note">The quick brief needs JavaScript. You can read each pattern on the <a href="index.html">patterns page</a> instead.</p></noscript>
+  <p class="page__note">Assembled in your browser from each pattern\u2019s own text. Read the full pattern and its sources before you rely on one.</p>
 </main>"""
-    write("brief.html", layout("Quick brief", "Pick any laws and get a short overview you can read in a few minutes, built from each law's own text.", body, current="laws", data=True, scripts=("brief.js",)))
+    write("brief.html", layout("Quick brief", "Pick any patterns and get a short overview you can read in a few minutes, built from each pattern's own text.", body, current="laws", data=True, scripts=("brief.js",)))
 
 
 def build_checklist():
@@ -1140,11 +1140,11 @@ def build_checklist():
   <div class="checklist-controls no-print">
     <p class="eyebrow eyebrow--muted">Tool</p>
     <h1>Build a printable checklist</h1>
-    <p class="page__lede">Pick a starting set of laws, adjust it, and print or save a one-sheet checklist with the questions to ask.</p>
+    <p class="page__lede">Pick a starting set of patterns, adjust it, and print or save a one-sheet checklist with the questions to ask.</p>
     <div class="seg seg--rule seg--wrap" role="group" aria-label="Preset" data-presets></div>
-    <details class="customise" data-customise><summary data-customise-summary>Customise laws</summary><div class="customise__grid" data-law-grid></div></details>
+    <details class="customise" data-customise><summary data-customise-summary>Customise patterns</summary><div class="customise__grid" data-law-grid></div></details>
     <button class="btn btn--ink btn--lg" type="button" data-print>Print / save PDF</button>
-    <p class="muted-inline" data-empty hidden>Select at least one law to build a checklist.</p>
+    <p class="muted-inline" data-empty hidden>Select at least one pattern to build a checklist.</p>
   </div>
   <section class="sheet" data-sheet aria-label="Checklist preview"></section>
 </main>"""
@@ -1189,8 +1189,8 @@ def build_data_js():
 def build_search_index():
     entries = []
     for l in LAWS:
-        u = "laws/%s.html" % l["slug"]
-        entries.append({"k": "Law", "n": l["no"], "t": l["name"], "s": l["aphorism"], "u": u})
+        u = "patterns/%s.html" % l["slug"]
+        entries.append({"k": "Pattern", "n": l["no"], "t": l["name"], "s": l["aphorism"], "u": u})
         sections = [
             ("takeaways", "Takeaways", " ".join(plain(t) for t in l["takeaways"])),
             ("what-it-means", "What it means", " ".join(plain(t) for t in l["whatItMeans"])),
@@ -1218,21 +1218,21 @@ INTENT_PAGES = [
         "preset": "buying",
         "title": "Questions to ask when buying an AI model or vendor",
         "desc": "Questions to put to an AI vendor or internal team before you rely on a model, each tied to a documented pattern in AI evaluation research.",
-        "lede": "A vendor\u2019s numbers answer the questions the vendor chose to ask. These questions are drawn from the laws on this site. Each one comes from a documented pattern in the research, with the evidence one click away.",
+        "lede": "A vendor\u2019s numbers answer the questions the vendor chose to ask. These questions are drawn from the patterns on this site. Each one comes from a documented pattern in the research, with the evidence one click away.",
     },
     {
         "file": "ai-launch-review-questions.html",
         "preset": "launch",
         "title": "Questions for an AI launch review",
         "desc": "Questions to ask before launching an AI feature, covering reliability, edge cases, real-world conditions, and how people will use it.",
-        "lede": "A launch review is the last cheap moment to ask what the evaluation did not cover. These questions come from the laws most relevant to shipping an AI feature, each with its evidence.",
+        "lede": "A launch review is the last cheap moment to ask what the evaluation did not cover. These questions come from the patterns most relevant to shipping an AI feature, each with its evidence.",
     },
     {
         "file": "how-to-build-an-ai-evaluation.html",
         "preset": "building",
         "title": "Questions to ask when building an AI evaluation",
         "desc": "What to ask while designing your own AI evaluation, from choosing the metric to reporting uncertainty, drawn from documented evaluation pitfalls.",
-        "lede": "Most evaluation mistakes are made before the first score is computed. These questions, drawn from the laws, help you check the design before you trust the result.",
+        "lede": "Most evaluation mistakes are made before the first score is computed. These questions, drawn from the patterns, help you check the design before you trust the result.",
     },
 ]
 
@@ -1251,7 +1251,7 @@ def build_intent_pages():
   <p class="page__lede">%(lede)s</p>
   <p><a class="btn btn--ink btn--sm" href="checklist.html?preset=%(preset)s">Print this as a one-page checklist</a></p></header>
   %(secs)s
-  <p class="page__note">Looking for something shorter? <a href="use-it-now.html">Use it now</a> has friendly questions for common moments. To see which laws fit your situation, try <a href="situation-finder.html">Find your laws</a>.</p>
+  <p class="page__note">Looking for something shorter? <a href="use-it-now.html">Use it now</a> has friendly questions for common moments. To see which patterns fit your situation, try <a href="situation-finder.html">Find your patterns</a>.</p>
 </main>""" % {"title": esc(pg["title"]), "lede": esc(typo(pg["lede"])), "preset": pg["preset"], "secs": secs}
         write(pg["file"], layout(pg["title"], pg["desc"], body, current=None))
 
@@ -1263,26 +1263,26 @@ def build_methodology():
     body = """<main id="main" class="page page--prose">
   %(nav)s
   <header class="page__head"><p class="eyebrow">Guide</p><h1>Methodology</h1>
-  <p class="page__lede">How the laws were chosen, what counts as a source, how the evidence was checked, and what this guide does not claim to be.</p></header>
-  <section><h2 id="selection">How laws are chosen</h2>
-  <p>The %(n_laws)d laws are an editorial selection of recurring ways AI evaluation goes wrong, each with published research behind it. They are not the result of a systematic review, and another reasonable list would differ. Each law page says whether its name is an established term or this site\u2019s own name for an established idea. The full list is on the <a href="about.html#status">About page</a>.</p></section>
+  <p class="page__lede">How the patterns were chosen, what counts as a source, how the evidence was checked, and what this guide does not claim to be.</p></header>
+  <section><h2 id="selection">How patterns are chosen</h2>
+  <p>The %(n_laws)d patterns are an editorial selection of recurring ways AI evaluation goes wrong, each with published research behind it. They are not the result of a systematic review, and another reasonable list would differ. Each pattern page says whether its name is an established term or this site\u2019s own name for an established idea. The full list is on the <a href="about.html#status">About page</a>.</p></section>
   <section><h2 id="sources">What counts as a source</h2>
-  <p>The guide cites %(n_src)d sources across all laws. Of these, %(mix)s. Anything that is not peer reviewed or a classic in its field is labeled on the law page. The Evidence section reports what the authors found, and where results are mixed or limited the page says so, for example in <a href="laws/adaptive-overfitting.html">Adaptive Overfitting</a> and <a href="laws/data-contamination.html">Data Contamination</a>. Every law also has a \u201cWhere this doesn\u2019t apply\u201d section.</p></section>
+  <p>The guide cites %(n_src)d sources across all patterns. Of these, %(mix)s. Anything that is not peer reviewed or a classic in its field is labeled on the pattern page. The Evidence section reports what the authors found, and where results are mixed or limited the page says so, for example in <a href="patterns/adaptive-overfitting.html">Adaptive Overfitting</a> and <a href="patterns/data-contamination.html">Data Contamination</a>. Every pattern also has a \u201cWhere this doesn\u2019t apply\u201d section.</p></section>
   <section><h2 id="checking">How the evidence was checked</h2>
-  <p>Each law shows when its evidence was last reviewed. In October 2026, more than 40 specific figures and findings on the law pages were compared with the source\u2019s abstract or full text, covering at least one claim in 25 of the 26 laws. No discrepancies were found. Every source link was also tested, and every DOI resolves.</p>
-  <p>The limits of that check: it covered numbers and the main finding of each source, not whether every interpretation or piece of advice goes beyond the source. A few details were confirmed through secondary descriptions rather than the paper itself, such as the exact \u201c19 percentage points\u201d figure in <a href="laws/the-jagged-frontier.html">The Jagged Frontier</a>. It was a spot-check, not an audit.</p></section>
+  <p>Each pattern shows when its evidence was last reviewed. In October 2026, more than 40 specific figures and findings on the pattern pages were compared with the source\u2019s abstract or full text, covering at least one claim in 25 of the 26 patterns. No discrepancies were found. Every source link was also tested, and every DOI resolves.</p>
+  <p>The limits of that check: it covered numbers and the main finding of each source, not whether every interpretation or piece of advice goes beyond the source. A few details were confirmed through secondary descriptions rather than the paper itself, such as the exact \u201c19 percentage points\u201d figure in <a href="patterns/the-jagged-frontier.html">The Jagged Frontier</a>. It was a spot-check, not an audit.</p></section>
   <section><h2 id="tools">The tools</h2>
-  <p>The claim checker, Find your laws, the checklist, the quick brief, and Use it now are reading aids. The claim checker and Find your laws match your text against published rules, which you can read on each page. They do not assess a system, and they run in your browser. The Design Rubric and Readiness Review are checklists. They do not calculate a score.</p></section>
+  <p>The claim checker, Find your patterns, the checklist, the quick brief, and Use it now are reading aids. The claim checker and Find your patterns match your text against published rules, which you can read on each page. They do not assess a system, and they run in your browser. The Design Rubric and Readiness Review are checklists. They do not calculate a score.</p></section>
   <section><h2 id="not">What this guide is not</h2>
   <ul>
     <li>It is not a ranking or benchmark of any AI model or vendor.</li>
     <li>It is not legal, regulatory, or compliance advice, though the Readiness Review points to standards that are relevant.</li>
-    <li>It is not peer reviewed, and no outside reviewer has signed off on any law yet.</li>
+    <li>It is not peer reviewed, and no outside reviewer has signed off on any pattern yet.</li>
   </ul></section>
   <section><h2 id="changes">How it changes</h2>
-  <p>Each law has a version number and a revision history, and site-wide changes are in the <a href="changelog.html">changelog</a>. Corrections are made in the open and logged there. If you find a mistake or a better source, every law page has a \u201cReport it\u201d link, or you can use the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>.</p></section>
+  <p>Each pattern has a version number and a revision history, and site-wide changes are in the <a href="changelog.html">changelog</a>. Corrections are made in the open and logged there. If you find a mistake or a better source, every pattern page has a \u201cReport it\u201d link, or you can use the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>.</p></section>
 </main>""" % {"nav": guide_nav("methodology.html"), "n_laws": len(LAWS), "n_src": len(srcs), "mix": mix}
-    write("methodology.html", layout("Methodology", "How the laws were chosen, what counts as a source, how the evidence was checked, and what this guide does not claim to be.", body, current=None))
+    write("methodology.html", layout("Methodology", "How the patterns were chosen, what counts as a source, how the evidence was checked, and what this guide does not claim to be.", body, current=None))
 
 
 def build_privacy():
@@ -1294,7 +1294,7 @@ def build_privacy():
   <section><h2 id="fonts">Fonts</h2>
   <p>The fonts load from Google Fonts. Loading them sends your IP address and browser details to Google.</p></section>
   <section><h2 id="your-device">What stays on your device</h2>
-  <p>The claim checker, Find your laws, the checklist, the quick brief, and Use it now run in your browser. What you type into them is not sent anywhere. The laws you add to My laws, and some view preferences, are saved in your browser\u2019s local storage on your device. Clearing your browser data removes them.</p></section>
+  <p>The claim checker, Find your patterns, the checklist, the quick brief, and Use it now run in your browser. What you type into them is not sent anywhere. The patterns you add to My patterns, and some view preferences, are saved in your browser\u2019s local storage on your device. Clearing your browser data removes them.</p></section>
   <section><h2 id="contact">Questions</h2>
   <p>Use the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. Last updated %s.</p></section>
 </main>""" % fmt_date(SITE["updated"])
@@ -1324,12 +1324,13 @@ def build_security():
         "  Cross-Origin-Opener-Policy: same-origin\n" % csp
     )
     write("_headers", headers)
+    write("_redirects", "# Generated by build/build.py. Old URLs kept alive after renames.\n/field-guide.html /playbook.html 301\n/field-guide /playbook 301\n/laws/* /patterns/:splat 301\n/laws /patterns 301\n")
     expires = (datetime.date.fromisoformat(SITE["updated"]) + datetime.timedelta(days=365)).isoformat()
     write(".well-known/security.txt", "Contact: https://josephalfonso.com/pages/contact.html\nExpires: %sT00:00:00.000Z\nPreferred-Languages: en\nCanonical: %s/.well-known/security.txt\n" % (expires, SITE["baseUrl"]))
 
 
 def build_seo():
-    urls = ["index.html"] + sorted(p.name for p in ROOT.glob("*.html") if p.name != "index.html") + ["laws/%s.html" % l["slug"] for l in LAWS]
+    urls = ["index.html"] + sorted(p.name for p in ROOT.glob("*.html") if p.name != "index.html") + ["patterns/%s.html" % l["slug"] for l in LAWS]
     def loc(rel):
         return SITE["baseUrl"] + "/" + ("" if rel == "index.html" else rel[: -len(".html")])
     entries = "".join("<url><loc>%s</loc><lastmod>%s</lastmod></url>\n" % (loc(u), SITE["updated"]) for u in urls)
@@ -1371,7 +1372,7 @@ def main():
     build_privacy()
     build_seo()
     build_security()
-    print("built: %d laws, %d pages" % (len(LAWS), len(list(ROOT.glob("*.html"))) + len(LAWS)))
+    print("built: %d patterns, %d pages" % (len(LAWS), len(list(ROOT.glob("*.html"))) + len(LAWS)))
 
 
 if __name__ == "__main__":

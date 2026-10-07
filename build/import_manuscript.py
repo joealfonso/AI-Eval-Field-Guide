@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Parse content/source/laws-of-ai-evaluation-full.md into data/laws.json and data/glossary.json.
+"""Parse content/source/ai-evaluation-field-guide-full.md into data/laws.json and data/glossary.json.
 
 Re-run after editing the manuscript, then run build.py. Python 3 standard library only.
 """
@@ -9,7 +9,7 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-SRC = ROOT / "content/source/laws-of-ai-evaluation-full.md"
+SRC = ROOT / "content/source/ai-evaluation-field-guide-full.md"
 
 CATEGORIES = {
     "What you're measuring": "I",
@@ -158,7 +158,7 @@ def main():
         b = next(i for i, l in enumerate(lines) if i > a and l.strip() == end)
         return lines[a + 1 : b]
 
-    laws = parse_laws(region("## The Laws", "## Being Pragmatic"))
+    laws = parse_laws(region("## The Patterns", "## Being Pragmatic"))
     gloss_lines = region("## Glossary", "### References")
     glossary = parse_glossary(gloss_lines)
 

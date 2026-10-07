@@ -641,7 +641,7 @@
       },
       {
         "lead": "Rebuilt test sets score lower.",
-        "text": "Recht et al. (2019) rebuilt test sets for CIFAR-10 and ImageNet following the original procedures. Accuracy dropped 3% to 15% on CIFAR-10 and 11% to 14% on ImageNet. The model rankings mostly held, and the authors attribute the drop mainly to subtle differences in the new data rather than years of adaptive overfitting. That nuance matters: the law is real, and its size varies."
+        "text": "Recht et al. (2019) rebuilt test sets for CIFAR-10 and ImageNet following the original procedures. Accuracy dropped 3% to 15% on CIFAR-10 and 11% to 14% on ImageNet. The model rankings mostly held, and the authors attribute the drop mainly to subtle differences in the new data rather than years of adaptive overfitting. That nuance matters: the pattern is real, and its size varies."
       },
       {
         "lead": "Competitions held up better than expected.",

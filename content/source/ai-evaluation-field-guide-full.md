@@ -1,13 +1,13 @@
-# **Laws of AI Evaluation**
+# **AI Evaluation Field Guide**
 
 Seed content. Last reviewed 2026-09-15.
 
 ## Contents
 
 1. AI Evaluation, an Overview  
-2. The Laws  
+2. The Patterns  
 3. Being Pragmatic  
-4. Field Guide  
+4. Playbook  
 5. Glossary  
 6. Bibliography
 
@@ -53,7 +53,7 @@ When two people argue about whether a model is "good at reasoning," they're usua
 
 ### Methods at a glance
 
-| Method | What it tells you | Watch out for | Related laws |
+| Method | What it tells you | Watch out for | Related patterns |
 | :---- | :---- | :---- | :---- |
 | Static benchmarks | Performance on a fixed, shared set of tasks | Saturation, contamination, construct gaps | Benchmark Saturation, Data Contamination, The Construct Gap |
 | Dynamic or adversarial benchmarks | Performance on fresh, hard examples, often written to beat current models (Kiela et al., 2021\) | Can overweight adversarial cases that rarely occur in real use | The Clever Hans Effect |
@@ -77,9 +77,9 @@ Different people need different evidence from the same system.
 - **Buyers** want to know if a vendor's claims hold up on their own data.  
 - **Auditors and regulators** want evidence that a system is valid, reliable, and safe for its intended use. The NIST AI Risk Management Framework (2023) makes "Measure" one of its four core functions.
 
-Hutchinson et al. (2022) found that ML evaluation practice often serves the first group and underserves the rest. A lot of the laws on this site are about closing that gap.
+Hutchinson et al. (2022) found that ML evaluation practice often serves the first group and underserves the rest. A lot of the patterns on this site are about closing that gap.
 
-### How to use the laws
+### How to use the patterns
 
 **To learn,** read them by category:
 
@@ -89,13 +89,13 @@ Hutchinson et al. (2022) found that ML evaluation practice often serves the firs
 - **Reading the results:** No Error Bars, No Result, The Averaging Trap, The Baseline Rule, The Benchmark Lottery, The Reproducibility Rule  
 - **Beyond the benchmark:** Presence, Not Absence, Evaluation Awareness, Distribution Shift, The Lab-to-Field Gap, The Team Is the System, The Jagged Frontier
 
-**As a tool,** use the Field Guide when you're reading an AI claim, designing an eval, or reviewing a launch.
+**As a tool,** use the Playbook when you're reading an AI claim, designing an eval, or reviewing a launch.
 
 **In a team,** start with Being Pragmatic. It covers how to match rigor to stakes, fit evaluation into existing rituals, and bring people along without becoming the eval police.
 
-### A note on the word "law"
+### A note on the word "pattern"
 
-A law here means a reliable pattern with research behind it, not a law of physics. Some have established names, like Goodhart's Law. Others are named on this site to make a well-documented idea easier to remember, and each page says which. Every page links to its sources, and preprints are labeled as preprints.
+A pattern here means a reliable way evaluation goes wrong, with research behind it. It is not a law of physics. Some have established names, like Goodhart's Law. Others are named on this site to make a well-documented idea easier to remember, and each page says which. Every page links to its sources, and preprints are labeled as preprints.
 
 ### Good starting reads
 
@@ -134,7 +134,7 @@ A law here means a reliable pattern with research behind it, not a law of physic
 - Weidinger, L., Rauh, M., Marchal, N., Manzini, A., et al. (2023). [Sociotechnical safety evaluation of generative AI systems](https://arxiv.org/abs/2310.11986). arXiv:2310.11986. *(Preprint)*  
 - Zheng, L., Chiang, W.-L., Sheng, Y., Zhuang, S., Wu, Z., et al. (2023). [Judging LLM-as-a-judge with MT-Bench and Chatbot Arena](https://arxiv.org/abs/2306.05685). NeurIPS 2023 Datasets and Benchmarks Track.
 
-## The Laws
+## The Patterns
 
 ### What you're measuring
 
@@ -456,7 +456,7 @@ Standard statistical guarantees assume you pick your analysis before looking at 
 ##### The evidence
 
 - **Reuse breaks the math.** Dwork et al. (2015) showed that adaptive reuse of a holdout set undermines its validity, and proposed a "reusable holdout" method that limits how much each query reveals.  
-- **Rebuilt test sets score lower.** Recht et al. (2019) rebuilt test sets for CIFAR-10 and ImageNet following the original procedures. Accuracy dropped 3% to 15% on CIFAR-10 and 11% to 14% on ImageNet. The model rankings mostly held, and the authors attribute the drop mainly to subtle differences in the new data rather than years of adaptive overfitting. That nuance matters: the law is real, and its size varies.  
+- **Rebuilt test sets score lower.** Recht et al. (2019) rebuilt test sets for CIFAR-10 and ImageNet following the original procedures. Accuracy dropped 3% to 15% on CIFAR-10 and 11% to 14% on ImageNet. The model rankings mostly held, and the authors attribute the drop mainly to subtle differences in the new data rather than years of adaptive overfitting. That nuance matters: the pattern is real, and its size varies.  
 - **Competitions held up better than expected.** Roelofs et al. (2019) analyzed 120 Kaggle competitions and found little evidence of substantial overfitting from leaderboard reuse.  
 - **Agent benchmarks are exposed.** Kapoor et al. (2025) found many AI agent benchmarks have inadequate holdout sets, and sometimes none, which lets agents overfit and take shortcuts.
 
@@ -1212,7 +1212,7 @@ The term comes from Fabrizio Dell'Acqua, Ethan Mollick, Karim Lakhani, and colle
 
 ## Being Pragmatic
 
-The laws on this site describe the ways evaluation goes wrong. This page is about doing it anyway, inside a team with deadlines, limited budget, and a model that changed last Tuesday.
+The patterns on this site describe the ways evaluation goes wrong. This page is about doing it anyway, inside a team with deadlines, limited budget, and a model that changed last Tuesday.
 
 Perfect evaluation doesn't exist. What you're after is evidence that's good enough for the decision in front of you, gathered in a way the team will keep doing next quarter. Research on how practitioners actually work backs this up. Teams start with informal checks, struggle to turn results into changes, and feel constant pressure to ship (van der Maden et al., 2026; Madaio et al., 2022). A pragmatic approach works with those realities instead of pretending they aren't there.
 
@@ -1222,7 +1222,7 @@ Perfect evaluation doesn't exist. What you're after is evidence that's good enou
 
 Not every AI feature needs a full evaluation program. A tool that drafts internal meeting notes and a tool that flags patients for sepsis don't deserve the same process. The NIST AI Risk Management Framework (2023) says policies and resources should be prioritized by risk level and potential impact, and notes that trying to eliminate all negative risk can be counterproductive. The European Union's AI Act (2024) takes the same risk-based approach, with its heaviest requirements reserved for high-risk uses.
 
-| Tier | Looks like | Minimum evidence before launch | Laws to lean on |
+| Tier | Looks like | Minimum evidence before launch | Patterns to lean on |
 | :---- | :---- | :---- | :---- |
 | Low | Internal, easy to undo, a person reviews every output | A saved set of real examples, a team review of outputs, a named owner | The Construct Gap, Criteria Drift |
 | Medium | Customer-facing, reversible, moderate cost of errors | A locked test set, a rubric, a baseline, multiple runs, one or two slices, an eval card, a staged rollout | Prompt Sensitivity, Once Is Not Reliable, The Baseline Rule, The Averaging Trap |
@@ -1299,9 +1299,9 @@ That's not an excuse to skip pre-launch testing. It's a reason to plan for what 
 - **Set an error budget.** Borrowed from site reliability engineering (Beyer et al., 2016): agree ahead of time on an acceptable failure rate, and on what the team does when it's exceeded.  
 - **Don't wait for complaints.** In a survey of industry practitioners, about half said their teams had found serious fairness issues only after deploying a system. One engineer described the default as putting the model out there, and "then you'll know if there's fairness issues if someone raises hell online" (Holstein et al., 2019). Internal audits across the development lifecycle are the proactive alternative (Raji et al., 2020).
 
-#### 10\. Use the laws as questions, not weapons
+#### 10\. Use the patterns as questions, not weapons
 
-Nobody wants the coworker who quotes Goodhart's Law in every meeting. The laws work best as questions, asked at the right moment, about the two or three risks that matter for the decision at hand.
+Nobody wants the coworker who quotes Goodhart's Law in every meeting. The patterns work best as questions, asked at the right moment, about the two or three risks that matter for the decision at hand.
 
 - Instead of "That's the Construct Gap," try "What would a user need to be able to do for this score to mean what we want?"  
 - Instead of "No error bars, no result," try "How much would this number move if we ran it again?"  
@@ -1376,7 +1376,7 @@ Small teams will combine these. What matters is that each job has a name next to
 - Wallach, H., Desai, M., Cooper, A. F., Wang, A., Atalla, C., et al. (2025). [Position: Evaluating generative AI systems is a social science measurement challenge](https://arxiv.org/abs/2502.00561). Proceedings of the International Conference on Machine Learning (ICML 2025), PMLR 267\.  
 - Wu, T., Ribeiro, M. T., Heer, J., & Weld, D. (2019). [Errudite: Scalable, reproducible, and testable error analysis](https://aclanthology.org/P19-1073/). Proceedings of ACL 2019\.
 
-## Field Guide
+## Playbook
 
 For how to introduce these practices to a team without slowing it down, see Being Pragmatic.
 
@@ -1414,7 +1414,7 @@ A practical sequence for product teams. Scale each step to the stakes.
 
 ### 3\. Red flags
 
-| You see | It might mean | Law |
+| You see | It might mean | Pattern |
 | :---- | :---- | :---- |
 | One headline number, no interval | The difference could be noise | No Error Bars, No Result |
 | "Superhuman" on a benchmark that's several years old | Saturation, contamination, or both | Benchmark Saturation, Data Contamination |
@@ -1741,9 +1741,9 @@ Next rerun trigger:
 - Messick, S. (1995). [Validity of psychological assessment: Validation of inferences from persons' responses and performances as scientific inquiry into score meaning](https://doi.org/10.1037/0003-066X.50.9.741). American Psychologist, 50(9), 741-749.  
   Cited in: The Construct Gap, Glossary, Overview  
 - Miller, E. (2024). [Adding error bars to evals: A statistical approach to language model evaluations](https://arxiv.org/abs/2411.00640). arXiv:2411.00640. *(Preprint)*  
-  Cited in: No Error Bars, No Result, Field Guide  
+  Cited in: No Error Bars, No Result, Playbook  
 - Mitchell, M., et al. (2019). [Model cards for model reporting](https://arxiv.org/abs/1810.03993). Proceedings of the Conference on Fairness, Accountability, and Transparency (FAT\* 2019).  
-  Cited in: The Averaging Trap, The Reproducibility Rule, Field Guide, Glossary, Overview  
+  Cited in: The Averaging Trap, The Reproducibility Rule, Playbook, Glossary, Overview  
 - Mizrahi, M., et al. (2024). [State of what art? A call for multi-prompt LLM evaluation](https://aclanthology.org/2024.tacl-1.52/). Transactions of the Association for Computational Linguistics, 12\.  
   Cited in: Prompt Sensitivity  
 - Moravec, H. (1988). Mind children: The future of robot and human intelligence. Harvard University Press. *(Book)*  
@@ -1799,13 +1799,13 @@ Next rerun trigger:
 - Schaeffer, R., Miranda, B., & Koyejo, S. (2023). [Are emergent abilities of large language models a mirage?](https://arxiv.org/abs/2304.15004) Advances in Neural Information Processing Systems (NeurIPS 2023).  
   Cited in: The Metric Mirage  
 - Sclar, M., Choi, Y., Tsvetkov, Y., & Suhr, A. (2024). [Quantifying language models' sensitivity to spurious features in prompt design or: How I learned to start worrying about prompt formatting](https://arxiv.org/abs/2310.11324). International Conference on Learning Representations (ICLR 2024).  
-  Cited in: Prompt Sensitivity, Field Guide  
+  Cited in: Prompt Sensitivity, Playbook  
 - Selbst, A. D., boyd, d., Friedler, S. A., Venkatasubramanian, S., & Vertesi, J. (2019). [Fairness and abstraction in sociotechnical systems](https://doi.org/10.1145/3287560.3287598). Proceedings of the Conference on Fairness, Accountability, and Transparency (FAT\* 2019).  
   Cited in: The Lab-to-Field Gap  
 - Shankar, S., Garcia, R., Hellerstein, J. M., & Parameswaran, A. G. (2024). ["We have no idea how models will behave in production until production": How engineers operationalize machine learning](https://doi.org/10.1145/3653697). Proceedings of the ACM on Human-Computer Interaction, 8(CSCW1), Article 206\.  
   Cited in: Being Pragmatic  
 - Shankar, S., Zamfirescu-Pereira, J. D., Hartmann, B., Parameswaran, A. G., & Arawjo, I. (2024). [Who validates the validators? Aligning LLM-assisted evaluation of LLM outputs with human preferences](https://doi.org/10.1145/3654777.3676450). Proceedings of the ACM Symposium on User Interface Software and Technology (UIST 2024).  
-  Cited in: Judge Bias, Criteria Drift, Being Pragmatic, Field Guide  
+  Cited in: Judge Bias, Criteria Drift, Being Pragmatic, Playbook  
 - Shevlane, T., et al. (2023). [Model evaluation for extreme risks](https://arxiv.org/abs/2305.15324). arXiv:2305.15324. *(Preprint)*  
   Cited in: Presence, Not Absence, Overview  
 - Singh, S., Nan, Y., Wang, A., D'Souza, D., Kapoor, S., et al. (2025). [The leaderboard illusion](https://arxiv.org/abs/2504.20879). Advances in Neural Information Processing Systems (NeurIPS 2025).  
@@ -1813,7 +1813,7 @@ Next rerun trigger:
 - Strathern, M. (1997). 'Improving ratings': Audit in the British university system. European Review, 5(3), 305-321.  
   Cited in: Goodhart's Law  
 - Vaccaro, M., Almaatouq, A., & Malone, T. (2024). [When combinations of humans and AI are useful: A systematic review and meta-analysis](https://doi.org/10.1038/s41562-024-02024-1). Nature Human Behaviour, 8, 2293-2303.  
-  Cited in: The Team Is the System, The Jagged Frontier, Field Guide  
+  Cited in: The Team Is the System, The Jagged Frontier, Playbook  
 - van der Lee, C., Gatt, A., van Miltenburg, E., & Krahmer, E. (2021). [Human evaluation of automatically generated text: Current trends and best practice guidelines](https://doi.org/10.1016/j.csl.2020.101151). Computer Speech & Language, 67, 101151\.  
   Cited in: The Gold Standard Myth, Overview  
 - van der Maden, W., Sadek, M., Xiao, Z., Mottelson, A., Liao, Q. V., & Zhu, J. (2026). [Results-actionability gap: Understanding how practitioners evaluate LLM products in the wild](https://doi.org/10.1145/3772318.3791069). Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2026).  
@@ -1831,10 +1831,10 @@ Next rerun trigger:
 - Wu, T., Ribeiro, M. T., Heer, J., & Weld, D. (2019). [Errudite: Scalable, reproducible, and testable error analysis](https://aclanthology.org/P19-1073/). Proceedings of ACL 2019\.  
   Cited in: Being Pragmatic, Glossary  
 - Yao, S., Shinn, N., Razavi, P., & Narasimhan, K. (2025). [τ-bench: A benchmark for tool-agent-user interaction in real-world domains](https://arxiv.org/abs/2406.12045). International Conference on Learning Representations (ICLR 2025).  
-  Cited in: Once Is Not Reliable, Field Guide, Glossary  
+  Cited in: Once Is Not Reliable, Playbook, Glossary  
 - Zhang, H., Da, J., Lee, D., Robinson, V., Wu, C., et al. (2024). [A careful examination of large language model performance on grade school arithmetic](https://arxiv.org/abs/2405.00332). NeurIPS 2024 Datasets and Benchmarks Track.  
   Cited in: Data Contamination  
 - Zheng, L., Chiang, W.-L., Sheng, Y., Zhuang, S., Wu, Z., et al. (2023). [Judging LLM-as-a-judge with MT-Bench and Chatbot Arena](https://arxiv.org/abs/2306.05685). NeurIPS 2023 Datasets and Benchmarks Track.  
-  Cited in: Judge Bias, Field Guide, Glossary, Overview
+  Cited in: Judge Bias, Playbook, Glossary, Overview
 
 &nbsp;
