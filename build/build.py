@@ -26,6 +26,7 @@ def load(name):
 SITE = load("site.json")
 LAWS = load("laws.json")
 EDIT = load("editorial.json")
+ROOM = load("room.json")
 GLOSS = load("glossary.json")
 CHANGELOG = load("changelog.json")["entries"]
 
@@ -43,6 +44,7 @@ NAV = [
     ("Laws", "index.html", "laws"),
     ("Find your laws", "situation-finder.html", "situation"),
     ("Claim checker", "claim-checker.html", "claim"),
+    ("Use it now", "use-it-now.html", "room"),
     ("Design Rubric", "design-rubric.html", "rubric"),
     ("Readiness Review", "readiness-review.html", "review"),
     ("Changelog", "changelog.html", "changelog"),
@@ -952,6 +954,28 @@ def build_situation_finder():
 
 
 # ---------------------------------------------------------------- claim checker, checklist
+def build_room():
+    cards = ""
+    for m in ROOM["moments"]:
+        qs = "".join('<li><button type="button" class="room__q" data-copy="%s" aria-label="Copy question: %s"><span>%s</span><span class="room__copy" aria-hidden="true">Copy</span></button></li>' % (esc(typo(q)), esc(typo(q)), esc(typo(q))) for q in m["questions"])
+        laws = ", ".join('<a href="%s">%s</a>' % (law_url(sl), esc(typo(BY_SLUG[sl]["name"]))) for sl in m["laws"])
+        cards += """<section class="room__card" id="%s" aria-labelledby="%s-h">
+  <p class="room__label">When you hear</p>
+  <h2 id="%s-h" class="room__heard">%s</h2>
+  <ul class="room__qs">%s</ul>
+  <p class="room__good"><strong>A good answer:</strong> %s</p>
+  <p class="room__laws">Why: %s</p>
+</section>""" % (m["id"], m["id"], m["id"], esc(typo(m["heard"])), qs, esc(typo(m["good"])), laws)
+    body = """<main id="main" class="page page--room" data-page="room">
+  <header class="page__head"><p class="eyebrow eyebrow--muted">Tool</p><h1>Use it now</h1>
+  <p class="page__lede">%s</p></header>
+  <div class="room__grid">%s</div>
+  <p class="room__foot">Want the full reasoning? Each law page has the evidence and sources. Reviewing a specific claim? Try the <a href="claim-checker.html">claim checker</a>.</p>
+  <p class="room__status" role="status" aria-live="polite" data-room-status></p>
+</main>""" % (esc(typo(ROOM["intro"])), cards)
+    write("use-it-now.html", layout("Use it now", "Friendly questions you can use today when someone shares an AI result at work, with what a good answer sounds like.", body, current="room", data=True, scripts=("room.js",)))
+
+
 def build_claim_checker():
     types = EDIT["claimChecker"]["types"]
     chips = "".join('<button type="button" class="chip-toggle" data-type="%s" aria-pressed="false">%s</button>' % (t["id"], esc(t["label"])) for t in types)
@@ -1098,6 +1122,7 @@ def main():
     build_guide_pages()
     build_situation_finder()
     build_claim_checker()
+    build_room()
     build_checklist()
     build_brief()
     build_data_js()
