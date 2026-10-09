@@ -19,7 +19,7 @@ This is an independent, self-published reference built from published research. 
 
 ## Corrections
 
-Found a mistake or a better source? Open an [issue](https://github.com/joealfonso/laws-of-ai-evaluation/issues/new), or use the "Report it" link at the bottom of any pattern page. Corrections are recorded in the [changelog](https://evalfieldguide.com/changelog).
+Found a mistake or a better source? Open an [issue](https://github.com/joealfonso/AI-Eval-Field-Guide/issues/new), or use the "Report it" link at the bottom of any pattern page. Corrections are recorded in the [changelog](https://evalfieldguide.com/changelog).
 
 ## Building the site
 
