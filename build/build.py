@@ -586,7 +586,7 @@ def bibtex(law):
     )
 
 
-ISSUES = "https://github.com/joealfonso/laws-of-ai-evaluation/issues/new"
+ISSUES = "https://github.com/joealfonso/AI-Eval-Field-Guide/issues/new"
 
 
 def report_url(law):
