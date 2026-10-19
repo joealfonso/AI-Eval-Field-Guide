@@ -672,11 +672,12 @@ def build_law(i, law):
 
     plain_box = '<section class="plain" aria-labelledby="plain-terms"><h2 class="plain__label" id="plain-terms">In plain terms</h2><p>%s</p></section>' % esc(typo(law["plainTerms"]))
 
-    name_note = (
-        "Established term: this name is used in the research literature."
-        if law["slug"] in NAMING["established"]
-        else "The idea is established. The name is this site\u2019s, chosen to make it easier to remember."
-    )
+    if law["slug"] in NAMING["established"]:
+        name_note = "Established term: this name is used in the research literature."
+    elif law["slug"] in NAMING.get("coinedRecently", []):
+        name_note = "Recent term: this name was coined in one recent paper and is not yet widely established."
+    else:
+        name_note = "The idea is established. The name is this site\u2019s, chosen to make it easier to remember."
     trust = (
         '<dl class="trust">'
         '<div><dt>Last reviewed</dt><dd>%s</dd></div>'
@@ -912,17 +913,19 @@ def build_changelog():
 def build_about():
     est = "; ".join(BY_SLUG[x]["name"] for x in NAMING["established"])
     here = "; ".join(BY_SLUG[x]["name"] for x in NAMING["namedHere"])
+    recent = "; ".join(BY_SLUG[x]["name"] for x in NAMING.get("coinedRecently", []))
     status = '''  <section><h2 id="status">Status of this guide</h2>
   <p>This is an independent, self-published reference built from published research. It has not been through formal peer review. Every pattern links to its sources, so you can check the evidence for yourself.</p>
   <h3>Established terms and names from this site</h3>
   <p>Not every pattern name is standard. The idea behind each pattern is established in the research, but for some the name is this site\u2019s own.</p>
   <ul>
     <li><strong>Established terms (%(n_est)d):</strong> %(est)s.</li>
+    <li><strong>Recent terms from a single paper (%(n_recent)d):</strong> %(recent)s. The name was coined in one recent paper and is not yet widely established, so cite that paper.</li>
     <li><strong>Named on this site (%(n_here)d):</strong> %(here)s. Please do not cite these as established terms. Cite the sources linked on each page instead.</li>
   </ul>
   <h3>Review</h3>
   <p>See the <a href="methodology.html">methodology</a> for how sources were chosen and checked. No outside reviewer has signed off on any pattern yet. If you work in evaluation, statistics, or a related field and see something wrong, or a better source, please say so on the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. Corrections are recorded in the <a href="changelog.html">Changelog</a>.</p></section>
-''' % {"n_est": len(NAMING["established"]), "est": esc(typo(est)), "n_here": len(NAMING["namedHere"]), "here": esc(typo(here))}
+''' % {"n_est": len(NAMING["established"]), "est": esc(typo(est)), "n_here": len(NAMING["namedHere"]), "here": esc(typo(here)), "n_recent": len(NAMING.get("coinedRecently", [])), "recent": esc(typo(recent))}
     body = """<main id="main" class="page page--prose">
   <header class="page__head"><p class="eyebrow">About</p><h1>About this guide</h1>
   <p class="page__lede">An independent reference for people who build, buy, or design with AI. It collects the reliable ways AI evaluation goes wrong, with the research behind each one.</p></header>

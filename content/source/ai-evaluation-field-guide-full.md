@@ -582,20 +582,20 @@ Traditional software gives the same result for the same input. Language models r
 
 ##### The evidence
 
-- **Formatting alone moves scores.** Sclar et al. (2024) found that several widely used open-source LLMs were extremely sensitive to subtle formatting changes in few-shot prompts, with differences of up to 76 accuracy points for LLaMA-2-13B. The best format for one model correlated only weakly with the best format for another. They propose FormatSpread to report a range instead of one number.  
-- **Single-prompt results are brittle.** Mizrahi et al. (2024) analyzed 6.5 million instances across 20 models and 39 tasks and found results from single-instruction evaluation brittle. They call for evaluating with a diverse set of prompts, and for choosing metrics that fit the needs of different users, like model developers versus teams building products.  
+- **Formatting alone moves scores.** Sclar et al. (2024) found that several widely used open-source LLMs were extremely sensitive to subtle formatting changes in few-shot prompts, with differences of up to 76 accuracy points for LLaMA-2-13B in the worst case, and about 10 points on average across 50+ tasks and several models. The best format for one model correlated only weakly with the best format for another. They propose FormatSpread to report a range instead of one number.  
+- **Single-prompt results are brittle.** Mizrahi et al. (2024) analyzed 6.5 million instances across 20 models and 39 tasks and found results from single-instruction evaluation brittle. They call for evaluating with a diverse set of prompts, and for choosing metrics that fit the needs of different users. For model developers they favor the average over many prompts. For a team choosing a model for one product, they favor comparing each model at its best prompt, picked on separate held-out examples so the choice is not tuned on the test set.  
 - **Implementation details matter.** Biderman et al. (2024), drawing on experience maintaining a widely used LLM evaluation harness, show that small choices in prompts, answer extraction, and normalization change scores, and argue for sharing exact prompts and code.
 
 ##### Use it
 
-- Test at least three to five prompt variants and report the mean and range.  
+- Test several prompt variants and report the mean and range. Three to five is a practical minimum, this guide's rule of thumb rather than a figure from the studies.  
 - Use the same set of variants for every model you compare.  
 - Include messy, realistic user phrasings, not just clean templates.  
 - Save the exact prompts and scoring code alongside the results.
 
 ##### Origins
 
-Prompt sensitivity became a named research topic with the rise of few-shot prompting in large language models. The term describes a family of findings rather than one paper.
+"Prompt sensitivity" is not one paper's coinage. The term describes a family of findings from research on few-shot and instruction prompting.
 
 ##### Sources
 
@@ -609,9 +609,9 @@ Prompt sensitivity became a named research topic with the rise of few-shot promp
 
 ##### Takeaways
 
-- Using an LLM as a judge is fast and cheap, and a strong judge can agree with people about as often as people agree with each other.  
+- Using an LLM as a judge is fast and cheap, and in one major study a strong judge agreed with people about as often as people agree with each other, once tied votes were set aside.  
 - Judges also have known biases: which answer comes first, how long it is, and whether it sounds like the judge's own writing.  
-- Swapping answer order, controlling for length, and using a different model family as judge all help.  
+- Swapping answer order helps. Controlling for length and using a judge from a different developer are common precautions, but the sources cited here did not test them.  
 - Validate the judge against human labels on your task before trusting it at scale.
 
 ##### What it means
@@ -620,16 +620,16 @@ LLM-as-a-judge means asking one model to grade or compare outputs from another. 
 
 ##### The evidence
 
-- **Useful, with named biases.** Zheng et al. (2023) found GPT-4 as a judge reached over 80% agreement with human preferences, similar to agreement between humans. They also identified position bias, verbosity bias, self-enhancement bias, and limited ability to grade things like math.  
-- **Order can flip verdicts.** Wang et al. (2024) showed that an LLM judge's verdict could be changed by swapping the order of the candidate answers, and proposed calibration strategies such as evaluating both orders.  
-- **Judges favor themselves.** Panickssery, Bowman, and Feng (2024) found LLMs can recognize their own outputs at above-chance rates, and that this self-recognition ability correlates with how strongly they prefer their own outputs.  
-- **Validators need validating.** Shankar et al. (2024) built EvalGen to help people align LLM-based graders with their own judgments, because unchecked graders drift from what people actually want.
+- **Useful, with named biases.** Zheng et al. (2023) found GPT-4 as a judge reached over 80% agreement with human preferences, similar to agreement between humans, when tied votes were set aside (85% versus 81% between humans on MT-Bench; with ties counted, 66% for GPT-4 against 63% to 67% between humans). They showed position bias and verbosity bias, found limited ability to grade math and reasoning questions, and flagged a possible self-enhancement bias that their data were too limited to confirm. Agreement was higher when the two answers differed clearly in quality.  
+- **Order can flip verdicts.** Wang et al. (2024) showed that an LLM judge's verdict could be changed by swapping the order of the candidate answers (GPT-4 tended to favor the first answer, ChatGPT the second), and proposed calibration strategies such as evaluating both orders.  
+- **Some judges favor themselves.** Panickssery, Bowman, and Feng (2024) found that self-preference when ranking news summaries was strongest in GPT-4, weaker and less consistent in GPT-3.5, and close to neutral in Llama 2. They also found LLMs can recognize their own outputs at above-chance rates. In fine-tuning experiments, stronger self-recognition went with stronger self-preference, though the authors note this correlation does not by itself prove cause.  
+- **Validators need validating.** Shankar et al. (2024) built EvalGen to help people align LLM-based graders with their own judgments, because LLM-based evaluators inherit the problems of the models they evaluate and need human validation.
 
 ##### Use it
 
 - Grade every pair twice with the order swapped. Treat inconsistent verdicts as ties or flags.  
-- Hand-label 50 to 100 examples and measure judge-human agreement before scaling up.  
-- Don't use a model to judge its own outputs, or its model family's, when comparing against competitors.  
+- Hand-label at least a few dozen examples (more when differences are small), measure judge-human agreement with its uncertainty, and read the disagreements before scaling up.  
+- Avoid using one of the systems being compared as the judge. Where you can, use a judge from a different developer, and check its verdicts against human labels.  
 - Give the judge a specific rubric, and check whether scores correlate with response length.
 
 ##### Origins
@@ -641,7 +641,7 @@ LLM-as-a-judge means asking one model to grade or compare outputs from another. 
 - Panickssery, A., Bowman, S. R., & Feng, S. (2024). [LLM evaluators recognize and favor their own generations](https://arxiv.org/abs/2404.13076). Advances in Neural Information Processing Systems (NeurIPS 2024).  
 - Shankar, S., Zamfirescu-Pereira, J. D., Hartmann, B., Parameswaran, A. G., & Arawjo, I. (2024). [Who validates the validators? Aligning LLM-assisted evaluation of LLM outputs with human preferences](https://doi.org/10.1145/3654777.3676450). Proceedings of the ACM Symposium on User Interface Software and Technology (UIST 2024).  
 - Wang, P., et al. (2024). [Large language models are not fair evaluators](https://aclanthology.org/2024.acl-long.511/). Proceedings of ACL 2024\.  
-- Zheng, L., Chiang, W.-L., Sheng, Y., Zhuang, S., Wu, Z., et al. (2023). [Judging LLM-as-a-judge with MT-Bench and Chatbot Arena](https://arxiv.org/abs/2306.05685). NeurIPS 2023 Datasets and Benchmarks Track.
+- Zheng, L., Chiang, W.-L., Sheng, Y., Zhuang, S., Wu, Z., et al. (2023). [Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena](https://arxiv.org/abs/2306.05685). NeurIPS 2023 Datasets and Benchmarks Track.
 
 #### Criteria Drift
 
@@ -649,9 +649,9 @@ LLM-as-a-judge means asking one model to grade or compare outputs from another. 
 
 ##### Takeaways
 
-- Nobody can write a complete rubric before seeing real outputs.  
-- Grading surfaces new failure modes and new preferences, which changes the rubric.  
-- Treat evaluation criteria as a living design artifact, versioned like code.  
+- In the study that named this pattern, practitioners could not fully specify their criteria before grading real outputs.  
+- In that study, grading surfaced new criteria and changed how participants read the ones they had.  
+- The study did not test fixes, but a sensible practice is to treat evaluation criteria as a living design artifact, versioned like code.  
 - When criteria change, re-grade a fixed reference set or your trend lines stop being comparable.
 
 ##### What it means
@@ -662,19 +662,19 @@ That's healthy. The risk is pretending the criteria were fixed all along and com
 
 ##### The evidence
 
-- **Named in a user study.** Shankar et al. (2024) observed people building LLM-based evaluators with their EvalGen tool and described criteria drift: "users need criteria to grade outputs, but grading outputs helps users define criteria." Some criteria depended on the specific outputs people had seen.  
-- **Start from real needs.** Liao and Xiao (2023) argue that evaluation should be grounded in the real-world needs of the people using a system, and that methods from human-computer interaction can help close the gap between what gets measured and what matters.
+- **Named in a user study.** In a qualitative study of nine industry practitioners building LLM-based evaluators with their EvalGen tool, Shankar et al. (2024) described criteria drift: "users need criteria to grade outputs, but grading outputs helps users define criteria." Some criteria depended on the specific outputs people had seen. The study was small and started from one task, extracting entities from tweets.  
+- **Start from real needs.** Liao and Xiao (2023), in a position paper rather than a study of how rubrics change, argue that evaluation should be grounded in the real-world needs of the people using a system, and that methods from human-computer interaction can help close the gap between what gets measured and what matters.
 
 ##### Use it
 
-- Start with open coding. Read 30 to 50 real outputs and note what's good and bad before writing any rubric.  
+- Start with open coding. Read a few dozen real outputs (a rule of thumb, not a number from the study) and note what's good and bad before writing any rubric.  
 - Version the rubric, with a date and a reason for each change.  
-- Keep a fixed reference set and re-grade it when the rubric changes.  
+- Keep a fixed reference set and re-grade it when the rubric changes. The study did not test this, but it follows from wanting comparable trend lines.  
 - Involve the people who will actually use the output in defining the criteria.
 
 ##### Origins
 
-The term comes from Shreya Shankar, J.D. Zamfirescu-Pereira, Björn Hartmann, Aditya Parameswaran, and Ian Arawjo's 2024 UIST paper, "Who Validates the Validators?"
+The term comes from Shreya Shankar, J.D. Zamfirescu-Pereira, Björn Hartmann, Aditya Parameswaran, and Ian Arawjo's 2024 UIST paper, "Who Validates the Validators?" It was coined there. Later papers have used it, but it is a recent term, not a long-established one.
 
 ##### Sources
 
@@ -688,7 +688,7 @@ The term comes from Shreya Shankar, J.D. Zamfirescu-Pereira, Björn Hartmann, Ad
 ##### Takeaways
 
 - AI outputs vary from run to run. A single pass hides that.  
-- pass@k asks, "Did it work at least once in k tries?" pass^k asks, "Did it work all k times?" Users live with the second one.  
+- pass@k asks, "Did it work at least once in k tries?" pass^k asks, "Did it work all k times?" The second matters most when the same kind of request keeps coming back or each failure is costly.  
 - Capability gains don't automatically bring reliability gains.  
 - For anything customer-facing or agentic, measure consistency across repeated runs.
 
@@ -698,23 +698,23 @@ Many evals run each test case once, or report the best of several attempts. That
 
 ##### The evidence
 
-- **Reliability drops fast with repetition.** Yao et al. (2025) built τ-bench, which simulates conversations between users and agents that have tools and policies to follow. State-of-the-art function-calling agents like GPT-4o succeeded on fewer than 50% of tasks. Their pass^k metric showed consistency was worse: pass^8 fell below 25% in the retail domain.  
-- **Accuracy and reliability are different axes.** Rabanser et al. (2026) proposed twelve reliability metrics across consistency, robustness, predictability, and safety. Across 15 models, recent capability gains produced only small improvements in reliability.
+- **Reliability drops fast with repetition.** Yao et al. (2025) built τ-bench, which simulates conversations between simulated users and agents that have tools and policies to follow. On a single try, GPT-4o with function calling solved about 61% of retail tasks and 35% of airline tasks, under 50% overall. Their pass^k metric showed consistency was worse: in the retail domain, the chance of solving a task on all 8 of 8 trials fell to roughly a quarter (2024 models).  
+- **Accuracy and reliability are different axes.** Rabanser et al. (2026) proposed twelve reliability metrics across consistency, robustness, predictability, and safety. Across 15 models on two benchmarks (τ-bench and GAIA), recent capability gains produced only small improvements in reliability, though some measures, such as calibration, improved more. They used one agent setup per benchmark and temperature zero, which the authors note may overstate the reliability achievable.
 
 ##### Use it
 
-- Run each test case several times (at least three to five for LLM outputs) and report both the average success rate and the all-runs-pass rate.  
+- Run each test case several times (three to five is this guide's rule of thumb for a minimum; the τ-bench study went up to eight) and report both the average success rate and the all-runs-pass rate.  
 - Separate random, occasional failures from consistent failures on specific cases. They need different fixes.  
 - Include paraphrased versions of the same task in your test set.  
 - Set reliability thresholds based on the cost of a failure, not on what the model can currently hit.
 
 ##### Origins
 
-"Once Is Not Reliable" is this site's name. The pass^k metric comes from Yao et al.'s τ-bench, and the broader framing draws on reliability engineering in safety-critical fields.
+"Once Is Not Reliable" is this site's name. The pass^k metric comes from Yao et al.'s τ-bench, and Rabanser et al. draw on reliability engineering in safety-critical fields for the broader framing.
 
 ##### Sources
 
-- Rabanser, S., Kapoor, S., Kirgis, P., Liu, K., Utpala, S., & Narayanan, A. (2026). [Towards a science of AI agent reliability](https://arxiv.org/abs/2602.16666). arXiv:2602.16666. *(Preprint)*  
+- Rabanser, S., Kapoor, S., Kirgis, P., Liu, K., Utpala, S., & Narayanan, A. (2026). [Towards a science of AI agent reliability](https://proceedings.mlr.press/v306/rabanser26a.html). Proceedings of the 43rd International Conference on Machine Learning (ICML 2026), PMLR 306, 102769-102820.  
 - Yao, S., Shinn, N., Razavi, P., & Narasimhan, K. (2025). [τ-bench: A benchmark for tool-agent-user interaction in real-world domains](https://arxiv.org/abs/2406.12045). International Conference on Learning Representations (ICLR 2025).
 
 #### The Cost Frontier
@@ -723,20 +723,20 @@ Many evals run each test case once, or report the best of several attempts. That
 
 ##### Takeaways
 
-- You can buy accuracy with more compute: retries, voting, longer reasoning, bigger models.  
+- You can often buy accuracy with more compute: retries, multiple samples, longer reasoning, bigger models.  
 - Comparing systems that cost very different amounts to run isn't a fair comparison.  
 - Plot accuracy against cost and latency, and look at the frontier of best tradeoffs.  
 - Simple, cheap approaches sometimes match elaborate ones.
 
 ##### What it means
 
-A leaderboard that only shows accuracy invites a quiet arms race. Call the model five times and take a vote, and the score goes up. So does the bill. For a product team, a system that's two points better and ten times more expensive might be the wrong choice. A fair comparison shows both numbers, so each reader can decide which tradeoff fits their situation.
+A leaderboard that only shows accuracy invites a quiet arms race. Call the model five times and take a vote, and the score often goes up. So does the bill. For a product team, a system that's two points better and ten times more expensive might be the wrong choice. A fair comparison shows both numbers, so each reader can decide which tradeoff fits their situation.
 
 ##### The evidence
 
-- **Accuracy-only evaluation produces bloated agents.** Kapoor et al. (2025) found that a narrow focus on accuracy leads to needlessly complex and costly AI agents. They argue for jointly optimizing cost and accuracy, and show that doing so can cut cost substantially while keeping accuracy. They also found simple baseline strategies competitive with more complex agent designs on coding tasks.  
-- **Efficiency belongs in the scorecard.** Liang et al. (2023) include efficiency as one of HELM's seven core metrics.  
-- **Users care about more than accuracy.** Ethayarajh and Jurafsky (2020) note that leaderboards ignore costs like model size and energy use that matter to real users.
+- **Accuracy-only evaluation can produce bloated agents.** Kapoor et al. (2025) argued that a narrow focus on accuracy leads to needlessly complex and costly AI agents, and that cost and accuracy should be optimized together. On HumanEval, a coding benchmark, they found that simple baselines, such as retrying a model or escalating from a cheap model to a costlier one, did as well as or better than many more complex published agents at much lower cost. In one further experiment, on the HotPotQA question-answering benchmark, joint optimization lowered cost while keeping accuracy, which the authors call a starting point rather than a general result.  
+- **Efficiency belongs in the scorecard.** Liang et al. (2023) include efficiency as one of HELM's seven core metrics, split into training and inference efficiency.  
+- **Users care about more than accuracy.** Ethayarajh and Jurafsky (2020), in a critique of NLP leaderboards, argue that leaderboards ignore costs like model size and energy use that matter to real users, and advocate reporting them.
 
 ##### Use it
 
