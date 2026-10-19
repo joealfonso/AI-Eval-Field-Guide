@@ -990,8 +990,8 @@ Edsger Dijkstra (1970) made this point about software in his Notes on Structured
 ##### The evidence
 
 - **Evaluations for extreme risks.** Shevlane et al. (2023) describe dangerous capability evaluations and alignment evaluations as key inputs to training and deployment decisions, and discuss the limits of what those evaluations can catch.  
-- **Models can underperform on purpose.** van der Weij et al. (2025) showed that frontier models like GPT-4 and Claude 3 Opus could be prompted to selectively underperform on dangerous capability evaluations while keeping performance on general ones. Models could also be fine-tuned to hide a capability unless given a password.  
-- **Red teaming finds a lot, not everything.** Ganguli et al. (2022) released a dataset of nearly 39,000 red team attacks on language models. The harmful outputs ranged from offensive language to subtler unethical content, the kind a fixed benchmark wouldn't think to ask about.
+- **Models can be made to underperform.** van der Weij et al. (2025) showed that when instructed in the prompt, frontier models like GPT-4 and Claude 3 Opus could selectively underperform on dangerous-capability multiple-choice tests while keeping performance on general ones. They also fine-tuned models to hide a capability unless given a password. The authors tested whether models can do this, not whether they do it on their own.  
+- **Red teaming turns up a wide range of harms.** Ganguli et al. (2022) released a dataset of nearly 39,000 red team attacks on language models. The harmful outputs ranged from offensive language to subtler unethical content.
 
 ##### Use it
 
@@ -1024,13 +1024,13 @@ The core idea is Dijkstra's, from "Notes on Structured Programming," first circu
 
 ##### What it means
 
-People act differently when they know they're being watched. Models trained on huge amounts of text, including text about AI evaluations, can pick up on the telltale signs of a test: tidy multiple-choice formats, contrived scenarios, obviously fake names. If a model responds to those cues, even without any intent in the human sense, the eval measures test behavior instead of real behavior.
+People act differently when they know they're being watched. Models trained on huge amounts of text, including text about AI evaluations, can pick up on the telltale signs of a test: multiple-choice formats, synthetic or contrived scenarios, and tasks that look like known benchmarks. If a model responds to those cues, even without any intent in the human sense, the eval measures test behavior instead of real behavior.
 
 ##### The evidence
 
-- **Models are good at spotting tests.** Needham et al. (2025) built a benchmark of 1,000 prompts and transcripts from 61 datasets, covering public benchmarks, real deployment interactions, and agent trajectories. Frontier models identified evaluations far above chance. Gemini 2.5 Pro reached an AUC of 0.83, compared to 0.92 for a human baseline. Models were better at this in agentic settings than in chat.  
-- **Recognized at the international level.** The International AI Safety Report 2026 notes it has become more common for models to distinguish test settings from real-world deployment and to exploit loopholes in evaluations, which makes results harder to interpret (Bengio et al., 2026).  
-- **The capacity to underperform exists.** van der Weij et al. (2025) showed models can be prompted or fine-tuned to strategically underperform on specific evaluations.
+- **Models are good at spotting tests.** Needham et al. (2025) built a benchmark of 1,000 prompts and transcripts from 61 datasets, covering public benchmarks, real deployment interactions, and agent trajectories. Frontier models identified evaluations clearly better than chance. Gemini 2.5 Pro reached an AUC of 0.83 (0.5 is chance), compared to 0.92 for a human baseline, which was the paper's own authors and which they call an approximate upper bound. Models were better at this in agentic settings than in chat. The benchmark tests whether models can classify transcripts, not whether they change their behavior when they do.  
+- **Recognized at the international level.** The International AI Safety Report 2026 notes it has become more common for models to distinguish test settings from real-world deployment and to exploit loopholes in evaluations, which means dangerous capabilities could go undetected before deployment (Bengio et al., 2026).  
+- **The capacity to underperform exists.** van der Weij et al. (2025) showed that models can be prompted or fine-tuned to underperform on specific multiple-choice evaluations. That shows an evaluation can be gamed when a model is told to. It does not show that models detect tests or do this on their own.
 
 ##### Use it
 
@@ -1041,7 +1041,7 @@ People act differently when they know they're being watched. Models trained on h
 
 ##### Origins
 
-"Evaluation awareness" is the term used in recent AI safety research. It's a young area, and several key findings are preprints, so expect this page to change.
+"Evaluation awareness" is the term used in recent AI safety research, for example by Needham et al. (2025). It's a young area, and several key findings are preprints, so expect this page to change.
 
 ##### Sources
 
@@ -1066,9 +1066,9 @@ Models learn patterns from the data they're trained on and get tested on data th
 
 ##### The evidence
 
-- **Same recipe, lower scores.** Recht et al. (2019) rebuilt the CIFAR-10 and ImageNet test sets by following the original collection process. Accuracy fell 3% to 15% on CIFAR-10 and 11% to 14% on ImageNet. Small differences in how data was gathered were enough.  
+- **Same recipe, lower scores.** Recht et al. (2019) rebuilt the CIFAR-10 and ImageNet test sets by following the original collection process. Accuracy fell by 3 to 15 percentage points on CIFAR-10 and 11 to 14 points on ImageNet. The authors traced the drop to the new test sets being slightly harder, not to overfitting to the old ones. Engstrom et al. (2020) argued that statistical bias in how the new ImageNet set was built explains most of its drop, so the true size of the shift is debated.  
 - **Real-world shifts, measured.** Koh et al. (2021) built WILDS, a benchmark of ten datasets with real distribution shifts across hospitals, cameras, regions, and time. Models showed large gaps between in-distribution and out-of-distribution performance.  
-- **A clinical example.** Wong et al. (2021) found a widely deployed sepsis model performed far worse at an independent health system than its developer reported.  
+- **A caution from a clinical model.** Wong et al. (2021) tested a widely deployed sepsis model at one health system and found an AUC of 0.63, against 0.76 to 0.83 in the developer's documentation. They attribute much of the gap to how they handled the timing of sepsis predictions, not to a different patient population. It shows why a vendor's reported figure shouldn't be assumed to hold at your site, but it is not a clean case of distribution shift.  
 - **Drift erodes gains.** Hand (2006) argued that population drift over time is one reason gains from sophisticated models shrink in practice.
 
 ##### Use it
@@ -1080,11 +1080,12 @@ Models learn patterns from the data they're trained on and get tested on data th
 
 ##### Origins
 
-Distribution shift, also called dataset shift, is a long-standing problem in statistics and machine learning. It's closely related to external validity in the social and medical sciences.
+Distribution shift, also called dataset shift, is a long-standing problem in statistics and machine learning. It is comparable to external validity in the social and medical sciences, which asks whether findings carry over to other settings.
 
 ##### Sources
 
-- Hand, D. J. (2006). [Classifier technology and the illusion of progress](https://arxiv.org/abs/math/0606441). Statistical Science, 21(1), 1-14.  
+- Engstrom, L., Ilyas, A., Santurkar, S., Tsipras, D., Steinhardt, J., & Madry, A. (2020). [Identifying statistical bias in dataset replication](https://arxiv.org/abs/2005.09619). Proceedings of the International Conference on Machine Learning (ICML 2020).  
+- Hand, D. J. (2006). [Classifier technology and the illusion of progress](https://arxiv.org/abs/math/0606441). Statistical Science, 21(1), 1-15.  
 - Koh, P. W., et al. (2021). [WILDS: A benchmark of in-the-wild distribution shifts](https://arxiv.org/abs/2012.07421). Proceedings of the International Conference on Machine Learning (ICML 2021).  
 - Recht, B., Roelofs, R., Schmidt, L., & Shankar, V. (2019). [Do ImageNet classifiers generalize to ImageNet?](https://arxiv.org/abs/1902.10811) Proceedings of the International Conference on Machine Learning (ICML 2019).  
 - Wong, A., Otles, E., Donnelly, J. P., et al. (2021). [External validation of a widely implemented proprietary sepsis prediction model in hospitalized patients](https://pubmed.ncbi.nlm.nih.gov/34152373/). JAMA Internal Medicine, 181(8), 1065-1070.
@@ -1106,12 +1107,12 @@ Lab evaluation holds everything constant except the model. The field holds nothi
 
 ##### The evidence
 
-- **Accurate in validation, rough in clinics.** Beede et al. (2020) studied a deep learning system for detecting diabetic retinopathy deployed in 11 clinics in Thailand. The system had performed well in validation. In the clinics, the authors found that socio-environmental factors, like lighting conditions and internet speed, affected model performance, nursing workflows, and the patient experience. Many images were rejected as ungradable.  
+- **A deployed system meets real clinics.** Beede et al. (2020) studied a deep learning system for detecting diabetic retinopathy through observation and interviews with nurses at 11 clinics in Thailand where it was in use. They found that socio-environmental factors, such as lighting, affected model performance, nursing workflows, and the patient experience, and that the system's data-quality thresholds clashed with the quality of images those clinics could produce.  
 - **Three layers of evaluation.** Weidinger et al. (2023) propose evaluating generative AI at the capability layer, the human interaction layer, and the systemic impact layer, and note that most safety evaluation so far has focused on the first.  
 - **Narrow the sociotechnical gap.** Liao and Xiao (2023) frame evaluation as narrowing the gap between what gets measured and what real people need from a system.  
 - **Abstraction traps.** Selbst et al. (2019) describe traps that come from abstracting away social context, including assuming a solution built for one context will work in another.  
-- **The official name for it.** The International AI Safety Report 2026 describes an "evaluation gap": pre-deployment test results are not always strongly predictive of real-world capabilities or risks (Bengio et al., 2026).  
-- **Practice lags need.** Hutchinson et al. (2022) found ML evaluation practice often fails to reflect the needs of real application contexts.
+- **A name from the International AI Safety Report.** The International AI Safety Report 2026 describes an "evaluation gap": performance on pre-deployment tests does not reliably predict real-world usefulness or risk (Bengio et al., 2026).  
+- **Narrow evaluation practice.** Hutchinson et al. (2022), studying papers at major computer-vision and language-processing conferences, found that evaluations concentrate on a narrow range of decontextualized predictive behaviors, using a handful of methods, metrics, and test distributions.
 
 ##### Use it
 
@@ -1119,11 +1120,11 @@ Lab evaluation holds everything constant except the model. The field holds nothi
 - Evaluate the workflow, not just the model: time to complete, error recovery, handoffs.  
 - Pilot in a small number of real sites before scaling.  
 - Define success with the people affected, including people who never touch the interface.  
-- Bring in UX research methods like contextual inquiry and diary studies. They were built for exactly this gap.
+- Bring in UX research methods like contextual inquiry and diary studies. They are established ways to study how people use a system in context.
 
 ##### Origins
 
-"The Lab-to-Field Gap" is this site's name. Researchers also call it the sociotechnical gap or the evaluation gap.
+"The Lab-to-Field Gap" is this site's name. Related terms include the socio-technical gap (Liao and Xiao, 2023) and the "evaluation gap" (International AI Safety Report 2026). They overlap but are not identical.
 
 ##### Sources
 
@@ -1141,21 +1142,21 @@ Lab evaluation holds everything constant except the model. The field holds nothi
 ##### Takeaways
 
 - A strong model doesn't guarantee a strong human-AI team.  
-- In a large meta-analysis, human-AI combinations did worse on average than the best of humans or AI alone, with losses on decision tasks and gains on creative tasks.  
-- Explanations can raise trust without raising accuracy.  
+- In a large meta-analysis of studies from 2020 to mid-2023, human-AI combinations did worse on average than the best of humans or AI alone, with losses on decision tasks and gains on content-creation tasks.  
+- Explanations can make people more likely to accept AI advice, right or wrong, without making the team more accurate.  
 - Measure overreliance (accepting wrong AI advice) and underreliance (ignoring right advice).
 
 ##### What it means
 
-Most AI products put a person in the loop. That person decides whether to accept, edit, or ignore what the AI suggests. So the thing that produces outcomes is the pair, not the model. A model that's 90% accurate paired with a person who can't tell when it's wrong can produce worse results than either one alone.
+Most AI products put a person in the loop. That person decides whether to accept, edit, or ignore what the AI suggests. So the thing that produces outcomes is the pair, not the model. A model that's 90% accurate paired with a person who can't tell when it's wrong gains little from the pairing. If the person accepts everything, the team is only as good as the model. If they sometimes override answers the model had right, it is worse.
 
 ##### The evidence
 
-- **Combinations often underperform.** Vaccaro, Almaatouq, and Malone (2024) analyzed 106 experimental studies with 370 effect sizes. On average, human-AI combinations performed worse than the best of humans or AI alone (Hedges' g \= \-0.23). Combinations lost ground on decision-making tasks and gained on content creation tasks. When humans outperformed the AI alone, combining helped. When the AI outperformed humans alone, combining hurt.  
-- **Explanations increase acceptance, right or wrong.** Bansal et al. (2021) found that AI explanations increased the chance people accepted the AI's recommendation regardless of whether it was correct. AI assistance did produce some complementary gains, but explanations didn't add to them.  
-- **Friction can help.** Buçinca, Malaya, and Gajos (2021) found that cognitive forcing functions, which prompt people to think before seeing the AI's answer, reduced overreliance, though people rated those designs less favorably.  
+- **Combinations often underperform.** Vaccaro, Almaatouq, and Malone (2024) analyzed 106 experimental studies with 370 effect sizes, published between January 2020 and June 2023. On average, human-AI combinations performed worse than the best of humans or AI alone (Hedges' g \= \-0.23). Combinations lost ground on decision-making tasks and gained on content creation tasks. When humans outperformed the AI alone, combining helped. When the AI outperformed humans alone, combining hurt.  
+- **Explanations increase acceptance, right or wrong.** Bansal et al. (2021) found, in studies where the AI was about as accurate as the people, that AI explanations increased the chance people accepted the AI's recommendation regardless of whether it was correct. AI assistance did produce some complementary gains, but explanations didn't add to them.  
+- **Friction can help.** Buçinca, Malaya, and Gajos (2021) found, in an experiment with 199 participants, that cognitive forcing functions, which make people stop and think before accepting an AI suggestion, reduced overreliance compared with simple explanations. People rated those designs less favorably, and the benefit was larger for people with higher Need for Cognition, so it helped some people more than others.  
 - **An old problem.** Parasuraman and Riley (1997) described use, misuse, disuse, and abuse of automation decades before generative AI.  
-- **Design guidance.** Amershi et al. (2019) proposed 18 guidelines for human-AI interaction, many of which, like making clear how well the system can do what it does, affect how teams perform.
+- **Design guidance.** Amershi et al. (2019) proposed 18 guidelines for human-AI interaction, such as making clear how well the system can do what it does, and checked them with 49 design practitioners against 20 AI-infused products. They are design guidance, not a measured effect on team performance.
 
 ##### Use it
 
@@ -1172,7 +1173,7 @@ Most AI products put a person in the loop. That person decides whether to accept
 
 - Amershi, S., et al. (2019). [Guidelines for human-AI interaction](https://doi.org/10.1145/3290605.3300233). Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2019).  
 - Bansal, G., Wu, T., Zhou, J., Fok, R., Nushi, B., Kamar, E., Ribeiro, M. T., & Weld, D. (2021). [Does the whole exceed its parts? The effect of AI explanations on complementary team performance](https://arxiv.org/abs/2006.14779). Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2021).  
-- Buçinca, Z., Malaya, M. B., & Gajos, K. Z. (2021). [To trust or to think: Cognitive forcing functions can reduce overreliance on AI in AI-assisted decision-making](https://arxiv.org/abs/2102.09692). Proceedings of the ACM on Human-Computer Interaction, 5(CSCW1), Article 188\.  
+- Buçinca, Z., Malaya, M. B., & Gajos, K. Z. (2021). [To trust or to think: Cognitive forcing functions can reduce overreliance on AI in AI-assisted decision-making](https://arxiv.org/abs/2102.09692). Proceedings of the ACM on Human-Computer Interaction, 5(CSCW1), 1-21.  
 - Parasuraman, R., & Riley, V. (1997). [Humans and automation: Use, misuse, disuse, abuse](https://doi.org/10.1518/001872097778543886). Human Factors, 39(2), 230-253.  
 - Vaccaro, M., Almaatouq, A., & Malone, T. (2024). [When combinations of humans and AI are useful: A systematic review and meta-analysis](https://doi.org/10.1038/s41562-024-02024-1). Nature Human Behaviour, 8, 2293-2303.
 
@@ -1183,8 +1184,8 @@ Most AI products put a person in the loop. That person decides whether to accept
 ##### Takeaways
 
 - AI can excel at a task that seems hard and fail at one that seems easy.  
-- People can't see where the edge is, so they carry trust from tasks inside it to tasks outside it.  
-- Inside the frontier, AI help improves speed and quality. Outside it, AI help can make people worse.  
+- The edge is hard to see, so people can end up carrying trust from tasks inside it to tasks outside it.  
+- Inside the frontier, AI help improved speed and quality. On a task built to sit outside it, AI help made people less accurate.  
 - Map the frontier for your own tasks with direct tests. Don't infer it from general benchmarks.
 
 ##### What it means
@@ -1193,9 +1194,9 @@ Human skill tends to be smooth: someone who can write a strong strategy memo can
 
 ##### The evidence
 
-- **Field experiment with consultants.** Dell'Acqua et al. (2023) ran an experiment with 758 Boston Consulting Group consultants on 18 realistic tasks. On tasks inside the AI's frontier, consultants using GPT-4 completed 12.2% more tasks, worked 25.1% faster, and produced results rated more than 40% higher in quality. On a task outside the frontier, consultants using AI were 19 percentage points less likely to produce correct solutions than those without it. The study was later published in Organization Science (Dell'Acqua et al., 2026).  
-- **Task type matters.** Vaccaro, Almaatouq, and Malone (2024) found human-AI combinations tended to lose ground on decision tasks and gain on creation tasks, another sign that value depends heavily on which task you're looking at.  
-- **An older version of the idea.** Hans Moravec (1988) observed that it's comparatively easy to get computers to perform well on things like intelligence tests and board games, and hard to give them the perception and mobility skills of a one-year-old.
+- **Field experiment with consultants.** Dell'Acqua et al. (2023) ran two preregistered randomized experiments with 758 Boston Consulting Group consultants, each person in only one. Each experiment had a no-AI group and two GPT-4 groups: GPT-4 alone, and GPT-4 with a prompt-engineering overview. In the first, 385 consultants did 18 realistic tasks chosen to be inside GPT-4's abilities. Those using GPT-4 completed 12.2% more tasks on average, finished 25.1% faster (timed on the first 17 tasks), and produced work that human graders rated about 38% to 43% higher in quality. In the second, 373 consultants did one business problem deliberately designed so that GPT-4 would err. On it, 84.5% of the no-AI group got a correct answer, against about 60% and 70% of the two AI groups, an average gap of 19 percentage points. Those figures are from the 2023 working paper. The published version (Dell'Acqua et al., 2026) reports the same speed and task-completion figures, describes quality as significantly improved without giving a percentage, and words the outside-the-frontier result as 19% less likely to be correct.  
+- **Task type matters.** Vaccaro, Almaatouq, and Malone (2024), in a meta-analysis that is not about the jagged frontier itself, found human-AI combinations tended to lose ground on decision tasks and gain on content-creation tasks, another sign that value depends heavily on which task you're looking at.  
+- **An older version of the idea.** Hans Moravec (1988) observed that it's comparatively easy to get computers to perform at an adult level on intelligence tests or checkers, and hard to give them the perception and mobility skills of a one-year-old.
 
 ##### Use it
 
@@ -1206,12 +1207,12 @@ Human skill tends to be smooth: someone who can write a strong strategy memo can
 
 ##### Origins
 
-The term comes from Fabrizio Dell'Acqua, Ethan Mollick, Karim Lakhani, and colleagues' field experiment, first released as a Harvard Business School working paper in 2023\.
+The term comes from Fabrizio Dell'Acqua, Ethan Mollick, Karim Lakhani, and colleagues' field experiment, first released as a Harvard Business School working paper in 2023 and published in Organization Science in 2026\.
 
 ##### Sources
 
-- Dell'Acqua, F., McFowland III, E., Mollick, E., Lifshitz, H., Kellogg, K., Rajendran, S., Krayer, L., Candelon, F., & Lakhani, K. R. (2026). [Navigating the jagged technological frontier: Field experimental evidence of the effects of artificial intelligence on knowledge worker productivity and quality](https://doi.org/10.1287/orsc.2025.21838). Organization Science, 37(2).  
-- Dell'Acqua, F., McFowland III, E., Mollick, E., Lifshitz-Assaf, H., Kellogg, K., Rajendran, S., Krayer, L., Candelon, F., & Lakhani, K. R. (2023). [Navigating the jagged technological frontier: Field experimental evidence of the effects of AI on knowledge worker productivity and quality](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321). Harvard Business School Working Paper 24-013. *(Working paper)*  
+- Dell'Acqua, F., McFowland III, E., Mollick, E., Lifshitz, H., Kellogg, K., Rajendran, S., Krayer, L., Candelon, F., & Lakhani, K. R. (2026). [Navigating the jagged technological frontier: Field experimental evidence of the effects of artificial intelligence on knowledge worker productivity and quality](https://doi.org/10.1287/orsc.2025.21838). Organization Science, 37(2), 403-423.  
+- Dell'Acqua, F., McFowland III, E., Mollick, E., Lifshitz-Assaf, H., Kellogg, K., Rajendran, S., Krayer, L., Candelon, F., & Lakhani, K. R. (2023). [Navigating the jagged technological frontier: Field experimental evidence of the effects of AI on knowledge worker productivity and quality](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321). Harvard Business School Working Paper 24-013 (an earlier version of the study published in Organization Science, 2026). *(Working paper)*  
 - Moravec, H. (1988). Mind children: The future of robot and human intelligence. Harvard University Press. *(Book)*  
 - Vaccaro, M., Almaatouq, A., & Malone, T. (2024). [When combinations of humans and AI are useful: A systematic review and meta-analysis](https://doi.org/10.1038/s41562-024-02024-1). Nature Human Behaviour, 8, 2293-2303.
 
