@@ -1,4 +1,4 @@
-/* My laws: a set of laws saved in this browser. Shared by the index, law pages, claim checker, quick brief and checklist.
+/* My patterns: a set of patterns saved in this browser. Shared by the index, law pages, claim checker, quick brief and checklist.
    Markup hooks: [data-pick], [data-collection-link], [data-collection-count], [data-tray], [data-tray-clear]. */
 (function () {
   'use strict';
@@ -45,11 +45,17 @@
     window.setTimeout(function () { live.textContent = msg; }, 30);
   }
 
-  function lawsParam(list) { return list.length ? 'laws=' + list.join(',') : ''; }
+  // Share links use ?patterns=1,2,3. Pages also still read the older ?laws= form (see readPatternsParam).
+  function patternsParam(list) { return list.length ? 'patterns=' + list.join(',') : ''; }
+
+  // The list of pattern numbers in a URL's query string: ?patterns=, or the legacy ?laws= from older shared links.
+  function readPatternsParam(params) {
+    return params.get('patterns') || params.get('laws') || '';
+  }
 
   function linkFor(base, extra) {
     var list = clean(memory.concat(extra || []));
-    var p = lawsParam(list);
+    var p = patternsParam(list);
     if (!p) return base;
     return base + (base.indexOf('?') === -1 ? '?' : '&') + p;
   }
@@ -113,7 +119,8 @@
     clear: function () { set([]); },
     linkFor: linkFor,
     copy: copy,
-    lawsParam: lawsParam,
+    patternsParam: patternsParam,
+    readPatternsParam: readPatternsParam,
     announce: announce,
     onChange: function (f) { listeners.push(f); }
   };

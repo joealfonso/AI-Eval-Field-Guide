@@ -303,13 +303,54 @@
       "laws": "all"
     }
   },
+  "checklist": {
+    "_note": "Checklist phases and stakes. Authored for the site build and needs editorial review. Each pattern is placed in the phase where its question is most useful to ask: 'buy' for claims you are handed (Parts I-II and the buyer-facing results patterns), 'launch' for how the test is run and read, 'after' for what only real use shows (Part V). Stakes set how many of each pattern's questions the printed sheet includes; the first question of every pattern is always marked Must ask, and at high stakes so is the second.",
+    "phases": [
+      { "id": "buy", "label": "Before you buy or choose", "note": "Questions for the claims and scores you are handed." },
+      { "id": "launch", "label": "Before you launch", "note": "Questions about how the evaluation was run and read." },
+      { "id": "after", "label": "After launch", "note": "Questions that only real use can answer." }
+    ],
+    "stakes": [
+      { "id": "low", "label": "Low stakes", "perPattern": 1, "mustAsk": 1, "note": "One question per pattern. For internal tools and easy-to-undo decisions." },
+      { "id": "medium", "label": "Medium stakes", "perPattern": 2, "mustAsk": 1, "note": "Two questions per pattern. A sensible default." },
+      { "id": "high", "label": "High stakes", "perPattern": 99, "mustAsk": 2, "note": "Every question. For decisions that affect people, money, health, or safety." }
+    ],
+    "phaseOf": {
+      "goodharts-law": "buy",
+      "campbells-law": "buy",
+      "the-construct-gap": "buy",
+      "the-functionality-fallacy": "buy",
+      "benchmark-saturation": "buy",
+      "data-contamination": "buy",
+      "the-benchmark-lottery": "buy",
+      "the-baseline-rule": "buy",
+      "the-cost-frontier": "buy",
+      "the-reproducibility-rule": "buy",
+      "the-metric-mirage": "launch",
+      "adaptive-overfitting": "launch",
+      "the-clever-hans-effect": "launch",
+      "the-gold-standard-myth": "launch",
+      "prompt-sensitivity": "launch",
+      "judge-bias": "launch",
+      "criteria-drift": "launch",
+      "once-is-not-reliable": "launch",
+      "no-error-bars-no-result": "launch",
+      "the-averaging-trap": "launch",
+      "presence-not-absence": "launch",
+      "evaluation-awareness": "after",
+      "distribution-shift": "after",
+      "the-lab-to-field-gap": "after",
+      "the-team-is-the-system": "after",
+      "the-jagged-frontier": "after"
+    }
+  },
   "claimChecker": {
     "_note": "Rule-based matching, written from the manuscript's Playbook (Reading an AI claim, Red flags). 'ask' is an index into the pattern's questions. Needs editorial review.",
     "types": [
       {
         "id": "benchmark",
         "label": "Benchmark score",
-        "detect": "(\\d{1,3}(\\.\\d+)?\\s?%)|\\b(mmlu|gsm8k|humaneval|swe-?bench|benchmark|leaderboard|accuracy|pass@\\d+|scores?)\\b",
+        "detect": "\\b(mmlu\\w*|gsm8k|humaneval|swe-?bench\\w*|gpqa|hellaswag|benchmarks?|leaderboards?|accuracy|pass@\\d+|scored|scores? (of |at |on |was |is |reached )?\\d+|scores? (higher|lower|best|top|well)|f1)\\b|\\d{1,3}(\\.\\d+)?\\s?%\\s*(on|accuracy|correct|pass(ed)?|of (the )?(questions|problems|tasks|items))",
         "laws": [
           { "slug": "data-contamination", "fit": "strong", "why": "The score is on a public benchmark. Check whether the test items overlap with the training data.", "ask": 0 },
           { "slug": "no-error-bars-no-result", "fit": "strong", "why": "A headline number is reported without an interval or a count of items and runs.", "ask": 0 },
@@ -321,38 +362,39 @@
       {
         "id": "comparison",
         "label": "Comparison to other models",
-        "detect": "\\b(beats?|outperforms?|better than|vs\\.?|versus|surpass(es)?|ahead of|state[- ]of[- ]the[- ]art|sota|best|faster than|leading models?)\\b",
+        "detect": "\\b(beats?|outperforms?|outperformed|better than|vs\\.?|versus|surpass(es)?|ahead of|state[- ]of[- ]the[- ]art|sota|best|faster than|leading models?|competitors?)\\b",
         "laws": [
           { "slug": "the-baseline-rule", "fit": "strong", "why": "A comparison is only as strong as the baseline it beats.", "ask": 0 },
           { "slug": "no-error-bars-no-result", "fit": "strong", "why": "A win is claimed with no interval or number of runs.", "ask": 0 },
           { "slug": "the-benchmark-lottery", "fit": "likely", "why": "Which benchmarks are reported can decide who wins.", "ask": 0 },
           { "slug": "the-cost-frontier", "fit": "likely", "why": "Systems that cost very different amounts to run are not a fair comparison.", "ask": 0 },
           { "slug": "the-averaging-trap", "fit": "worth", "why": "An average gap can hide the groups where the system loses.", "ask": 0 },
-          { "slug": "the-reproducibility-rule", "fit": "worth", "why": "Competitor numbers are only comparable if they came from the same prompts, settings, and scoring code.", "ask": 0 }
+          { "slug": "the-reproducibility-rule", "fit": "worth", "why": "Competitor numbers are only comparable if they came from the same prompts, settings, and model versions.", "ask": 0 }
         ]
       },
       {
         "id": "preference",
-        "label": "Human-preference win rate",
-        "detect": "\\b(win[- ]?rates?|preferred|prefers?|human preference|arena|elo|side[- ]by[- ]side|users? (like|love|choose|picked))\\b",
+        "label": "Preference or satisfaction",
+        "detect": "\\b(win[- ]?rates?|preferred|prefers?|human preference|arena|elo|side[- ]by[- ]side|satisf\\w+|csat|nps|thumbs[- ]up|(users?|customers?|people|raters?|reviewers?) (like|love|prefer|choose|picked|rated?)|(user|customer) (ratings?|feedback)|positive feedback)\\b",
         "laws": [
-          { "slug": "campbells-law", "fit": "strong", "why": "Rankings that drive buying and press attention invite gaming, including selective reporting of variants.", "ask": 0 },
-          { "slug": "goodharts-law", "fit": "likely", "why": "Optimizing for votes can raise the number without raising quality.", "ask": 0 },
-          { "slug": "the-averaging-trap", "fit": "likely", "why": "A win rate averages over who voted and what they asked.", "ask": 0 },
+          { "slug": "campbells-law", "fit": "strong", "why": "Rankings and satisfaction scores that drive decisions invite gaming, including by the system being measured.", "ask": 0 },
+          { "slug": "the-construct-gap", "fit": "likely", "why": "Satisfaction and preference measure how an answer feels, not whether it is correct or the task got done.", "ask": 1 },
+          { "slug": "goodharts-law", "fit": "likely", "why": "Optimizing for votes or ratings can raise the number without raising quality.", "ask": 0 },
+          { "slug": "the-averaging-trap", "fit": "likely", "why": "A win rate or satisfaction score averages over who voted and what they asked.", "ask": 0 },
           { "slug": "the-gold-standard-myth", "fit": "likely", "why": "Human ratings are measurements with error, and raters disagree.", "ask": 0 },
-          { "slug": "no-error-bars-no-result", "fit": "likely", "why": "A win rate is an estimate and needs an interval.", "ask": 0 },
-          { "slug": "the-benchmark-lottery", "fit": "worth", "why": "Check which comparisons were left out.", "ask": 1 }
+          { "slug": "no-error-bars-no-result", "fit": "likely", "why": "A rate from a sample is an estimate and needs an interval.", "ask": 0 },
+          { "slug": "the-benchmark-lottery", "fit": "worth", "why": "Check which comparisons or surveys were left out.", "ask": 1 }
         ]
       },
       {
         "id": "aigraded",
         "label": "AI-graded result",
-        "detect": "\\b(llm[- ]as[- ]a[- ]judge|ai[- ]graded|graded by|judge model|model[- ]graded|auto[- ]?graded|gpt-?\\d\\w* (as|judge))\\b|judged by (an? )?(ai|llm|model|gpt|claude)",
+        "detect": "\\b(llm[- ]as[- ]a[- ]judge|ai[- ]graded|graded by|graded (it|them|these|the answers|the outputs)|judge model|model[- ]graded|auto[- ]?graded|gpt-?\\d\\w* (as|judge))\\b|judged by (an? )?(ai|llm|model|gpt|claude)|(another|a second|an?) (llm|ai|model) (to )?(grad\\w+|judg\\w+|scor\\w+|rat\\w+)|self[- ]evaluat\\w*|grad(es|ed|ing) (its|their) own",
         "laws": [
-          { "slug": "judge-bias", "fit": "strong", "why": "An AI grader has known biases: answer order, answer length, and a preference for its own writing.", "ask": 0 },
+          { "slug": "judge-bias", "fit": "strong", "why": "An AI grader has known biases: answer order, answer length, and a preference for its own outputs.", "ask": 0 },
           { "slug": "the-gold-standard-myth", "fit": "likely", "why": "A grader is only as good as the human labels it was checked against.", "ask": 0 },
           { "slug": "no-error-bars-no-result", "fit": "likely", "why": "AI-graded scores are still estimates and need intervals.", "ask": 0 },
-          { "slug": "criteria-drift", "fit": "worth", "why": "Rubrics change as people read real outputs. Check whether the criteria were versioned.", "ask": 0 },
+          { "slug": "criteria-drift", "fit": "worth", "why": "Rubrics change as people read real outputs. Check whether the criteria were fixed before grading.", "ask": 0 },
           { "slug": "prompt-sensitivity", "fit": "worth", "why": "The grader's own prompt affects the scores it gives.", "ask": 0 }
         ]
       },
@@ -361,12 +403,108 @@
         "label": "Production accuracy",
         "detect": "\\b(in production|production|real[- ]world|real users?|customers?|deployed|in the field|live traffic|pilot|in practice)\\b",
         "laws": [
-          { "slug": "the-functionality-fallacy", "fit": "strong", "why": "Vendor-reported performance is a claim. Independent validation on your own population is evidence.", "ask": 0 },
+          { "slug": "the-functionality-fallacy", "fit": "strong", "why": "Vendor-reported performance is a claim. Independent validation on your kind of data is the first thing to ask for.", "ask": 0 },
           { "slug": "distribution-shift", "fit": "likely", "why": "Performance on one population does not automatically carry over to another.", "ask": 0 },
           { "slug": "the-lab-to-field-gap", "fit": "likely", "why": "Real use adds workflows, time pressure, and people that the lab left out.", "ask": 0 },
           { "slug": "the-averaging-trap", "fit": "likely", "why": "Production accuracy is an average. Check the worst-performing groups.", "ask": 0 },
           { "slug": "once-is-not-reliable", "fit": "likely", "why": "Customer-facing results depend on how often it works every time, not once.", "ask": 0 },
-          { "slug": "evaluation-awareness", "fit": "worth", "why": "Behavior under test may differ from behavior in real use, so check monitoring.", "ask": 1 }
+          { "slug": "evaluation-awareness", "fit": "worth", "why": "Behavior under test may differ from behavior in real use, so check monitored real traffic.", "ask": 1 }
+        ]
+      },
+      {
+        "id": "productivity",
+        "label": "Time, cost or productivity gain",
+        "detect": "\\b(productiv\\w*|roi|return on investment|time[- ]?sav\\w*|cost[- ]?sav\\w*|hours? (saved|per week|a week)|(sav(e|es|ed|ing|ings)|reduc(e|es|ed|ing|tion)|cuts?|cutting|boost(s|ed)?|speeds? up|sped up|increas(e|es|ed)|improv(e|es|ed))\\b[^.]{0,40}\\b(time|hours?|costs?|effort|workload|throughput|handle time|turnaround|tickets?|work)|(\\d+|two|three|four|five|ten)x (faster|more)|efficien\\w*)\\b",
+        "laws": [
+          { "slug": "the-lab-to-field-gap", "fit": "strong", "why": "A time or cost saving is a field outcome. Ask how it was measured in real work: a pilot, a trial, or user self-reports.", "ask": 0 },
+          { "slug": "the-baseline-rule", "fit": "strong", "why": "Saved compared with what? Ask whether the comparison was the old process, a simple alternative, or nothing.", "ask": 0 },
+          { "slug": "the-construct-gap", "fit": "strong", "why": "Time saved is not the same as work done well. Check that quality, rework, and downstream effects were measured, not only speed.", "ask": 1 },
+          { "slug": "the-team-is-the-system", "fit": "likely", "why": "Gains depend on how people use the tool and check its output. Ask whether person plus tool was tested against the person alone.", "ask": 0 },
+          { "slug": "the-functionality-fallacy", "fit": "likely", "why": "Vendor-reported savings are claims until someone independent checks them on your kind of work.", "ask": 0 },
+          { "slug": "the-averaging-trap", "fit": "likely", "why": "An average saving can hide people who saved nothing or lost time fixing the output.", "ask": 0 },
+          { "slug": "no-error-bars-no-result", "fit": "likely", "why": "A percentage from a small group or a single trial needs an interval and a count.", "ask": 0 },
+          { "slug": "distribution-shift", "fit": "worth", "why": "Pilot users and early adopters may not look like the people you would roll it out to.", "ask": 0 }
+        ]
+      },
+      {
+        "id": "safety",
+        "label": "Safety or risk claim",
+        "detect": "\\b(safe|safer|safest|safety|harmless|harmful|dangerous|hazard\\w*|bio-?weapons?|cbrn|jailbreak\\w*|red[- ]?team\\w*|misuse|alignment|aligned|guardrails?|toxic\\w*|secure|security|vulnerab\\w+|risks?)\\b",
+        "laws": [
+          { "slug": "presence-not-absence", "fit": "strong", "why": "A failed attempt to find a risk says how hard someone tried, not whether the risk exists.", "ask": 0 },
+          { "slug": "the-construct-gap", "fit": "strong", "why": "\"Safe\" names a property no single test covers. Ask what was measured, in what setting, and what a passing result would not show.", "ask": 1 },
+          { "slug": "the-functionality-fallacy", "fit": "likely", "why": "A safety claim is a performance claim: ask who checked it independently, on what, and how often it fails.", "ask": 1 },
+          { "slug": "evaluation-awareness", "fit": "likely", "why": "A model that can tell it is being tested may behave differently from how it will in real use.", "ask": 0 },
+          { "slug": "prompt-sensitivity", "fit": "likely", "why": "Safety behavior can change with phrasing, so one set of prompts does not cover how people will actually ask.", "ask": 0 },
+          { "slug": "once-is-not-reliable", "fit": "worth", "why": "Holding up once is not holding up every time. Ask for repeated-run rates.", "ask": 0 },
+          { "slug": "the-averaging-trap", "fit": "worth", "why": "One safety rate can hide categories or user groups where it fails.", "ask": 0 }
+        ]
+      },
+      {
+        "id": "demo",
+        "label": "Demo or anecdote",
+        "detect": "\\b(demos?|demonstrat\\w+|showcas\\w+|anecdot\\w+|testimonials?|case stud(y|ies)|cherry[- ]?pick\\w*|example outputs?|look at (this|how))\\b",
+        "laws": [
+          { "slug": "the-lab-to-field-gap", "fit": "strong", "why": "A demo is not evidence from real use.", "ask": 0 },
+          { "slug": "once-is-not-reliable", "fit": "strong", "why": "A demo shows it can work once, not how often it does.", "ask": 0 },
+          { "slug": "the-functionality-fallacy", "fit": "likely", "why": "A polished example does not show the system works on your data.", "ask": 0 },
+          { "slug": "the-jagged-frontier", "fit": "likely", "why": "Capability is uneven. A demo shows a strength; ask where the failure pockets are.", "ask": 0 },
+          { "slug": "the-reproducibility-rule", "fit": "likely", "why": "A demo the reader cannot rerun is an anecdote until the setup is recorded.", "ask": 0 }
+        ]
+      },
+      {
+        "id": "agent",
+        "label": "Agent or task success rate",
+        "detect": "\\b(agents?|agentic|autonomous(ly)?|end[- ]to[- ]end|task (completion|success)|success rates?|completes? \\d+|resolv(es|ed) \\d+|tool use|multi[- ]step|computer use|webarena|osworld)\\b",
+        "laws": [
+          { "slug": "once-is-not-reliable", "fit": "strong", "why": "Agent runs vary. Ask how many attempts per task and how often it succeeds on every one.", "ask": 0 },
+          { "slug": "no-error-bars-no-result", "fit": "likely", "why": "A success rate over a small task set needs an interval.", "ask": 0 },
+          { "slug": "the-cost-frontier", "fit": "likely", "why": "Agents can buy accuracy with retries and tokens. Ask for cost and time per task.", "ask": 0 },
+          { "slug": "the-lab-to-field-gap", "fit": "likely", "why": "Real tasks bring messy tools, permissions, and users that a test harness leaves out.", "ask": 0 },
+          { "slug": "the-baseline-rule", "fit": "likely", "why": "Compare with a simple scripted pipeline or a person doing the same task.", "ask": 0 },
+          { "slug": "the-reproducibility-rule", "fit": "worth", "why": "Agent results depend on the scaffold, tools, and model version. Check that all are recorded.", "ask": 0 }
+        ]
+      },
+      {
+        "id": "humanlevel",
+        "label": "Human-level or general ability",
+        "detect": "\\b(human[- ]level|superhuman|expert[- ]level|phd[- ]level|(beats?|exceeds?|outperforms?|matches?|rivals?|better than|as good as) (most |average |typical |expert |human )?(humans?|people|doctors?|lawyers?|experts?|professionals?|radiologists?|clinicians?)|passe[sd]? the \\w+( \\w+)? (exam|test)|agi|general intelligence|human[- ]like|intelligen\\w+)\\b",
+        "laws": [
+          { "slug": "the-construct-gap", "fit": "strong", "why": "\"Human-level\" and \"reasoning\" are claims about a capability. Ask what the test actually measured.", "ask": 0 },
+          { "slug": "the-baseline-rule", "fit": "strong", "why": "Which humans? Experts or crowd workers, with what time and tools, is part of the result.", "ask": 0 },
+          { "slug": "the-jagged-frontier", "fit": "likely", "why": "Matching people on hard tasks does not mean matching them on easy ones.", "ask": 0 },
+          { "slug": "data-contamination", "fit": "likely", "why": "Exams and puzzles often appear online, so the model may have seen them.", "ask": 0 },
+          { "slug": "benchmark-saturation", "fit": "likely", "why": "A top score on an older test may only mean the test is used up.", "ask": 0 },
+          { "slug": "the-clever-hans-effect", "fit": "likely", "why": "A model can pass for the wrong reasons, such as patterns in the questions.", "ask": 0 },
+          { "slug": "the-gold-standard-myth", "fit": "worth", "why": "The human answers are labels too, and they carry error.", "ask": 0 }
+        ]
+      },
+      {
+        "id": "domain",
+        "label": "High-stakes setting (health, law, hiring, credit)",
+        "detect": "\\b(clinical\\w*|medical\\w*|diagnos\\w+|patients?|doctors?|physicians?|radiolog\\w+|health ?care|hospitals?|legal|lawyers?|bar exam|licensing exam|hiring|recruit\\w*|resumes?|credit|loan|underwriting|insurance|fraud)\\b",
+        "laws": [
+          { "slug": "the-functionality-fallacy", "fit": "strong", "why": "In a high-stakes setting, ask first for independent evidence that the system works on your kind of cases.", "ask": 0 },
+          { "slug": "distribution-shift", "fit": "strong", "why": "Performance at one hospital, court, or employer may not carry over to another population.", "ask": 0 },
+          { "slug": "the-lab-to-field-gap", "fit": "strong", "why": "Retrospective accuracy is not the same as what changes when people use it in practice.", "ask": 0 },
+          { "slug": "the-team-is-the-system", "fit": "likely", "why": "In practice a person reviews or acts on the output. Test the person and the AI together.", "ask": 0 },
+          { "slug": "the-averaging-trap", "fit": "likely", "why": "One accuracy figure can hide poor performance for particular patients, applicants, or groups.", "ask": 0 },
+          { "slug": "the-baseline-rule", "fit": "strong", "why": "Compare with the current standard of practice, not with nothing.", "ask": 0 },
+          { "slug": "the-gold-standard-myth", "fit": "likely", "why": "Reference labels such as diagnoses or past decisions are judgments with error.", "ask": 0 },
+          { "slug": "data-contamination", "fit": "worth", "why": "Exam questions and public case sets may have been in the training data.", "ask": 0 }
+        ]
+      },
+      {
+        "id": "fairness",
+        "label": "Fairness or bias claim",
+        "detect": "\\b(fair|fairly|fairness|unbiased|bias(es|ed)?|equitabl[ey]|discriminat\\w+|inclusive|all users|every user|everyone|(across|for|among) (all )?(groups|demographics?|languages|regions|genders|races|ages)|demographic\\w*|stereotyp\\w+)\\b",
+        "laws": [
+          { "slug": "the-averaging-trap", "fit": "strong", "why": "An overall average cannot show which groups the system fails.", "ask": 0 },
+          { "slug": "presence-not-absence", "fit": "strong", "why": "Not finding bias in one test shows what was tried, not that it is absent.", "ask": 0 },
+          { "slug": "the-construct-gap", "fit": "likely", "why": "\"Fair\" can be defined several ways that conflict. Ask which one was measured.", "ask": 1 },
+          { "slug": "distribution-shift", "fit": "likely", "why": "Results for the groups in the test data may not hold for the people it is used on.", "ask": 0 },
+          { "slug": "the-gold-standard-myth", "fit": "worth", "why": "Labels and ratings can carry the same bias the test is looking for.", "ask": 0 },
+          { "slug": "no-error-bars-no-result", "fit": "worth", "why": "Small groups give wide intervals. Ask how many examples each group had.", "ask": 0 }
         ]
       }
     ],
@@ -375,13 +513,11 @@
       { "detect": "\\b(internal|in-house|proprietary|our own|home-grown)\\b[^.]{0,30}\\b(benchmarks?|evals?|evaluations?|tests?|test sets?|datasets?)\\b", "slug": "adaptive-overfitting", "fit": "likely", "why": "A test the team built and reuses is easy to tune against without noticing.", "ask": 0 },
       { "detect": "\\b(superhuman|human[- ]level|exceeds? humans?|beats? humans?)\\b", "slug": "benchmark-saturation", "fit": "strong", "why": "\"Superhuman\" on a benchmark often signals saturation, contamination, or both.", "ask": 0 },
       { "detect": "\\b(superhuman|human[- ]level|exceeds? humans?|beats? humans?)\\b", "slug": "data-contamination", "fit": "strong", "why": "\"Superhuman\" on a benchmark often signals saturation, contamination, or both.", "ask": 0 },
-      { "detect": "\\b(no (evidence|sign)s? of|no harmful|cannot|can't|is safe)\\b", "slug": "presence-not-absence", "fit": "likely", "why": "A failed attempt to find a risk says how hard someone tried, not whether the risk exists.", "ask": 0 },
+      { "detect": "\\b(no (evidence|signs?|traces?|indications?) of|no harmful|found no|no (bias|harm\\w*|issues?|problems?|risks?|vulnerabilit\\w+)( (was|were|has been|have been))? (found|detected|observed)|not (found|detected)|could(n't| not) find|cannot|can't|is safe|are safe)\\b", "slug": "presence-not-absence", "fit": "likely", "why": "A failed attempt to find a risk says how hard someone tried, not whether the risk exists.", "ask": 0 },
       { "detect": "\\b(explain(s|ed|able|ability)?|transparen(t|cy)|builds? trust|trustworthy)\\b", "slug": "the-team-is-the-system", "fit": "worth", "why": "Explanations can raise trust without raising accuracy.", "ask": 1 },
-      { "detect": "\\b(demos?|showcase[sd]?)\\b", "slug": "the-lab-to-field-gap", "fit": "strong", "why": "A demo is not evidence from real use.", "ask": 0 },
-      { "detect": "(\\b(no (hallucinations?|errors?|mistakes?)|always|never fails?)\\b)|100\\s?%", "slug": "once-is-not-reliable", "fit": "likely", "why": "Perfect-sounding claims need evidence from repeated runs.", "ask": 0 },
-      { "detect": "\\b(self[- ]evaluat\\w*|grad(es|ed) (its|their) own)\\b", "slug": "judge-bias", "fit": "strong", "why": "A model grading its own outputs tends to favor them.", "ask": 0 },
-      { "detect": "\\b(fair|unbiased|all users|every user|across (all )?(groups|languages|regions))\\b", "slug": "the-averaging-trap", "fit": "likely", "why": "An average cannot show who the system fails.", "ask": 0 },
-      { "detect": "\\b(cheap(er)?|costs?|latency|efficient|per token)\\b", "slug": "the-cost-frontier", "fit": "likely", "why": "Accuracy without cost is half a result.", "ask": 0 }
+      { "detect": "(\\b(no (hallucinations?|errors?|mistakes?)|never (hallucinates?|fails?|makes? (a )?mistakes?|errs?)|always|every time|all the time)\\b)|100\\s?%", "slug": "once-is-not-reliable", "fit": "likely", "why": "Perfect-sounding claims need evidence from repeated runs.", "ask": 0 },
+      { "detect": "\\b(self[- ]evaluat\\w*|grad(es|ed|ing) (its|their) own|(its|their) own (answers|outputs|work))\\b", "slug": "judge-bias", "fit": "strong", "why": "A model grading its own outputs tends to favor them.", "ask": 0 },
+      { "detect": "\\b(cheap(er)?|costs?|latency|per token|tokens? per)\\b", "slug": "the-cost-frontier", "fit": "likely", "why": "Accuracy without cost is half a result.", "ask": 0 }
     ]
   },
   "situationFinder": {

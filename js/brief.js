@@ -1,5 +1,5 @@
-/* Quick brief: a short overview of the chosen laws, assembled in the browser from each law's own text.
-   The selection comes from ?laws=1,2,3 (a shared link) or from My laws (the collection). */
+/* Quick brief: a short overview of the chosen patterns, assembled in the browser from each pattern's own text.
+   The selection comes from ?patterns=1,2,3 (a shared link; the older ?laws= still works) or from My patterns (the collection). */
 (function () {
   'use strict';
 
@@ -47,7 +47,7 @@
     });
     return out.sort(function (a, b) { return a - b; });
   }
-  var linkedLaws = parseLaws(params.get('laws'));
+  var linkedLaws = parseLaws(LAIC.readPatternsParam(params));
   linked = linkedLaws.length > 0;
   state.laws = linked ? linkedLaws : LAIC.get().filter(function (n) { return byNo[n]; });
 
@@ -57,7 +57,7 @@
 
   function updateUrl() {
     var q = [];
-    if ((linked || dirty) && state.laws.length) q.push('laws=' + state.laws.join(','));
+    if ((linked || dirty) && state.laws.length) q.push('patterns=' + state.laws.join(','));
     if (state.detail === 'full') q.push('detail=full');
     try { window.history.replaceState(null, '', window.location.pathname + (q.length ? '?' + q.join('&') : '')); } catch (e) { /* file:// */ }
   }
@@ -70,8 +70,8 @@
     renderBrief();
   }
 
-  // The brief is a working set: editing it never changes My laws. Until the visitor edits it,
-  // it follows My laws; afterwards it only refreshes so the Save button reflects the collection.
+  // The brief is a working set: editing it never changes My patterns. Until the visitor edits it,
+  // it follows My patterns; afterwards it only refreshes so the Save button reflects the collection.
   LAIC.onChange(function (list) {
     if (linked || dirty) { renderBrief(); return; }
     var mine = list.filter(function (n) { return byNo[n]; });
@@ -343,7 +343,7 @@
     var copyLink = el('button', 'btn btn--outline btn--sm', 'Copy link');
     copyLink.type = 'button';
     copyLink.addEventListener('click', function () {
-      var q = 'laws=' + state.laws.join(',') + (state.detail === 'full' ? '&detail=full' : '');
+      var q = 'patterns=' + state.laws.join(',') + (state.detail === 'full' ? '&detail=full' : '');
       LAIC.copy(window.location.origin + window.location.pathname + '?' + q).then(function () { flash(copyLink, 'Copied'); LAIC.announce('Link copied'); }, function () { flash(copyLink, 'Press Ctrl+C'); });
     });
     var copyText = el('button', 'btn btn--outline btn--sm', 'Copy as text');
@@ -429,7 +429,7 @@
     laws.forEach(function (l) { ol.appendChild(el('li', '', typo(l.questions[0]))); });
     ask.appendChild(ol);
     var cl = el('a', 'btn btn--ink', 'Build a printable checklist from these');
-    cl.href = 'checklist.html?preset=custom&laws=' + state.laws.join(',');
+    cl.href = 'checklist.html?preset=custom&patterns=' + state.laws.join(',');
     ask.appendChild(cl);
     outEl.appendChild(ask);
   }
