@@ -224,7 +224,13 @@
       "questionsSource": "derived",
       "questions": [
         "What is the 95% confidence interval on each score, and how many items and runs does it rest on?",
-        "Is the gap between systems larger than the interval, using a paired comparison on the same items?"
+        "Does the confidence interval for the difference between systems exclude zero, using a paired comparison on the same items?"
+      ],
+      "version": "v1.1",
+      "evidenceChecked": "2026-10-19",
+      "history": [
+        { "v": "v1.1", "d": "2026-10-19", "t": "Corrected the rule for comparing two scores: judge the difference between systems, not overlapping intervals, and say \"not shown to differ\" rather than \"tie\". Added the paired-comparison caveat for a 3-point gap, and softened the Bouthillier and Card summaries to match those papers." },
+        { "v": "v1.0", "d": "2026-10-05", "t": "Published." }
       ]
     },
     "the-averaging-trap": {
@@ -234,6 +240,12 @@
       "questions": [
         "Which user groups, languages, or input types matter here, and were results reported for each?",
         "What is the worst-performing slice, and does it have enough examples to support its own error bars?"
+      ],
+      "version": "v1.1",
+      "evidenceChecked": "2026-10-19",
+      "history": [
+        { "v": "v1.1", "d": "2026-10-19", "t": "Dated the Gender Shades audit (April and May 2017), corrected the description of model cards (proposed, not made standard), and added small caveats on the medical imaging figure and on counting slices." },
+        { "v": "v1.0", "d": "2026-10-05", "t": "Published." }
       ]
     },
     "the-baseline-rule": {
@@ -243,6 +255,12 @@
       "questions": [
         "Was the current process, or the simplest thing that could work, included as a baseline?",
         "Did the baselines get the same tuning budget as the new method?"
+      ],
+      "version": "v1.1",
+      "evidenceChecked": "2026-10-19",
+      "history": [
+        { "v": "v1.1", "d": "2026-10-19", "t": "Clarified that only 7 of 18 recommender papers could be rerun and the rest were not tested, described Lin (2019) as an opinion piece on two papers, and replaced an unsourced claim about how baselines are usually tuned." },
+        { "v": "v1.0", "d": "2026-10-05", "t": "Published." }
       ]
     },
     "the-benchmark-lottery": {
@@ -252,6 +270,12 @@
       "questions": [
         "Was the benchmark suite chosen and written down before any results were seen?",
         "Which common benchmarks are missing from the results table, and why?"
+      ],
+      "version": "v1.1",
+      "evidenceChecked": "2026-10-19",
+      "history": [
+        { "v": "v1.1", "d": "2026-10-19", "t": "Added the scope of the HELM coverage figures, described Ethayarajh and Jurafsky (2020) as an opinion paper, and softened an unsourced benchmark count and the origin of the term." },
+        { "v": "v1.0", "d": "2026-10-05", "t": "Published." }
       ]
     },
     "the-reproducibility-rule": {
@@ -261,6 +285,12 @@
       "questions": [
         "Are the model version, system prompt, decoding settings, dataset version, and scoring code recorded so the eval can be rerun?",
         "Are raw outputs saved, and is there a canary set to rerun whenever the vendor updates the model?"
+      ],
+      "version": "v1.1",
+      "evidenceChecked": "2026-10-19",
+      "history": [
+        { "v": "v1.1", "d": "2026-10-19", "t": "Narrowed the Kapoor et al. and Pineau et al. summaries to what those papers report (HumanEval and WebArena; the NeurIPS 2019 program) and softened an unsourced claim about hosted models." },
+        { "v": "v1.0", "d": "2026-10-05", "t": "Published." }
       ]
     },
     "presence-not-absence": {
@@ -828,7 +858,7 @@
           {
             "slug": "no-error-bars-no-result",
             "fit": "strong",
-            "why": "Differences smaller than the noise are not differences. Put an interval on each score and compare on the same items.",
+            "why": "A gap smaller than the noise has not been shown to be real. Put an interval on each score and on the gap between them, comparing on the same items.",
             "ask": 0
           },
           {
