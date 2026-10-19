@@ -75,7 +75,14 @@
     },
     "benchmark-saturation": {
       "roles": ["Buying", "Building"],
-      "plainTerms": "Tests stop being useful once everyone scores near the top. The remaining differences are mostly noise, and the real gaps are somewhere else.",
+      "version": "v1.1",
+      "revised": "2026-10-19",
+      "evidenceChecked": "2026-10-19",
+      "history": [
+        {"v": "v1.1", "d": "2026-10-19", "t": "Corrected the saturation figures from Ott et al., described Bowman and Dahl's argument against adversarial data collection, and noted that dynamic test sets are debated."},
+        {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
+      ],
+      "plainTerms": "Tests stop being useful once everyone scores near the top. The remaining differences are often noise, and the real gaps are somewhere else.",
       "questionsSource": "handoff",
       "questions": [
         "How close are top systems to this benchmark's ceiling?",
@@ -84,7 +91,14 @@
     },
     "data-contamination": {
       "roles": ["Buying", "Building"],
-      "plainTerms": "If a model saw the test questions while it was training, a high score may only mean it remembers them. Fresh or private questions are the reliable check.",
+      "version": "v1.1",
+      "revised": "2026-10-19",
+      "evidenceChecked": "2026-10-19",
+      "history": [
+        {"v": "v1.1", "d": "2026-10-19", "t": "Corrected how the GSM1k link between memorization and score gaps is measured, added the authors' caveats, counted Kapoor and Narayanan's leakage figure as a lower bound, and warned that private test sets can leak through vendor services."},
+        {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
+      ],
+      "plainTerms": "If a model saw the test questions while it was training, a high score may only mean it remembers them. Fresh or private questions are the strongest check, as long as they stay private.",
       "questionsSource": "handoff",
       "questions": [
         "What overlap analysis was run between the test set and the training data?",
@@ -93,6 +107,13 @@
     },
     "adaptive-overfitting": {
       "roles": ["Building"],
+      "version": "v1.1",
+      "revised": "2026-10-19",
+      "evidenceChecked": "2026-10-19",
+      "history": [
+        {"v": "v1.1", "d": "2026-10-19", "t": "Clarified that the two large empirical studies found little or no adaptive overfitting, corrected the explanation of the drop in Recht et al., narrowed the claim about test-set reuse, and added scope notes for Roelofs et al. and Kapoor et al."},
+        {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
+      ],
       "plainTerms": "Each time you adjust a prompt or a model because of how it did on the test, the test tells you a little less. Keep a locked test that you use only to decide.",
       "questionsSource": "derived",
       "questions": [
@@ -102,6 +123,13 @@
     },
     "the-clever-hans-effect": {
       "roles": ["Building"],
+      "version": "v1.1",
+      "revised": "2026-10-19",
+      "evidenceChecked": "2026-10-19",
+      "history": [
+        {"v": "v1.1", "d": "2026-10-19", "t": "Corrected the Lapuschkin et al. example (a Fisher-vector classifier, not the deep network), credited earlier machine-learning use of the term (Sturm, 2014), and added cautions on partial-input baselines and on explanations."},
+        {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
+      ],
       "plainTerms": "A model can pass a test by picking up an accidental pattern, such as a watermark or a telltale word, instead of the skill you meant to test. Build cases where the shortcut fails.",
       "questionsSource": "derived",
       "questions": [
@@ -111,6 +139,13 @@
     },
     "the-gold-standard-myth": {
       "roles": ["Building", "Designing"],
+      "version": "v1.1",
+      "revised": "2026-10-19",
+      "evidenceChecked": "2026-10-19",
+      "history": [
+        {"v": "v1.1", "d": "2026-10-19", "t": "Corrected the third author of Karpinska et al. (Iyyer, not Krishna) and added scope notes for the Clark et al., Karpinska et al., Northcutt et al. and Aroyo and Welty evidence."},
+        {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
+      ],
       "plainTerms": "The answer key and the human ratings are measurements too, and they contain errors and disagreement. Treat them as evidence, not as ground truth.",
       "questionsSource": "derived",
       "questions": [
