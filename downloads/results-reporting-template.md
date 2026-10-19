@@ -63,7 +63,7 @@ Slices defined in the plan before the overall number was seen.
 
 Worst-performing slice, and whether it has enough items to support its own interval:
 
-Examples of failures a person read (read as many as you can; five is a suggested minimum, not a statistical threshold), and what they have in common:
+Examples of failures a person read (read as many as you can; this guide suggests at least five, a rule of thumb rather than a statistical threshold), and what they have in common:
 
 ## Grader
 

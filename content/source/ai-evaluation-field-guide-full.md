@@ -26,7 +26,7 @@ At its core, evaluation is measurement. Wallach et al. (2025) argue that evaluat
 - **One system, countless tasks.** General-purpose models get used for things no benchmark anticipated, and a finite test can't cover "everything in the whole wide world" (Raji et al., 2021).  
 - **No single right answer.** Open-ended outputs like summaries, code, and advice can be good in many ways and bad in many ways. Human raters are not a clean fix: untrained raters could not reliably tell GPT-3 text from human-written text (Clark et al., 2021), and AI judges bring their own biases (Zheng et al., 2023).  
 - **Unknown training data.** You usually can't check whether a model has already seen the test (Sainz et al., 2023).  
-- **Moving targets.** Many benchmarks approach saturation quickly (Ott et al., 2022, who mapped computer vision and language benchmarks), and hosted models change under the same name.  
+- **Moving targets.** Some benchmarks approach saturation quickly (Ott et al., 2022, who mapped computer vision and language benchmarks), and hosted models change under the same name.  
 - **Systems that respond to the test.** Models can often tell when they're being evaluated (Needham et al., 2025), and they increasingly find loopholes in evaluations (Bengio et al., 2026).  
 - **Context decides value.** Performance in a controlled test does not settle how a system behaves in real clinics (Beede et al., 2020).
 
@@ -59,7 +59,7 @@ When two people argue about whether a model is "good at reasoning," they're usua
 | Dynamic or adversarial benchmarks | Performance on fresh, hard examples, often written to beat current models (Kiela et al., 2021\) | Adversarial cases may be unrepresentative of real use (this guide's own caveat, not Kiela et al.'s) | The Clever Hans Effect |
 | Behavioral testing | Whether specific behaviors hold up under controlled changes (Ribeiro et al., 2020\) | Only tests the behaviors you think to write down | The Clever Hans Effect, Presence, Not Absence |
 | Human evaluation | How people judge output quality (van der Lee et al., 2021\) | Rater expertise, agreement, and fatigue | The Gold Standard Myth, Criteria Drift |
-| Pairwise preference arenas | Which outputs people prefer at scale (Chiang et al., 2024\) | Who votes, what they ask, and who gets to test privately (Singh et al., 2025\) | Goodhart's Law, Campbell's Law |
+| Pairwise preference arenas | Which outputs people prefer at scale (Chiang et al., 2024\) | Who votes, what they ask, and who gets to test privately (Singh et al., 2025\). LMArena disputes parts of that analysis (its response is linked on the [case studies page](case-studies.html#arena-private-variants)) | Goodhart's Law, Campbell's Law |
 | LLM-as-a-judge | Cheap, fast grading at scale (Zheng et al., 2023\) | Position, length, and self-preference bias | Judge Bias |
 | Red teaming | Failure modes found by people trying to break the system (Ganguli et al., 2022\) | Coverage depends on who's on the team | Presence, Not Absence |
 | Dangerous capability evals | Whether a model has capabilities that could cause severe harm (Shevlane et al., 2023\) | Elicitation effort, sandbagging, eval awareness | Presence, Not Absence, Evaluation Awareness |
@@ -67,7 +67,7 @@ When two people argue about whether a model is "good at reasoning," they're usua
 | Production monitoring | How the system performs on live traffic over time | Privacy, consent, and slow feedback | Distribution Shift, Evaluation Awareness |
 | Audits and documentation | Whether claims hold up and are recorded in a checkable way (Mitchell et al., 2019; Raji et al., 2022\) | Access to models, data, and results | The Functionality Fallacy, The Reproducibility Rule |
 
-The "Related patterns" column is this guide's own mapping of methods to patterns; the cited papers do not make that mapping.
+The "Related patterns" column is this guide's own mapping; the cited papers do not make it.
 
 ### Who evaluates, and why
 
@@ -83,7 +83,7 @@ Hutchinson et al. (2022) studied papers from major computer vision and language 
 
 ### How to use the patterns
 
-**To learn,** read them by category (the five parts are this guide's own grouping, not a standard taxonomy):
+**To learn,** read them by category (this guide's own grouping, not a standard taxonomy):
 
 - **What you're measuring:** Goodhart's Law, Campbell's Law, The Construct Gap, The Functionality Fallacy, The Metric Mirage  
 - **The test itself:** Benchmark Saturation, Data Contamination, Adaptive Overfitting, The Clever Hans Effect, The Gold Standard Myth  
@@ -162,7 +162,7 @@ Manheim and Garrabrant (2018) split the problem into four variants. Regressional
 
 - **It can be measured.** In a synthetic setup where a fixed "gold" reward model stood in for human raters, Gao, Schulman, and Hilton (2023) optimized language models against a proxy reward model and tracked the gold score. It rose at first, then fell as optimization continued, and the fitted trends scaled smoothly with reward model size.  
 - **More capable systems often game harder.** Amodei et al. (2016) listed reward hacking as one of five concrete AI-safety problems. Pan, Bhatia, and Steinhardt (2022) built four reinforcement-learning environments with misspecified rewards and found that more capable agents often exploited them more, with some sharp capability thresholds where behavior shifted and true reward dropped.  
-- **Leaderboards feel it too.** Singh et al. (2025) documented how private testing on Chatbot Arena let some providers try many model variants and publish only the best. The authors identified 27 private variants they attribute to Meta in the lead-up to the Llama 4 release (attribution inferred from each model's self-identification, January to March 2025). In a controlled fine-tuning experiment, adding Arena data raised one model's win rate on ArenaHard, a test set drawn from Arena prompts, by up to 112% relative, with limited gains on other tasks.  
+- **Leaderboards feel it too.** Singh et al. (2025) documented how private testing on Chatbot Arena let some providers try many model variants and publish only the best. The authors identified 27 private variants they attribute to Meta in the lead-up to the Llama 4 release (attribution inferred from each model's self-identification, January to March 2025). In a controlled fine-tuning experiment, adding Arena data raised one model's win rate on ArenaHard, a test set drawn from Arena prompts, by up to 112% relative, with limited gains on other tasks. LMArena disputes parts of the analysis (its response is linked on the [case studies page](../case-studies.html#arena-private-variants)).  
 - **It's getting more common.** The International AI Safety Report 2026 notes models increasingly find loopholes that let them score well on evaluations without doing what the evaluation intended (Bengio et al., 2026).
 
 ##### Use it
@@ -190,7 +190,7 @@ Economist Charles Goodhart described the idea in a 1975 paper on UK monetary pol
 
 #### Campbell's Law
 
-> The more a number drives decisions, the more it gets corrupted, and the more it distorts the work it was meant to track.
+> The more a number drives decisions, the more pressure there is to corrupt it, and the more likely it is to distort the work it was meant to track.
 
 ##### Takeaways
 
@@ -208,7 +208,7 @@ The same thing happens inside companies. If a launch review only asks for a win 
 ##### The evidence
 
 - **Scholarship bends.** Lipton and Steinhardt (2019) documented troubling trends in ML papers, including failing to identify where empirical gains came from (for example, crediting a new architecture when the gains came from tuning) and presenting speculation as explanation. They call the causes uncertain, with misaligned incentives (such as pressure for short-term measures of success) as one possibility.  
-- **Access is uneven.** Singh et al. (2025) estimated, from each provider's share of battles played, that Google and OpenAI received about 19.2% and 20.4% of all Chatbot Arena test prompts, while 83 open-weight models together received about 29.7%. More data from the arena means more ability to fit the arena.  
+- **Access is uneven.** Singh et al. (2025) estimated, from each provider's share of battles played, that Google and OpenAI received about 19.2% and 20.4% of all Chatbot Arena test prompts, while 83 open-weight models together received about 29.7%. LMArena disputes parts of the analysis (its response is linked on the [case studies page](../case-studies.html#arena-private-variants)). More data from the arena means more ability to fit the arena.  
 - **Leaderboards encode someone's values.** Ethayarajh and Jurafsky (2020) argue that leaderboards reward accuracy while ignoring things practitioners care about, like model size, energy use, and fairness. A leaderboard's idea of "best" is not yours.  
 - **Selection shapes the story.** Dehghani et al. (2021) show that which benchmarks a community adopts can favor certain methods over others.
 
@@ -233,7 +233,7 @@ Social scientist Donald T. Campbell stated it in a 1976 report, published in 197
 
 #### The Construct Gap
 
-> A benchmark measures what it measures, not what its name says.
+> A benchmark measures what it measures, which may not be what its name says.
 
 ##### Takeaways
 
@@ -362,11 +362,11 @@ The metric is part of the finding. Pick a strict pass/fail score and a model tha
 
 #### Benchmark Saturation
 
-> Every benchmark has a shelf life.
+> Benchmarks have a shelf life.
 
 ##### Takeaways
 
-- Benchmarks go from hard to solved quickly. Once top scores bunch up near the ceiling, the test stops telling systems apart.  
+- Some benchmarks go from hard to solved quickly. Once top scores bunch up near the ceiling, the test stops telling systems apart.  
 - A saturated benchmark can hide real differences between models and hide the failures that remain.  
 - A high score on an old benchmark is weak evidence about what a current system can do.  
 - Plan for renewal: refreshed or held-back test sets. Dynamic test sets are another option, but researchers disagree about them.
@@ -402,7 +402,7 @@ A benchmark is useful while it separates good from better. Say everyone scores 9
 
 #### Data Contamination
 
-> If the test was in the training data, the score measures memory, not skill.
+> If the test was in the training data, the score may be measuring memory, not skill.
 
 ##### Takeaways
 
@@ -444,22 +444,22 @@ Leakage has been a known hazard in statistics and machine learning for decades. 
 
 #### Adaptive Overfitting
 
-> Every time you tune against the test set, it's worth a little less.
+> A test set only gives an unbiased score for choices made without looking at it.
 
 ##### Takeaways
 
 - A test set gives an unbiased read only for models chosen without looking at its results.  
-- Choosing prompts, models, or settings based on test results slowly fits your system to that specific test.  
+- Choosing prompts, models, or settings based on test results can fit your system to that specific test.  
 - The effect has been small in the large studies so far, but you can't know for your own test without a fresh one.  
 - Separate a dev set you iterate on from a locked test set you decide with.
 
 ##### What it means
 
-Standard statistical guarantees assume you pick your analysis before looking at the data. Real teams don't work that way. They run the eval, tweak the prompt, run it again, try another model, run it again. Each look leaks a little information about the test set into the choices being made. After enough rounds, a high score partly reflects how well the team learned that particular test.
+Standard statistical guarantees assume you pick your analysis before looking at the data. Real teams don't work that way. They run the eval, tweak the prompt, run it again, try another model, run it again. Each look leaks a little information about the test set into the choices being made. After enough rounds, a high score can partly reflect how well the team learned that particular test.
 
 ##### The evidence
 
-- **Reuse is a known problem.** Dwork et al. (2015) noted that standard guarantees assume the analysis was fixed before the data were examined, and proposed a "reusable holdout" method, built on differential privacy, that lets one holdout set be used many times while keeping estimates valid.  
+- **Reuse is a known risk in theory.** Dwork et al. (2015) noted that standard guarantees assume the analysis was fixed before the data were examined, and proposed a "reusable holdout" method, built on differential privacy, that lets one holdout set be used many times while keeping estimates valid.  
 - **Rebuilt test sets score lower.** Recht et al. (2019) rebuilt test sets for CIFAR-10 and ImageNet following the original procedures. Accuracy dropped by 3 to 15 percentage points on CIFAR-10 and 11 to 14 points on ImageNet. The model rankings mostly held. The authors attribute the drop to a distribution gap (models generalizing worse to slightly harder images), not to adaptive overfitting, and found no sign that years of reuse had produced diminishing gains, though they note their experiments do not rule out every variant of it.  
 - **Competitions held up better than expected.** Roelofs et al. (2019) analyzed 120 Kaggle classification competitions and found little to no sign of adaptive overfitting from leaderboard reuse. Effects among the top entries were small (typically under 1% accuracy), and the outliers usually had problems such as small or non-i.i.d. test sets. Together with Recht et al., this means the large studies found little or no sign of the effect: the risk is clearest in theory and for small, heavily reused benchmarks, and its practical size is unsettled.  
 - **Agent benchmarks are exposed.** Kapoor et al. (2025) reviewed 17 AI agent benchmarks and found most lack an appropriate holdout set, and 7 have none. The authors say this has led to fragile agents that take shortcuts and overfit to the benchmark.
@@ -596,7 +596,7 @@ Traditional software gives the same result for the same input. Language models r
 
 ##### Use it
 
-- Test several prompt variants and report the mean and range. Three to five is a practical minimum, this guide's rule of thumb rather than a figure from the studies.  
+- Test several prompt variants and report the mean and range. Start with at least three to five (this guide's rule of thumb, not a figure from the studies).  
 - Use the same set of variants for every model you compare.  
 - Include messy, realistic user phrasings, not just clean templates.  
 - Save the exact prompts and scoring code alongside the results.
@@ -613,7 +613,7 @@ Traditional software gives the same result for the same input. Language models r
 
 #### Judge Bias
 
-> An AI grader has preferences, including a preference for itself.
+> An AI grader can have preferences, including a preference for itself.
 
 ##### Takeaways
 
@@ -636,7 +636,7 @@ LLM-as-a-judge means asking one model to grade or compare outputs from another. 
 ##### Use it
 
 - Grade every pair twice with the order swapped. Treat inconsistent verdicts as ties or flags.  
-- Hand-label at least a few dozen examples (more when differences are small), measure judge-human agreement with its uncertainty, and read the disagreements before scaling up.  
+- Hand-label a few dozen examples as a first screen, and more when differences are small (this guide's rule of thumb). Measure judge-human agreement with its uncertainty, and read the disagreements before scaling up.  
 - Avoid using one of the systems being compared as the judge. Where you can, use a judge from a different developer, and check its verdicts against human labels.  
 - Give the judge a specific rubric, and check whether scores correlate with response length.
 
@@ -653,7 +653,7 @@ LLM-as-a-judge means asking one model to grade or compare outputs from another. 
 
 #### Criteria Drift
 
-> You figure out what 'good' means by grading outputs, so your criteria will change.
+> You often figure out what 'good' means by grading outputs, so expect your criteria to change.
 
 ##### Takeaways
 
@@ -675,7 +675,7 @@ That's healthy. The risk is pretending the criteria were fixed all along and com
 
 ##### Use it
 
-- Start with open coding. Read a few dozen real outputs (a rule of thumb, not a number from the study) and note what's good and bad before writing any rubric.  
+- Start with open coding. Read a few dozen real outputs (this guide's rule of thumb, not a number from the study) and note what's good and bad before writing any rubric.  
 - Version the rubric, with a date and a reason for each change.  
 - Keep a fixed reference set and re-grade it when the rubric changes. The study did not test this, but it follows from wanting comparable trend lines.  
 - Involve the people who will actually use the output in defining the criteria.
@@ -711,7 +711,7 @@ Many evals run each test case once, or report the best of several attempts. That
 
 ##### Use it
 
-- Run each test case several times (three to five is this guide's rule of thumb for a minimum; the τ-bench study went up to eight) and report both the average success rate and the all-runs-pass rate.  
+- Run each test case more than once, starting with at least three for stochastic outputs (this guide's rule of thumb; the τ-bench study went up to eight), and report both the average success rate and the all-runs-pass rate.  
 - Separate random, occasional failures from consistent failures on specific cases. They need different fixes.  
 - Include paraphrased versions of the same task in your test set.  
 - Set reliability thresholds based on the cost of a failure, not on what the model can currently hit.
@@ -1182,7 +1182,7 @@ Most AI products put a person in the loop. That person decides whether to accept
 
 #### The Jagged Frontier
 
-> AI capability is uneven, and its edges don't line up with what people find hard.
+> AI capability is uneven, and its edges don't always line up with what people find hard.
 
 ##### Takeaways
 
@@ -1247,7 +1247,7 @@ Engineers building LLM features have asked this question directly: where's the l
 
 Every team starts by trying the thing and seeing how it feels. That's fine. In interviews with 19 practitioners building LLM products, van der Maden et al. (2026) found informal "vibe checks" described as "irreplaceable, they are the first line of evaluation." The problem isn't vibe checks. It's stopping there.
 
-The move is to formalize gradually. Save the examples you tried. Write down what you were looking for. When the same note shows up three times, it's a criterion (a rule of thumb from this guide, not a standard). Madaio et al. (2020) found that checklists can give teams infrastructure for formalizing ad hoc processes, as long as they're grounded in practitioners' real needs. Otherwise they can be misused.
+The move is to formalize gradually. Save the examples you tried. Write down what you were looking for. When the same note shows up three times, it's a criterion (this guide's rule of thumb). Madaio et al. (2020) found that checklists can give teams infrastructure for formalizing ad hoc processes, as long as they're grounded in practitioners' real needs. Otherwise they can be misused.
 
 #### 3\. Tie every eval to a decision
 
@@ -1255,14 +1255,14 @@ Van der Maden et al. (2026) named the most common failure the results-actionabil
 
 Two habits help:
 
-- **Write the decision rule first.** "If accuracy on refund requests is below 90%, we don't expand the rollout." "If the new prompt doesn't beat the old one by more than the error bars, we keep the old one."  
+- **Write the decision rule first.** "If accuracy on refund requests is below 90%, we don't expand the rollout." "If the new prompt's gain over the old one is within the interval for the difference, we keep the old one."  
 - **Change one thing at a time.** Prompt, model, retrieval settings, and temperature all interact. If you change three at once, a score change tells you almost nothing about what to fix.
 
 #### 4\. Fit into rituals the team already has
 
 New processes that feel like extra work die quietly. Rogers (2003) identified what speeds up adoption of a new practice: it's clearly better than what people do now, compatible with how they already work, simple to understand, easy to try on a small scale, and visible to others. Evaluation is no different.
 
-- Add 15 minutes of output review (a rule of thumb from this guide, not a standard) to an existing sprint review or design critique instead of creating a new meeting.  
+- Add 15 minutes of output review (this guide's rule of thumb) to an existing sprint review or design critique instead of creating a new meeting.  
 - Put the eval card in the launch review template that already exists.  
 - Run a small canary eval in the same pipeline that runs other tests.  
 - Share one interesting failure in the team channel each week. It makes the work visible without a status report.
@@ -1336,7 +1336,7 @@ This five-stage path is this guide's own model, not an empirically observed sequ
 
 ### A starter plan for the first 30 days
 
-This plan and its numbers (30 to 50 examples, an hour, three prompt variants, three runs) are rules of thumb from this guide, not standards.
+This is a starter plan, not a standard. Its numbers (30 to 50 examples, an hour, three prompt variants, three runs) are this guide's rule of thumb, set at the low end of what the guide suggests: at least three to five prompt variants, and at least three runs per item for stochastic outputs.
 
 **Week 1\. Look.** Pick one AI feature. Pull 30 to 50 real examples. Run a one-hour output review with product, design, engineering, and a domain expert. Note what's good, what's bad, and what people disagree about.
 
@@ -1360,17 +1360,17 @@ Small teams will combine these. What matters is that each job has a name next to
 
 ### Common pushback, and how to answer it
 
-The replies below are this guide's own suggestions. Numbers in them, such as 30 examples and fifty labels, are rules of thumb from this guide, not standards.
+The replies below are this guide's own suggestions. Numbers in them, such as 30 to 50 examples and a few dozen labels, are this guide's rules of thumb.
 
 | You hear | Try |
 | :---- | :---- |
-| "We don't have time." | Start with 30 examples and one hour. That is enough to see problems, not to compare systems. Finding the problem after launch costs more. |
+| "We don't have time." | Start with 30 to 50 examples and one hour. That is enough to see problems, not to compare systems. Finding the problem after launch costs more. |
 | "The model changes every month anyway." | That's why you want a small canary set you can rerun in minutes. |
 | "Our users will tell us if something's wrong." | Some will, often late and in public. User feedback is one input, not the whole picture. |
 | "The benchmark says this model is the best." | Best at that benchmark. Let's check it on our data. |
 | "Evaluation will slow us down." | Match the effort to the tier, and ship in stages so you learn while you ship. |
 | "Quality is subjective. You can't measure it." | Then let's define what we mean, write it down, and see whether two people agree. |
-| "The LLM judge is good enough." | It might be. Let's check it against some human labels first. Fifty is a first screen, not proof, so label more for the cases that matter most. |
+| "The LLM judge is good enough." | It might be. Let's check it against some human labels first. A few dozen labels is a first screen, not proof, so label more when differences are small or the cases matter most. |
 
 ### References
 
@@ -1395,7 +1395,7 @@ The replies below are this guide's own suggestions. Numbers in them, such as 30 
 
 ## Playbook
 
-**How to read the labels.** This guide marks who is speaking. A finding with a citation, such as (Zheng et al., 2023), comes from that source, and each pattern page lists the sources behind it. "This guide's own model" means a structure or grouping the guide made up. "A rule of thumb from this guide, not a standard" means a number or minimum the guide suggests as a starting point. Treat both as starting points to adapt, not as findings.
+**How to read the labels.** This guide marks who is speaking. A finding with a citation, such as (Zheng et al., 2023), comes from that source, and each pattern page lists the sources behind it. "This guide's own model" means a structure or grouping the guide made up. "A rule of thumb from this guide, not a standard" means a number or minimum the guide suggests as a starting point. Elsewhere the short forms "(this guide's own model)" and "(this guide's rule of thumb)" mean the same. The rules of thumb used most often: for prompt variants, several, starting with at least three to five; for runs per item, more than one, at least three for stochastic outputs; for human labels to check a judge, a few dozen as a first screen, more when differences are small. Treat both kinds as starting points to adapt, not as findings.
 
 For how to introduce these practices to a team without slowing it down, see Being Pragmatic.
 
@@ -1422,10 +1422,10 @@ A practical sequence for product teams, and this guide's own model. Scale each s
 2. **Define the construct in one sentence.** "Good" is not a definition. "Resolves the request without a follow-up" is.  
 3. **Collect test cases from real use.** Include edge cases and known past failures. Keep a private, locked test set that never touches prompt tuning.  
 4. **Read outputs before you write the rubric.** Expect the rubric to change, and version it (Shankar et al., 2024).  
-5. **Pick metrics before running.** Include at least one continuous metric, plus cost and latency (a rule of thumb from this guide, not a standard).  
+5. **Pick metrics before running.** Include at least one continuous metric, plus cost and latency (this guide's rule of thumb).  
 6. **Set baselines.** The current workflow, a simple method, and the model you use today.  
-7. **Vary prompts and repeat runs.** Start with at least three to five meaning-preserving prompt variants and three or more samples per case (a rule of thumb from this guide, not a standard), and report the range. More variants keep widening the observed range (Sclar et al., 2024), so treat five as a minimum for a first look. Repeated trials show how reliable an agent is (Yao et al., 2025).  
-8. **Validate your graders.** Measure agreement between human raters, which shows whether the task is clear. If you use an LLM judge, also check it against human labels before relying on it (Zheng et al., 2023). A small label set gives an imprecise answer: 45 matches out of 50 is 90% agreement, but the 95% interval runs from about 79% to 96%. Use a chance-corrected measure such as Cohen's kappa, and label more for the slices and error types that matter most.  
+7. **Vary prompts and repeat runs.** Use several meaning-preserving prompt variants and more than one sample per case. Start with at least three to five variants and at least three samples per case for stochastic outputs (this guide's rule of thumb), and report the range. More variants keep widening the observed range (Sclar et al., 2024), so a small set is a first look, not a bound. Repeated trials show how reliable an agent is (Yao et al., 2025).  
+8. **Validate your graders.** Measure agreement between human raters, which shows whether the task is clear. If you use an LLM judge, also check it against human labels before relying on it (Zheng et al., 2023). A small label set gives an imprecise answer: 45 matches out of 50 is 90% agreement, but the 95% interval runs from about 79% to 96%. Start with a few dozen labels as a first screen, and more when differences are small (this guide's rule of thumb). Use a chance-corrected measure such as Cohen's kappa, and label more for the slices and error types that matter most.  
 9. **Compute intervals and slice the results.** Report confidence intervals and paired comparisons (Miller, 2024). Choose the slices before you look, and show each slice's size and interval, because the lowest of many small slices will look bad partly by chance.  
 10. **Probe for what the score can't show.** Try shortcut tests, red teaming, and serious elicitation effort.  
 11. **Test people and AI together, in context.** When you can, compare human alone, AI alone, and human with AI (Vaccaro et al., 2024).  
