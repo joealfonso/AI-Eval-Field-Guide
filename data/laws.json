@@ -474,23 +474,23 @@
       "Benchmarks go from hard to solved quickly. Once top scores bunch up near the ceiling, the test stops telling systems apart.",
       "A saturated benchmark can hide real differences between models and hide the failures that remain.",
       "A high score on an old benchmark is weak evidence about what a current system can do.",
-      "Plan for renewal: refreshed, dynamic, or held-back test sets."
+      "Plan for renewal: refreshed or held-back test sets. Dynamic test sets are another option, but researchers disagree about them."
     ],
     "whatItMeans": [
-      "A benchmark is useful while it separates good from better. When everyone scores 95% or higher, the remaining points are often noise, label errors, or quirks of the test. Progress on the leaderboard slows to a crawl while real-world gaps stay open. That's the signal to retire the test or build a harder one."
+      "A benchmark is useful while it separates good from better. Say everyone scores 95% or higher. The remaining points are often noise, label errors, or quirks of the test. Progress on the leaderboard slows to a crawl while real-world gaps stay open. That's the signal to retire the test or build a harder one."
     ],
     "evidence": [
       {
-        "lead": "Saturation is the norm.",
-        "text": "Ott et al. (2022) mapped 3,765 benchmarks across computer vision and natural language processing. A large fraction trended quickly toward near-saturation, and many never saw wide adoption."
+        "lead": "Saturation is common.",
+        "text": "Ott et al. (2022) compiled results for 3,765 benchmarks in computer vision and natural language processing. In the subset with enough results to analyze, about a third of the state-of-the-art curves showed saturation or stagnation and about 43% kept improving. Many benchmarks also never saw wide adoption."
       },
       {
         "lead": "\"Superhuman\" on paper, brittle in practice.",
-        "text": "Kiela et al. (2021) note that models reach superhuman scores on benchmarks yet still fail simple challenge examples. Their Dynabench platform keeps humans and models in the loop to keep generating hard new examples."
+        "text": "Kiela et al. (2021) note that models can reach superhuman scores on benchmarks, by narrow definitions of human performance, yet still fail simple challenge examples. Their Dynabench platform keeps humans and models in the loop to keep generating hard new examples."
       },
       {
         "lead": "Fixing benchmarking takes design.",
-        "text": "Bowman and Dahl (2021) argue benchmarks need to be built for validity and to resist quick saturation, not just released and left alone."
+        "text": "Bowman and Dahl (2021) argue that systems score so high on many language-understanding benchmarks that there is little room to show progress. They propose four criteria for good benchmarks (validity, reliable annotation, enough statistical power, and handling of social bias) and argue that adversarial data collection, the kind of approach Dynabench takes, does not fix the underlying problems."
       },
       {
         "lead": "The last few points can be label noise.",
@@ -504,7 +504,7 @@
       "Retire tests that no longer separate the options you're choosing between."
     ],
     "origins": [
-      "\"Saturation\" is standard language in AI benchmarking research. Dynamic benchmarking efforts like Dynabench grew directly out of frustration with how fast static benchmarks stopped being useful."
+      "\"Saturation\" is standard language in AI benchmarking research. Dynamic benchmarking efforts like Dynabench were motivated in part by how quickly static benchmarks stop being useful."
     ],
     "sources": [
       {
@@ -551,15 +551,15 @@
       "Large models train on huge scrapes of the internet, and public benchmarks live on the internet.",
       "Contaminated scores overstate how well a model handles problems it hasn't seen.",
       "You usually can't inspect a model's training data, so contamination has to be tested indirectly.",
-      "Fresh, private, or post-cutoff test sets are the most reliable defense."
+      "Fresh, private, or post-cutoff test sets are the strongest defense, if they stay private and are genuinely new."
     ],
     "whatItMeans": [
-      "Contamination, also called leakage, happens when information from the test gets into training. In classic machine learning it's usually a pipeline bug, like normalizing data before splitting it. With large language models it's often invisible and hard to avoid, because nobody outside the lab knows exactly what went into training. A model that has seen the questions, or close paraphrases, can score well without the skill the test was built to measure."
+      "Contamination, a close relative of what researchers call leakage, happens when information from the test gets into training. In classic machine learning it's usually a pipeline bug, like normalizing data before splitting it. With large language models it's often invisible and hard to avoid, because nobody outside the lab knows exactly what went into training. A model that has seen the questions, or close paraphrases, can score well without the skill the test was built to measure."
     ],
     "evidence": [
       {
         "lead": "Fresh questions, lower scores.",
-        "text": "Zhang et al. (2024) wrote GSM1k, a new set of grade school math problems matched to the popular GSM8K benchmark. Some model families dropped up to 8% in accuracy. Models that were more likely to generate GSM8K examples verbatim showed bigger gaps (Spearman's r² = 0.36), which suggests partial memorization. Many frontier models held up well, so this is a check to run, not a blanket verdict."
+        "text": "Zhang et al. (2024) had human annotators write GSM1k, a new set of grade school math problems matched to the popular GSM8K benchmark. Some model families dropped up to 8% in accuracy. Models that assigned higher probability to the GSM8K test items tended to show bigger gaps (Spearman rank correlation of 0.36), which suggests partial memorization, though the authors note outliers and say contamination is likely not the full story. Many frontier models showed little or no gap, which the authors say could reflect better generalization or more careful data handling, so this is a check to run, not a blanket verdict."
       },
       {
         "lead": "Measure it per benchmark.",
@@ -567,7 +567,7 @@
       },
       {
         "lead": "Leakage spans fields.",
-        "text": "Kapoor and Narayanan (2023) documented leakage errors affecting hundreds of papers across 17 scientific fields that use ML, and proposed a taxonomy of leakage types."
+        "text": "Kapoor and Narayanan (2023) compiled 22 earlier papers that found leakage errors in 17 scientific fields that use ML, collectively affecting 294 papers, a count the authors treat as a lower bound. They also proposed a taxonomy of leakage types."
       },
       {
         "lead": "Still a current problem.",
@@ -575,9 +575,9 @@
       }
     ],
     "useIt": [
-      "Build a small private test set from your own data that has never been posted online.",
+      "Build a small private test set from your own data that has never been posted online, and keep it out of any vendor service that may train on your inputs. Balloccu et al. (2024) estimated that GPT-3.5 and GPT-4 were exposed to about 4.7 million samples from 263 benchmarks, partly through data sent in by users.",
       "Compare scores on public items against freshly written look-alike items. A big gap is a red flag.",
-      "Check the benchmark's release date against the model's training cutoff.",
+      "Check the benchmark's release date against the model's training cutoff. Treat this as a rough screen: cutoffs are approximate, and new items can be rewrites of older ones.",
       "Ask vendors what contamination checks they ran and how.",
       "In your own pipelines, split data by time, user, or source before any preprocessing."
     ],
@@ -585,6 +585,14 @@
       "Leakage has been a known hazard in statistics and machine learning for decades. The scale of web-trained language models turned it from an occasional bug into a standing concern for every public benchmark."
     ],
     "sources": [
+      {
+        "authors": "Balloccu, S., Schmidtová, P., Lango, M., & Dušek, O.",
+        "year": "2024",
+        "title": "Leak, cheat, repeat: Data contamination and evaluation malpractices in closed-source LLMs",
+        "venue": "Proceedings of EACL 2024 (Volume 1: Long Papers), 67-93",
+        "url": "https://aclanthology.org/2024.eacl-long.5/",
+        "label": null
+      },
       {
         "authors": "Bengio, Y., et al.",
         "year": "2026",
@@ -626,9 +634,9 @@
     "category": "II",
     "aphorism": "Every time you tune against the test set, it's worth a little less.",
     "takeaways": [
-      "A test set gives an unbiased read only the first time you use it.",
+      "A test set gives an unbiased read only for models chosen without looking at its results.",
       "Choosing prompts, models, or settings based on test results slowly fits your system to that specific test.",
-      "The effect is sometimes smaller than people fear, but you can't know without a fresh test.",
+      "The effect has been small in the large studies so far, but you can't know for your own test without a fresh one.",
       "Separate a dev set you iterate on from a locked test set you decide with."
     ],
     "whatItMeans": [
@@ -636,24 +644,24 @@
     ],
     "evidence": [
       {
-        "lead": "Reuse breaks the math.",
-        "text": "Dwork et al. (2015) showed that adaptive reuse of a holdout set undermines its validity, and proposed a \"reusable holdout\" method that limits how much each query reveals."
+        "lead": "Reuse is a known problem.",
+        "text": "Dwork et al. (2015) noted that standard guarantees assume the analysis was fixed before the data were examined, and proposed a \"reusable holdout\" method, built on differential privacy, that lets one holdout set be used many times while keeping estimates valid."
       },
       {
         "lead": "Rebuilt test sets score lower.",
-        "text": "Recht et al. (2019) rebuilt test sets for CIFAR-10 and ImageNet following the original procedures. Accuracy dropped 3% to 15% on CIFAR-10 and 11% to 14% on ImageNet. The model rankings mostly held, and the authors attribute the drop mainly to subtle differences in the new data rather than years of adaptive overfitting. That nuance matters: the pattern is real, and its size varies."
+        "text": "Recht et al. (2019) rebuilt test sets for CIFAR-10 and ImageNet following the original procedures. Accuracy dropped 3% to 15% on CIFAR-10 and 11% to 14% on ImageNet. The model rankings mostly held. The authors attribute the drop to a distribution gap (models generalizing worse to slightly harder images), not to adaptive overfitting, and found no sign that years of reuse had produced diminishing gains, though they note their experiments do not rule out every variant of it."
       },
       {
         "lead": "Competitions held up better than expected.",
-        "text": "Roelofs et al. (2019) analyzed 120 Kaggle competitions and found little evidence of substantial overfitting from leaderboard reuse."
+        "text": "Roelofs et al. (2019) analyzed 120 Kaggle classification competitions and found little to no sign of adaptive overfitting from leaderboard reuse. Effects among the top entries were small (typically under 1% accuracy), and the outliers usually had problems such as small or non-i.i.d. test sets. Together with Recht et al., this means the large studies found little or no sign of the effect: the risk is clearest in theory and for small, heavily reused benchmarks, and its practical size is unsettled."
       },
       {
         "lead": "Agent benchmarks are exposed.",
-        "text": "Kapoor et al. (2025) found many AI agent benchmarks have inadequate holdout sets, and sometimes none, which lets agents overfit and take shortcuts."
+        "text": "Kapoor et al. (2025) reviewed 17 AI agent benchmarks and found most lack an appropriate holdout set, and 7 have none. The authors say this has led to fragile agents that take shortcuts and overfit to the benchmark."
       }
     ],
     "useIt": [
-      "Keep three splits: iterate on dev, check on validation, decide on a locked test.",
+      "Keep separate splits: a dev set you iterate on, a validation set for occasional checks, and a locked test set you decide with.",
       "Log each time someone looks at locked test results.",
       "Refresh the locked test once it has driven many decisions.",
       "Treat small wins on a heavily reused test with suspicion."
@@ -690,8 +698,8 @@
         "authors": "Roelofs, R., Shankar, V., Recht, B., Fridovich-Keil, S., Hardt, M., Miller, J., & Schmidt, L.",
         "year": "2019",
         "title": "A meta-analysis of overfitting in machine learning",
-        "venue": "Advances in Neural Information Processing Systems (NeurIPS 2019)",
-        "url": null,
+        "venue": "Advances in Neural Information Processing Systems 32 (NeurIPS 2019)",
+        "url": "https://proceedings.neurips.cc/paper/2019/hash/ee39e503b6bedf0c98c388b7e8589aca-Abstract.html",
         "label": null
       }
     ]
@@ -709,13 +717,13 @@
       "Test with cases designed to break the likely shortcut."
     ],
     "whatItMeans": [
-      "Clever Hans was a horse in early 1900s Germany that seemed to do arithmetic by tapping its hoof. An investigation showed Hans was reading tiny, unconscious cues from the people asking questions. Hans was smart, just not at math.",
+      "Clever Hans was a horse in early 1900s Germany that seemed to do arithmetic by tapping its hoof. An investigation showed Hans was reading tiny, unconscious cues from the people asking questions. Hans was a keen reader of people, not a mathematician.",
       "Models do the same thing. If every photo of a boat has water in it, a model can learn \"water\" instead of \"boat.\" Geirhos et al. (2020) call this shortcut learning: decision rules that perform well on standard benchmarks and fail to transfer to harder conditions, like the real world."
     ],
     "evidence": [
       {
         "lead": "The watermark detector.",
-        "text": "Lapuschkin et al. (2019) used explanation methods on an image classifier trained on the PASCAL VOC dataset and found it identified horses partly by a copyright tag that appeared on many horse photos."
+        "text": "Lapuschkin et al. (2019) used explanation methods on image classifiers trained on the PASCAL VOC 2007 dataset and found that a Fisher-vector classifier identified horses mainly by a source tag, a copyright watermark in the corner of about one-fifth of the horse images. A deep network trained on the same data did not rely on it."
       },
       {
         "lead": "Answers without the question.",
@@ -723,7 +731,7 @@
       },
       {
         "lead": "Heuristics, not understanding.",
-        "text": "McCoy, Pavlick, and Linzen (2019) built the HANS test set and found that inference models relied on shallow heuristics like word overlap, and failed badly on examples where those heuristics give the wrong answer."
+        "text": "McCoy, Pavlick, and Linzen (2019) built the HANS test set and found that models trained on the MNLI dataset, including BERT, performed very poorly on examples where those heuristics give the wrong answer, which suggests they rely on shallow shortcuts such as word overlap."
       },
       {
         "lead": "Test behavior, not just accuracy.",
@@ -732,14 +740,22 @@
     ],
     "useIt": [
       "Ask, \"What's the laziest way to score well on this test?\" Then build items where that way fails.",
-      "Run a partial-input baseline. Remove the part of the input that should matter and see if accuracy stays high.",
+      "Run a partial-input baseline. Remove the part of the input that should matter and see if accuracy stays high. High accuracy is a red flag; low accuracy does not prove there are no shortcuts (Feng et al., 2019).",
       "Create contrast pairs: minimal edits that should flip the answer, and edits that shouldn't change it.",
-      "Look at explanations or reasoning for a sample of correct answers, not just wrong ones."
+      "Look at attributions or reasoning for a sample of correct answers, not just wrong ones. Treat them as hints to test with contrast cases, not as proof of why the model answered (Turpin et al., 2023)."
     ],
     "origins": [
-      "The horse was investigated by psychologist Oskar Pfungst, and \"Clever Hans\" became shorthand in psychology for experimenter cues. Lapuschkin et al. (2019) brought the term into machine learning with \"Clever Hans predictors.\" Geirhos et al. (2020) unified related findings under \"shortcut learning.\""
+      "The horse was investigated by psychologist Oskar Pfungst (1911), and \"Clever Hans\" became shorthand in psychology for experimenter cues. Sturm (2014) used the story to frame tests of music-recognition systems that scored well without using musical knowledge, calling them \"horses.\" Lapuschkin et al. (2019) popularized the phrase \"Clever Hans predictors\" in machine learning. Geirhos et al. (2020) unified related findings under \"shortcut learning.\""
     ],
     "sources": [
+      {
+        "authors": "Feng, S., Wallace, E., & Boyd-Graber, J.",
+        "year": "2019",
+        "title": "Misleading failures of partial-input baselines",
+        "venue": "Proceedings of ACL 2019",
+        "url": "https://aclanthology.org/P19-1554/",
+        "label": null
+      },
       {
         "authors": "Geirhos, R., Jacobsen, J.-H., Michaelis, C., Zemel, R., Brendel, W., Bethge, M., & Wichmann, F. A.",
         "year": "2020",
@@ -773,11 +789,35 @@
         "label": null
       },
       {
+        "authors": "Pfungst, O.",
+        "year": "1911",
+        "title": "Clever Hans (the horse of Mr. von Osten): A contribution to experimental animal and human psychology",
+        "venue": "Henry Holt. English translation by C. L. Rahn of the 1907 German original",
+        "url": "https://www.gutenberg.org/ebooks/33936",
+        "label": "Book"
+      },
+      {
         "authors": "Ribeiro, M. T., Wu, T., Guestrin, C., & Singh, S.",
         "year": "2020",
         "title": "Beyond accuracy: Behavioral testing of NLP models with CheckList",
         "venue": "Proceedings of ACL 2020",
         "url": "https://arxiv.org/abs/2005.04118",
+        "label": null
+      },
+      {
+        "authors": "Sturm, B. L.",
+        "year": "2014",
+        "title": "A simple method to determine if a music information retrieval system is a \"horse\"",
+        "venue": "IEEE Transactions on Multimedia, 16(6), 1636-1644",
+        "url": "https://doi.org/10.1109/TMM.2014.2330697",
+        "label": null
+      },
+      {
+        "authors": "Turpin, M., Michael, J., Perez, E., & Bowman, S. R.",
+        "year": "2023",
+        "title": "Language models don't always say what they think: Unfaithful explanations in chain-of-thought prompting",
+        "venue": "Advances in Neural Information Processing Systems 36 (NeurIPS 2023)",
+        "url": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/ed3fea9033a80fea1376299fa7863f4a-Abstract-Conference.html",
         "label": null
       }
     ]
@@ -791,7 +831,7 @@
     "takeaways": [
       "Test sets contain wrong labels. Near the top of a leaderboard, those errors can decide who \"wins.\"",
       "People disagree. For many tasks that disagreement is real information, not noise to average away.",
-      "Untrained or rushed human raters can be close to random on hard judgments.",
+      "Untrained, non-expert human raters can be close to random on hard judgments.",
       "Report agreement between raters, and audit labels on the items that matter most."
     ],
     "whatItMeans": [
@@ -800,19 +840,19 @@
     "evidence": [
       {
         "lead": "Answer keys have errors.",
-        "text": "Northcutt, Athalye, and Mueller (2021) found an average of at least 3.3% label errors across 10 widely used test sets, and at least 6% in the ImageNet validation set. With corrected labels, rankings between models could flip. On ImageNet, ResNet-18 outperformed ResNet-50 if the share of originally mislabeled examples rose by just 6%."
+        "text": "Northcutt, Athalye, and Mueller (2021) found an average of at least 3.3% label errors across 10 widely used test sets, and at least 6% in the ImageNet validation set. With corrected labels, rankings between models could flip. On ImageNet, with corrected labels, ResNet-18 would outperform ResNet-50 if the share of originally mislabeled test examples rose by just 6%."
       },
       {
         "lead": "Disagreement is signal.",
-        "text": "Aroyo and Welty (2015) describe seven myths of human annotation, including that every item has one right answer and that disagreement is bad. They argue disagreement tells you something about the item, the instructions, or the task."
+        "text": "Aroyo and Welty (2015) describe seven myths of human annotation, including that every item has one right answer and that disagreement is bad. They argue disagreement is a signal, not noise: it can show that an item is ambiguous or vague, or that a worker is not doing a good job."
       },
       {
         "lead": "Raters can be at chance.",
-        "text": "Clark et al. (2021) found that, without training, evaluators distinguished GPT-3 text from human-written text at chance level. Quick training raised accuracy only to about 55%."
+        "text": "Clark et al. (2021) asked non-expert crowdworkers to tell GPT-3 text from human-written text. Without training they scored at chance (49.9%), and training raised accuracy only to about 55%, with no significant gain within any of the three text types they tested. This tests spotting machine authorship, not rating quality."
       },
       {
         "lead": "Crowdsourced ratings can mislead.",
-        "text": "Karpinska, Akoury, and Krishna (2021) found that Mechanical Turk workers, unlike English teachers, failed to tell model-generated stories apart from human-written references. Most papers they surveyed also left out key details about how their crowdsourced ratings were collected."
+        "text": "Karpinska, Akoury, and Iyyer (2021) found that Mechanical Turk workers, unlike English teachers, failed to distinguish stories from a fine-tuned GPT-2 model from human-written ones in their ratings, though their judgments improved when the two were shown side by side. Most of the 45 papers they surveyed also left out key details about how their crowdsourced ratings were collected."
       },
       {
         "lead": "Practice is inconsistent.",
@@ -820,7 +860,7 @@
       }
     ],
     "useIt": [
-      "Have two people label a sample independently and measure their agreement before trusting the labels.",
+      "Have two people label a sample independently and measure their agreement, with a chance-corrected measure such as Cohen's kappa, before trusting the labels. High agreement shows the labels are consistent, not that they are right.",
       "Audit labels on items where strong models disagree with the \"answer.\"",
       "Use raters with real expertise for expert tasks, and train and calibrate them.",
       "Keep the disagreement data. Report distributions, not just majority votes."
@@ -846,7 +886,7 @@
         "label": null
       },
       {
-        "authors": "Karpinska, M., Akoury, N., & Krishna, K.",
+        "authors": "Karpinska, M., Akoury, N., & Iyyer, M.",
         "year": "2021",
         "title": "The perils of using Mechanical Turk to evaluate open-ended text generation",
         "venue": "Proceedings of EMNLP 2021",

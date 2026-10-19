@@ -147,7 +147,7 @@
   },
   {
     "term": "Holdout set",
-    "definition": "Data kept separate from training and tuning so it can give an unbiased estimate of performance (Dwork et al., 2015).",
+    "definition": "Data kept separate from training and tuning so it can give an unbiased estimate of performance (see Dwork et al., 2015).",
     "see": []
   },
   {
