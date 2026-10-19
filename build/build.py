@@ -74,9 +74,10 @@ NAV_SECTION = {
     "changelog.html": "about.html",
     "privacy.html": "about.html",
 }
-# The guide: three chapters in reading order, then reference pages. The question lists (INTENT_PAGES) are
+# The guide: four chapters in reading order (the walkthrough first), then reference pages. The question lists (INTENT_PAGES) are
 # the "Playbooks by situation" group. guide.html is the hub; the overview essay lives at overview.html.
 GUIDE_CHAPTERS = [
+    ("walkthrough.html", "Walkthrough", "Three real cases read slowly in three steps: choose the claim, test it against the patterns, decide what you can and cannot conclude."),
     ("overview.html", "Overview", "What AI evaluation is, why it is hard, and how to use the patterns."),
     ("playbook.html", "Playbook", "Ten questions for reading any AI claim, a sequence for building your own eval, red flags, and an eval card template."),
     ("being-pragmatic.html", "Being Pragmatic", "How to do this inside a real team, with deadlines, a small budget, and a model that changed last Tuesday."),
@@ -174,6 +175,8 @@ def prep_laws():
         ed = EDIT["laws"][law["slug"]]
         law["roles"] = ed["roles"]
         law["plainTerms"] = ed["plainTerms"]
+        law["bottomLine"] = ed["bottomLine"]
+        law["bottomLineCaveat"] = ed["bottomLineCaveat"]
         law["questions"] = ed["questions"]
         law["alsoKnownAs"] = ed.get("alsoKnownAs", [])
         law["workedExample"] = ed.get("workedExample")
@@ -320,6 +323,7 @@ def analytics_inline_js():
 
 TITLE_TAGS = {
     "Guide": "AI evaluation guide: what to read first, and what next",
+    "A claim, read slowly": "A claim, read slowly: three AI evaluation cases",
     "Glossary": "AI evaluation glossary: key terms explained",
     "Playbook": "Playbook for reading AI claims and building evals",
     "Being Pragmatic": "AI evaluation on a real team: being pragmatic",
@@ -599,7 +603,8 @@ def start_here():
     return (
         '<section class="start" id="start-here" aria-labelledby="start-h">'
         '<div class="start__head"><h2 id="start-h">Start here</h2>'
-        '<p>Pick the role closest to yours. Read three patterns, then use one tool on the claim or system in front of you.</p></div>'
+        '<p>Pick the role closest to yours. Read three patterns, then use one tool on the claim or system in front of you.</p>'
+        '<p class="start__walk">Want to see it done? <a href="walkthrough.html">Read a claim slowly</a>.</p></div>'
         '<ul class="start__grid">%s</ul></section>' % cards
     )
 
@@ -716,27 +721,30 @@ SECTION_TOC = [
 
 EVIDENCE_LEVELS = {
     "well": {
-        "label": "Well established",
+        "label": "Well sourced",
         "dots": "●●●",
-        "short": "Several peer-reviewed or classic sources, from different lead authors.",
+        "short": "Several independent, mostly peer-reviewed sources, from different lead authors.",
     },
     "developing": {
         "label": "Developing",
         "dots": "●●○",
-        "short": "A smaller or mixed base: some peer-reviewed support, with preprints, reports or a thin source list.",
+        "short": "A smaller or mixed source list: some peer-reviewed sources, with preprints, reports or few sources.",
     },
     "emerging": {
-        "label": "Emerging",
+        "label": "Thin",
         "dots": "●○○",
-        "short": "A thin base: one peer-reviewed source or fewer, with the rest preprints or reports.",
+        "short": "A short source list: one peer-reviewed source or fewer, with the rest preprints or reports.",
     },
 }
+
+# What every Evidence base label does and does not say. The labels count sources; they are not about the effect.
+EVIDENCE_NOTE = "This describes how many independent, mostly peer-reviewed sources the page cites, not how large or certain the effect is."
 
 
 def evidence_base(law):
     """Evidence-base level for a pattern, computed from its source list only (thresholds in data/naming.json).
 
-    It rates the sources cited on the page, not the wider literature. Reviewed and transparent: the same
+    It counts the sources cited on the page. It does not rate the wider literature or the size or certainty of the effect. Reviewed and transparent: the same
     numbers are printed on the pattern page and explained on the About page.
     """
     crit = NAMING["evidenceCriteria"]
@@ -760,7 +768,7 @@ def evidence_base(law):
 
 def evidence_card_tag(law):
     ev = evidence_base(law)
-    return '<span class="law-card__ev ev-%s" title="Evidence base: %s"><span aria-hidden="true">%s</span> <span class="visually-hidden">Evidence base: </span>%s</span>' % (ev["key"], ev["label"], ev["dots"], ev["label"])
+    return '<span class="law-card__ev ev-%s" title="Evidence base: %s. %s"><span aria-hidden="true">%s</span> <span class="visually-hidden">Evidence base: </span>%s</span>' % (ev["key"], ev["label"], EVIDENCE_NOTE, ev["dots"], ev["label"])
 
 
 def source_mix(law):
@@ -805,7 +813,7 @@ def law_jsonld(law):
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": law["name"],
-        "description": law["aphorism"],
+        "description": "%s %s" % (law["aphorism"], law["bottomLine"]),
         "url": "%s/patterns/%s" % (SITE["baseUrl"], law["slug"]),
         "datePublished": law["published"],
         "dateModified": law.get("revised") or law["published"],
@@ -818,6 +826,26 @@ def law_jsonld(law):
         "citation": ["%s (%s). %s." % (txt(x["authors"]), x["year"], txt(x["title"])) for x in law["sources"]],
     }
     return '<script type="application/ld+json">%s</script>\n' % json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
+
+
+def case_line(law):
+    """"See it in a real case" line linking to the matching entries on the case-studies page (ids from build_cases)."""
+    cases = [c for c in load("cases.json")["cases"] if law["slug"] in c["patterns"]]
+    if not cases:
+        return ""
+    links = "; ".join('<a href="../case-studies.html#%s">%s</a>' % (c["id"], esc(typo(c["title"]))) for c in cases)
+    return '<p class="law__case">See it in a real case: %s</p>' % links
+
+
+def bottom_line_box(law):
+    """The quotable one-sentence takeaway with its main caveat directly beneath it."""
+    return (
+        '<section class="bottomline" aria-labelledby="bottom-line">'
+        '<h2 class="bottomline__label" id="bottom-line">The bottom line</h2>'
+        '<p class="bottomline__text">%s</p>'
+        '<p class="bottomline__caveat"><span class="bottomline__k">Keep in mind:</span> %s</p></section>'
+        % (esc(typo(law["bottomLine"])), esc(typo(law["bottomLineCaveat"])))
+    )
 
 
 def build_law(i, law):
@@ -891,7 +919,7 @@ def build_law(i, law):
         '<p class="trust__line">Reviewed %s \u00b7 <a href="#sources">%d %s</a> \u00b7 %s \u00b7 <a href="#cite-this-law">Cite</a></p>'
         '<details class="trust__more"><summary>Details</summary><dl>'
         '<div><dt>Source types</dt><dd>%s</dd></div>'
-        '<div><dt>Evidence base</dt><dd>%s. %s <a href="../about.html#evidence">How this is rated</a></dd></div>'
+        '<div><dt>Evidence base</dt><dd>%s. %s This counts sources, not how large or certain the effect is; the Evidence section says what the studies found. <a href="../about.html#evidence">How this is rated</a></dd></div>'
         '<div><dt>Name</dt><dd>%s: %s</dd></div>'
         '<div><dt>Version</dt><dd>%s, published %s</dd></div>'
         '</dl></details></div>'
@@ -919,11 +947,12 @@ def build_law(i, law):
         )
     )
 
-    share_text = "\u201c%s\u201d \u2014 %s, AI Evaluation Field Guide" % (typo(law["aphorism"]), typo(law["name"]))
+    # Shared text = bottom line + its "Keep in mind" caveat (the caveat travels with the claim); the link is added by js/law.js.
+    share_text = "%s\nKeep in mind: %s" % (typo(law["bottomLine"]), typo(law["bottomLineCaveat"]))
     share = (
         '<div class="law__share"><button class="btn btn--outline btn--sm" type="button" data-share data-share-title="%s" data-share-text="%s" data-share-url="%s">Share this</button>'
         '<span class="law__share-status" role="status" aria-live="polite" data-share-status></span></div>'
-        % (esc(typo(law["name"])), esc(share_text), esc(url))
+        % (esc(typo(law["name"])), esc(share_text).replace("\n", "&#10;"), esc(url))
     )
 
     # right column
@@ -967,6 +996,8 @@ def build_law(i, law):
     <div class="law__meta"><span class="law__no">No. %(no)s</span><a class="tag" href="%(cat_href)s">%(cat_short)s</a>%(pick)s<span class="law__for">For: %(roles)s</span></div>
     <h1 class="law__title">%(name)s</h1>
     <blockquote class="law__quote"><p>\u201c%(aphorism)s\u201d</p></blockquote>
+    %(bottom)s
+    %(case)s
     %(share)s
     %(trust)s
     %(plain)s
@@ -999,6 +1030,8 @@ def build_law(i, law):
         "toc": toc,
         "related": related,
         "share": share,
+        "bottom": bottom_line_box(law),
+        "case": case_line(law),
         "jump": jump,
         "pick": pick_button(law, "pick pick--inline", "Add to My patterns", "In My patterns"),
         "roles": " \u00b7 ".join(law["roles"]),
@@ -1033,7 +1066,10 @@ def build_law(i, law):
         "aside": "".join(aside),
         "bar_next": bar_next,
     }
-    page = layout(law["name"], "%s %s" % (law["aphorism"], law["plainTerms"]), body, depth=1, current="laws", scripts=("law.js",), head_extra=law_jsonld(law), og_image="img/og/%s.png" % law["slug"])
+    # Per-pattern description: the bottom line with the pattern name when that fits one search-result line, else aphorism + plain terms.
+    bl_desc = "%s: %s" % (law["name"], law["bottomLine"])
+    desc = bl_desc if len(bl_desc) <= 155 else "%s %s" % (law["aphorism"], law["plainTerms"])
+    page = layout(law["name"], desc, body, depth=1, current="laws", scripts=("law.js",), head_extra=law_jsonld(law), og_image="img/og/%s.png" % law["slug"])
     write("patterns/%s.html" % law["slug"], page)
 
 
@@ -1183,53 +1219,100 @@ def build_about():
             NAME_TAG(l["slug"]), esc(ev["why"]),
         )
     evidence = '''  <section><h2 id="evidence">How strong is the evidence?</h2>
-  <p>Each pattern page carries an <strong>Evidence base</strong> label. It describes the sources cited on that page. It does not rate the whole research literature on the topic, and it does not say a pattern is more or less important. It is computed from the source list by fixed rules, so anyone can check it.</p>
+  <p>Each pattern page carries an <strong>Evidence base</strong> label. The label describes how many independent, mostly peer-reviewed sources the page cites. It does not say how large or how certain the effect is, it does not rate the whole research literature on the topic, and it does not say a pattern is more or less important. What the studies found, including where they found little or no effect, is in the page\u2019s Evidence section. The label is computed from the source list by fixed rules, so anyone can check it.</p>
   <ul>
-    <li><strong>Well established (%(c_well)d):</strong> at least %(w_n)d sources, at least %(w_p)d of them peer-reviewed or classic works making up at least %(w_share)d%% of the list, and those works have at least %(w_a)d different lead authors. Several independent studies point the same way.</li>
+    <li><strong>Well sourced (%(c_well)d):</strong> at least %(w_n)d sources, at least %(w_p)d of them peer-reviewed or classic works making up at least %(w_share)d%% of the list, and those works have at least %(w_a)d different lead authors. The page cites several independent studies.</li>
     <li><strong>Developing (%(c_dev)d):</strong> at least %(d_n)d sources, at least %(d_p)d of them peer-reviewed or classic, but short of the bar above. The list is smaller, or leans on preprints and reports.</li>
-    <li><strong>Emerging (%(c_em)d):</strong> everything else. Typically one peer-reviewed source or fewer, with the rest preprints or reports. The idea may still be sound; the cited support is thin so far.</li>
+    <li><strong>Thin (%(c_em)d):</strong> everything else. Typically one peer-reviewed source or fewer, with the rest preprints or reports. The idea may still be sound; the page cites few sources for it so far.</li>
   </ul>
-  <p>\u201cPeer-reviewed or classic\u201d means any source not labeled a preprint, report, working paper, or book on the pattern page. \u201cLead author\u201d is the first author listed, used as a rough stand-in for a separate research group. The rules count sources. They cannot tell whether a study is good, and a pattern can rest on a few strong papers or a large pile of weak ones. Read the Evidence section and the sources themselves. The same limits apply to the labels: they are an editorial summary, not a measurement. The rules were written for this guide and are not a published standard.</p>
-  <p>This is separate from the name. <strong>Established term</strong> means the name is used in the research literature. <strong>Recent term</strong> means the name was coined in one recent paper and is not yet widely established. <strong>Named here</strong> means the idea is established but the name is this site\u2019s own. A pattern can be well established under a name used only here, and a pattern with a standard name can still have a thin evidence base. The table lists both for every pattern.</p>
+  <p>\u201cPeer-reviewed or classic\u201d means any source not labeled a preprint, report, working paper, or book on the pattern page. \u201cLead author\u201d is the first author listed, used as a rough stand-in for a separate research group. The rules count sources. They cannot tell whether a study is good, and a pattern can rest on a few strong papers or a large pile of weak ones. A well-sourced page can also report a small or contested effect: %(ao_link)s is %(ao_label)s, and its Evidence section reports that the large studies found little or no sign of the effect. Read the Evidence section and the sources themselves. The same limits apply to the labels: they are an editorial summary, not a measurement. The rules were written for this guide and are not a published standard.</p>
+  <p>This is separate from the name. <strong>Established term</strong> means the name is used in the research literature. <strong>Recent term</strong> means the name was coined in one recent paper and is not yet widely established. <strong>Named here</strong> means the idea is established but the name is this guide\u2019s own. A pattern can be well sourced under a name used only here, and a pattern with a standard name can still have a thin source list. The table lists both for every pattern.</p>
   <div class="table-wrap"><table><thead><tr><th scope="col">No.</th><th scope="col">Pattern</th><th scope="col">Evidence base</th><th scope="col">Name</th><th scope="col">Basis</th></tr></thead><tbody>%(rows)s</tbody></table></div></section>
 ''' % {
         "c_well": counts["well"], "c_dev": counts["developing"], "c_em": counts["emerging"],
         "w_n": wk["minSources"], "w_p": wk["minPeerReviewed"], "w_share": round(wk["minPeerShare"] * 100), "w_a": wk["minLeadAuthors"],
         "d_n": dv["minSources"], "d_p": dv["minPeerReviewed"], "rows": rows,
+        "ao_link": '<a href="patterns/adaptive-overfitting.html">Adaptive Overfitting</a>', "ao_label": evidence_base(BY_SLUG["adaptive-overfitting"])["label"].lower(),
     }
     status = '''  <section><h2 id="status">Status of this guide</h2>
   <p>This is an independent, self-published reference built from published research. It has not been through formal peer review. Every pattern links to its sources, so you can check the evidence for yourself.</p>
-  <h3>Established terms and names from this site</h3>
-  <p>Not every pattern name is standard. The idea behind each pattern is established in the research, but for some the name is this site\u2019s own.</p>
+  <h3>Established terms, recent terms, and names from this guide</h3>
+  <p>Not every pattern name is standard. The idea behind each pattern is established in the research, but for some the name is this guide’s own. Each pattern page, and the table below, uses one of three name labels.</p>
   <ul>
-    <li><strong>Established terms (%(n_est)d):</strong> the name is used in the research literature.</li>
-    <li><strong>Recent terms from a single paper (%(n_recent)d):</strong> the name was coined in one recent paper and is not yet widely established, so cite that paper.</li>
-    <li><strong>Named on this site (%(n_here)d):</strong> the idea is established but the name is this site\u2019s own. Please do not cite these names as established terms. Cite the sources linked on each page instead.</li>
+    <li><strong>Established term (%(n_est)d):</strong> the name is used in the research literature.</li>
+    <li><strong>Recent term (%(n_recent)d):</strong> the name was coined in one recent paper and is not yet widely established, so cite that paper.</li>
+    <li><strong>Named here (%(n_here)d):</strong> the idea is established but the name is this guide’s own. Please do not cite these names as established terms. Cite the sources linked on each page instead.</li>
   </ul>
-  <p>Which is which, along with how strong each pattern\u2019s evidence is, is in the <a href="#evidence">table below</a>.</p>
+  <p>Which is which, along with how strong each pattern’s evidence is, is in the <a href="#evidence">table below</a>.</p>
   <h3>Review</h3>
-  <p>See the <a href="methodology.html">methodology</a> for how sources were chosen and checked. No outside reviewer has signed off on any pattern yet. If you work in evaluation, statistics, or a related field and see something wrong, or a better source, please say so on the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. Corrections are recorded in the <a href="changelog.html">Changelog</a>.</p></section>
+  <p>See the <a href="methodology.html">methodology</a> for how sources were chosen and checked. No outside reviewer has signed off on any pattern yet. The kind of reviewer who would help most is an evaluation researcher or statistician, someone who can check whether a pattern is stated as strongly as its sources allow and whether the statistics are right. If that is you, and you would read one or two patterns, or you see something wrong or a better source, please say so on the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. Corrections are recorded in the <a href="changelog.html">Changelog</a>.</p></section>
 ''' % {"n_est": len(NAMING["established"]), "n_here": len(NAMING["namedHere"]), "n_recent": len(NAMING.get("coinedRecently", []))}
+    named_here = [l for l in LAWS if NAME_TAG(l["slug"]) == "Named here"]
+    n_est = sum(1 for l in LAWS if NAME_TAG(l["slug"]) == "Established term")
+    n_rec = sum(1 for l in LAWS if NAME_TAG(l["slug"]) == "Recent term")
+    named_list = ", ".join('<a href="patterns/%s.html">%s</a>' % (l["slug"], esc(typo(l["name"]))) for l in named_here)
+    recent_list = ", ".join('<a href="patterns/%s.html">%s</a>' % (l["slug"], esc(typo(l["name"]))) for l in LAWS if NAME_TAG(l["slug"]) == "Recent term")
+    ck = EDIT["checklist"]
+    roles = []
+    for l in LAWS:
+        for r in l["roles"]:
+            if r not in roles:
+                roles.append(r)
+    own = {
+        "n": len(LAWS), "n_parts": len(CATS), "n_est": n_est, "n_rec": n_rec, "n_here": len(named_here),
+        "named": named_list, "recent": recent_list,
+        "roles": join_and(roles),
+        "phases": len(ck["phases"]), "stakes": len(ck["stakes"]),
+        "n_tpl": len(TEMPLATES), "n_rubric": sum(len(g["items"]) for g in RUBRIC), "n_airr": len(AIRR["criteria"]),
+        "n_tiers": 3, "n_stages": 5,
+    }
+    own_section = """  <section><h2 id="own-vs-research">What comes from the research, and what is this guide’s own</h2>
+  <p>A pattern page mixes two kinds of content. This section draws the line, so you can tell what to check against a paper and what to treat as editorial judgment.</p>
+  <h3>From the research</h3>
+  <ul>
+    <li>The findings and numbers on each of the %(n)d pattern pages. Each can be traced to a source listed on that page.</li>
+    <li>The idea behind every pattern, including the %(n_here)d whose names are this guide’s own.</li>
+    <li>The names labeled Established term (%(n_est)d), which the research literature uses, and Recent term (%(n_rec)d: %(recent)s), which was coined in one recent paper.</li>
+    <li>Findings in the Overview, Being Pragmatic, Playbook, and Glossary that are attributed to a named source.</li>
+  </ul>
+  <h3>This guide’s own</h3>
+  <ul>
+    <li><strong>Which patterns are included.</strong> An editorial selection, not a systematic review. Another reasonable list would differ.</li>
+    <li><strong>The grouping into %(n_parts)d parts</strong> and the order of the patterns.</li>
+    <li><strong>The %(n_here)d names marked Named here:</strong> %(named)s.</li>
+    <li><strong>The Evidence base labels and their rules.</strong> They count the sources on each page by fixed rules, written for this guide; they are not a published standard or a measurement, and they do not say how strong the effect is (see <a href="#evidence">How strong is the evidence?</a>).</li>
+    <li><strong>Role tags</strong> (%(roles)s), the <strong>In plain terms</strong> summaries, and the <strong>questions to ask</strong> on each pattern page.</li>
+    <li><strong>The matching rules</strong> in the claim checker and the situation finder. Both are published on their own pages.</li>
+    <li><strong>The checklist’s phases and stakes levels:</strong> %(phases)d phases and %(stakes)d levels of stakes, and where each pattern’s question sits.</li>
+    <li><strong>The models in the guide chapters,</strong> each marked in the text: the %(n_stages)d-stage maturity path, the %(n_tiers)d risk tiers and the minimum evidence for each, and the sequences in the Playbook.</li>
+    <li><strong>Rules of thumb,</strong> marked as such where they appear: for prompt variants, several, starting with at least three to five; for runs per item, more than one, at least three for stochastic outputs; for human labels to check a judge, a few dozen as a first screen, more when differences are small; and a few dozen outputs to read. They are starting points from this guide, not standards and not findings of the studies cited nearby.</li>
+    <li><strong>The tools’ content:</strong> the %(n_tpl)d templates, the Design Rubric’s %(n_rubric)d checks, and the Readiness Review’s %(n_airr)d criteria, tiers, and gates, along with which standards each criterion is based on. The standards themselves are not this guide’s.</li>
+  </ul>
+  <p>When a sentence in the guide chapters is this guide’s own, it says so in the text. See “How to read the labels” at the top of the <a href="playbook.html">Playbook</a>.</p></section>
+""" % own
     body = """<main id="main" class="page page--prose">
   <header class="page__head"><p class="eyebrow">About</p><h1>About this guide</h1>
   <p class="page__lede">An independent reference for people who build, buy, or design with AI. It collects the reliable ways AI evaluation goes wrong, with the research behind each one.</p></header>
-  <section><h2 id="what-a-pattern-is">What a \u201cpattern\u201d means here</h2>
-  <p>A pattern here is a reliable way evaluation goes wrong, with research behind it. It is not a law of physics. Some have established names, like Goodhart\u2019s Law. Others are named on this site to make a well-documented idea easier to remember, and each page says which.</p></section>
+  <section class="callout" aria-labelledby="trust"><h2 id="trust">What you can rely on</h2>
+  <p>Every claim on a pattern page is traceable to a source listed on that page, and preprints, reports, working papers, and books are labeled as such. On 19 October 2026 I re-audited every claim on the pattern, guide, glossary, and bibliography pages against its primary source where it could be read, and against abstracts or publisher records where it could not, with AI-assisted checking; the <a href="methodology.html#checking">methodology</a> says what that covered and what it could not. This guide is independent, with no vendor funding. It is self-published, has not been through formal peer review, and no outside reviewer has signed off on any pattern. If you find an error, tell me through the <a href="https://josephalfonso.com/pages/contact.html">contact page</a> or a pattern page\u2019s \u201cReport it\u201d link; every correction is recorded in the <a href="changelog.html">Changelog</a>.</p></section>
+%(own)s  <section><h2 id="what-a-pattern-is">What a \u201cpattern\u201d means here</h2>
+  <p>A pattern here is a reliable way evaluation goes wrong, with research behind it. It is not a law of physics. Some are established terms, like Goodhart\u2019s Law. Others are named here: the idea is well documented, and the name is this guide\u2019s own, chosen to make it easier to remember. Each page says which.</p></section>
   <section><h2 id="editorial-policy">Editorial policy</h2>
   <ul>
     <li>Every pattern links to its sources. Preprints, reports, regulations, working papers, and books are labeled as such. Every other source appeared in a peer-reviewed venue or is a long-established classic, apart from a few commentary pieces and older documents that the <a href=\"bibliography.html\">Bibliography</a> tags. The <a href=\"methodology.html\">methodology</a> explains how sources are counted and how the evidence was checked.</li>
     <li>Each pattern shows when its evidence was last checked and carries a version number and revision history.</li>
     <li>The <a href="changelog.html">Changelog</a> records what changed and when. Corrections are made in the open.</li>
-    <li>Role tags, plain-terms summaries, checklist questions, and claim-checker rules are editorial work built from the patterns themselves. They are starting points, not authority.</li>
+    <li>Role tags, plain-terms summaries, checklist questions, and claim-checker rules are editorial work built from the patterns themselves. They are starting points, not authority (see <a href="#own-vs-research">what is this guide\u2019s own</a>).</li>
   </ul></section>
 %(status)s%(evidence)s  <section><h2 id="who">Who maintains it</h2>
-  <p>Hi, I\u2019m <a href="https://josephalfonso.com">Joseph Alfonso</a>, a UX design lead. I made this guide because I wanted to understand how AI really gets judged, and how those judgments go wrong. Writing it down was how I learned.</p>
-  <p>I care about this because AI can feel like something that happens to us. I don\u2019t think it has to. The more we understand how it works and why it fails, the more we can use it on our own terms and ask better questions of the people selling it, building it, or telling us to trust it.</p>
-  <p>I\u2019m still learning, and I\u2019ve tried to be honest about what I know and don\u2019t. If you find a mistake, or a better source, please tell me through the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. I\u2019d be grateful, and I\u2019ll fix it. I hope this helps you the way making it helped me.</p></section>
+  <p>Hi, I\u2019m <a href="https://josephalfonso.com">Joseph Alfonso</a>, a UX design lead. I made this guide because I wanted to understand how AI really gets judged, and how those judgments go wrong. Writing it down was how I learned. I chose the patterns, built the guide and its tools, and maintain it.</p>
+  <p>The evidence has been checked twice: a spot-check of specific figures in early October 2026, then a full re-audit of every claim against its primary source on 19 October 2026. The re-audit was my own, done with AI-assisted checking, not by an outside expert. The <a href="methodology.html#checking">methodology</a> says exactly what the checks covered and where a source could not be read in full. Where the evidence is mixed or limited, the page says so.</p>
+  <p>I care about this because AI can feel like something that happens to us. I don\u2019t think it has to. The more we understand how it works and why it fails, the more we can use it on our own terms and ask better questions of the people selling it, building it, or telling us to trust it. I\u2019m still learning, and I\u2019ve tried to be honest about what I know and don\u2019t.</p>
+  <p>No outside reviewer has signed off on any pattern yet. If you work in evaluation research or statistics and would review a pattern, or you find a mistake or a better source, please tell me through the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. I\u2019d be grateful, and I\u2019ll fix it. I hope this helps you the way making it helped me.</p></section>
   <section><h2 id="how-to-use">How to use it</h2>
   <p>Start with the <a href="guide.html">guide</a>, browse the <a href="index.html">patterns</a>, describe your circumstances to <a href="situation-finder.html">find your patterns</a>, or paste a claim into the <a href="claim-checker.html">claim checker</a> to see which patterns apply. Collect any patterns with the Add buttons to get a <a href="brief.html">quick brief</a>, or turn them into a printable sheet with the <a href="checklist.html">checklist builder</a>. For ready-made question lists, see <a href="questions-to-ask-ai-vendor.html">buying an AI model or vendor</a>, <a href="ai-launch-review-questions.html">a launch review</a>, and <a href="how-to-build-an-ai-evaluation.html">building an evaluation</a>.</p></section>
-</main>""" % {"status": status, "evidence": evidence}
-    write("about.html", layout("About", "About the AI Evaluation Field Guide: what a pattern means here, the editorial policy, and who maintains it.", body, current="about"))
+</main>""" % {"status": status, "evidence": evidence, "own": own_section}
+    write("about.html", layout("About", "About the AI Evaluation Field Guide: what comes from the research and what is the guide\u2019s own, what a pattern means here, the editorial policy, and who maintains it.", body, current="about"))
 
 
 def guide_nav(active):
@@ -1245,8 +1328,13 @@ def guide_nav(active):
     return '<nav class="guide-nav" aria-label="Guide sections">%s%s%s%s</nav>' % (home, group("Read in order", chapters), group("Playbooks by situation", playbooks), group("Reference", reference))
 
 
+def chapter_eyebrow(fname):
+    """"Guide · Chapter N", with N taken from the reading order so adding a chapter cannot leave a stale number."""
+    return "Guide \u00b7 Chapter %d" % ([f for f, _, _ in GUIDE_CHAPTERS].index(fname) + 1)
+
+
 def guide_pager(fname):
-    """Previous and next links for the three chapters, so the reading order can be followed page to page."""
+    """Previous and next links for the chapters, so the reading order can be followed page to page."""
     files = [f for f, _, _ in GUIDE_CHAPTERS]
     if fname not in files:
         return ""
@@ -1281,8 +1369,10 @@ def build_guide_hub():
     reference = "".join(item("ref", f, t, d) for f, t, d in GUIDE_REFERENCE)
     body = """<main id="main" class="page page--prose page--hub">
   <header class="page__head"><p class="eyebrow">Guide</p><h1>Guide to AI evaluation</h1>
-  <p class="page__lede">The patterns are the core of this site. The guide is the order to read everything else in: three short chapters, then question lists for the moment you are in, then reference pages.</p></header>
+  <p class="page__lede">The patterns are the core of this site. The guide is the order to read everything else in: four short chapters, starting with a worked example, then question lists for the moment you are in, then reference pages.</p></header>
   <p class="hub__quick">Short on time? Pick a role under <a href="index.html#start-here">Start here</a> on the home page, or go straight to <a href="use-it-now.html">Use it now</a> for questions you can ask today.</p>
+  <section aria-labelledby="how"><h2 id="how">How this guide works</h2>
+  <p>%(arc)s</p></section>
   <section aria-labelledby="order"><h2 id="order">Read in this order</h2>
   <ol class="chapters">%(chapters)s</ol></section>
   <section aria-labelledby="playbooks"><h2 id="playbooks">Playbooks by situation</h2>
@@ -1293,8 +1383,9 @@ def build_guide_hub():
   <section aria-labelledby="apply"><h2 id="apply">Apply it to your own case</h2>
   <p>The <a href="situation-finder.html">situation finder</a> and <a href="claim-checker.html">claim checker</a> match your text to the patterns that apply. Collect patterns with the Add buttons for a <a href="brief.html">quick brief</a> or a printable <a href="checklist.html">checklist</a>. All the tools are under Tools in the menu.</p></section>
   %(follow)s
-</main>""" % {"chapters": chapters, "playbooks": playbooks, "reference": reference, "follow": follow_box()}
-    write("guide.html", layout("Guide", "Where to start with AI evaluation and what to read next: three chapters in order, question lists by situation, and reference pages.", body, current=None))
+</main>""" % {"chapters": chapters, "playbooks": playbooks, "reference": reference, "follow": follow_box(),
+        "arc": 'This guide is built around three moves. <strong>Choose a claim</strong>: write down exactly what is being claimed and what decision depends on it. <strong>Test it</strong>: find the patterns that apply and ask their questions, in order, of the evidence behind the claim. <strong>Decide</strong> what you can conclude and what you still cannot, and say both. The <a href="walkthrough.html">walkthrough</a> does all three slowly, on three real published cases.'}
+    write("guide.html", layout("Guide", "Where to start with AI evaluation and what to read next: four chapters in order, question lists by situation, and reference pages.", body, current=None))
 
 
 def glossary_jsonld():
@@ -1309,13 +1400,13 @@ def build_guide_pages():
     guide_page(
         "overview.html",
         "AI Evaluation, an Overview",
-        "Guide \u00b7 Chapter 1",
+        chapter_eyebrow("overview.html"),
         "What AI evaluation is, why it is hard, the three layers it works at, and how to use the 26 patterns to read an AI claim.",
         "",
         md_blocks(overview),
     )
     pragmatic = manuscript_region("## Being Pragmatic", "## Playbook")
-    guide_page("being-pragmatic.html", "Being Pragmatic", "Guide \u00b7 Chapter 3", "How to do AI evaluation inside a real team with deadlines, limited budget, and a model that changed last Tuesday.", "", md_blocks(pragmatic))
+    guide_page("being-pragmatic.html", "Being Pragmatic", chapter_eyebrow("being-pragmatic.html"), "How to do AI evaluation inside a real team with deadlines, limited budget, and a model that changed last Tuesday.", "", md_blocks(pragmatic))
 
     field = manuscript_region("## Playbook", "## Glossary")
     # split the eval card template out of the regular flow
@@ -1340,7 +1431,7 @@ def build_guide_pages():
     after = md_blocks(field[end:])
     playbooks = ", ".join('<a href="%s">%s</a>' % (pg["file"], esc(pg["short"].lower())) for pg in INTENT_PAGES)
     pb_lede = '<p class="page__lede">The general sequence. For the same questions applied to one situation, use the playbooks for %s.</p>' % playbooks
-    guide_page("playbook.html", "Playbook", "Guide \u00b7 Chapter 2", "Questions for reading an AI claim, a sequence for building your own eval, red flags, and an eval card template.", pb_lede, before + '<h2 id="4-eval-card-template">4. Eval card template</h2><p>Copy this into any eval you run. It borrows from model cards (Mitchell et al., 2019).</p>' + card + after)
+    guide_page("playbook.html", "Playbook", chapter_eyebrow("playbook.html"), "Questions for reading an AI claim, a sequence for building your own eval, red flags, and an eval card template.", pb_lede, before + '<h2 id="4-eval-card-template">4. Eval card template</h2><p>Copy this into any eval you run. It borrows from model cards (Mitchell et al., 2019). The fields are this guide\u2019s own model, not a standard.</p>' + card + after)
 
     gl = "".join('<div class="gloss__row"><dt id="%s">%s</dt><dd>%s%s</dd></div>' % (
         slugify(g["term"]), esc(typo(g["term"])), inline(g["definition"]),
@@ -1574,7 +1665,7 @@ def build_search_index():
         u = "patterns/%s.html" % l["slug"]
         entries.append({"k": "Pattern", "n": l["no"], "t": l["name"], "s": l["aphorism"], "u": u})
         sections = [
-            ("takeaways", "Takeaways", " ".join(plain(t) for t in l["takeaways"])),
+            ("takeaways", "Takeaways", plain(l["bottomLine"]) + " " + " ".join(plain(t) for t in l["takeaways"])),
             ("what-it-means", "What it means", " ".join(plain(t) for t in l["whatItMeans"])),
             ("the-evidence", "The evidence", " ".join(plain(e["lead"] + " " + e["text"]) for e in l["evidence"])),
             ("use-it", "Use it", " ".join(plain(t) for t in l["useIt"])),
@@ -1832,6 +1923,115 @@ def build_cases():
     )
 
 
+# The walkthrough re-tells three entries from data/cases.json (same facts, same numbers, nothing added), in
+# three steps: choose the claim, test it, decide. [[slug]] becomes a link to that pattern page.
+WALKTHROUGH = [
+    {
+        "id": "arena-private-variants",
+        "anchor": "walk-leaderboard",
+        "title": "A leaderboard rank",
+        "told": [
+            "You are told that a model ranks near the top of Chatbot Arena, a public leaderboard that ranks models by votes from users. Then you read Singh et al. (2025), who studied the platform. They report that some providers could test several model variants privately before release and choose which scores to publish. The most extreme case they identify is Meta, which they observed testing as many as 27 private variants in a single month before the Llama 4 release.",
+        ],
+        "choose": "The claim is that this model is better than its rivals, because of where it ranks. The decision that rides on it is which model to pick or recommend. The claim assumes the published score is a fair picture of the model, not the best of several tries.",
+        "test": [
+            "Start with [[goodharts-law]]. A rank stands in for quality, and the harder anyone pushes on a stand-in, the further it can drift. Ask what improved: the capability, or the fit to the test. In the paper’s controlled experiment, fine-tuning a model on Arena-style data raised its win rate against a baseline on an Arena-derived benchmark (ArenaHard) by up to 112% in relative terms, while performance on a broader benchmark (MMLU) slightly declined (step 3 gives LMArena’s response to this experiment).",
+            "Then [[campbells-law]]. When a number drives buying and press, everyone has a reason to game it, often without anyone deciding to cheat. Ask how many variants were tried before the reported one, and whether a second measure that nobody optimized agrees.",
+        ],
+        "decide": "You can conclude that a rank alone does not say how many candidates it was selected from, and a published result should say. Treat it as one input. You still do not know whether any leaderboard result was wrong, whether any provider broke a rule, or how good any model is. LMArena, the platform, published a response on 9 May 2025 disputing parts of the paper. It says, for example, that the 112% experiment used a static benchmark rather than Chatbot Arena itself. This page does not settle the dispute; read both. Before you choose on rank, ask how many variants were tried before the reported one, and look for a second measure that nobody optimized.",
+    },
+    {
+        "id": "epic-sepsis",
+        "anchor": "walk-sepsis",
+        "title": "A clinical model that “works”",
+        "told": [
+            "You are told that a sepsis prediction model in use at many US hospitals works. Then you read Wong et al. (2021), who externally validated the original version of the Epic Sepsis Model on 38,455 hospitalizations at Michigan Medicine between December 2018 and October 2019, where sepsis occurred in about 7%. They report a hospitalization-level AUC of 0.63, that the model did not identify about 67% of patients with sepsis, and that, at the alert threshold Michigan Medicine used (a score of 6 or higher), it generated alerts for about 18% of all hospitalized patients. They conclude that it has poor discrimination and calibration. The developer’s documentation reported an AUC of 0.76 to 0.83. The authors say the difference is likely due to how they treated the timing of sepsis predictions: when they also counted scores up to 3 hours after sepsis onset, which their main analysis excluded, the AUC rose to 0.80.",
+        ],
+        "choose": "The claim is that the model works, so a hospital can rely on its alerts. The decision that rides on it is whether to rely on it for your own patients. “Works” needs defining first: how well it separates patients who develop sepsis from those who do not, how many alerts it takes, and when a prediction counts, since the same model scored 0.63 or 0.80 depending on whether scores after onset were counted.",
+        "test": [
+            "Start with [[the-functionality-fallacy]]. Whether it works is the first question, not a settled one. Vendor-reported performance is a claim; independent validation is evidence. This is an independent validation, and it found 0.63 against the developer’s 0.76 to 0.83. Then ask why the numbers differ. The authors say it is likely how they treated timing, so before you compare any two figures, ask when a prediction counted and how sepsis was defined.",
+            "Then [[the-lab-to-field-gap]], which asks what changes when a model is used in a real clinic. Here, count the alert burden as well as the hits: at the threshold Michigan Medicine used, the model alerted for about 18% of all hospitalized patients.",
+        ],
+        "decide": "You can conclude that this validation found poor discrimination and calibration for the original version, and that the definition of timing changed the headline number, so a figure without its definition is hard to compare. Epic released a revised version in 2022, and a 2026 multicenter study of the updated model (Wong et al., JAMA Network Open) reported encounter-level AUROC of 0.82 to 0.92 across four US health systems, with high variability between sites and a high alert burden. You still do not know how either version performs at your hospital. The next step is to ask the vendor how timing and sepsis were defined in its figures, then validate on your own data, with the metrics, timing rule, and alert threshold fixed in advance.",
+    },
+    {
+        "id": "gsm1k",
+        "anchor": "walk-benchmark",
+        "title": "A benchmark score",
+        "told": [
+            "You are told that a model scores highly on GSM8K, a popular grade-school math benchmark. Then you read Zhang et al. (2024). Human annotators wrote GSM1k, a new set of grade-school math problems built to match GSM8K in style and difficulty. Some model families scored up to 8% lower on GSM1k than on GSM8K. Models that assigned higher probability to the GSM8K test items showed bigger gaps (Spearman rank correlation of 0.36), which the authors take to suggest partial memorization, though they note outliers and say contamination is likely not the full story. Many frontier models showed little or no gap, which the authors say could reflect better generalization or more careful data handling.",
+        ],
+        "choose": "The claim is that the score shows the model can do grade-school math. The decision that rides on it is whether to trust that score, or to choose the model because of it. The claim assumes the model had not already seen the test items.",
+        "test": [
+            "The pattern here is [[data-contamination]]: if the test was in the training data, the score may be measuring memory, not skill. You usually cannot inspect a model’s training data, so the test has to be indirect. Compare scores on public items with scores on look-alike items that have never been posted online, as the GSM1k authors did, and ask whether the gap is larger for the models that are most familiar with the public items.",
+        ],
+        "decide": "You can conclude that a large gap is the warning sign, and that a small gap is some reassurance, not proof. Many frontier models showed little or no gap. You still do not know whether any one model memorized test items. This case does not show that public benchmarks are useless or that every model memorized test items, and the gaps apply to the models the authors tested. To find out for your own model, build a small private set of look-alike items that has never been posted online, score the model on both sets, and compare.",
+    },
+]
+
+
+def build_walkthrough():
+    CASES = load("cases.json")
+    by_id = {c["id"]: c for c in CASES["cases"]}
+
+    def prose(t):
+        return re.sub(r"\[\[([a-z0-9-]+)\]\]", lambda m: law_link(m.group(1)), esc(typo(t)))
+
+    def step(n, label, inner):
+        return '<h3 class="walk__step"><span class="walk__n" aria-hidden="true">%d</span>%s</h3>%s' % (n, label, inner)
+
+    secs = []
+    for i, w in enumerate(WALKTHROUGH, 1):
+        c = by_id[w["id"]]
+        patterns = ", ".join(law_link(s) for s in c["patterns"])
+        told = "".join('<p class="walk__told">%s</p>' % prose(t) for t in w["told"])
+        secs.append(
+            '<section class="walk" id="%(a)s" aria-labelledby="%(a)s-h"><p class="walk__case">Case %(i)d</p><h2 id="%(a)s-h">%(title)s</h2>'
+            '%(told)s%(s1)s%(s2)s%(s3)s'
+            '<p class="case__src"><span class="case__k">Patterns</span> %(patterns)s</p>'
+            '<p class="case__src"><span class="case__k">Primary source</span> <a href="%(url)s" rel="noopener">%(label)s</a></p>'
+            '<p class="case__src"><a href="case-studies.html#%(id)s">Full case-study entry</a></p></section>'
+            % {
+                "a": w["anchor"], "i": i, "title": esc(typo(w["title"])), "told": told,
+                "s1": step(1, "Choose the claim", "<p>%s</p>" % prose(w["choose"])),
+                "s2": step(2, "Test it", "".join("<p>%s</p>" % prose(t) for t in w["test"])),
+                "s3": step(3, "Decide", "<p>%s</p>" % prose(w["decide"])),
+                "patterns": patterns, "url": esc(c["source"]["url"]), "label": esc(typo(c["source"]["label"])), "id": c["id"],
+            }
+        )
+    toc = "".join('<li><a href="#%s">%s</a></li>' % (w["anchor"], esc(typo(w["title"]))) for w in WALKTHROUGH)
+    arc = (
+        '<ol class="walk__arc">'
+        '<li><strong>Choose the claim.</strong> Say exactly what is being claimed, and what decision rides on it.</li>'
+        '<li><strong>Test it.</strong> Find the patterns that apply, in order, and ask what each one asks.</li>'
+        '<li><strong>Decide.</strong> Say what you can conclude, and what you still would not know.</li></ol>'
+    )
+    lede = '<p class="page__lede">Choose a claim, test it, decide. This page does that three times, slowly, on real published cases: a leaderboard rank, a clinical model, and a benchmark score.</p>'
+    intro = (
+        arc
+        + '<p class="case__note"><strong>Read this first.</strong> %s</p>' % esc(typo(CASES["note"]))
+        + '<nav aria-label="Cases"><ul class="case__toc">%s</ul></nav>' % toc
+        + '<p class="case__note">Each case here has a fuller entry on the <a href="case-studies.html">case studies page</a>, including what it does not show.</p>'
+    )
+    outro = (
+        '<section class="walk walk--next" id="your-turn" aria-labelledby="your-turn-h"><h2 id="your-turn-h">Now try it on a claim you have</h2>'
+        '<p>Write down the claim and the decision that depends on it. Then:</p>'
+        '<ul><li>Paste the claim into the <a href="claim-checker.html">Claim checker</a> to see which patterns apply.</li>'
+        '<li>Describe your situation in <a href="situation-finder.html">Find your patterns</a> to see which to check first.</li>'
+        '<li>Fill in a <a href="templates.html">template</a> (the eval plan one-pager is the place to write down the decision) before you run anything.</li></ul>'
+        '<p>The <a href="case-studies.html">case studies</a> page has more cases, each with its primary source. The numbers and wording above follow each source; for anything you plan to repeat, read the source.</p></section>'
+    )
+    body = """<main id="main" class="page page--prose page--walk">
+  %s
+  <header class="page__head"><p class="eyebrow">%s</p><h1>A claim, read slowly</h1>%s</header>
+  %s%s%s%s
+</main>""" % (guide_nav("walkthrough.html"), esc(chapter_eyebrow("walkthrough.html")), lede, intro, "".join(secs), outro, guide_pager("walkthrough.html"))
+    write("walkthrough.html", layout(
+        "A claim, read slowly",
+        "Three real AI claims read slowly in three steps: choose the claim, test it against the patterns, then decide what you can and cannot conclude.",
+        body, current=None))
+
+
 TEMPLATES = [
     {
         "id": "vendor-questionnaire",
@@ -1899,7 +2099,8 @@ def build_methodology():
   <header class="page__head"><p class="eyebrow">Guide</p><h1>Methodology</h1>
   <p class="page__lede">How the patterns were chosen, what counts as a source, how the evidence was checked, and what this guide does not claim to be.</p></header>
   <section><h2 id="selection">How patterns are chosen</h2>
-  <p>The %(n_laws)d patterns are an editorial selection of recurring ways AI evaluation goes wrong, each with published research behind it. They are not the result of a systematic review, and another reasonable list would differ. Each pattern page says whether its name is an established term or this site\u2019s own name for an established idea (see <a href="about.html#evidence">how the evidence base is described</a>). The full list is on the <a href="about.html#status">About page</a>.</p></section>
+  <p>The %(n_laws)d patterns are an editorial selection of recurring ways AI evaluation goes wrong, each with published research behind it. They are not the result of a systematic review, and another reasonable list would differ. Each pattern page says whether its name is an established term, a recent term, or named here (the idea is established, but the name is this guide\u2019s own), and gives an Evidence base of well sourced, developing, or thin, which counts its sources and does not measure the effect (see <a href="about.html#evidence">how the evidence base is described</a>).</p>
+  <p>For what comes from the research and what is this guide\u2019s own, see <a href="about.html#own-vs-research">the line drawn on the About page</a>. The table of every pattern with its name label and Evidence base is in <a href="about.html#evidence">the same page</a>.</p></section>
   <section><h2 id="sources">What counts as a source</h2>
   <p>A <em>citation</em> is one source line on one pattern page, so a work cited by three patterns is three citations. A <em>work</em> is one distinct piece of research, counted once however many pages cite it.%(merged)s</p>
   <p>The %(n_laws)d pattern pages make %(n_cit)d citations to %(n_wp)d distinct works. The <a href="bibliography.html">Bibliography</a> lists %(n_tot)d works in all, which adds %(n_else)d that appear only in the Overview, Being Pragmatic, Playbook or Glossary. Counting each work once, of the %(n_tot)d, %(mix)s.%(kinds)s</p>
@@ -1916,11 +2117,11 @@ def build_methodology():
   <section><h2 id="not-covered">What this guide does not cover</h2>
   <p>These are gaps, not oversights. Each is a field of its own, and the guide treats it only briefly or not at all.</p>
   <ul>
-    <li><strong>Statistics beyond the basics.</strong> The <a href="sample-size.html">sample-size page</a> covers confidence intervals and the number of items for one or two comparisons. It does not cover statistical power in complex designs, corrections for many comparisons, Bayesian methods, or items that come in correlated groups beyond a brief mention.</li>
-    <li><strong>Calibration.</strong> Whether a system’s stated confidence matches how often it is right is not covered.</li>
-    <li><strong>Agent and tool-use evaluation.</strong> Agents appear through a few benchmarks and studies, such as τ-bench. Designing evaluations for multi-step agents, tool use, and long-running tasks is not covered in depth.</li>
+    <li><strong>Statistics beyond the basics.</strong> The <a href="sample-size.html">sample-size page</a> covers confidence intervals, the number of items for one comparison (with power for two systems), and a paired McNemar check of whether one system beat another on the same items. It does not cover corrections for many comparisons, significance testing within slices, power in complex designs, Bayesian methods, or items that come in correlated groups beyond a brief mention.</li>
+    <li><strong>Calibration.</strong> The Glossary defines it, but how to measure whether a system’s stated confidence matches how often it is right, or how to calibrate an AI judge, is not covered.</li>
+    <li><strong>Agent and tool-use evaluation.</strong> <a href="patterns/once-is-not-reliable.html">Once Is Not Reliable</a> covers repeated runs and the pass^k measure, with τ-bench as the main example. Evaluating the steps an agent takes (trajectories), tool use, and long-running tasks is not covered in depth.</li>
     <li><strong>Safety and red-team methods.</strong> <a href="patterns/presence-not-absence.html">Presence, Not Absence</a> explains why a failure to find a risk is weak evidence. How to run a red-team exercise, design adversarial tests, or assess dangerous capabilities is not covered.</li>
-    <li><strong>Validating an AI grader.</strong> <a href="patterns/judge-bias.html">Judge Bias</a> says to check a grader against people on a sample. It does not cover agreement measures, rubric design for judges, or how many labels are enough.</li>
+    <li><strong>Validating an AI grader.</strong> <a href="patterns/judge-bias.html">Judge Bias</a> says to check a grader against people on a sample, and the <a href="playbook.html">Playbook</a> (step 8) names a chance-corrected agreement measure (Cohen’s kappa), shows how wide the interval is on a small label set (45 matches out of 50 gives about 79%% to 96%%), and suggests a few dozen labels as a first screen. It does not explain how to compute or interpret agreement measures, how to choose a label count for a target precision, rubric design for judges, or judge calibration.</li>
     <li><strong>Building evaluation sets at scale.</strong> Sampling, annotation pipelines, quality control, and keeping a set fresh over time are not covered.</li>
     <li><strong>Fairness auditing, privacy, security, and legal compliance.</strong> These are touched on by the Readiness Review, which points to standards, but they are not treated as evaluation methods here.</li>
     <li><strong>Evidence from the last few months.</strong> Each pattern shows when its evidence was last checked. Newer work may not be reflected yet.</li>
@@ -2061,6 +2262,7 @@ def main():
     build_methodology()
     build_sample_size()
     build_cases()
+    build_walkthrough()
     build_templates()
     build_intent_pages()
     build_privacy()

@@ -53,8 +53,8 @@ Out of scope (what a high score would not tell us):
 
 ## 6. Prompt variants and repeats
 
-- Prompt variants (as many as you can afford; there is no fixed minimum, and the number needed depends on how much results differ between variants), listed or linked:
-- Runs per item (for stochastic outputs, more than one; there is no fixed minimum, so use enough that run-to-run variation is small next to the differences that matter). Repeats reduce run-to-run noise only, not the uncertainty from which items you chose:
+- Prompt variants (several. This guide suggests starting with at least three to five; that is a rule of thumb from this guide, not a standard: there is no fixed minimum, and the number needed depends on how much results differ between variants), listed or linked:
+- Runs per item (more than one; this guide suggests at least three for stochastic outputs, but there is no fixed minimum, so use enough that run-to-run variation is small next to the differences that matter). Repeats reduce run-to-run noise only, not the uncertainty from which items you chose:
 - Settings held fixed (model version or date, temperature, system prompt):
 - Reported as: average, range across variants, and all-runs-pass rate.
 
@@ -62,7 +62,7 @@ Out of scope (what a high score would not tell us):
 
 - Who or what scores outputs (people, rules, an AI model)?
 - If an AI model: which one, and is it from the same family as the system under test?
-- Human check: sample size (a rate measured on 50 items is imprecise: 45 of 50 in agreement is 90%, but its 95% Wilson interval runs from about 79% to 96%, so use more items if the decision depends on it), who labels, how agreement is measured and the threshold for trusting the grader:
+- Human check: sample size (this guide suggests a few dozen labels as a first screen, more when differences are small; a rate measured on 50 items is imprecise: 45 of 50 in agreement is 90%, but its 95% Wilson interval runs from about 79% to 96%, so use more items if the decision depends on it), who labels, how agreement is measured and the threshold for trusting the grader:
 - Order and length controls:
 
 ## 8. Slices and sample size

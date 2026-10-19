@@ -3,10 +3,12 @@
   "laws": {
     "goodharts-law": {
       "roles": ["Building", "Buying"],
-      "version": "v1.1",
+      "version": "v1.2",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
-      "history": [{"v": "v1.1", "d": "2026-10-19", "t": "Clarified the Singh et al. (2025) findings (inferred attribution, one controlled experiment), the Amodei and Pan descriptions, and that the Gao study used a synthetic setup; corrected the venue and relabeled related terms."}, {"v": "v1.0", "d": "2026-10-05", "t": "Published."}],
+      "history": [{"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."}, {"v": "v1.1", "d": "2026-10-19", "t": "Clarified the Singh et al. (2025) findings (inferred attribution, one controlled experiment), the Amodei and Pan descriptions, and that the Gao study used a synthetic setup; corrected the venue and relabeled related terms."}, {"v": "v1.0", "d": "2026-10-05", "t": "Published."}],
+      "bottomLine": "Check a result against a second measure that nobody optimized, not only the number everyone pushed up.",
+      "bottomLineCaveat": "Not every target gets gamed; a measure that is hard to move without doing the real work holds up far better.",
       "plainTerms": "If you reward people or models for hitting a number, they get good at the number. Whether they got better at the actual job is a separate question that needs its own check.",
       "questionsSource": "handoff",
       "questions": [
@@ -23,10 +25,12 @@
     },
     "campbells-law": {
       "roles": ["Buying", "Building"],
-      "version": "v1.1",
+      "version": "v1.3",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
-      "history": [{"v": "v1.1", "d": "2026-10-19", "t": "Corrected the Campbell quotation (\"is intended to monitor\") and added that it was first issued in 1976; added caveats on Lipton and Steinhardt (2019) and on how Singh et al. (2025) estimated data shares."}, {"v": "v1.0", "d": "2026-10-05", "t": "Published."}],
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Reworded the aphorism to match the evidence on the page. Noted that LMArena disputes parts of the Singh et al. (2025) analysis. Tightened the bottom line and its caveat."}, {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."}, {"v": "v1.1", "d": "2026-10-19", "t": "Corrected the Campbell quotation (\"is intended to monitor\") and added that it was first issued in 1976; added caveats on Lipton and Steinhardt (2019) and on how Singh et al. (2025) estimated data shares."}, {"v": "v1.0", "d": "2026-10-05", "t": "Published."}],
+      "bottomLine": "Do not let one number decide alone: add a second, independent measure and a qualitative review.",
+      "bottomLineCaveat": "This applies where incentives are strong; a measure that nobody competes on is less exposed.",
       "plainTerms": "The more a score decides who gets funded, hired, or bought, the more people bend their work around the score. The damage reaches the work itself, not just the number.",
       "questionsSource": "derived",
       "questions": [
@@ -36,10 +40,12 @@
     },
     "the-construct-gap": {
       "roles": ["Buying", "Designing"],
-      "version": "v1.1",
+      "version": "v1.3",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
-      "history": [{"v": "v1.1", "d": "2026-10-19", "t": "Replaced an unsupported claim about most benchmarks with figures from Bean et al. (2025), and tightened how Raji et al. (2021), Jacobs and Wallach (2021) and Wallach et al. (2025) are described."}, {"v": "v1.0", "d": "2026-10-05", "t": "Published."}],
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Reworded the aphorism to match the evidence on the page. Tightened the bottom line and its caveat."}, {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."}, {"v": "v1.1", "d": "2026-10-19", "t": "Replaced an unsupported claim about most benchmarks with figures from Bean et al. (2025), and tightened how Raji et al. (2021), Jacobs and Wallach (2021) and Wallach et al. (2025) are described."}, {"v": "v1.0", "d": "2026-10-05", "t": "Published."}],
+      "bottomLine": "A benchmark’s name is a claim, not a result: say exactly what skill the score shows, and under what conditions.",
+      "bottomLineCaveat": "This is about overreach: a score can back a claim about those exact tasks, just not about general ability.",
       "plainTerms": "A test called \"reasoning\" only measures how a system does on that test's items, in that format. Whether that says anything about reasoning in general needs its own evidence.",
       "questionsSource": "handoff",
       "questions": [
@@ -49,10 +55,12 @@
     },
     "the-functionality-fallacy": {
       "roles": ["Buying", "Designing"],
-      "version": "v1.1",
+      "version": "v1.3",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
-      "history": [{"v": "v1.1", "d": "2026-10-19", "t": "Removed wording that implied a failure rate, added the scope of the Wong et al. (2021) sepsis study, narrowed the Hutchinson et al. (2022) and NIST descriptions, and clarified that the pattern name is this site's shortening of the paper's title."}, {"v": "v1.0", "d": "2026-10-05", "t": "Published."}],
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."}, {"v": "v1.1", "d": "2026-10-19", "t": "Removed wording that implied a failure rate, added the scope of the Wong et al. (2021) sepsis study, narrowed the Hutchinson et al. (2022) and NIST descriptions, and clarified that the pattern name is this site's shortening of the paper's title."}, {"v": "v1.0", "d": "2026-10-05", "t": "Published."}],
+      "bottomLine": "Ask whether an AI system works, using independent evidence on data like yours, before asking whether it is fair or safe.",
+      "bottomLineCaveat": "Raji et al. argue fairness and safety discussions often assume a system works; putting that check first is this guide’s ordering.",
       "plainTerms": "Before asking whether an AI system is fair or safe, ask whether it works at all. Documented cases show deployed systems failing at their stated job, and a vendor's claim is not evidence.",
       "questionsSource": "derived",
       "questions": [
@@ -62,10 +70,12 @@
     },
     "the-metric-mirage": {
       "roles": ["Building"],
-      "version": "v1.1",
+      "version": "v1.3",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
-      "history": [{"v": "v1.1", "d": "2026-10-19", "t": "Added scope to Novikova et al. (2017), Schaeffer et al. (2023) and Reiter (2018), and clarified where the pattern name comes from."}, {"v": "v1.0", "d": "2026-10-05", "t": "Published."}],
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."}, {"v": "v1.1", "d": "2026-10-19", "t": "Added scope to Novikova et al. (2017), Schaeffer et al. (2023) and Reiter (2018), and clarified where the pattern name comes from."}, {"v": "v1.0", "d": "2026-10-05", "t": "Published."}],
+      "bottomLine": "Re-score a headline trend with a second reasonable metric before you believe it.",
+      "bottomLineCaveat": "Automatic metrics are not useless; the problem is using one outside the range where it has been shown to work.",
       "plainTerms": "The scoring method is part of the result. Score the same outputs a different way and a sudden leap can turn into steady progress, or the reverse.",
       "questionsSource": "derived",
       "questions": [
@@ -75,13 +85,16 @@
     },
     "benchmark-saturation": {
       "roles": ["Buying", "Building"],
-      "version": "v1.1",
+      "version": "v1.3",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
-      "history": [
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Reworded the aphorism to match the evidence on the page. Softened a takeaway that said benchmarks go from hard to solved quickly. Tightened the bottom line and its caveat."}, 
+        {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."},
         {"v": "v1.1", "d": "2026-10-19", "t": "Corrected the saturation figures from Ott et al., described Bowman and Dahl's argument against adversarial data collection, and noted that dynamic test sets are debated."},
         {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
       ],
+      "bottomLine": "When top systems bunch up near the ceiling, the test stops separating them. Switch to a harder one.",
+      "bottomLineCaveat": "It still works for catching regressions and checking basic ability, just not for choosing among top systems.",
       "plainTerms": "Tests stop being useful once everyone scores near the top. The remaining differences are often noise, and the real gaps are somewhere else.",
       "questionsSource": "handoff",
       "questions": [
@@ -91,13 +104,16 @@
     },
     "data-contamination": {
       "roles": ["Buying", "Building"],
-      "version": "v1.1",
+      "version": "v1.3",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
-      "history": [
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Reworded the aphorism to match the evidence on the page. Tightened the bottom line and its caveat."}, 
+        {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."},
         {"v": "v1.1", "d": "2026-10-19", "t": "Corrected how the GSM1k link between memorization and score gaps is measured, added the authors' caveats, counted Kapoor and Narayanan's leakage figure as a lower bound, and warned that private test sets can leak through vendor services."},
         {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
       ],
+      "bottomLine": "A public benchmark score alone cannot tell you the model has not seen the test items; check fresh, private questions.",
+      "bottomLineCaveat": "A gap is a warning sign, not a verdict; a small gap is reassuring but not proof.",
       "plainTerms": "If a model saw the test questions while it was training, a high score may only mean it remembers them. Fresh or private questions are the strongest check, as long as they stay private.",
       "questionsSource": "handoff",
       "questions": [
@@ -107,13 +123,16 @@
     },
     "adaptive-overfitting": {
       "roles": ["Building"],
-      "version": "v1.1",
+      "version": "v1.3",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
-      "history": [
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Reworded the aphorism to match the evidence on the page. Softened two statements about tuning against a test set to match the evidence. Tightened the bottom line and its caveat."}, 
+        {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."},
         {"v": "v1.1", "d": "2026-10-19", "t": "Clarified that the two large empirical studies found little or no adaptive overfitting, corrected the explanation of the drop in Recht et al., narrowed the claim about test-set reuse, and added scope notes for Roelofs et al. and Kapoor et al."},
         {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
       ],
+      "bottomLine": "Lock a test set and use it only to decide, and do your tuning on a separate dev set.",
+      "bottomLineCaveat": "The risk grows with reuse and is clearest for small, heavily reused benchmarks; the large studies found little sign of it.",
       "plainTerms": "Each time you adjust a prompt or a model because of how it did on the test, the test tells you a little less. Keep a locked test that you use only to decide.",
       "questionsSource": "derived",
       "questions": [
@@ -123,13 +142,16 @@
     },
     "the-clever-hans-effect": {
       "roles": ["Building"],
-      "version": "v1.1",
+      "version": "v1.2",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
       "history": [
+        {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."},
         {"v": "v1.1", "d": "2026-10-19", "t": "Corrected the Lapuschkin et al. example (a Fisher-vector classifier, not the deep network), credited earlier machine-learning use of the term (Sturm, 2014), and added cautions on partial-input baselines and on explanations."},
         {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
       ],
+      "bottomLine": "Add test cases built to break the obvious shortcut, because a right answer alone does not show the right reason.",
+      "bottomLineCaveat": "A model that uses a shortcut may still be good enough for your use if conditions will not change.",
       "plainTerms": "A model can pass a test by picking up an accidental pattern, such as a watermark or a telltale word, instead of the skill you meant to test. Build cases where the shortcut fails.",
       "questionsSource": "derived",
       "questions": [
@@ -139,13 +161,16 @@
     },
     "the-gold-standard-myth": {
       "roles": ["Building", "Designing"],
-      "version": "v1.1",
+      "version": "v1.3",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
-      "history": [
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, 
+        {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."},
         {"v": "v1.1", "d": "2026-10-19", "t": "Corrected the third author of Karpinska et al. (Iyyer, not Krishna) and added scope notes for the Clark et al., Karpinska et al., Northcutt et al. and Aroyo and Welty evidence."},
         {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
       ],
+      "bottomLine": "Treat human labels as measurements with error: report how much raters agree.",
+      "bottomLineCaveat": "High agreement shows labels are consistent, not that they are right; human judgment is still the best reference for many tasks.",
       "plainTerms": "The answer key and the human ratings are measurements too, and they contain errors and disagreement. Treat them as evidence, not as ground truth.",
       "questionsSource": "derived",
       "questions": [
@@ -155,10 +180,12 @@
     },
     "prompt-sensitivity": {
       "roles": ["Building"],
-      "version": "v1.1",
+      "version": "v1.3",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
-      "history": [{ "v": "v1.1", "d": "2026-10-19", "t": "Added that the 76-point swing is the worst case (about 10 points on average), the best-prompt recommendation for product teams, and softened the origins and the prompt-count advice." }, { "v": "v1.0", "d": "2026-10-05", "t": "Published." }],
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."}, { "v": "v1.1", "d": "2026-10-19", "t": "Added that the 76-point swing is the worst case (about 10 points on average), the best-prompt recommendation for product teams, and softened the origins and the prompt-count advice." }, { "v": "v1.0", "d": "2026-10-05", "t": "Published." }],
+      "bottomLine": "Report a score across several reasonable prompts, with the spread, instead of from a single prompt.",
+      "bottomLineCaveat": "If you deploy one fixed, well-tested prompt, what matters is how that prompt holds up on your real inputs.",
       "plainTerms": "Small changes in wording or formatting can swing a model's score. A result from one prompt is a result for that prompt.",
       "questionsSource": "handoff",
       "questions": [
@@ -168,10 +195,12 @@
     },
     "judge-bias": {
       "roles": ["Building"],
-      "version": "v1.1",
+      "version": "v1.3",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
-      "history": [{ "v": "v1.1", "d": "2026-10-19", "t": "Corrected the self-enhancement claim (Zheng et al. could not confirm it), added that the 80% agreement excludes ties, narrowed the self-preference evidence, and marked untested advice." }, { "v": "v1.0", "d": "2026-10-05", "t": "Published." }],
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Reworded the aphorism to match the evidence on the page. Tightened the bottom line and its caveat."}, {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."}, { "v": "v1.1", "d": "2026-10-19", "t": "Corrected the self-enhancement claim (Zheng et al. could not confirm it), added that the 80% agreement excludes ties, narrowed the self-preference evidence, and marked untested advice." }, { "v": "v1.0", "d": "2026-10-05", "t": "Published." }],
+      "bottomLine": "Check an AI grader against human labels on your own task before you trust its scores.",
+      "bottomLineCaveat": "Validate rather than avoid: in one study GPT-4 agreed with people over 80% of the time, with ties set aside.",
       "plainTerms": "Using an AI to grade AI is fast and cheap, but graders can have favorites: the first answer, the longer answer, and answers that sound like their own. Check the grader against people.",
       "questionsSource": "handoff",
       "questions": [
@@ -181,10 +210,12 @@
     },
     "criteria-drift": {
       "roles": ["Designing", "Building"],
-      "version": "v1.1",
+      "version": "v1.3",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
-      "history": [{ "v": "v1.1", "d": "2026-10-19", "t": "Reframed the evidence as one qualitative study of nine practitioners, changed the badge from established term to recent term, and marked untested advice." }, { "v": "v1.0", "d": "2026-10-05", "t": "Published." }],
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Reworded the aphorism to match the evidence on the page. Tightened the bottom line and its caveat."}, {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."}, { "v": "v1.1", "d": "2026-10-19", "t": "Reframed the evidence as one qualitative study of nine practitioners, changed the badge from established term to recent term, and marked untested advice." }, { "v": "v1.0", "d": "2026-10-05", "t": "Published." }],
+      "bottomLine": "Version your grading criteria, and re-grade a fixed reference set whenever they change.",
+      "bottomLineCaveat": "Most useful while you are still learning what good looks like; this is a sensible practice the study did not test.",
       "plainTerms": "You work out what \"good\" means by reading real outputs, so your rubric is likely to change as you grade. Version it, and re-grade a fixed set when it does.",
       "questionsSource": "derived",
       "questions": [
@@ -194,10 +225,12 @@
     },
     "once-is-not-reliable": {
       "roles": ["Building", "Buying"],
-      "version": "v1.1",
+      "version": "v1.3",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
-      "history": [{ "v": "v1.1", "d": "2026-10-19", "t": "Fixed the \u03c4-bench figures (per-domain results, not one average), reworded the pass^k claim, added scope notes for Rabanser et al., and updated that paper to its ICML 2026 publication." }, { "v": "v1.0", "d": "2026-10-05", "t": "Published." }],
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."}, { "v": "v1.1", "d": "2026-10-19", "t": "Fixed the \u03c4-bench figures (per-domain results, not one average), reworded the pass^k claim, added scope notes for Rabanser et al., and updated that paper to its ICML 2026 publication." }, { "v": "v1.0", "d": "2026-10-05", "t": "Published." }],
+      "bottomLine": "For repeated or costly tasks, measure whether the system succeeds on every run, not just once.",
+      "bottomLineCaveat": "Not every use needs this: when a single good answer suffices, or a person checks each output, all-runs-pass is stricter than necessary.",
       "plainTerms": "A system that works once may fail the next time. The all-runs-pass rate matters when the same kind of task keeps coming up or each failure is costly. The best-run rate only shows what is possible.",
       "questionsSource": "handoff",
       "questions": [
@@ -207,10 +240,12 @@
     },
     "the-cost-frontier": {
       "roles": ["Buying", "Building"],
-      "version": "v1.1",
+      "version": "v1.3",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
-      "history": [{ "v": "v1.1", "d": "2026-10-19", "t": "Scoped the simple-baseline finding to HumanEval and the joint-optimization result to one HotPotQA experiment, and softened the claim that more compute buys accuracy." }, { "v": "v1.0", "d": "2026-10-05", "t": "Published." }],
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."}, { "v": "v1.1", "d": "2026-10-19", "t": "Scoped the simple-baseline finding to HumanEval and the joint-optimization result to one HotPotQA experiment, and softened the claim that more compute buys accuracy." }, { "v": "v1.0", "d": "2026-10-05", "t": "Published." }],
+      "bottomLine": "Report cost and latency next to every accuracy number, and compare systems at matched cost.",
+      "bottomLineCaveat": "Matching on cost matters least when the task is rare and high-value enough that cost hardly counts.",
       "plainTerms": "You can often buy accuracy with more compute, so a score without its cost is half a result. Compare systems at matched cost, or show the whole tradeoff.",
       "questionsSource": "derived",
       "questions": [
@@ -220,87 +255,105 @@
     },
     "no-error-bars-no-result": {
       "roles": ["Buying", "Building"],
+      "bottomLine": "Report a confidence interval with every score, and do not claim a win that the noise could explain.",
+      "bottomLineCaveat": "An interval measures noise only; it cannot show the metric is right or the sample representative.",
       "plainTerms": "Every score is an estimate. If two systems differ by less than the noise, nobody has shown that they differ.",
       "questionsSource": "derived",
       "questions": [
         "What is the 95% confidence interval on each score, and how many items and runs does it rest on?",
         "Does the confidence interval for the difference between systems exclude zero, using a paired comparison on the same items?"
       ],
-      "version": "v1.1",
+      "version": "v1.3",
       "evidenceChecked": "2026-10-19",
-      "history": [
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, 
+        { "v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat." },
         { "v": "v1.1", "d": "2026-10-19", "t": "Corrected the rule for comparing two scores: judge the difference between systems, not overlapping intervals, and say \"not shown to differ\" rather than \"tie\". Added the paired-comparison caveat for a 3-point gap, and softened the Bouthillier and Card summaries to match those papers." },
         { "v": "v1.0", "d": "2026-10-05", "t": "Published." }
       ]
     },
     "the-averaging-trap": {
       "roles": ["Designing", "Building", "Buying"],
+      "bottomLine": "Report results for the groups that matter, and show the worst group next to the average.",
+      "bottomLineCaveat": "Small groups give noisy numbers, so pick a few slices that matter and make sure each has enough examples.",
       "plainTerms": "A strong average can hide a group the system fails badly. Report results for the groups that matter, and show the worst one.",
       "questionsSource": "derived",
       "questions": [
         "Which user groups, languages, or input types matter here, and were results reported for each?",
         "What is the worst-performing slice, and does it have enough examples to support its own error bars?"
       ],
-      "version": "v1.1",
+      "version": "v1.3",
       "evidenceChecked": "2026-10-19",
-      "history": [
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, 
+        { "v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat." },
         { "v": "v1.1", "d": "2026-10-19", "t": "Dated the Gender Shades audit (April and May 2017), corrected the description of model cards (proposed, not made standard), and added small caveats on the medical imaging figure and on counting slices." },
         { "v": "v1.0", "d": "2026-10-05", "t": "Published." }
       ]
     },
     "the-baseline-rule": {
       "roles": ["Buying", "Designing"],
+      "bottomLine": "Ask what a win was measured against, and check that the comparison got the same tuning effort.",
+      "bottomLineCaveat": "A baseline checks a comparison; it is not a verdict against new methods, and a fair comparison will show real value.",
       "plainTerms": "A win is only as strong as what it beat. Compare against the simplest thing that could work and today's actual process, with the same tuning effort.",
       "questionsSource": "derived",
       "questions": [
         "Was the current process, or the simplest thing that could work, included as a baseline?",
         "Did the baselines get the same tuning budget as the new method?"
       ],
-      "version": "v1.1",
+      "version": "v1.2",
       "evidenceChecked": "2026-10-19",
       "history": [
+        { "v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat." },
         { "v": "v1.1", "d": "2026-10-19", "t": "Clarified that only 7 of 18 recommender papers could be rerun and the rest were not tested, described Lin (2019) as an opinion piece on two papers, and replaced an unsourced claim about how baselines are usually tuned." },
         { "v": "v1.0", "d": "2026-10-05", "t": "Published." }
       ]
     },
     "the-benchmark-lottery": {
       "roles": ["Buying"],
+      "bottomLine": "Choose your benchmarks for fit to your task, and write the list down before you see any results.",
+      "bottomLineCaveat": "A benchmark can still be the right test for a clearly defined task; the problem is one result presented as broad superiority.",
       "plainTerms": "Which benchmarks get reported can decide who looks best. Pick the suite before you see results, and read the whole table.",
       "questionsSource": "derived",
       "questions": [
         "Was the benchmark suite chosen and written down before any results were seen?",
         "Which common benchmarks are missing from the results table, and why?"
       ],
-      "version": "v1.1",
+      "version": "v1.3",
       "evidenceChecked": "2026-10-19",
-      "history": [
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, 
+        { "v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat." },
         { "v": "v1.1", "d": "2026-10-19", "t": "Added the scope of the HELM coverage figures, described Ethayarajh and Jurafsky (2020) as an opinion paper, and softened an unsourced benchmark count and the origin of the term." },
         { "v": "v1.0", "d": "2026-10-05", "t": "Published." }
       ]
     },
     "the-reproducibility-rule": {
       "roles": ["Building", "Buying"],
+      "bottomLine": "Treat a result you cannot rerun as an anecdote, and record what you could and could not capture.",
+      "bottomLineCaveat": "Full reproducibility is not always possible, for example with proprietary or changing APIs; then document everything that can be shared.",
       "plainTerms": "If nobody can rerun an evaluation, it is an anecdote. Record the model version, prompts, settings, data, and scoring code, and save the raw outputs.",
       "questionsSource": "derived",
       "questions": [
         "Are the model version, system prompt, decoding settings, dataset version, and scoring code recorded so the eval can be rerun?",
         "Are raw outputs saved, and is there a canary set to rerun whenever the vendor updates the model?"
       ],
-      "version": "v1.1",
+      "version": "v1.3",
       "evidenceChecked": "2026-10-19",
-      "history": [
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, 
+        { "v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat." },
         { "v": "v1.1", "d": "2026-10-19", "t": "Narrowed the Kapoor et al. and Pineau et al. summaries to what those papers report (HumanEval and WebArena; the NeurIPS 2019 program) and softened an unsourced claim about hosted models." },
         { "v": "v1.0", "d": "2026-10-05", "t": "Published." }
       ]
     },
     "presence-not-absence": {
       "roles": ["Building", "Buying"],
-      "version": "v1.1",
+      "version": "v1.2",
       "evidenceChecked": "2026-10-19",
       "history": [
+        {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."},
         {"v": "v1.1", "d": "2026-10-19", "t": "Clarified that the sandbagging study tested whether models can underperform when instructed or fine-tuned, not whether they do so unprompted, and removed an unsupported gloss on the red-teaming study."},
         {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
       ],
+      "bottomLine": "Read a negative result as “not found with this effort,” and ask how hard anyone tried.",
+      "bottomLineCaveat": "A clean result is still informative; it is weaker than showing nothing is there.",
       "plainTerms": "An evaluation can show that a capability or a risk exists. It can't show that none does, only that it wasn't found with this much effort.",
       "questionsSource": "derived",
       "questions": [
@@ -310,12 +363,15 @@
     },
     "evaluation-awareness": {
       "roles": ["Building"],
-      "version": "v1.1",
+      "version": "v1.3",
       "evidenceChecked": "2026-10-19",
-      "history": [
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, 
+        {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."},
         {"v": "v1.1", "d": "2026-10-19", "t": "Corrected the wording of the Needham et al. results (clearly better than chance, and the human baseline was the paper's own authors), removed an unsupported cue, and clarified the sandbagging and safety-report claims."},
         {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
       ],
+      "bottomLine": "Do not assume a model behaves in deployment as it does under test; keep monitoring after launch.",
+      "bottomLineCaveat": "Models can recognize tests, but the evidence does not show how often that changes behavior, so this is a precaution.",
       "plainTerms": "Models can often tell a test from real use, and may behave differently under test. Pair pre-launch tests with monitoring of real use.",
       "questionsSource": "derived",
       "questions": [
@@ -325,12 +381,15 @@
     },
     "distribution-shift": {
       "roles": ["Building", "Buying"],
-      "version": "v1.1",
+      "version": "v1.3",
       "evidenceChecked": "2026-10-19",
-      "history": [
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, 
+        {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."},
         {"v": "v1.1", "d": "2026-10-19", "t": "Reworded the sepsis-model example, which the authors attribute mostly to how timing was handled, and gave the Recht et al. drops in percentage points with a note that follow-up work disputes part of the ImageNet drop."},
         {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
       ],
+      "bottomLine": "Test a system on data from the people, places, and period where it will actually run.",
+      "bottomLineCaveat": "Not every change in data hurts; what matters is whether your deployment differs in ways the model is sensitive to.",
       "plainTerms": "A score measured on one group of people, places, or times doesn't automatically carry over to another. Test on data from where the system will actually run.",
       "questionsSource": "handoff",
       "questions": [
@@ -340,12 +399,15 @@
     },
     "the-lab-to-field-gap": {
       "roles": ["Designing", "Building", "Buying"],
-      "version": "v1.1",
+      "version": "v1.2",
       "evidenceChecked": "2026-10-19",
       "history": [
+        {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."},
         {"v": "v1.1", "d": "2026-10-19", "t": "Narrowed the Beede et al. and Hutchinson et al. descriptions to what those papers report, and renamed the evaluation-gap bullet and origins to show the related terms are not identical."},
         {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
       ],
+      "bottomLine": "Watch a system in real use, with real workflows and people, before you call it validated.",
+      "bottomLineCaveat": "Lab results still carry information, and findings from one field setting may not transfer to yours.",
       "plainTerms": "A system that works in the lab can fail in real conditions: workflows, time pressure, lighting, bandwidth, and people. Watch it in use before calling it validated.",
       "questionsSource": "handoff",
       "questions": [
@@ -355,12 +417,15 @@
     },
     "the-team-is-the-system": {
       "roles": ["Designing", "Building"],
-      "version": "v1.1",
+      "version": "v1.2",
       "evidenceChecked": "2026-10-19",
       "history": [
+        {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."},
         {"v": "v1.1", "d": "2026-10-19", "t": "Added the time span and task wording of the meta-analysis, caveats for the explanation and forcing-function studies, a corrected description of the Amershi guidelines, and a clearer 90%-accuracy example."},
         {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
       ],
+      "bottomLine": "If people will act on an AI’s output, test the person and the AI together, including whether people accept wrong advice.",
+      "bottomLineCaveat": "The evidence varies by task: a meta-analysis of 2020 to mid-2023 studies found losses on decision tasks but gains on content creation.",
       "plainTerms": "When people work with AI, the person and the AI together produce the outcome. Test them together, including how often people accept advice that is wrong.",
       "questionsSource": "derived",
       "questions": [
@@ -370,12 +435,15 @@
     },
     "the-jagged-frontier": {
       "roles": ["Designing", "Buying"],
-      "version": "v1.1",
+      "version": "v1.3",
       "evidenceChecked": "2026-10-19",
-      "history": [
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Reworded the aphorism to match the evidence on the page. Tightened the bottom line and its caveat."}, 
+        {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."},
         {"v": "v1.1", "d": "2026-10-19", "t": "Corrected the consultant study: it was two experiments on different people, the 19-point drop came from one task built to make GPT-4 err, and the figures are now attributed to the working paper or the published abstract."},
         {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
       ],
+      "bottomLine": "AI can fail on tasks that look easy to people, so test each of your own tasks directly.",
+      "bottomLineCaveat": "The edge moves as models change, so re-test after updates; the headline experiments used one model, GPT-4, in 2023.",
       "plainTerms": "AI can excel at a task that seems hard and fail at one that seems easy, and people can't see where the edge is. Map it for your own tasks with direct tests.",
       "questionsSource": "handoff",
       "questions": [
@@ -495,7 +563,7 @@
         "laws": [
           { "slug": "data-contamination", "fit": "strong", "why": "The score is on a public benchmark. Check whether the test items overlap with the training data.", "ask": 0 },
           { "slug": "no-error-bars-no-result", "fit": "strong", "why": "A headline number needs an interval and a count of items and runs.", "ask": 0 },
-          { "slug": "the-construct-gap", "fit": "likely", "why": "A benchmark measures what its items test, not what its name says.", "ask": 0 },
+          { "slug": "the-construct-gap", "fit": "likely", "why": "A benchmark measures what its items test, which may not be what its name says.", "ask": 0 },
           { "slug": "benchmark-saturation", "fit": "likely", "why": "Near the ceiling of a benchmark, small gaps can carry little information.", "ask": 0 },
           { "slug": "goodharts-law", "fit": "likely", "why": "If anyone iterated against this benchmark, it is a target rather than a measure.", "ask": 0 }
         ]
@@ -1055,7 +1123,7 @@
           {
             "slug": "adaptive-overfitting",
             "fit": "likely",
-            "why": "Repeated tuning against the same test set can make it worth less each time. Keep a locked set you rarely consult.",
+            "why": "Repeated tuning against the same test set can make its score a less honest read. Keep a locked set you rarely consult.",
             "ask": 0
           },
           {

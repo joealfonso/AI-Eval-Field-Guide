@@ -2,6 +2,20 @@
   "entries": [
     {
       "date": "2026-10-19",
+      "text": "Reading aids and a clearer line between the research and this guide’s own framework. Every pattern page now opens with a one-sentence bottom line and its main caveat, which the Share button copies together with the link. A new walkthrough, “A claim, read slowly”, is now chapter 1 of the Guide: it takes three real cases through choosing the claim, testing it and deciding. The About page has a new section on what comes from the research and what is this guide’s own, plus a trust block, and “this guide’s own” markers run through the long-form pages. The Evidence base labels have clearer names. Three patterns have reworded aphorisms, and the rule of thumb for prompt variants, repeated runs and labels is now consistent across pages.",
+      "links": [
+        {
+          "label": "A claim, read slowly",
+          "href": "walkthrough.html"
+        },
+        {
+          "label": "About: research vs this guide’s own",
+          "href": "about.html#own-vs-research"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-19",
       "text": "Full accuracy re-audit. Every claim on the pattern pages, guide pages, glossary, bibliography, case studies and tools was checked against its primary source. It found five factual errors (a misquoted sentence, a wrong author name, a wrong statistical rule, two experiments reported as one, and a measure described as something it was not) and several dozen statements that were stronger than their sources or missing a caveat. All were corrected, softened or removed, and every changed pattern is now v1.1 with a note in its revision history. The bibliography now counts each work once, the Evidence base and name labels were reviewed (Criteria Drift is now a recent term from one paper, and Functionality Fallacy is a name used here), and the Readiness Review has a scope note on the EU AI Act and NIST references.",
       "links": [
         {
