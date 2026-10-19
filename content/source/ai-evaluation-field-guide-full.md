@@ -1,6 +1,6 @@
 # **AI Evaluation Field Guide**
 
-Seed content. Last reviewed 2026-09-15.
+Seed content. Last reviewed 2026-10-19.
 
 ## Contents
 
@@ -24,15 +24,15 @@ At its core, evaluation is measurement. Wallach et al. (2025) argue that evaluat
 ### Why it's hard
 
 - **One system, countless tasks.** General-purpose models get used for things no benchmark anticipated, and a finite test can't cover "everything in the whole wide world" (Raji et al., 2021).  
-- **No single right answer.** Open-ended outputs like summaries, code, and advice can be good in many ways and bad in many ways. Human raters struggle with this too (Clark et al., 2021), and AI judges bring their own biases (Zheng et al., 2023).  
+- **No single right answer.** Open-ended outputs like summaries, code, and advice can be good in many ways and bad in many ways. Human raters are not a clean fix: untrained raters could not reliably tell GPT-3 text from human-written text (Clark et al., 2021), and AI judges bring their own biases (Zheng et al., 2023).  
 - **Unknown training data.** You usually can't check whether a model has already seen the test (Sainz et al., 2023).  
-- **Moving targets.** Benchmarks saturate quickly (Ott et al., 2022), and hosted models change under the same name.  
+- **Moving targets.** Many benchmarks approach saturation quickly (Ott et al., 2022, who mapped computer vision and language benchmarks), and hosted models change under the same name.  
 - **Systems that respond to the test.** Models can often tell when they're being evaluated (Needham et al., 2025), and they increasingly find loopholes in evaluations (Bengio et al., 2026).  
-- **Context decides value.** The same model can succeed in a lab and struggle in a clinic (Beede et al., 2020).
+- **Context decides value.** Performance in a controlled test does not settle how a system behaves in real clinics (Beede et al., 2020).
 
 ### Three layers of evaluation
 
-Weidinger et al. (2023) describe three layers. Most published evaluation lives in the first one. Most real-world consequences show up in the other two.
+Weidinger et al. (2023) describe three layers for evaluating the safety of generative AI. In the evaluations they surveyed, most sat in the first layer, and evaluations of human interaction and systemic impact were rare. They argue that whether a capability leads to harm depends on context, which the other two layers cover.
 
 | Layer | The question | Typical methods |
 | :---- | :---- | :---- |
@@ -49,17 +49,17 @@ Every score sits at the end of a chain. Wallach et al. (2025), adapting Adcock a
 3. **Measurement instrument.** The actual test. Example: 300 real support tickets, a written rubric, two trained raters.  
 4. **Measurements.** The numbers. Example: 71% resolved, with a 95% confidence interval of about 66% to 76%.
 
-When two people argue about whether a model is "good at reasoning," they're usually disagreeing at level 1 or 2 while pointing at numbers from level 4\. Validity is about the whole chain holding together (Messick, 1995).
+When two people argue about whether a model is "good at reasoning," they're usually disagreeing at level 1 or 2 while pointing at numbers from level 4\. Validity is about whether the evidence at each link supports the conclusion drawn from the score (Messick, 1995; Wallach et al., 2025).
 
 ### Methods at a glance
 
 | Method | What it tells you | Watch out for | Related patterns |
 | :---- | :---- | :---- | :---- |
 | Static benchmarks | Performance on a fixed, shared set of tasks | Saturation, contamination, construct gaps | Benchmark Saturation, Data Contamination, The Construct Gap |
-| Dynamic or adversarial benchmarks | Performance on fresh, hard examples, often written to beat current models (Kiela et al., 2021\) | Can overweight adversarial cases that rarely occur in real use | The Clever Hans Effect |
+| Dynamic or adversarial benchmarks | Performance on fresh, hard examples, often written to beat current models (Kiela et al., 2021\) | Adversarial cases may be unrepresentative of real use (this site's caveat, not Kiela et al.'s) | The Clever Hans Effect |
 | Behavioral testing | Whether specific behaviors hold up under controlled changes (Ribeiro et al., 2020\) | Only tests the behaviors you think to write down | The Clever Hans Effect, Presence, Not Absence |
 | Human evaluation | How people judge output quality (van der Lee et al., 2021\) | Rater expertise, agreement, and fatigue | The Gold Standard Myth, Criteria Drift |
-| Pairwise preference arenas | Which outputs people prefer at scale (Chiang et al., 2024\) | Who votes, what they ask, and who gets to test privately | Goodhart's Law, Campbell's Law |
+| Pairwise preference arenas | Which outputs people prefer at scale (Chiang et al., 2024\) | Who votes, what they ask, and who gets to test privately (Singh et al., 2025\) | Goodhart's Law, Campbell's Law |
 | LLM-as-a-judge | Cheap, fast grading at scale (Zheng et al., 2023\) | Position, length, and self-preference bias | Judge Bias |
 | Red teaming | Failure modes found by people trying to break the system (Ganguli et al., 2022\) | Coverage depends on who's on the team | Presence, Not Absence |
 | Dangerous capability evals | Whether a model has capabilities that could cause severe harm (Shevlane et al., 2023\) | Elicitation effort, sandbagging, eval awareness | Presence, Not Absence, Evaluation Awareness |
@@ -72,12 +72,12 @@ When two people argue about whether a model is "good at reasoning," they're usua
 Different people need different evidence from the same system.
 
 - **Model developers** want to know if a new model is better than the last one.  
-- **Product teams** want to know if a model works for their users, in their workflow, at a cost they can afford. Kapoor et al. (2025) point out that benchmarks often mix up what model developers need with what downstream developers need.  
+- **Product teams** want to know if a model works for their users, in their workflow, at a cost they can afford. Kapoor et al. (2025) argue that benchmarks often conflate what model developers need with what downstream developers need.  
 - **Researchers** want to understand what systems can and can't do, and why.  
 - **Buyers** want to know if a vendor's claims hold up on their own data.  
 - **Auditors and regulators** want evidence that a system is valid, reliable, and safe for its intended use. The NIST AI Risk Management Framework (2023) makes "Measure" one of its four core functions.
 
-Hutchinson et al. (2022) found that ML evaluation practice often serves the first group and underserves the rest. A lot of the patterns on this site are about closing that gap.
+Hutchinson et al. (2022) studied papers from major computer vision and language conferences. They found that standard evaluation practice rests on a narrow range of methods that look at decontextualized model behavior, and they warn that application developers who adopt those methods inherit the gaps. Many of the patterns on this site are about those gaps.
 
 ### How to use the patterns
 
@@ -129,6 +129,7 @@ A pattern here means a reliable way evaluation goes wrong, with research behind 
 - Ribeiro, M. T., Wu, T., Guestrin, C., & Singh, S. (2020). [Beyond accuracy: Behavioral testing of NLP models with CheckList](https://arxiv.org/abs/2005.04118). Proceedings of ACL 2020\.  
 - Sainz, O., Campos, J. A., García-Ferrero, I., Etxaniz, J., Lopez de Lacalle, O., & Agirre, E. (2023). [NLP evaluation in trouble: On the need to measure LLM data contamination for each benchmark](https://arxiv.org/abs/2310.18018). Findings of EMNLP 2023\.  
 - Shevlane, T., et al. (2023). [Model evaluation for extreme risks](https://arxiv.org/abs/2305.15324). arXiv:2305.15324. *(Preprint)*  
+- Singh, S., Nan, Y., Wang, A., D'Souza, D., Kapoor, S., et al. (2025). [The leaderboard illusion](https://arxiv.org/abs/2504.20879). Advances in Neural Information Processing Systems (NeurIPS 2025), Datasets and Benchmarks Track.  
 - van der Lee, C., Gatt, A., van Miltenburg, E., & Krahmer, E. (2021). [Human evaluation of automatically generated text: Current trends and best practice guidelines](https://doi.org/10.1016/j.csl.2020.101151). Computer Speech & Language, 67, 101151\.  
 - Wallach, H., Desai, M., Cooper, A. F., Wang, A., Atalla, C., et al. (2025). [Position: Evaluating generative AI systems is a social science measurement challenge](https://arxiv.org/abs/2502.00561). Proceedings of the International Conference on Machine Learning (ICML 2025), PMLR 267\.  
 - Weidinger, L., Rauh, M., Marchal, N., Manzini, A., et al. (2023). [Sociotechnical safety evaluation of generative AI systems](https://arxiv.org/abs/2310.11986). arXiv:2310.11986. *(Preprint)*  
@@ -153,13 +154,13 @@ A pattern here means a reliable way evaluation goes wrong, with research behind 
 
 Every eval is a proxy. Accuracy on a coding benchmark stands in for "writes useful software." Win rate in a chatbot arena stands in for "people find it helpful." A proxy works fine while nobody leans on it. Once the number becomes the goal, people and systems find ways to move the number that don't move the thing behind it.
 
-Manheim and Garrabrant (2018) split the problem into four variants. Regressional: the proxy and the goal only partly overlap, so picking the top scorers also picks up noise. Extremal: the relationship holds in normal ranges and breaks at the extremes. Causal: pushing the proxy doesn't cause the goal. Adversarial: someone, or something, games the metric on purpose.
+Manheim and Garrabrant (2018) split the problem into four variants. Regressional: the proxy and the goal only partly overlap, so picking the top scorers also picks up noise. Extremal: the relationship holds in normal ranges and breaks at the extremes. Causal: the proxy and the goal are linked only indirectly, so pushing on the proxy may not move the goal. Adversarial: someone, or something, games the metric on purpose.
 
 ##### The evidence
 
-- **It can be measured.** Gao, Schulman, and Hilton (2023) optimized language models against a proxy reward model and tracked a separate "gold" reward model. The gold score rose at first, then fell as optimization continued, and the pattern scaled predictably with reward model size.  
-- **More capable systems game harder.** Amodei et al. (2016) named reward hacking as a core safety problem. Pan, Bhatia, and Steinhardt (2022) found that more capable agents exploited misspecified rewards more, sometimes with sudden jumps in bad behavior.  
-- **Leaderboards feel it too.** Singh et al. (2025) documented how private testing on Chatbot Arena let some providers try many model variants and publish only the best. Meta tested 27 private variants before the Llama 4 release. Extra Arena data alone produced relative gains of up to 112% on the Arena distribution.  
+- **It can be measured.** In a synthetic setup where a fixed "gold" reward model stood in for human raters, Gao, Schulman, and Hilton (2023) optimized language models against a proxy reward model and tracked the gold score. It rose at first, then fell as optimization continued, and the fitted trends scaled smoothly with reward model size.  
+- **More capable systems often game harder.** Amodei et al. (2016) listed reward hacking as one of five concrete AI-safety problems. Pan, Bhatia, and Steinhardt (2022) built four reinforcement-learning environments with misspecified rewards and found that more capable agents often exploited them more, with some sharp capability thresholds where behavior shifted and true reward dropped.  
+- **Leaderboards feel it too.** Singh et al. (2025) documented how private testing on Chatbot Arena let some providers try many model variants and publish only the best. The authors identified 27 private variants they attribute to Meta in the lead-up to the Llama 4 release (attribution inferred from each model's self-identification, January to March 2025). In a controlled fine-tuning experiment, adding Arena data raised one model's win rate on ArenaHard, a test set drawn from Arena prompts, by up to 112% relative, with limited gains on other tasks.  
 - **It's getting more common.** The International AI Safety Report 2026 notes models increasingly find loopholes that let them score well on evaluations without doing what the evaluation intended (Bengio et al., 2026).
 
 ##### Use it
@@ -182,7 +183,7 @@ Economist Charles Goodhart described the idea in a 1975 paper on UK monetary pol
 - Goodhart, C. A. E. (1975). Problems of monetary management: The U.K. experience. Papers in Monetary Economics, Vol. 1\. Reserve Bank of Australia.  
 - Manheim, D., & Garrabrant, S. (2018). [Categorizing variants of Goodhart's Law](https://arxiv.org/abs/1803.04585). arXiv:1803.04585. *(Preprint)*  
 - Pan, A., Bhatia, K., & Steinhardt, J. (2022). [The effects of reward misspecification: Mapping and mitigating misaligned models](https://arxiv.org/abs/2201.03544). International Conference on Learning Representations (ICLR 2022).  
-- Singh, S., Nan, Y., Wang, A., D'Souza, D., Kapoor, S., et al. (2025). [The leaderboard illusion](https://arxiv.org/abs/2504.20879). Advances in Neural Information Processing Systems (NeurIPS 2025).  
+- Singh, S., Nan, Y., Wang, A., D'Souza, D., Kapoor, S., et al. (2025). [The leaderboard illusion](https://arxiv.org/abs/2504.20879). Advances in Neural Information Processing Systems (NeurIPS 2025), Datasets and Benchmarks Track.  
 - Strathern, M. (1997). 'Improving ratings': Audit in the British university system. European Review, 5(3), 305-321.
 
 #### Campbell's Law
@@ -204,9 +205,9 @@ The same thing happens inside companies. If a launch review only asks for a win 
 
 ##### The evidence
 
-- **Scholarship bends.** Lipton and Steinhardt (2019) documented troubling trends in ML papers, including failing to identify where empirical gains came from (for example, crediting a new architecture when the gains came from tuning) and presenting speculation as explanation.  
-- **Access is uneven.** Singh et al. (2025) estimated that Google and OpenAI received about 19.2% and 20.4% of all Chatbot Arena data, while 83 open-weight models together received about 29.7%. More data from the arena means more ability to fit the arena.  
-- **Leaderboards encode someone's values.** Ethayarajh and Jurafsky (2020) argue that leaderboards reward accuracy while ignoring things real users care about, like model size, energy use, and robustness. A leaderboard's idea of "best" is not yours.  
+- **Scholarship bends.** Lipton and Steinhardt (2019) documented troubling trends in ML papers, including failing to identify where empirical gains came from (for example, crediting a new architecture when the gains came from tuning) and presenting speculation as explanation. They call the causes uncertain, with misaligned incentives (such as pressure for short-term measures of success) as one possibility.  
+- **Access is uneven.** Singh et al. (2025) estimated, from each provider's share of battles played, that Google and OpenAI received about 19.2% and 20.4% of all Chatbot Arena test prompts, while 83 open-weight models together received about 29.7%. More data from the arena means more ability to fit the arena.  
+- **Leaderboards encode someone's values.** Ethayarajh and Jurafsky (2020) argue that leaderboards reward accuracy while ignoring things practitioners care about, like model size, energy use, and fairness. A leaderboard's idea of "best" is not yours.  
 - **Selection shapes the story.** Dehghani et al. (2021) show that which benchmarks a community adopts can favor certain methods over others.
 
 ##### Use it
@@ -218,15 +219,15 @@ The same thing happens inside companies. If a launch review only asks for a win 
 
 ##### Origins
 
-Social scientist Donald T. Campbell wrote in 1979: "The more any quantitative social indicator is used for social decision-making, the more subject it will be to corruption pressures and the more apt it will be to distort and corrupt the social processes it was intended to monitor." He was writing about program evaluation in areas like education and policing. AI leaderboards fit the pattern closely.
+Social scientist Donald T. Campbell stated it in a 1976 report, published in 1979: "The more any quantitative social indicator is used for social decision-making, the more subject it will be to corruption pressures and the more apt it will be to distort and corrupt the social processes it is intended to monitor." He was writing about evaluating social programs, with examples from education and policing. AI leaderboards fit the pattern closely.
 
 ##### Sources
 
 - Campbell, D. T. (1979). [Assessing the impact of planned social change](https://doi.org/10.1016/0149-7189\(79\)90048-X). Evaluation and Program Planning, 2(1), 67-90.  
 - Dehghani, M., Tay, Y., Gritsenko, A. A., et al. (2021). [The benchmark lottery](https://arxiv.org/abs/2107.07002). arXiv:2107.07002. *(Preprint)*  
 - Ethayarajh, K., & Jurafsky, D. (2020). [Utility is in the eye of the user: A critique of NLP leaderboards](https://arxiv.org/abs/2009.13888). Proceedings of EMNLP 2020\.  
-- Lipton, Z. C., & Steinhardt, J. (2019). [Troubling trends in machine learning scholarship](https://arxiv.org/abs/1807.03341). ACM Queue, 17(1).  
-- Singh, S., Nan, Y., Wang, A., D'Souza, D., Kapoor, S., et al. (2025). [The leaderboard illusion](https://arxiv.org/abs/2504.20879). Advances in Neural Information Processing Systems (NeurIPS 2025).
+- Lipton, Z. C., & Steinhardt, J. (2019). [Troubling trends in machine learning scholarship](https://arxiv.org/abs/1807.03341). ACM Queue (a practitioner magazine), 17(1), 45-77. First presented at ICML 2018 (The Debates).  
+- Singh, S., Nan, Y., Wang, A., D'Souza, D., Kapoor, S., et al. (2025). [The leaderboard illusion](https://arxiv.org/abs/2504.20879). Advances in Neural Information Processing Systems (NeurIPS 2025), Datasets and Benchmarks Track.
 
 #### The Construct Gap
 
@@ -237,32 +238,32 @@ Social scientist Donald T. Campbell wrote in 1979: "The more any quantitative so
 - Reasoning, safety, understanding, and helpfulness are constructs. Nothing measures them directly.  
 - A benchmark is one way of turning a construct into a test. Treat its name as a claim to check.  
 - Trace the chain before trusting a score: concept, definition, test items, scoring, number.  
-- Most LLM benchmarks don't spell that chain out.
+- Many LLM benchmarks leave links in that chain weak. In one review of 445 of them, about half of the definitions given were contested, and about half of the benchmarks presented evidence of construct validity.
 
 ##### What it means
 
 Measurement researchers separate the thing you care about (the construct) from the thing you can observe (the measurement). Validity is how well the evidence supports the jump from one to the other. A "reasoning" benchmark made of multiple-choice logic puzzles measures performance on those puzzles, in that format. Whether that says anything about reasoning in general is a separate question that needs its own evidence.
 
-Wallach et al. (2025), building on Adcock and Collier (2001), lay out four levels: a **background concept** (the broad, fuzzy idea), a **systematized concept** (an explicit definition), a **measurement instrument** (the actual test), and the **measurements** it produces. Moving between levels takes systematization, operationalization, and application, and then the whole chain has to be interrogated for validity. A lot of AI eval arguments happen because people skip the first two levels and fight about the numbers.
+Wallach et al. (2025), building on Adcock and Collier (2001), lay out four levels: a **background concept** (the broad, fuzzy idea), a **systematized concept** (an explicit definition), a **measurement instrument** (the actual test), and the **measurements** it produces. Moving between levels takes systematization, operationalization, and application, and then the whole chain has to be interrogated for validity. Wallach et al. argue that making the first two levels explicit lets people debate the concept itself, separately from the numbers.
 
 ##### The evidence
 
-- **Big names, narrow tests.** Raji et al. (2021) show how benchmarks like ImageNet and GLUE get treated as measures of general capability, the "everything in the whole wide world," which no finite dataset can support.  
-- **The problem is widespread.** Bean et al. (2025) had 29 expert reviewers systematically review 445 LLM benchmarks from leading NLP and ML venues and found recurring patterns that undermine the validity of the claims made from them. They offer eight recommendations.  
+- **Big names, narrow tests.** Raji et al. (2021) argue that benchmarks like ImageNet and GLUE are treated as measures of general ability, like a children's-book museum that claims to hold "everything in the whole wide world," when any finite dataset is specific and limited.  
+- **The problem is widespread.** Bean et al. (2025) had 29 expert reviewers systematically review 445 LLM benchmarks from leading NLP and ML venues and found recurring patterns that undermine the validity of the claims made from them. For example, fewer than 10% used complete real-world tasks, and 16% used uncertainty estimates or statistical tests. They offer eight recommendations.  
 - **Validity lives in the interpretation.** Messick (1995) argued that validity isn't a property of a test. It's a property of the inferences and uses drawn from its scores, including their consequences.  
-- **Mismatches cause harm.** Jacobs and Wallach (2021) show how gaps between constructs like "risk" or "fairness" and their operational definitions lead to real-world harm.  
+- **Mismatches cause harm.** Jacobs and Wallach (2021) argue that many fairness-related harms come from mismatches between a construct, such as teacher effectiveness or risk of recidivism, and how it is measured.  
 - **Claims need matching evidence.** Salaudeen et al. (2025) propose a validity-centered framework: the same score can support a narrow claim and fail to support a broad one.
 
 ##### Use it
 
 - Finish this sentence: "This score is evidence that the system can \_\_\_ under \_\_\_ conditions." If you can't fill in the blanks, you don't know what the score means.  
 - Read 20 test items yourself. Would a person who aced them actually have the skill in the benchmark's name?  
-- Match the size of the claim to the evidence. "Scores 85% on X" is safe. "Can reason" is not.  
+- Match the size of the claim to the evidence. "Scores 85% on X, on this version, with this prompt format, over this many runs" is a safe claim. "Can reason" is not.  
 - Check whether the test format (multiple choice, single turn, short answer) matches how the system will actually be used.
 
 ##### Origins
 
-Lee Cronbach and Paul Meehl introduced construct validity in psychology in 1955\. Samuel Messick's 1995 framework made it the center of modern validity theory. ML researchers brought these ideas into AI evaluation over the last several years. "The Construct Gap" is the name this site uses for the idea.
+Lee Cronbach and Paul Meehl introduced construct validity in psychology in 1955\. Samuel Messick's unified framework (1989, summarized in 1995) made it the center of modern validity theory. ML researchers brought these ideas into AI evaluation over the last several years. "The Construct Gap" is the name this site uses for the idea.
 
 ##### Sources
 
@@ -282,31 +283,31 @@ Lee Cronbach and Paul Meehl introduced construct validity in psychology in 1955\
 ##### Takeaways
 
 - Debates about fairness, ethics, and safety often skip a more basic question: does the system do what it claims?  
-- Plenty of deployed AI systems fail at their stated task. That failure is a harm on its own.  
+- Many documented cases show deployed AI systems failing at their stated task, and those failures cause harm.  
 - Vendor-reported performance is a claim. Independent validation on your own population is evidence.  
 - Put "does it work, for whom, and how do we know?" at the top of every review.
 
 ##### What it means
 
-Raji et al. (2022) point out that critics and policymakers often accept a vendor's performance claims at face value and jump straight to downstream concerns. Meanwhile, some systems don't work at all, some work only in narrow conditions, and some have capabilities that were overstated from the start. If nobody checks functionality, broken systems ship and nobody measures the damage.
+Raji et al. (2022) point out that scholars, the press, and policymakers often assume AI systems work and move straight to downstream concerns such as fairness or safety. Meanwhile, some systems don't work at all, some work only in narrow conditions, and some have capabilities that were overstated from the start. If nobody checks functionality, broken systems ship and nobody measures the damage.
 
 ##### The evidence
 
-- **Failure is common and varied.** Raji et al. (2022) catalog deployed AI failures, from tasks that can't be done at all, to engineering mistakes, to failures that appear after deployment, to capabilities that were misrepresented.  
-- **A widely used model underperformed badly.** Wong et al. (2021) externally validated the Epic Sepsis Model, which was in use at hundreds of US hospitals. Its area under the curve was 0.63, well below the 0.76 to 0.83 the developer reported. It missed 67% of patients who had sepsis while generating alerts for 18% of all hospitalized patients.  
-- **Practice lags need.** Hutchinson et al. (2022) found that ML evaluation practice focuses on a narrow set of metrics and datasets that often don't match what deployment contexts actually require.  
-- **Standards bodies agree.** The NIST AI Risk Management Framework (2023) makes measuring whether a system is valid and reliable a core function, not an afterthought.
+- **Failure takes many forms.** Raji et al. (2022) built a taxonomy from 283 reported cases of deployed AI failing (2012 to 2021), ranging from tasks that can't be done at all, to engineering mistakes, to failures that appear after deployment, to capabilities that were misrepresented. It shows the kinds of failure, not how often they occur.  
+- **A widely used model underperformed badly.** Wong et al. (2021) externally validated the Epic Sepsis Model, which was in use at hundreds of US hospitals, using 2018 to 2019 data from one academic medical center. Its area under the curve, measured per hospitalization, was 0.63, well below the 0.76 to 0.83 the developer reported in internal documentation. At the alert threshold the authors chose, it missed 67% of patients who had sepsis while generating alerts for 18% of all hospitalized patients.  
+- **Practice lags need.** Hutchinson et al. (2022) studied papers from computer vision and natural language processing conferences and found evaluation concentrated on a handful of methods that capture a narrow range of decontextualized behaviors. They argue this leaves gaps for real deployment contexts.  
+- **Official guidance agrees.** The NIST AI Risk Management Framework (2023) treats being valid and reliable as the necessary base of trustworthy AI, and its Measure function includes demonstrating that a system is valid and reliable.
 
 ##### Use it
 
 - Ask for evidence the system works on data like yours, gathered by someone other than the vendor.  
 - Ask what the system does when it's wrong, and how often that happens.  
 - Define "works" in terms of the outcome you care about (patients treated, tickets resolved, time saved), not only model metrics.  
-- If nobody has checked, run a small pilot with a real comparison group before scaling.
+- If nobody has checked, run a pilot with a real comparison group, large enough to detect the error rate you care about, before scaling.
 
 ##### Origins
 
-The term comes from Inioluwa Deborah Raji, I. Elizabeth Kumar, Aaron Horowitz, and Andrew Selbst's 2022 FAccT paper, "The Fallacy of AI Functionality."
+The idea comes from Inioluwa Deborah Raji, I. Elizabeth Kumar, Aaron Horowitz, and Andrew Selbst's 2022 FAccT paper, "The Fallacy of AI Functionality," which also describes a "functionality assumption." "The Functionality Fallacy" is the name this site uses, shortened from the paper's title.
 
 ##### Sources
 
@@ -323,7 +324,7 @@ The term comes from Inioluwa Deborah Raji, I. Elizabeth Kumar, Aaron Horowitz, a
 
 - The same model outputs can look like steady progress or a sudden leap, depending on how you score them.  
 - All-or-nothing metrics like exact match make gradual improvement look abrupt.  
-- Cheap automatic metrics often disagree with people about quality.  
+- Cheap automatic metrics can disagree with people about the quality of individual outputs.  
 - Before believing a trend, re-score it with another reasonable metric and see if the story holds.
 
 ##### What it means
@@ -332,10 +333,10 @@ The metric is part of the finding. Pick a strict pass/fail score and a model tha
 
 ##### The evidence
 
-- **Emergence can be a scoring artifact.** Schaeffer, Miranda, and Koyejo (2023) argue that many "emergent abilities" in large language models appear because of the researcher's choice of metric. Nonlinear or discontinuous metrics produce sharp jumps. Linear or continuous metrics applied to the same models show smooth, predictable change.  
-- **Automatic metrics have narrow validity.** Reiter (2018) reviewed the evidence on BLEU and found it supports using BLEU for diagnostic evaluation of machine translation systems, not for evaluating individual texts or other language generation tasks.  
-- **Overlap isn't quality.** Novikova et al. (2017) found that widely used word-overlap metrics correlate weakly with human judgments of generated text.  
-- **One metric hides tradeoffs.** Liang et al. (2023) built HELM around seven metrics (accuracy, calibration, robustness, fairness, bias, toxicity, efficiency) because accuracy alone hides the tradeoffs that matter in use.
+- **Emergence can be a scoring artifact.** Schaeffer, Miranda, and Koyejo (2023) argue that, for the tasks and model families they examined, many "emergent abilities" appear because of the researcher's choice of metric. Nonlinear or discontinuous metrics produce sharp jumps. Linear or continuous metrics applied to the same models show smooth, predictable change.  
+- **Automatic metrics have narrow validity.** Reiter (2018) reviewed the evidence on BLEU and found it supports using BLEU for diagnostic evaluation of machine translation systems, not for evaluating individual texts, for tasks outside machine translation, or for scientific hypothesis testing.  
+- **Overlap isn't quality.** Novikova et al. (2017) tested widely used word-overlap metrics on three data-to-text datasets and found they only weakly reflect human judgments of system outputs, though they performed more reliably when comparing systems overall.  
+- **One metric hides tradeoffs.** Liang et al. (2023) built HELM to measure seven metrics (accuracy, calibration, robustness, fairness, bias, toxicity, efficiency) on its core scenarios where possible, because accuracy alone hides the tradeoffs that matter in use.
 
 ##### Use it
 
@@ -346,7 +347,7 @@ The metric is part of the finding. Pick a strict pass/fail score and a model tha
 
 ##### Origins
 
-"The Metric Mirage" is the name this site uses, borrowed from the title of Schaeffer, Miranda, and Koyejo's 2023 paper. The broader concern about automatic metrics goes back years in natural language generation research.
+"The Metric Mirage" is the name this site uses, borrowing "mirage" from the title of Schaeffer, Miranda, and Koyejo's 2023 paper. The broader concern about automatic metrics goes back years in natural language generation research.
 
 ##### Sources
 
@@ -366,17 +367,17 @@ The metric is part of the finding. Pick a strict pass/fail score and a model tha
 - Benchmarks go from hard to solved quickly. Once top scores bunch up near the ceiling, the test stops telling systems apart.  
 - A saturated benchmark can hide real differences between models and hide the failures that remain.  
 - A high score on an old benchmark is weak evidence about what a current system can do.  
-- Plan for renewal: refreshed, dynamic, or held-back test sets.
+- Plan for renewal: refreshed or held-back test sets. Dynamic test sets are another option, but researchers disagree about them.
 
 ##### What it means
 
-A benchmark is useful while it separates good from better. When everyone scores 95% or higher, the remaining points are often noise, label errors, or quirks of the test. Progress on the leaderboard slows to a crawl while real-world gaps stay open. That's the signal to retire the test or build a harder one.
+A benchmark is useful while it separates good from better. Say everyone scores 95% or higher. The remaining points are often noise, label errors, or quirks of the test. Progress on the leaderboard slows to a crawl while real-world gaps stay open. That's the signal to retire the test or build a harder one.
 
 ##### The evidence
 
-- **Saturation is the norm.** Ott et al. (2022) mapped 3,765 benchmarks across computer vision and natural language processing. A large fraction trended quickly toward near-saturation, and many never saw wide adoption.  
-- **"Superhuman" on paper, brittle in practice.** Kiela et al. (2021) note that models reach superhuman scores on benchmarks yet still fail simple challenge examples. Their Dynabench platform keeps humans and models in the loop to keep generating hard new examples.  
-- **Fixing benchmarking takes design.** Bowman and Dahl (2021) argue benchmarks need to be built for validity and to resist quick saturation, not just released and left alone.  
+- **Saturation is common.** Ott et al. (2022) compiled results for 3,765 benchmarks in computer vision and natural language processing. In the subset with enough results to analyze, about a third of the state-of-the-art curves showed saturation or stagnation and about 43% kept improving. Many benchmarks also never saw wide adoption.  
+- **"Superhuman" on paper, brittle in practice.** Kiela et al. (2021) note that models can reach superhuman scores on benchmarks, by narrow definitions of human performance, yet still fail simple challenge examples. Their Dynabench platform keeps humans and models in the loop to keep generating hard new examples.  
+- **Fixing benchmarking takes design.** Bowman and Dahl (2021) argue that systems score so high on many language-understanding benchmarks that there is little room to show progress. They propose four criteria for good benchmarks (validity, reliable annotation, enough statistical power, and handling of social bias) and argue that adversarial data collection, the kind of approach Dynabench takes, does not fix the underlying problems.  
 - **The last few points can be label noise.** Northcutt, Athalye, and Mueller (2021) found label errors in at least 6% of the ImageNet validation set. Near the ceiling, errors in the answer key can decide rankings.
 
 ##### Use it
@@ -388,7 +389,7 @@ A benchmark is useful while it separates good from better. When everyone scores 
 
 ##### Origins
 
-"Saturation" is standard language in AI benchmarking research. Dynamic benchmarking efforts like Dynabench grew directly out of frustration with how fast static benchmarks stopped being useful.
+"Saturation" is standard language in AI benchmarking research. Dynamic benchmarking efforts like Dynabench were motivated in part by how quickly static benchmarks stop being useful.
 
 ##### Sources
 
@@ -406,24 +407,24 @@ A benchmark is useful while it separates good from better. When everyone scores 
 - Large models train on huge scrapes of the internet, and public benchmarks live on the internet.  
 - Contaminated scores overstate how well a model handles problems it hasn't seen.  
 - You usually can't inspect a model's training data, so contamination has to be tested indirectly.  
-- Fresh, private, or post-cutoff test sets are the most reliable defense.
+- Fresh, private, or post-cutoff test sets are the strongest defense, if they stay private and are genuinely new.
 
 ##### What it means
 
-Contamination, also called leakage, happens when information from the test gets into training. In classic machine learning it's usually a pipeline bug, like normalizing data before splitting it. With large language models it's often invisible and hard to avoid, because nobody outside the lab knows exactly what went into training. A model that has seen the questions, or close paraphrases, can score well without the skill the test was built to measure.
+Contamination, a close relative of what researchers call leakage, happens when information from the test gets into training. In classic machine learning it's usually a pipeline bug, like normalizing data before splitting it. With large language models it's often invisible and hard to avoid, because nobody outside the lab knows exactly what went into training. A model that has seen the questions, or close paraphrases, can score well without the skill the test was built to measure.
 
 ##### The evidence
 
-- **Fresh questions, lower scores.** Zhang et al. (2024) wrote GSM1k, a new set of grade school math problems matched to the popular GSM8K benchmark. Some model families dropped up to 8% in accuracy. Models that were more likely to generate GSM8K examples verbatim showed bigger gaps (Spearman's r² \= 0.36), which suggests partial memorization. Many frontier models held up well, so this is a check to run, not a blanket verdict.  
+- **Fresh questions, lower scores.** Zhang et al. (2024) had human annotators write GSM1k, a new set of grade school math problems matched to the popular GSM8K benchmark. Some model families dropped up to 8% in accuracy. Models that assigned higher probability to the GSM8K test items tended to show bigger gaps (Spearman rank correlation of 0.36), which suggests partial memorization, though the authors note outliers and say contamination is likely not the full story. Many frontier models showed little or no gap, which the authors say could reflect better generalization or more careful data handling, so this is a check to run, not a blanket verdict.  
 - **Measure it per benchmark.** Sainz et al. (2023) argue that contamination should be measured for each benchmark and model, because contaminated results lead to wrong conclusions in published research.  
-- **Leakage spans fields.** Kapoor and Narayanan (2023) documented leakage errors affecting hundreds of papers across 17 scientific fields that use ML, and proposed a taxonomy of leakage types.  
+- **Leakage spans fields.** Kapoor and Narayanan (2023) compiled 22 earlier papers that found leakage errors in 17 scientific fields that use ML, collectively affecting 294 papers, a count the authors treat as a lower bound. They also proposed a taxonomy of leakage types.  
 - **Still a current problem.** The International AI Safety Report 2026 lists test questions that already appear in training data as one reason benchmark scores fail to reflect real-world use (Bengio et al., 2026).
 
 ##### Use it
 
-- Build a small private test set from your own data that has never been posted online.  
+- Build a small private test set from your own data that has never been posted online, and keep it out of any vendor service that may train on your inputs. Balloccu et al. (2024) estimated that GPT-3.5 and GPT-4 were exposed to about 4.7 million samples from 263 benchmarks, partly through data sent in by users.  
 - Compare scores on public items against freshly written look-alike items. A big gap is a red flag.  
-- Check the benchmark's release date against the model's training cutoff.  
+- Check the benchmark's release date against the model's training cutoff. Treat this as a rough screen: cutoffs are approximate, and new items can be rewrites of older ones.  
 - Ask vendors what contamination checks they ran and how.  
 - In your own pipelines, split data by time, user, or source before any preprocessing.
 
@@ -433,6 +434,7 @@ Leakage has been a known hazard in statistics and machine learning for decades. 
 
 ##### Sources
 
+- Balloccu, S., Schmidtová, P., Lango, M., & Dušek, O. (2024). [Leak, cheat, repeat: Data contamination and evaluation malpractices in closed-source LLMs](https://aclanthology.org/2024.eacl-long.5/). Proceedings of EACL 2024 (Volume 1: Long Papers), 67-93.  
 - Bengio, Y., et al. (2026). [International AI Safety Report 2026](https://internationalaisafetyreport.org/publication/international-ai-safety-report-2026). International AI Safety Report; arXiv:2602.21012. *(Report)*  
 - Kapoor, S., & Narayanan, A. (2023). [Leakage and the reproducibility crisis in machine-learning-based science](https://doi.org/10.1016/j.patter.2023.100804). Patterns, 4(9), 100804\.  
 - Sainz, O., Campos, J. A., García-Ferrero, I., Etxaniz, J., Lopez de Lacalle, O., & Agirre, E. (2023). [NLP evaluation in trouble: On the need to measure LLM data contamination for each benchmark](https://arxiv.org/abs/2310.18018). Findings of EMNLP 2023\.  
@@ -444,9 +446,9 @@ Leakage has been a known hazard in statistics and machine learning for decades. 
 
 ##### Takeaways
 
-- A test set gives an unbiased read only the first time you use it.  
+- A test set gives an unbiased read only for models chosen without looking at its results.  
 - Choosing prompts, models, or settings based on test results slowly fits your system to that specific test.  
-- The effect is sometimes smaller than people fear, but you can't know without a fresh test.  
+- The effect has been small in the large studies so far, but you can't know for your own test without a fresh one.  
 - Separate a dev set you iterate on from a locked test set you decide with.
 
 ##### What it means
@@ -455,14 +457,14 @@ Standard statistical guarantees assume you pick your analysis before looking at 
 
 ##### The evidence
 
-- **Reuse breaks the math.** Dwork et al. (2015) showed that adaptive reuse of a holdout set undermines its validity, and proposed a "reusable holdout" method that limits how much each query reveals.  
-- **Rebuilt test sets score lower.** Recht et al. (2019) rebuilt test sets for CIFAR-10 and ImageNet following the original procedures. Accuracy dropped 3% to 15% on CIFAR-10 and 11% to 14% on ImageNet. The model rankings mostly held, and the authors attribute the drop mainly to subtle differences in the new data rather than years of adaptive overfitting. That nuance matters: the pattern is real, and its size varies.  
-- **Competitions held up better than expected.** Roelofs et al. (2019) analyzed 120 Kaggle competitions and found little evidence of substantial overfitting from leaderboard reuse.  
-- **Agent benchmarks are exposed.** Kapoor et al. (2025) found many AI agent benchmarks have inadequate holdout sets, and sometimes none, which lets agents overfit and take shortcuts.
+- **Reuse is a known problem.** Dwork et al. (2015) noted that standard guarantees assume the analysis was fixed before the data were examined, and proposed a "reusable holdout" method, built on differential privacy, that lets one holdout set be used many times while keeping estimates valid.  
+- **Rebuilt test sets score lower.** Recht et al. (2019) rebuilt test sets for CIFAR-10 and ImageNet following the original procedures. Accuracy dropped by 3 to 15 percentage points on CIFAR-10 and 11 to 14 points on ImageNet. The model rankings mostly held. The authors attribute the drop to a distribution gap (models generalizing worse to slightly harder images), not to adaptive overfitting, and found no sign that years of reuse had produced diminishing gains, though they note their experiments do not rule out every variant of it.  
+- **Competitions held up better than expected.** Roelofs et al. (2019) analyzed 120 Kaggle classification competitions and found little to no sign of adaptive overfitting from leaderboard reuse. Effects among the top entries were small (typically under 1% accuracy), and the outliers usually had problems such as small or non-i.i.d. test sets. Together with Recht et al., this means the large studies found little or no sign of the effect: the risk is clearest in theory and for small, heavily reused benchmarks, and its practical size is unsettled.  
+- **Agent benchmarks are exposed.** Kapoor et al. (2025) reviewed 17 AI agent benchmarks and found most lack an appropriate holdout set, and 7 have none. The authors say this has led to fragile agents that take shortcuts and overfit to the benchmark.
 
 ##### Use it
 
-- Keep three splits: iterate on dev, check on validation, decide on a locked test.  
+- Keep separate splits: a dev set you iterate on, a validation set for occasional checks, and a locked test set you decide with.  
 - Log each time someone looks at locked test results.  
 - Refresh the locked test once it has driven many decisions.  
 - Treat small wins on a heavily reused test with suspicion.
@@ -476,7 +478,7 @@ The holdout set is one of the oldest ideas in machine learning. "Adaptive data a
 - Dwork, C., Feldman, V., Hardt, M., Pitassi, T., Reingold, O., & Roth, A. (2015). [The reusable holdout: Preserving validity in adaptive data analysis](https://doi.org/10.1126/science.aaa9375). Science, 349(6248), 636-638.  
 - Kapoor, S., Stroebl, B., Siegel, Z. S., Nadgir, N., & Narayanan, A. (2025). [AI agents that matter](https://arxiv.org/abs/2407.01502). Transactions on Machine Learning Research (TMLR).  
 - Recht, B., Roelofs, R., Schmidt, L., & Shankar, V. (2019). [Do ImageNet classifiers generalize to ImageNet?](https://arxiv.org/abs/1902.10811) Proceedings of the International Conference on Machine Learning (ICML 2019).  
-- Roelofs, R., Shankar, V., Recht, B., Fridovich-Keil, S., Hardt, M., Miller, J., & Schmidt, L. (2019). A meta-analysis of overfitting in machine learning. Advances in Neural Information Processing Systems (NeurIPS 2019).
+- Roelofs, R., Shankar, V., Recht, B., Fridovich-Keil, S., Hardt, M., Miller, J., & Schmidt, L. (2019). [A meta-analysis of overfitting in machine learning](https://proceedings.neurips.cc/paper/2019/hash/ee39e503b6bedf0c98c388b7e8589aca-Abstract.html). Advances in Neural Information Processing Systems 32 (NeurIPS 2019).
 
 #### The Clever Hans Effect
 
@@ -491,35 +493,39 @@ The holdout set is one of the oldest ideas in machine learning. "Adaptive data a
 
 ##### What it means
 
-Clever Hans was a horse in early 1900s Germany that seemed to do arithmetic by tapping its hoof. An investigation showed Hans was reading tiny, unconscious cues from the people asking questions. Hans was smart, just not at math.
+Clever Hans was a horse in early 1900s Germany that seemed to do arithmetic by tapping its hoof. An investigation showed Hans was reading tiny, unconscious cues from the people asking questions. Hans was a keen reader of people, not a mathematician.
 
 Models do the same thing. If every photo of a boat has water in it, a model can learn "water" instead of "boat." Geirhos et al. (2020) call this shortcut learning: decision rules that perform well on standard benchmarks and fail to transfer to harder conditions, like the real world.
 
 ##### The evidence
 
-- **The watermark detector.** Lapuschkin et al. (2019) used explanation methods on an image classifier trained on the PASCAL VOC dataset and found it identified horses partly by a copyright tag that appeared on many horse photos.  
+- **The watermark detector.** Lapuschkin et al. (2019) used explanation methods on image classifiers trained on the PASCAL VOC 2007 dataset and found that a Fisher-vector classifier identified horses mainly by a source tag, a copyright watermark in the corner of about one-fifth of the horse images. A deep network trained on the same data did not rely on it.  
 - **Answers without the question.** Gururangan et al. (2018) showed that in natural language inference datasets, a model given only the hypothesis sentence, without the premise, could predict the label far above chance. Annotators had left telltale word patterns, like negation words in contradictions.  
-- **Heuristics, not understanding.** McCoy, Pavlick, and Linzen (2019) built the HANS test set and found that inference models relied on shallow heuristics like word overlap, and failed badly on examples where those heuristics give the wrong answer.  
+- **Heuristics, not understanding.** McCoy, Pavlick, and Linzen (2019) built the HANS test set and found that models trained on the MNLI dataset, including BERT, performed very poorly on examples where those heuristics give the wrong answer, which suggests they rely on shallow shortcuts such as word overlap.  
 - **Test behavior, not just accuracy.** Ribeiro et al. (2020) introduced CheckList, a behavioral testing approach borrowed from software engineering, and found critical failures in commercial and research models that had high benchmark accuracy.
 
 ##### Use it
 
 - Ask, "What's the laziest way to score well on this test?" Then build items where that way fails.  
-- Run a partial-input baseline. Remove the part of the input that should matter and see if accuracy stays high.  
+- Run a partial-input baseline. Remove the part of the input that should matter and see if accuracy stays high. High accuracy is a red flag; low accuracy does not prove there are no shortcuts (Feng et al., 2019).  
 - Create contrast pairs: minimal edits that should flip the answer, and edits that shouldn't change it.  
-- Look at explanations or reasoning for a sample of correct answers, not just wrong ones.
+- Look at attributions or reasoning for a sample of correct answers, not just wrong ones. Treat them as hints to test with contrast cases, not as proof of why the model answered (Turpin et al., 2023).
 
 ##### Origins
 
-The horse was investigated by psychologist Oskar Pfungst, and "Clever Hans" became shorthand in psychology for experimenter cues. Lapuschkin et al. (2019) brought the term into machine learning with "Clever Hans predictors." Geirhos et al. (2020) unified related findings under "shortcut learning."
+The horse was investigated by psychologist Oskar Pfungst (1911), and "Clever Hans" became shorthand in psychology for experimenter cues. Sturm (2014) used the story to frame tests of music-recognition systems that scored well without using musical knowledge, calling them "horses." Lapuschkin et al. (2019) popularized the phrase "Clever Hans predictors" in machine learning. Geirhos et al. (2020) unified related findings under "shortcut learning."
 
 ##### Sources
 
+- Feng, S., Wallace, E., & Boyd-Graber, J. (2019). [Misleading failures of partial-input baselines](https://aclanthology.org/P19-1554/). Proceedings of ACL 2019.  
 - Geirhos, R., Jacobsen, J.-H., Michaelis, C., Zemel, R., Brendel, W., Bethge, M., & Wichmann, F. A. (2020). [Shortcut learning in deep neural networks](https://arxiv.org/abs/2004.07780). Nature Machine Intelligence, 2, 665-673.  
 - Gururangan, S., Swayamdipta, S., Levy, O., Schwartz, R., Bowman, S. R., & Smith, N. A. (2018). [Annotation artifacts in natural language inference data](https://arxiv.org/abs/1803.02324). Proceedings of NAACL-HLT 2018\.  
 - Lapuschkin, S., Wäldchen, S., Binder, A., Montavon, G., Samek, W., & Müller, K.-R. (2019). [Unmasking Clever Hans predictors and assessing what machines really learn](https://doi.org/10.1038/s41467-019-08987-4). Nature Communications, 10, 1096\.  
 - McCoy, R. T., Pavlick, E., & Linzen, T. (2019). [Right for the wrong reasons: Diagnosing syntactic heuristics in natural language inference](https://arxiv.org/abs/1902.01007). Proceedings of ACL 2019\.  
-- Ribeiro, M. T., Wu, T., Guestrin, C., & Singh, S. (2020). [Beyond accuracy: Behavioral testing of NLP models with CheckList](https://arxiv.org/abs/2005.04118). Proceedings of ACL 2020\.
+- Pfungst, O. (1911). [Clever Hans (the horse of Mr. von Osten): A contribution to experimental animal and human psychology](https://www.gutenberg.org/ebooks/33936). Henry Holt. English translation by C. L. Rahn of the 1907 German original. *(Book)*  
+- Ribeiro, M. T., Wu, T., Guestrin, C., & Singh, S. (2020). [Beyond accuracy: Behavioral testing of NLP models with CheckList](https://arxiv.org/abs/2005.04118). Proceedings of ACL 2020\.  
+- Sturm, B. L. (2014). [A simple method to determine if a music information retrieval system is a "horse"](https://doi.org/10.1109/TMM.2014.2330697). IEEE Transactions on Multimedia, 16(6), 1636-1644.  
+- Turpin, M., Michael, J., Perez, E., & Bowman, S. R. (2023). [Language models don't always say what they think: Unfaithful explanations in chain-of-thought prompting](https://proceedings.neurips.cc/paper_files/paper/2023/hash/ed3fea9033a80fea1376299fa7863f4a-Abstract-Conference.html). Advances in Neural Information Processing Systems 36 (NeurIPS 2023).
 
 #### The Gold Standard Myth
 
@@ -529,7 +535,7 @@ The horse was investigated by psychologist Oskar Pfungst, and "Clever Hans" beca
 
 - Test sets contain wrong labels. Near the top of a leaderboard, those errors can decide who "wins."  
 - People disagree. For many tasks that disagreement is real information, not noise to average away.  
-- Untrained or rushed human raters can be close to random on hard judgments.  
+- Untrained, non-expert human raters can be close to random on hard judgments.  
 - Report agreement between raters, and audit labels on the items that matter most.
 
 ##### What it means
@@ -538,15 +544,15 @@ Every eval compares a system's output to something treated as correct: a label, 
 
 ##### The evidence
 
-- **Answer keys have errors.** Northcutt, Athalye, and Mueller (2021) found an average of at least 3.3% label errors across 10 widely used test sets, and at least 6% in the ImageNet validation set. With corrected labels, rankings between models could flip. On ImageNet, ResNet-18 outperformed ResNet-50 if the share of originally mislabeled examples rose by just 6%.  
-- **Disagreement is signal.** Aroyo and Welty (2015) describe seven myths of human annotation, including that every item has one right answer and that disagreement is bad. They argue disagreement tells you something about the item, the instructions, or the task.  
-- **Raters can be at chance.** Clark et al. (2021) found that, without training, evaluators distinguished GPT-3 text from human-written text at chance level. Quick training raised accuracy only to about 55%.  
-- **Crowdsourced ratings can mislead.** Karpinska, Akoury, and Krishna (2021) found that Mechanical Turk workers, unlike English teachers, failed to tell model-generated stories apart from human-written references. Most papers they surveyed also left out key details about how their crowdsourced ratings were collected.  
+- **Answer keys have errors.** Northcutt, Athalye, and Mueller (2021) found an average of at least 3.3% label errors across 10 widely used test sets, and at least 6% in the ImageNet validation set. With corrected labels, rankings between models could flip. On ImageNet, with corrected labels, ResNet-18 would outperform ResNet-50 if the share of originally mislabeled test examples rose by just 6%.  
+- **Disagreement is signal.** Aroyo and Welty (2015) describe seven myths of human annotation, including that every item has one right answer and that disagreement is bad. They argue disagreement is a signal, not noise: it can show that an item is ambiguous or vague, or that a worker is not doing a good job.  
+- **Raters can be at chance.** Clark et al. (2021) asked non-expert crowdworkers to tell GPT-3 text from human-written text. Without training they scored at chance (49.9%), and training raised accuracy only to about 55%, with no significant gain within any of the three text types they tested. This tests spotting machine authorship, not rating quality.  
+- **Crowdsourced ratings can mislead.** Karpinska, Akoury, and Iyyer (2021) found that Mechanical Turk workers, unlike English teachers, failed to distinguish stories from a fine-tuned GPT-2 model from human-written ones in their ratings, though their judgments improved when the two were shown side by side. Most of the 45 papers they surveyed also left out key details about how their crowdsourced ratings were collected.  
 - **Practice is inconsistent.** van der Lee et al. (2021) reviewed human evaluation in natural language generation, found wide variation in how it's done and reported, and proposed best-practice guidelines.
 
 ##### Use it
 
-- Have two people label a sample independently and measure their agreement before trusting the labels.  
+- Have two people label a sample independently and measure their agreement, with a chance-corrected measure such as Cohen's kappa, before trusting the labels. High agreement shows the labels are consistent, not that they are right.  
 - Audit labels on items where strong models disagree with the "answer."  
 - Use raters with real expertise for expert tasks, and train and calibrate them.  
 - Keep the disagreement data. Report distributions, not just majority votes.
@@ -559,7 +565,7 @@ Every eval compares a system's output to something treated as correct: a label, 
 
 - Aroyo, L., & Welty, C. (2015). [Truth is a lie: Crowd truth and the seven myths of human annotation](https://doi.org/10.1609/aimag.v36i1.2564). AI Magazine, 36(1), 15-24.  
 - Clark, E., August, T., Serrano, S., Haduong, N., Gururangan, S., & Smith, N. A. (2021). [All that's 'human' is not gold: Evaluating human evaluation of generated text](https://arxiv.org/abs/2107.00061). Proceedings of ACL-IJCNLP 2021\.  
-- Karpinska, M., Akoury, N., & Krishna, K. (2021). [The perils of using Mechanical Turk to evaluate open-ended text generation](https://arxiv.org/abs/2109.06835). Proceedings of EMNLP 2021\.  
+- Karpinska, M., Akoury, N., & Iyyer, M. (2021). [The perils of using Mechanical Turk to evaluate open-ended text generation](https://arxiv.org/abs/2109.06835). Proceedings of EMNLP 2021\.  
 - Northcutt, C. G., Athalye, A., & Mueller, J. (2021). [Pervasive label errors in test sets destabilize machine learning benchmarks](https://arxiv.org/abs/2103.14749). NeurIPS 2021 Datasets and Benchmarks Track.  
 - van der Lee, C., Gatt, A., van Miltenburg, E., & Krahmer, E. (2021). [Human evaluation of automatically generated text: Current trends and best practice guidelines](https://doi.org/10.1016/j.csl.2020.101151). Computer Speech & Language, 67, 101151\.
 
@@ -582,20 +588,20 @@ Traditional software gives the same result for the same input. Language models r
 
 ##### The evidence
 
-- **Formatting alone moves scores.** Sclar et al. (2024) found that several widely used open-source LLMs were extremely sensitive to subtle formatting changes in few-shot prompts, with differences of up to 76 accuracy points for LLaMA-2-13B. The best format for one model correlated only weakly with the best format for another. They propose FormatSpread to report a range instead of one number.  
-- **Single-prompt results are brittle.** Mizrahi et al. (2024) analyzed 6.5 million instances across 20 models and 39 tasks and found results from single-instruction evaluation brittle. They call for evaluating with a diverse set of prompts, and for choosing metrics that fit the needs of different users, like model developers versus teams building products.  
+- **Formatting alone moves scores.** Sclar et al. (2024) found that several widely used open-source LLMs were extremely sensitive to subtle formatting changes in few-shot prompts, with differences of up to 76 accuracy points for LLaMA-2-13B in the worst case, and about 10 points on average across 50+ tasks and several models. The best format for one model correlated only weakly with the best format for another. They propose FormatSpread to report a range instead of one number.  
+- **Single-prompt results are brittle.** Mizrahi et al. (2024) analyzed 6.5 million instances across 20 models and 39 tasks and found results from single-instruction evaluation brittle. They call for evaluating with a diverse set of prompts, and for choosing metrics that fit the needs of different users. For model developers they favor the average over many prompts. For a team choosing a model for one product, they favor comparing each model at its best prompt, picked on separate held-out examples so the choice is not tuned on the test set.  
 - **Implementation details matter.** Biderman et al. (2024), drawing on experience maintaining a widely used LLM evaluation harness, show that small choices in prompts, answer extraction, and normalization change scores, and argue for sharing exact prompts and code.
 
 ##### Use it
 
-- Test at least three to five prompt variants and report the mean and range.  
+- Test several prompt variants and report the mean and range. Three to five is a practical minimum, this guide's rule of thumb rather than a figure from the studies.  
 - Use the same set of variants for every model you compare.  
 - Include messy, realistic user phrasings, not just clean templates.  
 - Save the exact prompts and scoring code alongside the results.
 
 ##### Origins
 
-Prompt sensitivity became a named research topic with the rise of few-shot prompting in large language models. The term describes a family of findings rather than one paper.
+"Prompt sensitivity" is not one paper's coinage. The term describes a family of findings from research on few-shot and instruction prompting.
 
 ##### Sources
 
@@ -609,9 +615,9 @@ Prompt sensitivity became a named research topic with the rise of few-shot promp
 
 ##### Takeaways
 
-- Using an LLM as a judge is fast and cheap, and a strong judge can agree with people about as often as people agree with each other.  
+- Using an LLM as a judge is fast and cheap, and in one major study a strong judge agreed with people about as often as people agree with each other, once tied votes were set aside.  
 - Judges also have known biases: which answer comes first, how long it is, and whether it sounds like the judge's own writing.  
-- Swapping answer order, controlling for length, and using a different model family as judge all help.  
+- Swapping answer order helps. Controlling for length and using a judge from a different developer are common precautions, but the sources cited here did not test them.  
 - Validate the judge against human labels on your task before trusting it at scale.
 
 ##### What it means
@@ -620,16 +626,16 @@ LLM-as-a-judge means asking one model to grade or compare outputs from another. 
 
 ##### The evidence
 
-- **Useful, with named biases.** Zheng et al. (2023) found GPT-4 as a judge reached over 80% agreement with human preferences, similar to agreement between humans. They also identified position bias, verbosity bias, self-enhancement bias, and limited ability to grade things like math.  
-- **Order can flip verdicts.** Wang et al. (2024) showed that an LLM judge's verdict could be changed by swapping the order of the candidate answers, and proposed calibration strategies such as evaluating both orders.  
-- **Judges favor themselves.** Panickssery, Bowman, and Feng (2024) found LLMs can recognize their own outputs at above-chance rates, and that this self-recognition ability correlates with how strongly they prefer their own outputs.  
-- **Validators need validating.** Shankar et al. (2024) built EvalGen to help people align LLM-based graders with their own judgments, because unchecked graders drift from what people actually want.
+- **Useful, with named biases.** Zheng et al. (2023) found GPT-4 as a judge reached over 80% agreement with human preferences, similar to agreement between humans, when tied votes were set aside (85% versus 81% between humans on MT-Bench; with ties counted, 66% for GPT-4 against 63% to 67% between humans). They showed position bias and verbosity bias, found limited ability to grade math and reasoning questions, and flagged a possible self-enhancement bias that their data were too limited to confirm. Agreement was higher when the two answers differed clearly in quality.  
+- **Order can flip verdicts.** Wang et al. (2024) showed that an LLM judge's verdict could be changed by swapping the order of the candidate answers (GPT-4 tended to favor the first answer, ChatGPT the second), and proposed calibration strategies such as evaluating both orders.  
+- **Some judges favor themselves.** Panickssery, Bowman, and Feng (2024) found that self-preference when ranking news summaries was strongest in GPT-4, weaker and less consistent in GPT-3.5, and close to neutral in Llama 2. They also found LLMs can recognize their own outputs at above-chance rates. In fine-tuning experiments, stronger self-recognition went with stronger self-preference, though the authors note this correlation does not by itself prove cause.  
+- **Validators need validating.** Shankar et al. (2024) built EvalGen to help people align LLM-based graders with their own judgments, because LLM-based evaluators inherit the problems of the models they evaluate and need human validation.
 
 ##### Use it
 
 - Grade every pair twice with the order swapped. Treat inconsistent verdicts as ties or flags.  
-- Hand-label 50 to 100 examples and measure judge-human agreement before scaling up.  
-- Don't use a model to judge its own outputs, or its model family's, when comparing against competitors.  
+- Hand-label at least a few dozen examples (more when differences are small), measure judge-human agreement with its uncertainty, and read the disagreements before scaling up.  
+- Avoid using one of the systems being compared as the judge. Where you can, use a judge from a different developer, and check its verdicts against human labels.  
 - Give the judge a specific rubric, and check whether scores correlate with response length.
 
 ##### Origins
@@ -641,7 +647,7 @@ LLM-as-a-judge means asking one model to grade or compare outputs from another. 
 - Panickssery, A., Bowman, S. R., & Feng, S. (2024). [LLM evaluators recognize and favor their own generations](https://arxiv.org/abs/2404.13076). Advances in Neural Information Processing Systems (NeurIPS 2024).  
 - Shankar, S., Zamfirescu-Pereira, J. D., Hartmann, B., Parameswaran, A. G., & Arawjo, I. (2024). [Who validates the validators? Aligning LLM-assisted evaluation of LLM outputs with human preferences](https://doi.org/10.1145/3654777.3676450). Proceedings of the ACM Symposium on User Interface Software and Technology (UIST 2024).  
 - Wang, P., et al. (2024). [Large language models are not fair evaluators](https://aclanthology.org/2024.acl-long.511/). Proceedings of ACL 2024\.  
-- Zheng, L., Chiang, W.-L., Sheng, Y., Zhuang, S., Wu, Z., et al. (2023). [Judging LLM-as-a-judge with MT-Bench and Chatbot Arena](https://arxiv.org/abs/2306.05685). NeurIPS 2023 Datasets and Benchmarks Track.
+- Zheng, L., Chiang, W.-L., Sheng, Y., Zhuang, S., Wu, Z., et al. (2023). [Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena](https://arxiv.org/abs/2306.05685). NeurIPS 2023 Datasets and Benchmarks Track.
 
 #### Criteria Drift
 
@@ -649,9 +655,9 @@ LLM-as-a-judge means asking one model to grade or compare outputs from another. 
 
 ##### Takeaways
 
-- Nobody can write a complete rubric before seeing real outputs.  
-- Grading surfaces new failure modes and new preferences, which changes the rubric.  
-- Treat evaluation criteria as a living design artifact, versioned like code.  
+- In the study that named this pattern, practitioners could not fully specify their criteria before grading real outputs.  
+- In that study, grading surfaced new criteria and changed how participants read the ones they had.  
+- The study did not test fixes, but a sensible practice is to treat evaluation criteria as a living design artifact, versioned like code.  
 - When criteria change, re-grade a fixed reference set or your trend lines stop being comparable.
 
 ##### What it means
@@ -662,19 +668,19 @@ That's healthy. The risk is pretending the criteria were fixed all along and com
 
 ##### The evidence
 
-- **Named in a user study.** Shankar et al. (2024) observed people building LLM-based evaluators with their EvalGen tool and described criteria drift: "users need criteria to grade outputs, but grading outputs helps users define criteria." Some criteria depended on the specific outputs people had seen.  
-- **Start from real needs.** Liao and Xiao (2023) argue that evaluation should be grounded in the real-world needs of the people using a system, and that methods from human-computer interaction can help close the gap between what gets measured and what matters.
+- **Named in a user study.** In a qualitative study of nine industry practitioners building LLM-based evaluators with their EvalGen tool, Shankar et al. (2024) described criteria drift: "users need criteria to grade outputs, but grading outputs helps users define criteria." Some criteria depended on the specific outputs people had seen. The study was small and started from one task, extracting entities from tweets.  
+- **Start from real needs.** Liao and Xiao (2023), in a position paper rather than a study of how rubrics change, argue that evaluation should be grounded in the real-world needs of the people using a system, and that methods from human-computer interaction can help close the gap between what gets measured and what matters.
 
 ##### Use it
 
-- Start with open coding. Read 30 to 50 real outputs and note what's good and bad before writing any rubric.  
+- Start with open coding. Read a few dozen real outputs (a rule of thumb, not a number from the study) and note what's good and bad before writing any rubric.  
 - Version the rubric, with a date and a reason for each change.  
-- Keep a fixed reference set and re-grade it when the rubric changes.  
+- Keep a fixed reference set and re-grade it when the rubric changes. The study did not test this, but it follows from wanting comparable trend lines.  
 - Involve the people who will actually use the output in defining the criteria.
 
 ##### Origins
 
-The term comes from Shreya Shankar, J.D. Zamfirescu-Pereira, Björn Hartmann, Aditya Parameswaran, and Ian Arawjo's 2024 UIST paper, "Who Validates the Validators?"
+The term comes from Shreya Shankar, J.D. Zamfirescu-Pereira, Björn Hartmann, Aditya Parameswaran, and Ian Arawjo's 2024 UIST paper, "Who Validates the Validators?" It was coined there. Later papers have used it, but it is a recent term, not a long-established one.
 
 ##### Sources
 
@@ -688,7 +694,7 @@ The term comes from Shreya Shankar, J.D. Zamfirescu-Pereira, Björn Hartmann, Ad
 ##### Takeaways
 
 - AI outputs vary from run to run. A single pass hides that.  
-- pass@k asks, "Did it work at least once in k tries?" pass^k asks, "Did it work all k times?" Users live with the second one.  
+- pass@k asks, "Did it work at least once in k tries?" pass^k asks, "Did it work all k times?" The second matters most when the same kind of request keeps coming back or each failure is costly.  
 - Capability gains don't automatically bring reliability gains.  
 - For anything customer-facing or agentic, measure consistency across repeated runs.
 
@@ -698,23 +704,23 @@ Many evals run each test case once, or report the best of several attempts. That
 
 ##### The evidence
 
-- **Reliability drops fast with repetition.** Yao et al. (2025) built τ-bench, which simulates conversations between users and agents that have tools and policies to follow. State-of-the-art function-calling agents like GPT-4o succeeded on fewer than 50% of tasks. Their pass^k metric showed consistency was worse: pass^8 fell below 25% in the retail domain.  
-- **Accuracy and reliability are different axes.** Rabanser et al. (2026) proposed twelve reliability metrics across consistency, robustness, predictability, and safety. Across 15 models, recent capability gains produced only small improvements in reliability.
+- **Reliability drops fast with repetition.** Yao et al. (2025) built τ-bench, which simulates conversations between simulated users and agents that have tools and policies to follow. On a single try, GPT-4o with function calling solved about 61% of retail tasks and 35% of airline tasks, under 50% overall. Their pass^k metric showed consistency was worse: in the retail domain, the chance of solving a task on all 8 of 8 trials fell to roughly a quarter (2024 models).  
+- **Accuracy and reliability are different axes.** Rabanser et al. (2026) proposed twelve reliability metrics across consistency, robustness, predictability, and safety. Across 15 models on two benchmarks (τ-bench and GAIA), recent capability gains produced only small improvements in reliability, though some measures, such as calibration, improved more. They used one agent setup per benchmark and temperature zero, which the authors note may overstate the reliability achievable.
 
 ##### Use it
 
-- Run each test case several times (at least three to five for LLM outputs) and report both the average success rate and the all-runs-pass rate.  
+- Run each test case several times (three to five is this guide's rule of thumb for a minimum; the τ-bench study went up to eight) and report both the average success rate and the all-runs-pass rate.  
 - Separate random, occasional failures from consistent failures on specific cases. They need different fixes.  
 - Include paraphrased versions of the same task in your test set.  
 - Set reliability thresholds based on the cost of a failure, not on what the model can currently hit.
 
 ##### Origins
 
-"Once Is Not Reliable" is this site's name. The pass^k metric comes from Yao et al.'s τ-bench, and the broader framing draws on reliability engineering in safety-critical fields.
+"Once Is Not Reliable" is this site's name. The pass^k metric comes from Yao et al.'s τ-bench, and Rabanser et al. draw on reliability engineering in safety-critical fields for the broader framing.
 
 ##### Sources
 
-- Rabanser, S., Kapoor, S., Kirgis, P., Liu, K., Utpala, S., & Narayanan, A. (2026). [Towards a science of AI agent reliability](https://arxiv.org/abs/2602.16666). arXiv:2602.16666. *(Preprint)*  
+- Rabanser, S., Kapoor, S., Kirgis, P., Liu, K., Utpala, S., & Narayanan, A. (2026). [Towards a science of AI agent reliability](https://proceedings.mlr.press/v306/rabanser26a.html). Proceedings of the 43rd International Conference on Machine Learning (ICML 2026), PMLR 306, 102769-102820.  
 - Yao, S., Shinn, N., Razavi, P., & Narasimhan, K. (2025). [τ-bench: A benchmark for tool-agent-user interaction in real-world domains](https://arxiv.org/abs/2406.12045). International Conference on Learning Representations (ICLR 2025).
 
 #### The Cost Frontier
@@ -723,20 +729,20 @@ Many evals run each test case once, or report the best of several attempts. That
 
 ##### Takeaways
 
-- You can buy accuracy with more compute: retries, voting, longer reasoning, bigger models.  
+- You can often buy accuracy with more compute: retries, multiple samples, longer reasoning, bigger models.  
 - Comparing systems that cost very different amounts to run isn't a fair comparison.  
 - Plot accuracy against cost and latency, and look at the frontier of best tradeoffs.  
 - Simple, cheap approaches sometimes match elaborate ones.
 
 ##### What it means
 
-A leaderboard that only shows accuracy invites a quiet arms race. Call the model five times and take a vote, and the score goes up. So does the bill. For a product team, a system that's two points better and ten times more expensive might be the wrong choice. A fair comparison shows both numbers, so each reader can decide which tradeoff fits their situation.
+A leaderboard that only shows accuracy invites a quiet arms race. Call the model five times and take a vote, and the score often goes up. So does the bill. For a product team, a system that's two points better and ten times more expensive might be the wrong choice. A fair comparison shows both numbers, so each reader can decide which tradeoff fits their situation.
 
 ##### The evidence
 
-- **Accuracy-only evaluation produces bloated agents.** Kapoor et al. (2025) found that a narrow focus on accuracy leads to needlessly complex and costly AI agents. They argue for jointly optimizing cost and accuracy, and show that doing so can cut cost substantially while keeping accuracy. They also found simple baseline strategies competitive with more complex agent designs on coding tasks.  
-- **Efficiency belongs in the scorecard.** Liang et al. (2023) include efficiency as one of HELM's seven core metrics.  
-- **Users care about more than accuracy.** Ethayarajh and Jurafsky (2020) note that leaderboards ignore costs like model size and energy use that matter to real users.
+- **Accuracy-only evaluation can produce bloated agents.** Kapoor et al. (2025) argued that a narrow focus on accuracy leads to needlessly complex and costly AI agents, and that cost and accuracy should be optimized together. On HumanEval, a coding benchmark, they found that simple baselines, such as retrying a model or escalating from a cheap model to a costlier one, did as well as or better than many more complex published agents at much lower cost. In one further experiment, on the HotPotQA question-answering benchmark, joint optimization lowered cost while keeping accuracy, which the authors call a starting point rather than a general result.  
+- **Efficiency belongs in the scorecard.** Liang et al. (2023) include efficiency as one of HELM's seven core metrics, split into training and inference efficiency.  
+- **Users care about more than accuracy.** Ethayarajh and Jurafsky (2020), in a critique of NLP leaderboards, argue that leaderboards ignore costs like model size and energy use that matter in practice, and advocate reporting them.
 
 ##### Use it
 
@@ -759,7 +765,7 @@ A leaderboard that only shows accuracy invites a quiet arms race. Call the model
 
 #### No Error Bars, No Result
 
-> A difference smaller than the noise is not a difference.
+> A difference smaller than the noise has not been shown to be a difference.
 
 ##### Takeaways
 
@@ -770,15 +776,15 @@ A leaderboard that only shows accuracy invites a quiet arms race. Call the model
 
 ##### What it means
 
-If a model scores 80% on 200 questions, the "true" score on similar questions could easily be a few points higher or lower. A rough standard error for accuracy is the square root of p(1 \- p) / n. For 80% on 200 items, that's about 2.8 points, so a 95% confidence interval runs roughly 5.5 points in each direction. A rival model at 83% on the same test hasn't clearly won anything.
+If a model scores 80% on 200 questions, the "true" score on similar questions could easily be a few points higher or lower. A rough standard error for accuracy is the square root of p(1 \- p) / n. For 80% on 200 items, that's about 2.8 points, so a 95% confidence interval runs roughly 5.5 points in each direction. (For small samples or scores near 0% or 100%, use a Wilson interval instead of this rough formula.) A rival model at 83% on the same test hasn't clearly won anything. Comparing the two on the same questions can cut the noise, but a 3-point gap on 200 items still stands out only if the models disagree on roughly 3% to 5% of items or fewer, meaning they give nearly identical answers.
 
 Randomness adds more noise: sampling temperature, random seeds, and data order all shift results between runs.
 
 ##### The evidence
 
 - **Significance testing is often skipped.** Dror et al. (2018) surveyed NLP research practice, found statistical significance testing was often missing or misapplied, and wrote a practical guide to choosing the right test.  
-- **Many experiments are underpowered.** Card et al. (2020) showed that many NLP experiments don't have enough data to reliably detect the small improvements typically claimed, which means published gains can be exaggerated.  
-- **Variance rivals the gains.** Bouthillier et al. (2021) found that variance from sources like data sampling, weight initialization, and hyperparameter choices is often as large as the differences papers report. They recommend randomizing as many sources of variation as possible.  
+- **Many experiments are underpowered.** Card et al. (2020) showed that many NLP experiments don't have enough data to reliably detect the small improvements typically claimed, and warned that this increases the chance of exaggerated findings.  
+- **Variance rivals the gains.** Bouthillier et al. (2021) studied five benchmark tasks and found that variance from sources like data sampling, weight initialization, and hyperparameter choices is not small next to the improvements typically published on them. They recommend randomizing as many sources of variation as possible.  
 - **A playbook for LLM evals.** Miller (2024) treats eval questions as a sample from a larger population and lays out how to compute standard errors, cluster them when questions are related, compare models with paired differences, and plan sample sizes with power analysis.  
 - **Benchmarks rarely report it.** Reuel et al. (2024) assessed 24 AI benchmarks against 46 best practices and found most don't report statistical significance.
 
@@ -787,8 +793,8 @@ Randomness adds more noise: sampling temperature, random seeds, and data order a
 - Put a 95% confidence interval next to every score.  
 - Compare models on the same items with paired tests.  
 - Cluster standard errors when items come in groups, like several questions about one document.  
-- For stochastic outputs, run multiple samples per item.  
-- Treat any gap inside the interval as a tie.
+- For stochastic outputs, run multiple samples per item. This reduces run-to-run noise, not noise from which items you chose.  
+- Judge a comparison by the confidence interval for the difference between the two systems, not by whether their separate intervals overlap. If the difference's interval includes zero, the systems are not shown to differ. That is not the same as showing they are equal.
 
 ##### Origins
 
@@ -819,15 +825,15 @@ A 95% overall score can be 99% for most people and 70% for a group that makes up
 
 ##### The evidence
 
-- **Gender Shades.** Buolamwini and Gebru (2018) evaluated commercial gender classification systems and found error rates up to 34.7% for darker-skinned women, compared to at most 0.8% for lighter-skinned men.  
-- **Hidden stratification in medicine.** Oakden-Rayner et al. (2020) showed that medical imaging models can have relative performance differences of over 20% on clinically important subsets. A model detecting pneumothorax (collapsed lung) had an AUC of 0.94 on X-rays that showed a chest drain, but only 0.77 on X-rays without one. Chest drains are the treatment, so the model did worst on the untreated, most urgent cases.  
-- **Report the breakdown.** Burnell et al. (2023), writing in Science, argue that aggregate metrics and lack of access to instance-level results limit understanding of AI systems, and call for granular reporting.  
-- **Build it into documentation.** Mitchell et al. (2019) made disaggregated evaluation across relevant groups a standard section of model cards.
+- **Gender Shades.** Buolamwini and Gebru (2018) tested three commercial gender classification systems in April and May 2017 and found error rates up to 34.7% for darker-skinned women, compared to at most 0.8% for lighter-skinned men. Overall accuracy was 87.9% to 93.7%. The figures describe the systems as they were then, not today's versions.  
+- **Hidden stratification in medicine.** Oakden-Rayner et al. (2020) showed that medical imaging models can have relative performance differences of over 20% on some clinically important subsets. A model detecting pneumothorax (collapsed lung) had an AUC of 0.94 on X-rays that showed a chest drain, but only 0.77 on X-rays without one. Chest drains are the treatment, so the model did worst on the untreated, most urgent cases.  
+- **Report the breakdown.** Burnell et al. (2023), in a Science policy forum article, argue that aggregate metrics and lack of access to instance-level results limit understanding of AI systems, and call for granular reporting.  
+- **Build it into documentation.** Mitchell et al. (2019) proposed model cards, with a quantitative analysis section broken down by groups and conditions and reported with confidence intervals where possible.
 
 ##### Use it
 
 - Define the slices that matter for your users before you look at the overall number.  
-- Report the worst-performing slice next to the average.  
+- Report the worst-performing slice next to the average, and say how many slices you looked at.  
 - Make sure each important slice has enough examples to support its own error bars.  
 - Read failures by hand. Clusters often reveal slices you didn't think to define.
 
@@ -855,13 +861,13 @@ A 95% overall score can be 99% for most people and 70% for a group that makes up
 
 ##### What it means
 
-"Our model is 20% better" means nothing until you know better than what. New methods usually get weeks of tuning. Baselines often get copied from an old paper with default settings. The gap between them can be mostly effort, not ideas. In product settings, teams sometimes compare an AI feature to a different AI feature and forget to compare it to the plain workflow people already use.
+"Our model is 20% better" means nothing until you know better than what. New methods are often tuned heavily. Baselines are sometimes copied from earlier papers without being tuned for the new setting. The gap between them can be mostly effort, not ideas. In product settings, teams sometimes compare an AI feature to a different AI feature and forget to compare it to the plain workflow people already use.
 
 ##### The evidence
 
-- **Tuned old methods win.** Melis, Dyer, and Blunsom (2018) found that standard LSTM language models, carefully tuned, outperformed more recent and more complex architectures.  
-- **Neural hype in search.** Lin (2019) documented information retrieval papers reporting gains over weak baselines that didn't hold against well-tuned classic methods.  
-- **Recommenders didn't reproduce.** Ferrari Dacrema, Cremonesi, and Jannach (2019) tried to reproduce 18 neural recommendation algorithms from top conferences. Only 7 could be reproduced with reasonable effort, and 6 of those were often outperformed by simple heuristic methods.  
+- **Tuned old methods win.** Melis, Dyer, and Blunsom (2018) found that standard LSTM language models, carefully tuned, outperformed more recent and more complex architectures on language-modelling benchmarks.  
+- **Neural hype in search.** In an opinion piece, Lin (2019) compared two recent neural ranking papers with well-tuned classic methods on one test collection (Robust04). He argued their baselines were weak: in one paper the gains mostly disappeared, and in the other no neural model came close to the tuned classic method.  
+- **Few recommenders could be rerun.** Ferrari Dacrema, Cremonesi, and Jannach (2019) examined 18 neural recommendation algorithms from top conferences (2015 to 2018). Only 7 had enough public code and data to be reproduced with reasonable effort, and 6 of those could often be outperformed by simple, well-tuned methods. The seventh did not consistently beat a well-tuned non-neural linear method. The other 11 could not be rerun, so the study says nothing about how they would have fared.  
 - **Simple methods capture most of the value.** Hand (2006) argued that simple classifiers often capture most of the achievable predictive power, and that the gains from sophisticated methods can vanish in real use.
 
 ##### Use it
@@ -873,13 +879,13 @@ A 95% overall score can be 99% for most people and 70% for a group that makes up
 
 ##### Origins
 
-"The Baseline Rule" is this site's name for a principle that shows up in nearly every field that runs experiments. Hand's "illusion of progress" (2006) is an early, clear statement in machine learning.
+"The Baseline Rule" is this site's name for a principle that shows up in nearly every field that runs experiments. Hand's "illusion of progress" (2006) is an early, clear statement in supervised classification research.
 
 ##### Sources
 
 - Ferrari Dacrema, M., Cremonesi, P., & Jannach, D. (2019). [Are we really making much progress? A worrying analysis of recent neural recommendation approaches](https://arxiv.org/abs/1907.06902). Proceedings of the ACM Conference on Recommender Systems (RecSys 2019).  
 - Hand, D. J. (2006). [Classifier technology and the illusion of progress](https://arxiv.org/abs/math/0606441). Statistical Science, 21(1), 1-14.  
-- Lin, J. (2019). [The neural hype and comparisons against weak baselines](https://doi.org/10.1145/3308774.3308781). ACM SIGIR Forum, 52(2), 40-51.  
+- Lin, J. (2019). [The neural hype and comparisons against weak baselines](https://doi.org/10.1145/3308774.3308781). ACM SIGIR Forum, 52(2), 40-51 (opinion article).  
 - Melis, G., Dyer, C., & Blunsom, P. (2018). [On the state of the art of evaluation in neural language models](https://arxiv.org/abs/1707.05589). International Conference on Learning Representations (ICLR 2018).
 
 #### The Benchmark Lottery
@@ -895,14 +901,14 @@ A 95% overall score can be 99% for most people and 70% for a group that makes up
 
 ##### What it means
 
-There are thousands of benchmarks. Any given paper or product announcement reports a handful. If the handful was chosen after seeing results, the table tells you more about the selection than about the system. Even without bad intent, communities settle on benchmarks that happen to favor certain approaches, and newcomers get judged by rules that weren't written for them.
+There are very many benchmarks. Any given paper or product announcement reports a handful. If the handful was chosen after seeing results, the table tells you more about the selection than about the system. Even without bad intent, communities settle on benchmarks that happen to favor certain approaches, and newcomers get judged by rules that weren't written for them.
 
 ##### The evidence
 
-- **Named and measured.** Dehghani et al. (2021) showed that the relative ranking of methods can change substantially depending on the benchmark tasks chosen, and called this the benchmark lottery.  
-- **Models weren't even compared on the same tests.** Liang et al. (2023) found that before HELM, language models had on average been evaluated on just 17.9% of HELM's core scenarios, with some prominent models sharing no scenarios at all. HELM raised that to 96%.  
-- **Whose utility?** Ethayarajh and Jurafsky (2020) show that a leaderboard's ranking reflects one implicit set of priorities that may not match any particular user's.  
-- **An interdisciplinary warning.** Eriksson et al. (2025) reviewed about 100 studies on benchmark shortcomings and found recurring problems, including data contamination, construct validity issues, misaligned incentives, and gaming of results, all shaped by commercial and competitive pressure.
+- **Named and measured.** Dehghani et al. (2021) showed that across several common benchmark setups the relative ranking of methods can change substantially depending on the benchmark tasks chosen, and proposed the term benchmark lottery.  
+- **Models weren't even compared on the same tests.** Liang et al. (2023) found that before HELM, the 30 language models they benchmarked had on average been evaluated, under any conditions and counting earlier work, on just 17.9% of HELM's 16 core scenarios, with some prominent models sharing no scenarios at all. HELM raised that to 96.0%, with the remaining gap due to technical issues.  
+- **Whose utility?** In an opinion paper, Ethayarajh and Jurafsky (2020) argue that leaderboards rank models on performance alone and ignore costs that matter to practitioners, such as model size and energy use, so a leaderboard can be a poor proxy for what a given user needs.  
+- **An interdisciplinary warning.** Eriksson et al. (2025) reviewed about 100 studies on benchmark shortcomings and found recurring problems, including data contamination, construct validity issues, misaligned incentives, and gaming of results, in a field shaped by cultural, commercial, and competitive dynamics.
 
 ##### Use it
 
@@ -913,7 +919,7 @@ There are thousands of benchmarks. Any given paper or product announcement repor
 
 ##### Origins
 
-The term comes from Mostafa Dehghani and colleagues' 2021 paper, "The Benchmark Lottery."
+Mostafa Dehghani and colleagues proposed the term in their 2021 paper, "The Benchmark Lottery."
 
 ##### Sources
 
@@ -935,14 +941,14 @@ The term comes from Mostafa Dehghani and colleagues' 2021 paper, "The Benchmark 
 
 ##### What it means
 
-Hosted AI models change under the same name. Prompts get tweaked. Scoring scripts get patched. Six months later, nobody can say why the number was 82% or whether today's 79% is worse. A result you can't reproduce can't be trusted, and it can't be compared to anything.
+Hosted AI models can change under the same name. Prompts get tweaked. Scoring scripts get patched. Six months later, nobody can say why the number was 82% or whether today's 79% is worse. A result you can't reproduce can't be trusted, and it can't be compared to anything.
 
 ##### The evidence
 
-- **The field built programs for it.** Pineau et al. (2021) report on the NeurIPS 2019 reproducibility program, which introduced a code submission policy, a community reproducibility challenge, and a reproducibility checklist.  
+- **NeurIPS built a program for it.** Pineau et al. (2021) report on the NeurIPS 2019 reproducibility program, which introduced a code submission policy, a community reproducibility challenge, and a reproducibility checklist. There, reproducibility meant getting similar results from the same code and data.  
 - **Details change scores.** Biderman et al. (2024) share lessons from maintaining a widely used language model evaluation harness and show how small methodological choices shift results. They recommend sharing code, prompts, and outputs.  
 - **Benchmarks fall short.** Reuel et al. (2024) found most of the 24 AI benchmarks they assessed can't be easily replicated.  
-- **Agents especially.** Kapoor et al. (2025) describe a pervasive lack of reproducibility in AI agent evaluation caused by nonstandard practices.  
+- **Agents especially.** Kapoor et al. (2025) report pervasive shortcomings in the reproducibility of agent evaluations, focusing on HumanEval and WebArena, and attribute them to a lack of standardization in evaluation practices.  
 - **Standard formats exist.** Mitchell et al. (2019) proposed model cards to document intended use and evaluation results. Gebru et al. (2021) proposed datasheets to document how datasets were created and what they're suited for.
 
 ##### Use it
@@ -985,8 +991,8 @@ Edsger Dijkstra (1970) made this point about software in his Notes on Structured
 ##### The evidence
 
 - **Evaluations for extreme risks.** Shevlane et al. (2023) describe dangerous capability evaluations and alignment evaluations as key inputs to training and deployment decisions, and discuss the limits of what those evaluations can catch.  
-- **Models can underperform on purpose.** van der Weij et al. (2025) showed that frontier models like GPT-4 and Claude 3 Opus could be prompted to selectively underperform on dangerous capability evaluations while keeping performance on general ones. Models could also be fine-tuned to hide a capability unless given a password.  
-- **Red teaming finds a lot, not everything.** Ganguli et al. (2022) released a dataset of nearly 39,000 red team attacks on language models. The harmful outputs ranged from offensive language to subtler unethical content, the kind a fixed benchmark wouldn't think to ask about.
+- **Models can be made to underperform.** van der Weij et al. (2025) showed that when instructed in the prompt, frontier models like GPT-4 and Claude 3 Opus could selectively underperform on dangerous-capability multiple-choice tests while keeping performance on general ones. They also fine-tuned models to hide a capability unless given a password. The authors tested whether models can do this, not whether they do it on their own.  
+- **Red teaming turns up a wide range of harms.** Ganguli et al. (2022) released a dataset of nearly 39,000 red team attacks on language models. The harmful outputs ranged from offensive language to subtler unethical content.
 
 ##### Use it
 
@@ -1019,13 +1025,13 @@ The core idea is Dijkstra's, from "Notes on Structured Programming," first circu
 
 ##### What it means
 
-People act differently when they know they're being watched. Models trained on huge amounts of text, including text about AI evaluations, can pick up on the telltale signs of a test: tidy multiple-choice formats, contrived scenarios, obviously fake names. If a model responds to those cues, even without any intent in the human sense, the eval measures test behavior instead of real behavior.
+People act differently when they know they're being watched. Models trained on huge amounts of text, including text about AI evaluations, can pick up on the telltale signs of a test: multiple-choice formats, synthetic or contrived scenarios, and tasks that look like known benchmarks. If a model responds to those cues, even without any intent in the human sense, the eval measures test behavior instead of real behavior.
 
 ##### The evidence
 
-- **Models are good at spotting tests.** Needham et al. (2025) built a benchmark of 1,000 prompts and transcripts from 61 datasets, covering public benchmarks, real deployment interactions, and agent trajectories. Frontier models identified evaluations far above chance. Gemini 2.5 Pro reached an AUC of 0.83, compared to 0.92 for a human baseline. Models were better at this in agentic settings than in chat.  
-- **Recognized at the international level.** The International AI Safety Report 2026 notes it has become more common for models to distinguish test settings from real-world deployment and to exploit loopholes in evaluations, which makes results harder to interpret (Bengio et al., 2026).  
-- **The capacity to underperform exists.** van der Weij et al. (2025) showed models can be prompted or fine-tuned to strategically underperform on specific evaluations.
+- **Models are good at spotting tests.** Needham et al. (2025) built a benchmark of 1,000 prompts and transcripts from 61 datasets, covering public benchmarks, real deployment interactions, and agent trajectories. Frontier models identified evaluations clearly better than chance. Gemini 2.5 Pro reached an AUC of 0.83 (0.5 is chance), compared to 0.92 for a human baseline, which was the paper's own authors and which they call an approximate upper bound. Models were better at this in agentic settings than in chat. The benchmark tests whether models can classify transcripts, not whether they change their behavior when they do.  
+- **Recognized at the international level.** The International AI Safety Report 2026 notes it has become more common for models to distinguish test settings from real-world deployment and to exploit loopholes in evaluations, which means dangerous capabilities could go undetected before deployment (Bengio et al., 2026).  
+- **The capacity to underperform exists.** van der Weij et al. (2025) showed that models can be prompted or fine-tuned to underperform on specific multiple-choice evaluations. That shows an evaluation can be gamed when a model is told to. It does not show that models detect tests or do this on their own.
 
 ##### Use it
 
@@ -1036,7 +1042,7 @@ People act differently when they know they're being watched. Models trained on h
 
 ##### Origins
 
-"Evaluation awareness" is the term used in recent AI safety research. It's a young area, and several key findings are preprints, so expect this page to change.
+"Evaluation awareness" is the term used in recent AI safety research, for example by Needham et al. (2025). It's a young area, and several key findings are preprints, so expect this page to change.
 
 ##### Sources
 
@@ -1061,9 +1067,9 @@ Models learn patterns from the data they're trained on and get tested on data th
 
 ##### The evidence
 
-- **Same recipe, lower scores.** Recht et al. (2019) rebuilt the CIFAR-10 and ImageNet test sets by following the original collection process. Accuracy fell 3% to 15% on CIFAR-10 and 11% to 14% on ImageNet. Small differences in how data was gathered were enough.  
+- **Same recipe, lower scores.** Recht et al. (2019) rebuilt the CIFAR-10 and ImageNet test sets by following the original collection process. Accuracy fell by 3 to 15 percentage points on CIFAR-10 and 11 to 14 points on ImageNet. The authors traced the drop to the new test sets being slightly harder, not to overfitting to the old ones. Engstrom et al. (2020) argued that statistical bias in how the new ImageNet set was built explains most of its drop, so the true size of the shift is debated.  
 - **Real-world shifts, measured.** Koh et al. (2021) built WILDS, a benchmark of ten datasets with real distribution shifts across hospitals, cameras, regions, and time. Models showed large gaps between in-distribution and out-of-distribution performance.  
-- **A clinical example.** Wong et al. (2021) found a widely deployed sepsis model performed far worse at an independent health system than its developer reported.  
+- **A caution from a clinical model.** Wong et al. (2021) tested a widely deployed sepsis model at one health system and found an AUC of 0.63, against 0.76 to 0.83 in the developer's documentation. They attribute much of the gap to how they handled the timing of sepsis predictions, not to a different patient population. It shows why a vendor's reported figure shouldn't be assumed to hold at your site, but it is not a clean case of distribution shift.  
 - **Drift erodes gains.** Hand (2006) argued that population drift over time is one reason gains from sophisticated models shrink in practice.
 
 ##### Use it
@@ -1075,10 +1081,11 @@ Models learn patterns from the data they're trained on and get tested on data th
 
 ##### Origins
 
-Distribution shift, also called dataset shift, is a long-standing problem in statistics and machine learning. It's closely related to external validity in the social and medical sciences.
+Distribution shift, also called dataset shift, is a long-standing problem in statistics and machine learning. It is comparable to external validity in the social and medical sciences, which asks whether findings carry over to other settings.
 
 ##### Sources
 
+- Engstrom, L., Ilyas, A., Santurkar, S., Tsipras, D., Steinhardt, J., & Madry, A. (2020). [Identifying statistical bias in dataset replication](https://arxiv.org/abs/2005.09619). Proceedings of the International Conference on Machine Learning (ICML 2020).  
 - Hand, D. J. (2006). [Classifier technology and the illusion of progress](https://arxiv.org/abs/math/0606441). Statistical Science, 21(1), 1-14.  
 - Koh, P. W., et al. (2021). [WILDS: A benchmark of in-the-wild distribution shifts](https://arxiv.org/abs/2012.07421). Proceedings of the International Conference on Machine Learning (ICML 2021).  
 - Recht, B., Roelofs, R., Schmidt, L., & Shankar, V. (2019). [Do ImageNet classifiers generalize to ImageNet?](https://arxiv.org/abs/1902.10811) Proceedings of the International Conference on Machine Learning (ICML 2019).  
@@ -1101,12 +1108,12 @@ Lab evaluation holds everything constant except the model. The field holds nothi
 
 ##### The evidence
 
-- **Accurate in validation, rough in clinics.** Beede et al. (2020) studied a deep learning system for detecting diabetic retinopathy deployed in 11 clinics in Thailand. The system had performed well in validation. In the clinics, the authors found that socio-environmental factors, like lighting conditions and internet speed, affected model performance, nursing workflows, and the patient experience. Many images were rejected as ungradable.  
+- **A deployed system meets real clinics.** Beede et al. (2020) studied a deep learning system for detecting diabetic retinopathy through observation and interviews with nurses at 11 clinics in Thailand where it was in use. They found that socio-environmental factors, such as lighting, affected model performance, nursing workflows, and the patient experience, and that the system's data-quality thresholds clashed with the quality of images those clinics could produce.  
 - **Three layers of evaluation.** Weidinger et al. (2023) propose evaluating generative AI at the capability layer, the human interaction layer, and the systemic impact layer, and note that most safety evaluation so far has focused on the first.  
 - **Narrow the sociotechnical gap.** Liao and Xiao (2023) frame evaluation as narrowing the gap between what gets measured and what real people need from a system.  
 - **Abstraction traps.** Selbst et al. (2019) describe traps that come from abstracting away social context, including assuming a solution built for one context will work in another.  
-- **The official name for it.** The International AI Safety Report 2026 describes an "evaluation gap": pre-deployment test results are not always strongly predictive of real-world capabilities or risks (Bengio et al., 2026).  
-- **Practice lags need.** Hutchinson et al. (2022) found ML evaluation practice often fails to reflect the needs of real application contexts.
+- **A name from the International AI Safety Report.** The International AI Safety Report 2026 describes an "evaluation gap": performance on pre-deployment tests does not reliably predict real-world usefulness or risk (Bengio et al., 2026).  
+- **Narrow evaluation practice.** Hutchinson et al. (2022), studying papers at major computer-vision and language-processing conferences, found that evaluations concentrate on a narrow range of decontextualized predictive behaviors, using a handful of methods, metrics, and test distributions.
 
 ##### Use it
 
@@ -1114,11 +1121,11 @@ Lab evaluation holds everything constant except the model. The field holds nothi
 - Evaluate the workflow, not just the model: time to complete, error recovery, handoffs.  
 - Pilot in a small number of real sites before scaling.  
 - Define success with the people affected, including people who never touch the interface.  
-- Bring in UX research methods like contextual inquiry and diary studies. They were built for exactly this gap.
+- Bring in UX research methods like contextual inquiry and diary studies. They are established ways to study how people use a system in context.
 
 ##### Origins
 
-"The Lab-to-Field Gap" is this site's name. Researchers also call it the sociotechnical gap or the evaluation gap.
+"The Lab-to-Field Gap" is this site's name. Related terms include the socio-technical gap (Liao and Xiao, 2023) and the "evaluation gap" (International AI Safety Report 2026). They overlap but are not identical.
 
 ##### Sources
 
@@ -1136,21 +1143,21 @@ Lab evaluation holds everything constant except the model. The field holds nothi
 ##### Takeaways
 
 - A strong model doesn't guarantee a strong human-AI team.  
-- In a large meta-analysis, human-AI combinations did worse on average than the best of humans or AI alone, with losses on decision tasks and gains on creative tasks.  
-- Explanations can raise trust without raising accuracy.  
+- In a large meta-analysis of studies from 2020 to mid-2023, human-AI combinations did worse on average than the best of humans or AI alone, with losses on decision tasks and gains on content-creation tasks.  
+- Explanations can make people more likely to accept AI advice, right or wrong, without making the team more accurate.  
 - Measure overreliance (accepting wrong AI advice) and underreliance (ignoring right advice).
 
 ##### What it means
 
-Most AI products put a person in the loop. That person decides whether to accept, edit, or ignore what the AI suggests. So the thing that produces outcomes is the pair, not the model. A model that's 90% accurate paired with a person who can't tell when it's wrong can produce worse results than either one alone.
+Most AI products put a person in the loop. That person decides whether to accept, edit, or ignore what the AI suggests. So the thing that produces outcomes is the pair, not the model. A model that's 90% accurate paired with a person who can't tell when it's wrong gains little from the pairing. If the person accepts everything, the team is only as good as the model. If they sometimes override answers the model had right, it is worse.
 
 ##### The evidence
 
-- **Combinations often underperform.** Vaccaro, Almaatouq, and Malone (2024) analyzed 106 experimental studies with 370 effect sizes. On average, human-AI combinations performed worse than the best of humans or AI alone (Hedges' g \= \-0.23). Combinations lost ground on decision-making tasks and gained on content creation tasks. When humans outperformed the AI alone, combining helped. When the AI outperformed humans alone, combining hurt.  
-- **Explanations increase acceptance, right or wrong.** Bansal et al. (2021) found that AI explanations increased the chance people accepted the AI's recommendation regardless of whether it was correct. AI assistance did produce some complementary gains, but explanations didn't add to them.  
-- **Friction can help.** Buçinca, Malaya, and Gajos (2021) found that cognitive forcing functions, which prompt people to think before seeing the AI's answer, reduced overreliance, though people rated those designs less favorably.  
+- **Combinations often underperform.** Vaccaro, Almaatouq, and Malone (2024) analyzed 106 experimental studies with 370 effect sizes, published between January 2020 and June 2023. On average, human-AI combinations performed worse than the best of humans or AI alone (Hedges' g \= \-0.23). Combinations lost ground on decision-making tasks and gained on content creation tasks. When humans outperformed the AI alone, combining helped. When the AI outperformed humans alone, combining hurt.  
+- **Explanations increase acceptance, right or wrong.** Bansal et al. (2021) found, in studies where the AI was about as accurate as the people, that AI explanations increased the chance people accepted the AI's recommendation regardless of whether it was correct. AI assistance did produce some complementary gains, but explanations didn't add to them.  
+- **Friction can help.** Buçinca, Malaya, and Gajos (2021) found, in an experiment with 199 participants, that cognitive forcing functions, which make people stop and think before accepting an AI suggestion, reduced overreliance compared with simple explanations. People rated those designs less favorably, and the benefit was larger for people with higher Need for Cognition, so it helped some people more than others.  
 - **An old problem.** Parasuraman and Riley (1997) described use, misuse, disuse, and abuse of automation decades before generative AI.  
-- **Design guidance.** Amershi et al. (2019) proposed 18 guidelines for human-AI interaction, many of which, like making clear how well the system can do what it does, affect how teams perform.
+- **Design guidance.** Amershi et al. (2019) proposed 18 guidelines for human-AI interaction, such as making clear how well the system can do what it does, and checked them with 49 design practitioners against 20 AI-infused products. They are design guidance, not a measured effect on team performance.
 
 ##### Use it
 
@@ -1167,7 +1174,7 @@ Most AI products put a person in the loop. That person decides whether to accept
 
 - Amershi, S., et al. (2019). [Guidelines for human-AI interaction](https://doi.org/10.1145/3290605.3300233). Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2019).  
 - Bansal, G., Wu, T., Zhou, J., Fok, R., Nushi, B., Kamar, E., Ribeiro, M. T., & Weld, D. (2021). [Does the whole exceed its parts? The effect of AI explanations on complementary team performance](https://arxiv.org/abs/2006.14779). Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2021).  
-- Buçinca, Z., Malaya, M. B., & Gajos, K. Z. (2021). [To trust or to think: Cognitive forcing functions can reduce overreliance on AI in AI-assisted decision-making](https://arxiv.org/abs/2102.09692). Proceedings of the ACM on Human-Computer Interaction, 5(CSCW1), Article 188\.  
+- Buçinca, Z., Malaya, M. B., & Gajos, K. Z. (2021). [To trust or to think: Cognitive forcing functions can reduce overreliance on AI in AI-assisted decision-making](https://arxiv.org/abs/2102.09692). Proceedings of the ACM on Human-Computer Interaction, 5(CSCW1), 1-21.  
 - Parasuraman, R., & Riley, V. (1997). [Humans and automation: Use, misuse, disuse, abuse](https://doi.org/10.1518/001872097778543886). Human Factors, 39(2), 230-253.  
 - Vaccaro, M., Almaatouq, A., & Malone, T. (2024). [When combinations of humans and AI are useful: A systematic review and meta-analysis](https://doi.org/10.1038/s41562-024-02024-1). Nature Human Behaviour, 8, 2293-2303.
 
@@ -1178,8 +1185,8 @@ Most AI products put a person in the loop. That person decides whether to accept
 ##### Takeaways
 
 - AI can excel at a task that seems hard and fail at one that seems easy.  
-- People can't see where the edge is, so they carry trust from tasks inside it to tasks outside it.  
-- Inside the frontier, AI help improves speed and quality. Outside it, AI help can make people worse.  
+- The edge is hard to see, so people can end up carrying trust from tasks inside it to tasks outside it.  
+- Inside the frontier, AI help improved speed and quality. On a task built to sit outside it, AI help made people less accurate.  
 - Map the frontier for your own tasks with direct tests. Don't infer it from general benchmarks.
 
 ##### What it means
@@ -1188,9 +1195,9 @@ Human skill tends to be smooth: someone who can write a strong strategy memo can
 
 ##### The evidence
 
-- **Field experiment with consultants.** Dell'Acqua et al. (2023) ran an experiment with 758 Boston Consulting Group consultants on 18 realistic tasks. On tasks inside the AI's frontier, consultants using GPT-4 completed 12.2% more tasks, worked 25.1% faster, and produced results rated more than 40% higher in quality. On a task outside the frontier, consultants using AI were 19 percentage points less likely to produce correct solutions than those without it. The study was later published in Organization Science (Dell'Acqua et al., 2026).  
-- **Task type matters.** Vaccaro, Almaatouq, and Malone (2024) found human-AI combinations tended to lose ground on decision tasks and gain on creation tasks, another sign that value depends heavily on which task you're looking at.  
-- **An older version of the idea.** Hans Moravec (1988) observed that it's comparatively easy to get computers to perform well on things like intelligence tests and board games, and hard to give them the perception and mobility skills of a one-year-old.
+- **Field experiment with consultants.** Dell'Acqua et al. (2023) ran two preregistered randomized experiments with 758 Boston Consulting Group consultants, each person in only one. Each experiment had a no-AI group and two GPT-4 groups: GPT-4 alone, and GPT-4 with a prompt-engineering overview. In the first, 385 consultants did 18 realistic tasks chosen to be inside GPT-4's abilities. Those using GPT-4 completed 12.2% more tasks on average, finished 25.1% faster (timed on the first 17 tasks), and produced work that human graders rated about 38% to 43% higher in quality. In the second, 373 consultants did one business problem deliberately designed so that GPT-4 would err. On it, 84.5% of the no-AI group got a correct answer, against about 60% and 70% of the two AI groups, an average gap of 19 percentage points. Those figures are from the 2023 working paper. The published version (Dell'Acqua et al., 2026) reports the same speed and task-completion figures, describes quality as significantly improved without giving a percentage, and words the outside-the-frontier result as 19% less likely to be correct.  
+- **Task type matters.** Vaccaro, Almaatouq, and Malone (2024), in a meta-analysis that is not about the jagged frontier itself, found human-AI combinations tended to lose ground on decision tasks and gain on content-creation tasks, another sign that value depends heavily on which task you're looking at.  
+- **An older version of the idea.** Hans Moravec (1988) observed that it's comparatively easy to get computers to perform at an adult level on intelligence tests or checkers, and hard to give them the perception and mobility skills of a one-year-old.
 
 ##### Use it
 
@@ -1201,12 +1208,12 @@ Human skill tends to be smooth: someone who can write a strong strategy memo can
 
 ##### Origins
 
-The term comes from Fabrizio Dell'Acqua, Ethan Mollick, Karim Lakhani, and colleagues' field experiment, first released as a Harvard Business School working paper in 2023\.
+The term comes from Fabrizio Dell'Acqua, Ethan Mollick, Karim Lakhani, and colleagues' field experiment, first released as a Harvard Business School working paper in 2023 and published in Organization Science in 2026\.
 
 ##### Sources
 
-- Dell'Acqua, F., McFowland III, E., Mollick, E., Lifshitz, H., Kellogg, K., Rajendran, S., Krayer, L., Candelon, F., & Lakhani, K. R. (2026). [Navigating the jagged technological frontier: Field experimental evidence of the effects of artificial intelligence on knowledge worker productivity and quality](https://doi.org/10.1287/orsc.2025.21838). Organization Science, 37(2).  
-- Dell'Acqua, F., McFowland III, E., Mollick, E., Lifshitz-Assaf, H., Kellogg, K., Rajendran, S., Krayer, L., Candelon, F., & Lakhani, K. R. (2023). [Navigating the jagged technological frontier: Field experimental evidence of the effects of AI on knowledge worker productivity and quality](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321). Harvard Business School Working Paper 24-013. *(Working paper)*  
+- Dell'Acqua, F., McFowland III, E., Mollick, E., Lifshitz, H., Kellogg, K., Rajendran, S., Krayer, L., Candelon, F., & Lakhani, K. R. (2026). [Navigating the jagged technological frontier: Field experimental evidence of the effects of artificial intelligence on knowledge worker productivity and quality](https://doi.org/10.1287/orsc.2025.21838). Organization Science, 37(2), 403-423.  
+- Dell'Acqua, F., McFowland III, E., Mollick, E., Lifshitz-Assaf, H., Kellogg, K., Rajendran, S., Krayer, L., Candelon, F., & Lakhani, K. R. (2023). [Navigating the jagged technological frontier: Field experimental evidence of the effects of AI on knowledge worker productivity and quality](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321). Harvard Business School Working Paper 24-013 (an earlier version of the study published in Organization Science, 2026). *(Working paper)*  
 - Moravec, H. (1988). Mind children: The future of robot and human intelligence. Harvard University Press. *(Book)*  
 - Vaccaro, M., Almaatouq, A., & Malone, T. (2024). [When combinations of humans and AI are useful: A systematic review and meta-analysis](https://doi.org/10.1038/s41562-024-02024-1). Nature Human Behaviour, 8, 2293-2303.
 
@@ -1220,12 +1227,12 @@ Perfect evaluation doesn't exist. What you're after is evidence that's good enou
 
 #### 1\. Match the rigor to the stakes
 
-Not every AI feature needs a full evaluation program. A tool that drafts internal meeting notes and a tool that flags patients for sepsis don't deserve the same process. The NIST AI Risk Management Framework (2023) says policies and resources should be prioritized by risk level and potential impact, and notes that trying to eliminate all negative risk can be counterproductive. The European Union's AI Act (2024) takes the same risk-based approach, with its heaviest requirements reserved for high-risk uses.
+Not every AI feature needs a full evaluation program. A tool that drafts internal meeting notes and a tool that flags patients for sepsis don't deserve the same process. The NIST AI Risk Management Framework (2023) says policies and resources should be prioritized by risk level and potential impact, and notes that trying to eliminate all negative risk can be counterproductive. The European Union's AI Act (2024) is also risk-based: some practices are banned outright, and its most extensive obligations fall on high-risk systems.
 
 | Tier | Looks like | Minimum evidence before launch | Patterns to lean on |
 | :---- | :---- | :---- | :---- |
 | Low | Internal, easy to undo, a person reviews every output | A saved set of real examples, a team review of outputs, a named owner | The Construct Gap, Criteria Drift |
-| Medium | Customer-facing, reversible, moderate cost of errors | A locked test set, a rubric, a baseline, multiple runs, one or two slices, an eval card, a staged rollout | Prompt Sensitivity, Once Is Not Reliable, The Baseline Rule, The Averaging Trap |
+| Medium | Customer-facing, reversible, moderate cost of errors | A locked test set, a rubric, a baseline, multiple runs, an interval or paired comparison for every headline comparison, one or two slices, an eval card, a staged rollout | Prompt Sensitivity, Once Is Not Reliable, The Baseline Rule, The Averaging Trap |
 | High | Affects health, money, safety, rights, or access; hard to reverse | Everything above, plus validated graders, confidence intervals, subgroup analysis, red teaming, a field pilot, independent review, and post-launch monitoring | All of them, especially The Functionality Fallacy, Presence, Not Absence, and The Lab-to-Field Gap |
 
 Engineers building LLM features have asked this question directly: where's the line between enough evidence and overspending chasing perfection (Parnin et al., 2025)? Tiers give the team an answer they agreed on in advance, instead of relitigating it for every launch.
@@ -1234,7 +1241,7 @@ Engineers building LLM features have asked this question directly: where's the l
 
 Every team starts by trying the thing and seeing how it feels. That's fine. In interviews with 19 practitioners building LLM products, van der Maden et al. (2026) found informal "vibe checks" described as "irreplaceable, they are the first line of evaluation." The problem isn't vibe checks. It's stopping there.
 
-The move is to formalize gradually. Save the examples you tried. Write down what you were looking for. When the same note shows up three times, it's a criterion. Madaio et al. (2020) found that checklists can give teams infrastructure for formalizing ad hoc processes, as long as they're grounded in practitioners' real needs. Otherwise they get misused.
+The move is to formalize gradually. Save the examples you tried. Write down what you were looking for. When the same note shows up three times, it's a criterion. Madaio et al. (2020) found that checklists can give teams infrastructure for formalizing ad hoc processes, as long as they're grounded in practitioners' real needs. Otherwise they can be misused.
 
 #### 3\. Tie every eval to a decision
 
@@ -1260,7 +1267,7 @@ The fastest way to build shared judgment is to read real outputs as a group: pro
 
 Keep the session honest. Wu et al. (2019) found that the common practice of eyeballing a small sample of errors can lead to biased, incomplete conclusions. They recommend defining error groups precisely, looking at enough examples (including successes, not just failures), and testing your hypothesis about what causes an error instead of assuming it.
 
-Bring in domain experts early. Madaio et al. (2022) found that lack of engagement with stakeholders and domain experts was one of the main organizational barriers to meaningful evaluation.
+Bring in domain experts early. Madaio et al. (2022) found that lack of engagement with stakeholders and domain experts was one of the main organizational barriers to meaningful fairness evaluation. Their study covered disaggregated fairness assessments, but the lesson carries over.
 
 #### 6\. Give it an owner, not a police force
 
@@ -1272,7 +1279,7 @@ When evaluation is everyone's job, it's no one's. Rakova et al. (2021) interview
 
 #### 7\. Make bad news safe to share
 
-An eval that finds a problem is doing its job. If finding one feels like getting someone in trouble, people stop looking. Edmondson (1999) found that psychological safety, "a shared belief that the team is safe for interpersonal risk taking," was linked to learning behavior in work teams.
+An eval that finds a problem is doing its job. If finding one feels like getting someone in trouble, people stop looking. Edmondson (1999) found that psychological safety, "a shared belief held by members of a team that the team is safe for interpersonal risk taking," was linked to learning behavior in work teams.
 
 - Celebrate failures found before launch. That's the cheapest time to find them.  
 - Run blameless reviews when something slips through. Google's site reliability practice treats postmortems as a way to learn from incidents, not to assign blame (Beyer et al., 2016).  
@@ -1297,7 +1304,7 @@ That's not an excuse to skip pre-launch testing. It's a reason to plan for what 
 
 - **Roll out in stages.** Internal users, then a small percentage of customers, then more. Controlled online experiments let you measure real impact while limiting exposure (Kohavi et al., 2020).  
 - **Set an error budget.** Borrowed from site reliability engineering (Beyer et al., 2016): agree ahead of time on an acceptable failure rate, and on what the team does when it's exceeded.  
-- **Don't wait for complaints.** In a survey of industry practitioners, about half said their teams had found serious fairness issues only after deploying a system. One engineer described the default as putting the model out there, and "then you'll know if there's fairness issues if someone raises hell online" (Holstein et al., 2019). Internal audits across the development lifecycle are the proactive alternative (Raji et al., 2020).
+- **Don't wait for complaints.** In Holstein et al.'s (2019) study of fairness practice, 51% of survey respondents rated it at least "very" accurate that teams often discovered serious issues only after deploying a system in the real world. That is agreement with a statement, not a count of teams. One interviewed engineer described the default as putting the model out there, and "then you'll know if there's fairness issues if someone raises hell online." Internal audits across the development lifecycle are the proactive alternative (Raji et al., 2020).
 
 #### 10\. Use the patterns as questions, not weapons
 
@@ -1311,7 +1318,7 @@ And don't let the perfect eval block a good one. Breck et al. (2017) framed prod
 
 ### A maturity path
 
-Most teams move through these stages. Van der Maden et al. (2026) describe it as a formalization journey. Skipping ahead rarely sticks, so aim for the next stage, not the last one.
+This five-stage path is this site's own model, not an empirically observed sequence. Van der Maden et al. (2026) found practitioners at various points on a journey from vibe checks toward systematic evaluation, so expect different features, and different teams, to sit at different stages. Aim for the next stage, not the last one.
 
 | Stage | What it looks like | Next small step |
 | :---- | :---- | :---- |
@@ -1327,7 +1334,7 @@ Most teams move through these stages. Van der Maden et al. (2026) describe it as
 
 **Week 2\. Define.** Write the construct in one sentence. Draft a rubric from the week 1 notes. Pick a baseline. Write one decision rule.
 
-**Week 3\. Measure.** Build a small locked test set. Run it with three prompt variants and three runs each. Compute simple confidence intervals. Break results down by one slice that matters.
+**Week 3\. Measure.** Build a small locked test set. Run it with three prompt variants and three runs each. Count each test item once: average the runs for an item, then compute simple confidence intervals across items. Extra runs reduce noise on each item, but they do not add test items. Break results down by one slice that matters.
 
 **Week 4\. Embed.** Add an eval card to the launch review. Name an owner. Set a rerun trigger, like every model or prompt change. Share one finding with the wider team.
 
@@ -1347,20 +1354,20 @@ Small teams will combine these. What matters is that each job has a name next to
 
 | You hear | Try |
 | :---- | :---- |
-| "We don't have time." | Start with 30 examples and one hour. Finding the problem after launch costs more. |
+| "We don't have time." | Start with 30 examples and one hour. That is enough to see problems, not to compare systems. Finding the problem after launch costs more. |
 | "The model changes every month anyway." | That's why you want a small canary set you can rerun in minutes. |
 | "Our users will tell us if something's wrong." | Some will, often late and in public. User feedback is one input, not the whole picture. |
 | "The benchmark says this model is the best." | Best at that benchmark. Let's check it on our data. |
 | "Evaluation will slow us down." | Match the effort to the tier, and ship in stages so you learn while you ship. |
 | "Quality is subjective. You can't measure it." | Then let's define what we mean, write it down, and see whether two people agree. |
-| "The LLM judge is good enough." | It might be. Let's check it against 50 human labels first. |
+| "The LLM judge is good enough." | It might be. Let's check it against some human labels first. Fifty is a first screen, not proof, so label more for the cases that matter most. |
 
 ### References
 
 - Beyer, B., Jones, C., Petoff, J., & Murphy, N. R. (Eds.) (2016). [Site reliability engineering: How Google runs production systems](https://sre.google/sre-book/table-of-contents/). O'Reilly Media. *(Book)*  
 - Breck, E., Cai, S., Nielsen, E., Salib, M., & Sculley, D. (2017). [The ML test score: A rubric for ML production readiness and technical debt reduction](https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/). Proceedings of the IEEE International Conference on Big Data.  
 - Edmondson, A. (1999). [Psychological safety and learning behavior in work teams](https://doi.org/10.2307/2666999). Administrative Science Quarterly, 44(2), 350-383.  
-- European Union (2024). [Regulation (EU) 2024/1689 laying down harmonised rules on artificial intelligence (Artificial Intelligence Act)](https://eur-lex.europa.eu/eli/reg/2024/1689/oj). Official Journal of the European Union. *(Report)*  
+- European Union (2024). [Regulation (EU) 2024/1689 laying down harmonised rules on artificial intelligence (Artificial Intelligence Act)](https://eur-lex.europa.eu/eli/reg/2024/1689/oj). Official Journal of the European Union. *(Regulation)*  
 - Holstein, K., Wortman Vaughan, J., Daumé III, H., Dudík, M., & Wallach, H. (2019). [Improving fairness in machine learning systems: What do industry practitioners need?](https://arxiv.org/abs/1812.05239) Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2019).  
 - Kohavi, R., Tang, D., & Xu, Y. (2020). Trustworthy online controlled experiments: A practical guide to A/B testing. Cambridge University Press. *(Book)*  
 - Madaio, M. A., Stark, L., Wortman Vaughan, J., & Wallach, H. (2020). [Co-designing checklists to understand organizational challenges and opportunities around fairness in AI](https://doi.org/10.1145/3313831.3376445). Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2020).  
@@ -1386,8 +1393,8 @@ Ten questions for any benchmark result, vendor deck, or launch post.
 
 1. **What decision is this number supposed to support?** If nobody can say, the number is marketing. *(The Functionality Fallacy)*  
 2. **What exactly was measured?** Read some test items. Does the benchmark's name match its contents? *(The Construct Gap)*  
-3. **Could the model have seen the test?** Check the benchmark's release date against the training cutoff. *(Data Contamination)*  
-4. **How big is the test, and where are the error bars?** A 2-point gap on 200 items is probably noise. *(No Error Bars, No Result)*  
+3. **Could the model have seen the test?** Check the benchmark's release date against the training cutoff, and ask where its items came from and what contamination check was run. A benchmark released after the cutoff can still reuse older public material, and one released before it is not proof of contamination, so the date alone is a weak test. *(Data Contamination)*  
+4. **How big is the test, and where are the error bars?** On 200 pass/fail items, a 2-point gap is only four net items and cannot be told from noise. Bigger gaps may count, depending on how often the two systems disagree. *(No Error Bars, No Result)*  
 5. **Better than what?** Was there a simple baseline, and was it tuned fairly? *(The Baseline Rule)*  
 6. **Who's hidden in the average?** Is there a breakdown by group, language, or input type? *(The Averaging Trap)*  
 7. **How many tries did this take?** Prompts, variants, runs, and seeds all count. *(Prompt Sensitivity, Once Is Not Reliable, Campbell's Law)*  
@@ -1405,9 +1412,9 @@ A practical sequence for product teams. Scale each step to the stakes.
 4. **Read outputs before you write the rubric.** Expect the rubric to change, and version it (Shankar et al., 2024).  
 5. **Pick metrics before running.** Include at least one continuous metric, plus cost and latency.  
 6. **Set baselines.** The current workflow, a simple method, and the model you use today.  
-7. **Vary prompts and repeat runs.** Three to five prompt variants and several samples per case is a reasonable floor (Sclar et al., 2024; Yao et al., 2025).  
-8. **Validate your graders.** Measure agreement between human raters. If you use an LLM judge, check it against human labels first (Zheng et al., 2023).  
-9. **Compute intervals and slice the results.** Report confidence intervals, paired comparisons, and the worst slice (Miller, 2024).  
+7. **Vary prompts and repeat runs.** As a rough rule of thumb (this guide's own, not a standard), start with at least three to five meaning-preserving prompt variants and three or more samples per case, and report the range. More variants keep widening the observed range (Sclar et al., 2024), so treat five as a minimum for a first look. Repeated trials show how reliable an agent is (Yao et al., 2025).  
+8. **Validate your graders.** Measure agreement between human raters, which shows whether the task is clear. If you use an LLM judge, also check it against human labels before relying on it (Zheng et al., 2023). A small label set gives an imprecise answer: 45 matches out of 50 is 90% agreement, but the 95% interval runs from about 79% to 96%. Use a chance-corrected measure such as Cohen's kappa, and label more for the slices and error types that matter most.  
+9. **Compute intervals and slice the results.** Report confidence intervals and paired comparisons (Miller, 2024). Choose the slices before you look, and show each slice's size and interval, because the lowest of many small slices will look bad partly by chance.  
 10. **Probe for what the score can't show.** Try shortcut tests, red teaming, and serious elicitation effort.  
 11. **Test people and AI together, in context.** When you can, compare human alone, AI alone, and human with AI (Vaccaro et al., 2024).  
 12. **Document it, rerun it, monitor it.** Write an eval card, save raw outputs, rerun a canary set on every model update, and watch production after launch.
@@ -1471,7 +1478,7 @@ Prompt variants and runs per case:
 
 &nbsp;
 
-Results (with 95% intervals and worst slice):
+Results (with 95% intervals; for each slice, its size and interval):
 
 Cost and latency:
 
@@ -1509,21 +1516,23 @@ Next rerun trigger:
 
 **Benchmark.** A fixed dataset and scoring method used to compare systems on a task.
 
-**Calibration.** How well a system's confidence matches how often it's actually right. A calibrated model that says "90% sure" is right about 90% of the time. Modern neural networks are often overconfident (Guo et al., 2017).
+**Calibration.** How well a system's confidence matches how often it's actually right. A calibrated model that says "90% sure" is right about 90% of the time. Guo et al. (2017) found that modern image and document classifiers were often overconfident. How well language models are calibrated varies with how they were trained.
 
 **Capability evaluation.** Testing what a system can do, as opposed to how people use it or what effects it has.
 
 **Complementary performance.** When a human-AI team does better than either the human or the AI alone (Bansal et al., 2021).
 
-**Confidence interval.** A range that likely contains the true value of a measurement, given sampling noise. See *No Error Bars, No Result*.
+**Confidence interval.** A range computed so that, if you repeated the same sampling and calculation many times, about 95% of such ranges (for a 95% interval) would contain the true value, such as a model's true accuracy on the kind of tasks the test set was drawn from. It does not mean there is a 95% chance that one particular range contains the truth. It captures sampling noise in the test items, not other sources of variation such as prompt wording or rater differences. See *No Error Bars, No Result*.
 
 **Construct.** An abstract quality you want to measure but can't observe directly, like reasoning or helpfulness (Cronbach & Meehl, 1955).
 
 **Construct validity.** How well a measurement actually captures the construct it claims to measure (Messick, 1995). See *The Construct Gap*.
 
-**Contamination.** When test data, or close copies of it, appear in a model's training data. See *Data Contamination*.
+**Contamination.** When test data, or close copies of it, appear in a model's training data. It is the language-model form of the broader problem of data leakage. See *Data Contamination*.
 
 **Criteria drift.** The way evaluation criteria change as people grade real outputs. See *Criteria Drift*.
+
+**Data leakage.** Information from outside the training data that improperly shapes a model or its evaluation, such as test examples in the training set, preprocessing done before the data is split, or inputs that give away the answer (Kapoor & Narayanan, 2023). See *Data Contamination*.
 
 **Datasheet.** A standard document describing how a dataset was created, what's in it, and what it's suited for (Gebru et al., 2021).
 
@@ -1545,9 +1554,9 @@ Next rerun trigger:
 
 **Ground truth.** The answer treated as correct in an evaluation. Often a human judgment with its own error. See *The Gold Standard Myth*.
 
-**Holdout set.** Data kept separate from training and tuning so it can give an unbiased estimate of performance (Dwork et al., 2015).
+**Holdout set.** Data kept separate from training and tuning so it can give an unbiased estimate of performance, as long as it is used sparingly. Reusing a holdout to guide many choices wears that protection away (Dwork et al., 2015). See *Adaptive Overfitting*.
 
-**Inter-rater agreement.** How often independent human raters give the same judgment. Low agreement means the task, the instructions, or the construct needs work.
+**Inter-rater agreement.** How consistently independent human raters judge the same items, ideally measured with a chance-corrected statistic such as Cohen's kappa or Krippendorff's alpha rather than raw percent agreement. Low agreement can mean unclear instructions, untrained raters, an ill-defined construct, or items that are genuinely ambiguous.
 
 **Leaderboard.** A public ranking of systems on one or more benchmarks. See *Campbell's Law*.
 
@@ -1563,11 +1572,11 @@ Next rerun trigger:
 
 **Pareto frontier.** The set of options where you can't improve one metric, like accuracy, without making another, like cost, worse. See *The Cost Frontier*.
 
-**pass@k and pass^k.** pass@k is the chance of at least one success in k attempts. pass^k is the chance of success on all k attempts, a measure of consistency (Yao et al., 2025). See *Once Is Not Reliable*.
+**pass@k and pass^k.** pass@k is the chance of at least one success in k attempts (Chen et al., 2021). pass^k is the chance of success on all k attempts, a measure of consistency (Yao et al., 2025). Both need at least k attempts per task to estimate. See *Once Is Not Reliable*.
 
 **Prompt sensitivity.** How much a model's results change with small changes to how a prompt is worded or formatted. See *Prompt Sensitivity*.
 
-**Red teaming.** Deliberately trying to make a system fail or cause harm, to find problems before others do.
+**Red teaming.** Deliberately trying to elicit failures or harmful outputs from a system in a controlled setting, to find problems before others do.
 
 **Reliability (measurement).** How consistent a measurement is when repeated. A measurement can be reliable and still not valid.
 
@@ -1575,7 +1584,7 @@ Next rerun trigger:
 
 **Risk tier.** A category that sets how much evaluation a system needs, based on its potential impact. Risk-based prioritization is central to the NIST AI Risk Management Framework (2023). See *Being Pragmatic*.
 
-**Sandbagging.** Strategic underperformance on an evaluation (van der Weij et al., 2025).
+**Sandbagging.** Strategic underperformance on an evaluation. Van der Weij et al. (2025) showed that language models can be prompted or fine-tuned to do this on dangerous-capability tests.
 
 **Saturation.** When top systems score near the maximum on a benchmark, so it no longer separates them. See *Benchmark Saturation*.
 
@@ -1596,11 +1605,13 @@ Next rerun trigger:
 - Bansal, G., Wu, T., Zhou, J., Fok, R., Nushi, B., Kamar, E., Ribeiro, M. T., & Weld, D. (2021). [Does the whole exceed its parts? The effect of AI explanations on complementary team performance](https://arxiv.org/abs/2006.14779). Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2021).  
 - Beyer, B., Jones, C., Petoff, J., & Murphy, N. R. (Eds.) (2016). [Site reliability engineering: How Google runs production systems](https://sre.google/sre-book/table-of-contents/). O'Reilly Media. *(Book)*  
 - Chiang, W.-L., et al. (2024). [Chatbot Arena: An open platform for evaluating LLMs by human preference](https://arxiv.org/abs/2403.04132). Proceedings of the International Conference on Machine Learning (ICML 2024).  
+- Chen, M., Tworek, J., Jun, H., Yuan, Q., et al. (2021). [Evaluating large language models trained on code](https://arxiv.org/abs/2107.03374). arXiv:2107.03374. *(Preprint)*  
 - Cronbach, L. J., & Meehl, P. E. (1955). [Construct validity in psychological tests](https://doi.org/10.1037/h0040957). Psychological Bulletin, 52(4), 281-302.  
 - Dwork, C., Feldman, V., Hardt, M., Pitassi, T., Reingold, O., & Roth, A. (2015). [The reusable holdout: Preserving validity in adaptive data analysis](https://doi.org/10.1126/science.aaa9375). Science, 349(6248), 636-638.  
 - Gebru, T., et al. (2021). [Datasheets for datasets](https://arxiv.org/abs/1803.09010). Communications of the ACM, 64(12), 86-92.  
 - Geirhos, R., Jacobsen, J.-H., Michaelis, C., Zemel, R., Brendel, W., Bethge, M., & Wichmann, F. A. (2020). [Shortcut learning in deep neural networks](https://arxiv.org/abs/2004.07780). Nature Machine Intelligence, 2, 665-673.  
 - Guo, C., Pleiss, G., Sun, Y., & Weinberger, K. Q. (2017). [On calibration of modern neural networks](https://arxiv.org/abs/1706.04599). Proceedings of the International Conference on Machine Learning (ICML 2017).  
+- Kapoor, S., & Narayanan, A. (2023). [Leakage and the reproducibility crisis in machine-learning-based science](https://doi.org/10.1016/j.patter.2023.100804). Patterns, 4(9), 100804\.  
 - Kohavi, R., Tang, D., & Xu, Y. (2020). Trustworthy online controlled experiments: A practical guide to A/B testing. Cambridge University Press. *(Book)*  
 - Messick, S. (1995). [Validity of psychological assessment: Validation of inferences from persons' responses and performances as scientific inquiry into score meaning](https://doi.org/10.1037/0003-066X.50.9.741). American Psychologist, 50(9), 741-749.  
 - Mitchell, M., et al. (2019). [Model cards for model reporting](https://arxiv.org/abs/1810.03993). Proceedings of the Conference on Fairness, Accountability, and Transparency (FAT\* 2019).  
@@ -1616,7 +1627,7 @@ Next rerun trigger:
 
 ## Bibliography
 
-109 sources. Preprints, reports, working papers, and books are labeled. Everything else is peer-reviewed or a classic in its field.
+115 works are cited across the guide: 96 on the pattern pages, and 19 more that appear only in the Overview, Being Pragmatic, Playbook or Glossary. A work counts once however many pages cite it, and two versions of one study count as one. Preprints, reports, regulations, working papers and books are labeled. Every other entry appeared in a peer-reviewed venue or is a long-established classic, except these, which carry their own tag: commentary pieces (Burnell et al., 2023, a Science Policy Forum article; Lin, 2019, an opinion paper in ACM SIGIR Forum; Lipton and Steinhardt, 2019, in the practitioner magazine ACM Queue); older classics that were not journal articles (Dijkstra, 1970, a technical note; Goodhart, 1975, a conference paper).
 
 - Adcock, R., & Collier, D. (2001). [Measurement validity: A shared standard for qualitative and quantitative research](https://doi.org/10.1017/S0003055401003100). American Political Science Review, 95(3), 529-546.  
   Cited in: The Construct Gap, Overview  
@@ -1626,6 +1637,8 @@ Next rerun trigger:
   Cited in: Goodhart's Law  
 - Aroyo, L., & Welty, C. (2015). [Truth is a lie: Crowd truth and the seven myths of human annotation](https://doi.org/10.1609/aimag.v36i1.2564). AI Magazine, 36(1), 15-24.  
   Cited in: The Gold Standard Myth  
+- Balloccu, S., Schmidtová, P., Lango, M., & Dušek, O. (2024). [Leak, cheat, repeat: Data contamination and evaluation malpractices in closed-source LLMs](https://aclanthology.org/2024.eacl-long.5/). Proceedings of EACL 2024 (Volume 1: Long Papers), 67-93.  
+  Cited in: Data Contamination  
 - Bansal, G., Wu, T., Zhou, J., Fok, R., Nushi, B., Kamar, E., Ribeiro, M. T., & Weld, D. (2021). [Does the whole exceed its parts? The effect of AI explanations on complementary team performance](https://arxiv.org/abs/2006.14779). Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2021).  
   Cited in: The Team Is the System, Glossary, Overview  
 - Bean, A. M., Kearns, R. O., Romanou, A., Hafner, F. S., Mayne, H., et al. (2025). [Measuring what matters: Construct validity in large language model benchmarks](https://arxiv.org/abs/2511.04703). Advances in Neural Information Processing Systems (NeurIPS 2025), Datasets and Benchmarks Track.  
@@ -1640,48 +1653,53 @@ Next rerun trigger:
   Cited in: Prompt Sensitivity, The Reproducibility Rule  
 - Bouthillier, X., et al. (2021). [Accounting for variance in machine learning benchmarks](https://arxiv.org/abs/2103.03098). Proceedings of Machine Learning and Systems (MLSys 2021).  
   Cited in: No Error Bars, No Result  
-- Bowman, S. R., & Dahl, G. E. (2021). [What will it take to fix benchmarking in natural language understanding?](https://arxiv.org/abs/2104.02145) Proceedings of NAACL-HLT 2021\.  
+- Bowman, S. R., & Dahl, G. E. (2021). [What will it take to fix benchmarking in natural language understanding?](https://arxiv.org/abs/2104.02145). Proceedings of NAACL-HLT 2021.  
   Cited in: Benchmark Saturation  
 - Breck, E., Cai, S., Nielsen, E., Salib, M., & Sculley, D. (2017). [The ML test score: A rubric for ML production readiness and technical debt reduction](https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/). Proceedings of the IEEE International Conference on Big Data.  
   Cited in: Being Pragmatic  
-- Buolamwini, J., & Gebru, T. (2018). [Gender shades: Intersectional accuracy disparities in commercial gender classification](https://proceedings.mlr.press/v81/buolamwini18a.html). Proceedings of the Conference on Fairness, Accountability and Transparency (FAT\* 2018), PMLR 81, 77-91.  
+- Buolamwini, J., & Gebru, T. (2018). [Gender shades: Intersectional accuracy disparities in commercial gender classification](https://proceedings.mlr.press/v81/buolamwini18a.html). Proceedings of the Conference on Fairness, Accountability and Transparency (FAT\\* 2018), PMLR 81, 77-91.  
   Cited in: The Averaging Trap  
-- Burnell, R., et al. (2023). [Rethink reporting of evaluation results in AI](https://doi.org/10.1126/science.adf6369). Science, 380(6641), 136-138.  
+- Burnell, R., et al. (2023). [Rethink reporting of evaluation results in AI](https://doi.org/10.1126/science.adf6369). Science, 380(6641), 136-138. *(Policy forum article)*  
   Cited in: The Averaging Trap, Overview  
-- Buçinca, Z., Malaya, M. B., & Gajos, K. Z. (2021). [To trust or to think: Cognitive forcing functions can reduce overreliance on AI in AI-assisted decision-making](https://arxiv.org/abs/2102.09692). Proceedings of the ACM on Human-Computer Interaction, 5(CSCW1), Article 188\.  
+- Buçinca, Z., Malaya, M. B., & Gajos, K. Z. (2021). [To trust or to think: Cognitive forcing functions can reduce overreliance on AI in AI-assisted decision-making](https://arxiv.org/abs/2102.09692). Proceedings of the ACM on Human-Computer Interaction, 5(CSCW1), 1-21.  
   Cited in: The Team Is the System  
 - Campbell, D. T. (1979). [Assessing the impact of planned social change](https://doi.org/10.1016/0149-7189\(79\)90048-X). Evaluation and Program Planning, 2(1), 67-90.  
   Cited in: Campbell's Law  
-- Card, D., Henderson, P., Khandelwal, U., Jia, R., Mahowald, K., & Jurafsky, D. (2020). [With little power comes great responsibility](https://arxiv.org/abs/2010.06595). Proceedings of EMNLP 2020\.  
+- Card, D., Henderson, P., Khandelwal, U., Jia, R., Mahowald, K., & Jurafsky, D. (2020). [With little power comes great responsibility](https://arxiv.org/abs/2010.06595). Proceedings of EMNLP 2020.  
   Cited in: No Error Bars, No Result  
 - Chang, Y., et al. (2024). [A survey on evaluation of large language models](https://arxiv.org/abs/2307.03109). ACM Transactions on Intelligent Systems and Technology, 15(3).  
   Cited in: Overview  
+- Chen, M., Tworek, J., Jun, H., Yuan, Q., et al. (2021). [Evaluating large language models trained on code](https://arxiv.org/abs/2107.03374). arXiv:2107.03374. *(Preprint)*  
+  Cited in: Glossary  
 - Chiang, W.-L., et al. (2024). [Chatbot Arena: An open platform for evaluating LLMs by human preference](https://arxiv.org/abs/2403.04132). Proceedings of the International Conference on Machine Learning (ICML 2024).  
   Cited in: Glossary, Overview  
-- Clark, E., August, T., Serrano, S., Haduong, N., Gururangan, S., & Smith, N. A. (2021). [All that's 'human' is not gold: Evaluating human evaluation of generated text](https://arxiv.org/abs/2107.00061). Proceedings of ACL-IJCNLP 2021\.  
+- Clark, E., August, T., Serrano, S., Haduong, N., Gururangan, S., & Smith, N. A. (2021). [All that's 'human' is not gold: Evaluating human evaluation of generated text](https://arxiv.org/abs/2107.00061). Proceedings of ACL-IJCNLP 2021.  
   Cited in: The Gold Standard Myth, Overview  
 - Cronbach, L. J., & Meehl, P. E. (1955). [Construct validity in psychological tests](https://doi.org/10.1037/h0040957). Psychological Bulletin, 52(4), 281-302.  
   Cited in: The Construct Gap, Glossary  
 - Dehghani, M., Tay, Y., Gritsenko, A. A., et al. (2021). [The benchmark lottery](https://arxiv.org/abs/2107.07002). arXiv:2107.07002. *(Preprint)*  
   Cited in: Campbell's Law, The Benchmark Lottery  
-- Dell'Acqua, F., McFowland III, E., Mollick, E., Lifshitz, H., Kellogg, K., Rajendran, S., Krayer, L., Candelon, F., & Lakhani, K. R. (2026). [Navigating the jagged technological frontier: Field experimental evidence of the effects of artificial intelligence on knowledge worker productivity and quality](https://doi.org/10.1287/orsc.2025.21838). Organization Science, 37(2).  
+- Dell'Acqua, F., McFowland III, E., Mollick, E., Lifshitz, H., Kellogg, K., Rajendran, S., Krayer, L., Candelon, F., & Lakhani, K. R. (2026). [Navigating the jagged technological frontier: Field experimental evidence of the effects of artificial intelligence on knowledge worker productivity and quality](https://doi.org/10.1287/orsc.2025.21838). Organization Science, 37(2), 403-423.  
   Cited in: The Jagged Frontier  
-- Dell'Acqua, F., McFowland III, E., Mollick, E., Lifshitz-Assaf, H., Kellogg, K., Rajendran, S., Krayer, L., Candelon, F., & Lakhani, K. R. (2023). [Navigating the jagged technological frontier: Field experimental evidence of the effects of AI on knowledge worker productivity and quality](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321). Harvard Business School Working Paper 24-013. *(Working paper)*  
-  Cited in: The Jagged Frontier  
-- Dijkstra, E. W. (1970). [Notes on structured programming (EWD249)](https://www.cs.utexas.edu/~EWD/transcriptions/EWD02xx/EWD249/EWD249.html). Technological University Eindhoven (first circulated 1969; second edition April 1970).  
+  Also circulated as: Navigating the jagged technological frontier: Field experimental evidence of the effects of AI on knowledge worker productivity and quality (2023), Harvard Business School Working Paper 24-013 (an earlier version of the study published in Organization Science, 2026).  
+- Dijkstra, E. W. (1970). [Notes on structured programming (EWD249)](https://www.cs.utexas.edu/~EWD/transcriptions/EWD02xx/EWD249/EWD249.html). Technological University Eindhoven (first circulated 1969; second edition April 1970). *(Technical note)*  
   Cited in: Presence, Not Absence  
-- Dror, R., et al. (2018). [The hitchhiker's guide to testing statistical significance in natural language processing](https://aclanthology.org/P18-1128/). Proceedings of ACL 2018\.  
+- Dror, R., et al. (2018). [The hitchhiker's guide to testing statistical significance in natural language processing](https://aclanthology.org/P18-1128/). Proceedings of ACL 2018.  
   Cited in: No Error Bars, No Result  
 - Dwork, C., Feldman, V., Hardt, M., Pitassi, T., Reingold, O., & Roth, A. (2015). [The reusable holdout: Preserving validity in adaptive data analysis](https://doi.org/10.1126/science.aaa9375). Science, 349(6248), 636-638.  
   Cited in: Adaptive Overfitting, Glossary  
 - Edmondson, A. (1999). [Psychological safety and learning behavior in work teams](https://doi.org/10.2307/2666999). Administrative Science Quarterly, 44(2), 350-383.  
   Cited in: Being Pragmatic  
+- Engstrom, L., Ilyas, A., Santurkar, S., Tsipras, D., Steinhardt, J., & Madry, A. (2020). [Identifying statistical bias in dataset replication](https://arxiv.org/abs/2005.09619). Proceedings of the International Conference on Machine Learning (ICML 2020).  
+  Cited in: Distribution Shift  
 - Eriksson, M., et al. (2025). [Can we trust AI benchmarks? An interdisciplinary review of current issues in AI evaluation](https://arxiv.org/abs/2502.06559). Proceedings of the AAAI/ACM Conference on AI, Ethics, and Society (AIES 2025).  
   Cited in: The Benchmark Lottery, Overview  
-- Ethayarajh, K., & Jurafsky, D. (2020). [Utility is in the eye of the user: A critique of NLP leaderboards](https://arxiv.org/abs/2009.13888). Proceedings of EMNLP 2020\.  
+- Ethayarajh, K., & Jurafsky, D. (2020). [Utility is in the eye of the user: A critique of NLP leaderboards](https://arxiv.org/abs/2009.13888). Proceedings of EMNLP 2020.  
   Cited in: Campbell's Law, The Cost Frontier, The Benchmark Lottery  
-- European Union (2024). [Regulation (EU) 2024/1689 laying down harmonised rules on artificial intelligence (Artificial Intelligence Act)](https://eur-lex.europa.eu/eli/reg/2024/1689/oj). Official Journal of the European Union. *(Report)*  
+- European Union (2024). [Regulation (EU) 2024/1689 laying down harmonised rules on artificial intelligence (Artificial Intelligence Act)](https://eur-lex.europa.eu/eli/reg/2024/1689/oj). Official Journal of the European Union. *(Regulation)*  
   Cited in: Being Pragmatic  
+- Feng, S., Wallace, E., & Boyd-Graber, J. (2019). [Misleading failures of partial-input baselines](https://aclanthology.org/P19-1554/). Proceedings of ACL 2019.  
+  Cited in: The Clever Hans Effect  
 - Ferrari Dacrema, M., Cremonesi, P., & Jannach, D. (2019). [Are we really making much progress? A worrying analysis of recent neural recommendation approaches](https://arxiv.org/abs/1907.06902). Proceedings of the ACM Conference on Recommender Systems (RecSys 2019).  
   Cited in: The Baseline Rule  
 - Ganguli, D., et al. (2022). [Red teaming language models to reduce harms: Methods, scaling behaviors, and lessons learned](https://arxiv.org/abs/2209.07858). arXiv:2209.07858. *(Preprint)*  
@@ -1692,49 +1710,49 @@ Next rerun trigger:
   Cited in: The Reproducibility Rule, Glossary  
 - Geirhos, R., Jacobsen, J.-H., Michaelis, C., Zemel, R., Brendel, W., Bethge, M., & Wichmann, F. A. (2020). [Shortcut learning in deep neural networks](https://arxiv.org/abs/2004.07780). Nature Machine Intelligence, 2, 665-673.  
   Cited in: The Clever Hans Effect, Glossary  
-- Goodhart, C. A. E. (1975). Problems of monetary management: The U.K. experience. Papers in Monetary Economics, Vol. 1\. Reserve Bank of Australia.  
+- Goodhart, C. A. E. (1975). Problems of monetary management: The U.K. experience. Papers in Monetary Economics, Vol. 1. Reserve Bank of Australia. *(Conference paper)*  
   Cited in: Goodhart's Law  
 - Guo, C., Pleiss, G., Sun, Y., & Weinberger, K. Q. (2017). [On calibration of modern neural networks](https://arxiv.org/abs/1706.04599). Proceedings of the International Conference on Machine Learning (ICML 2017).  
   Cited in: Glossary  
-- Gururangan, S., Swayamdipta, S., Levy, O., Schwartz, R., Bowman, S. R., & Smith, N. A. (2018). [Annotation artifacts in natural language inference data](https://arxiv.org/abs/1803.02324). Proceedings of NAACL-HLT 2018\.  
+- Gururangan, S., Swayamdipta, S., Levy, O., Schwartz, R., Bowman, S. R., & Smith, N. A. (2018). [Annotation artifacts in natural language inference data](https://arxiv.org/abs/1803.02324). Proceedings of NAACL-HLT 2018.  
   Cited in: The Clever Hans Effect  
 - Hand, D. J. (2006). [Classifier technology and the illusion of progress](https://arxiv.org/abs/math/0606441). Statistical Science, 21(1), 1-14.  
   Cited in: The Baseline Rule, Distribution Shift  
-- Holstein, K., Wortman Vaughan, J., Daumé III, H., Dudík, M., & Wallach, H. (2019). [Improving fairness in machine learning systems: What do industry practitioners need?](https://arxiv.org/abs/1812.05239) Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2019).  
+- Holstein, K., Wortman Vaughan, J., Daumé III, H., Dudík, M., & Wallach, H. (2019). [Improving fairness in machine learning systems: What do industry practitioners need?](https://arxiv.org/abs/1812.05239). Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2019).  
   Cited in: Being Pragmatic  
 - Hutchinson, B., et al. (2022). [Evaluation gaps in machine learning practice](https://doi.org/10.1145/3531146.3533233). Proceedings of the ACM Conference on Fairness, Accountability, and Transparency (FAccT 2022).  
   Cited in: The Functionality Fallacy, The Lab-to-Field Gap, Overview  
 - Jacobs, A. Z., & Wallach, H. (2021). [Measurement and fairness](https://doi.org/10.1145/3442188.3445901). Proceedings of the ACM Conference on Fairness, Accountability, and Transparency (FAccT 2021).  
   Cited in: The Construct Gap  
-- Kapoor, S., & Narayanan, A. (2023). [Leakage and the reproducibility crisis in machine-learning-based science](https://doi.org/10.1016/j.patter.2023.100804). Patterns, 4(9), 100804\.  
-  Cited in: Data Contamination  
+- Kapoor, S., & Narayanan, A. (2023). [Leakage and the reproducibility crisis in machine-learning-based science](https://doi.org/10.1016/j.patter.2023.100804). Patterns, 4(9), 100804.  
+  Cited in: Data Contamination, Glossary  
 - Kapoor, S., Stroebl, B., Siegel, Z. S., Nadgir, N., & Narayanan, A. (2025). [AI agents that matter](https://arxiv.org/abs/2407.01502). Transactions on Machine Learning Research (TMLR).  
   Cited in: Adaptive Overfitting, The Cost Frontier, The Reproducibility Rule, Overview  
-- Karpinska, M., Akoury, N., & Krishna, K. (2021). [The perils of using Mechanical Turk to evaluate open-ended text generation](https://arxiv.org/abs/2109.06835). Proceedings of EMNLP 2021\.  
+- Karpinska, M., Akoury, N., & Iyyer, M. (2021). [The perils of using Mechanical Turk to evaluate open-ended text generation](https://arxiv.org/abs/2109.06835). Proceedings of EMNLP 2021.  
   Cited in: The Gold Standard Myth  
-- Kiela, D., et al. (2021). [Dynabench: Rethinking benchmarking in NLP](https://arxiv.org/abs/2104.14337). Proceedings of NAACL-HLT 2021\.  
+- Kiela, D., et al. (2021). [Dynabench: Rethinking benchmarking in NLP](https://arxiv.org/abs/2104.14337). Proceedings of NAACL-HLT 2021.  
   Cited in: Benchmark Saturation, Overview  
 - Koh, P. W., et al. (2021). [WILDS: A benchmark of in-the-wild distribution shifts](https://arxiv.org/abs/2012.07421). Proceedings of the International Conference on Machine Learning (ICML 2021).  
   Cited in: Distribution Shift  
 - Kohavi, R., Tang, D., & Xu, Y. (2020). Trustworthy online controlled experiments: A practical guide to A/B testing. Cambridge University Press. *(Book)*  
   Cited in: Being Pragmatic, Glossary  
-- Lapuschkin, S., Wäldchen, S., Binder, A., Montavon, G., Samek, W., & Müller, K.-R. (2019). [Unmasking Clever Hans predictors and assessing what machines really learn](https://doi.org/10.1038/s41467-019-08987-4). Nature Communications, 10, 1096\.  
+- Lapuschkin, S., Wäldchen, S., Binder, A., Montavon, G., Samek, W., & Müller, K.-R. (2019). [Unmasking Clever Hans predictors and assessing what machines really learn](https://doi.org/10.1038/s41467-019-08987-4). Nature Communications, 10, 1096.  
   Cited in: The Clever Hans Effect  
 - Liang, P., et al. (2023). [Holistic evaluation of language models](https://arxiv.org/abs/2211.09110). Transactions on Machine Learning Research (TMLR).  
   Cited in: The Metric Mirage, The Cost Frontier, The Benchmark Lottery  
 - Liao, Q. V., & Xiao, Z. (2023). [Rethinking model evaluation as narrowing the socio-technical gap](https://arxiv.org/abs/2306.03100). arXiv:2306.03100. *(Preprint)*  
   Cited in: Criteria Drift, The Lab-to-Field Gap  
-- Lin, J. (2019). [The neural hype and comparisons against weak baselines](https://doi.org/10.1145/3308774.3308781). ACM SIGIR Forum, 52(2), 40-51.  
+- Lin, J. (2019). [The neural hype and comparisons against weak baselines](https://doi.org/10.1145/3308774.3308781). ACM SIGIR Forum, 52(2), 40-51 (opinion article). *(Opinion paper)*  
   Cited in: The Baseline Rule  
-- Lipton, Z. C., & Steinhardt, J. (2019). [Troubling trends in machine learning scholarship](https://arxiv.org/abs/1807.03341). ACM Queue, 17(1).  
+- Lipton, Z. C., & Steinhardt, J. (2019). [Troubling trends in machine learning scholarship](https://arxiv.org/abs/1807.03341). ACM Queue (a practitioner magazine), 17(1), 45-77. First presented at ICML 2018 (The Debates). *(Magazine article)*  
   Cited in: Campbell's Law  
 - Madaio, M. A., Stark, L., Wortman Vaughan, J., & Wallach, H. (2020). [Co-designing checklists to understand organizational challenges and opportunities around fairness in AI](https://doi.org/10.1145/3313831.3376445). Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2020).  
   Cited in: Being Pragmatic  
-- Madaio, M., Egede, L., Subramonyam, H., Wortman Vaughan, J., & Wallach, H. (2022). [Assessing the fairness of AI systems: AI practitioners' processes, challenges, and needs for support](https://doi.org/10.1145/3512899). Proceedings of the ACM on Human-Computer Interaction, 6(CSCW1), Article 52\.  
+- Madaio, M., Egede, L., Subramonyam, H., Wortman Vaughan, J., & Wallach, H. (2022). [Assessing the fairness of AI systems: AI practitioners' processes, challenges, and needs for support](https://doi.org/10.1145/3512899). Proceedings of the ACM on Human-Computer Interaction, 6(CSCW1), Article 52.  
   Cited in: Being Pragmatic  
 - Manheim, D., & Garrabrant, S. (2018). [Categorizing variants of Goodhart's Law](https://arxiv.org/abs/1803.04585). arXiv:1803.04585. *(Preprint)*  
   Cited in: Goodhart's Law  
-- McCoy, R. T., Pavlick, E., & Linzen, T. (2019). [Right for the wrong reasons: Diagnosing syntactic heuristics in natural language inference](https://arxiv.org/abs/1902.01007). Proceedings of ACL 2019\.  
+- McCoy, R. T., Pavlick, E., & Linzen, T. (2019). [Right for the wrong reasons: Diagnosing syntactic heuristics in natural language inference](https://arxiv.org/abs/1902.01007). Proceedings of ACL 2019.  
   Cited in: The Clever Hans Effect  
 - Melis, G., Dyer, C., & Blunsom, P. (2018). [On the state of the art of evaluation in neural language models](https://arxiv.org/abs/1707.05589). International Conference on Learning Representations (ICLR 2018).  
   Cited in: The Baseline Rule  
@@ -1742,9 +1760,9 @@ Next rerun trigger:
   Cited in: The Construct Gap, Glossary, Overview  
 - Miller, E. (2024). [Adding error bars to evals: A statistical approach to language model evaluations](https://arxiv.org/abs/2411.00640). arXiv:2411.00640. *(Preprint)*  
   Cited in: No Error Bars, No Result, Playbook  
-- Mitchell, M., et al. (2019). [Model cards for model reporting](https://arxiv.org/abs/1810.03993). Proceedings of the Conference on Fairness, Accountability, and Transparency (FAT\* 2019).  
+- Mitchell, M., et al. (2019). [Model cards for model reporting](https://arxiv.org/abs/1810.03993). Proceedings of the Conference on Fairness, Accountability, and Transparency (FAT\\* 2019).  
   Cited in: The Averaging Trap, The Reproducibility Rule, Playbook, Glossary, Overview  
-- Mizrahi, M., et al. (2024). [State of what art? A call for multi-prompt LLM evaluation](https://aclanthology.org/2024.tacl-1.52/). Transactions of the Association for Computational Linguistics, 12\.  
+- Mizrahi, M., et al. (2024). [State of what art? A call for multi-prompt LLM evaluation](https://aclanthology.org/2024.tacl-1.52/). Transactions of the Association for Computational Linguistics, 12.  
   Cited in: Prompt Sensitivity  
 - Moravec, H. (1988). Mind children: The future of robot and human intelligence. Harvard University Press. *(Book)*  
   Cited in: The Jagged Frontier  
@@ -1754,11 +1772,11 @@ Next rerun trigger:
   Cited in: Evaluation Awareness, Glossary, Overview  
 - Northcutt, C. G., Athalye, A., & Mueller, J. (2021). [Pervasive label errors in test sets destabilize machine learning benchmarks](https://arxiv.org/abs/2103.14749). NeurIPS 2021 Datasets and Benchmarks Track.  
   Cited in: Benchmark Saturation, The Gold Standard Myth  
-- Novikova, J., Dušek, O., Cercas Curry, A., & Rieser, V. (2017). [Why we need new evaluation metrics for NLG](https://arxiv.org/abs/1707.06875). Proceedings of EMNLP 2017\.  
+- Novikova, J., Dušek, O., Cercas Curry, A., & Rieser, V. (2017). [Why we need new evaluation metrics for NLG](https://arxiv.org/abs/1707.06875). Proceedings of EMNLP 2017.  
   Cited in: The Metric Mirage  
 - Oakden-Rayner, L., Dunnmon, J., Carneiro, G., & Ré, C. (2020). [Hidden stratification causes clinically meaningful failures in machine learning for medical imaging](https://arxiv.org/abs/1909.12475). Proceedings of the ACM Conference on Health, Inference, and Learning (CHIL 2020).  
   Cited in: The Averaging Trap  
-- Ott, S., Barbosa-Silva, A., Blagec, K., Brauner, J., & Samwald, M. (2022). [Mapping global dynamics of benchmark creation and saturation in artificial intelligence](https://doi.org/10.1038/s41467-022-34591-0). Nature Communications, 13, 6793\.  
+- Ott, S., Barbosa-Silva, A., Blagec, K., Brauner, J., & Samwald, M. (2022). [Mapping global dynamics of benchmark creation and saturation in artificial intelligence](https://doi.org/10.1038/s41467-022-34591-0). Nature Communications, 13, 6793.  
   Cited in: Benchmark Saturation, Overview  
 - Pan, A., Bhatia, K., & Steinhardt, J. (2022). [The effects of reward misspecification: Mapping and mitigating misaligned models](https://arxiv.org/abs/2201.03544). International Conference on Learning Representations (ICLR 2022).  
   Cited in: Goodhart's Law  
@@ -1768,73 +1786,79 @@ Next rerun trigger:
   Cited in: The Team Is the System, Glossary  
 - Parnin, C., Soares, G., Pandita, R., Gulwani, S., Rich, J., & Henley, A. Z. (2025). [Building your own product copilot: Challenges, opportunities, and needs](https://arxiv.org/abs/2312.14231). Proceedings of the IEEE International Conference on Software Analysis, Evolution and Reengineering (SANER 2025).  
   Cited in: Being Pragmatic  
+- Pfungst, O. (1911). [Clever Hans (the horse of Mr. von Osten): A contribution to experimental animal and human psychology](https://www.gutenberg.org/ebooks/33936). Henry Holt. English translation by C. L. Rahn of the 1907 German original. *(Book)*  
+  Cited in: The Clever Hans Effect  
 - Pineau, J., et al. (2021). [Improving reproducibility in machine learning research (A report from the NeurIPS 2019 Reproducibility Program)](https://arxiv.org/abs/2003.12206). Journal of Machine Learning Research, 22(164), 1-20.  
   Cited in: The Reproducibility Rule  
-- Rabanser, S., Kapoor, S., Kirgis, P., Liu, K., Utpala, S., & Narayanan, A. (2026). [Towards a science of AI agent reliability](https://arxiv.org/abs/2602.16666). arXiv:2602.16666. *(Preprint)*  
+- Rabanser, S., Kapoor, S., Kirgis, P., Liu, K., Utpala, S., & Narayanan, A. (2026). [Towards a science of AI agent reliability](https://proceedings.mlr.press/v306/rabanser26a.html). Proceedings of the 43rd International Conference on Machine Learning (ICML 2026), PMLR 306, 102769-102820.  
   Cited in: Once Is Not Reliable  
 - Raji, I. D., Bender, E. M., Paullada, A., Denton, E., & Hanna, A. (2021). [AI and the everything in the whole wide world benchmark](https://arxiv.org/abs/2111.15366). NeurIPS 2021 Datasets and Benchmarks Track.  
   Cited in: The Construct Gap, Overview  
 - Raji, I. D., Kumar, I. E., Horowitz, A., & Selbst, A. (2022). [The fallacy of AI functionality](https://doi.org/10.1145/3531146.3533158). Proceedings of the ACM Conference on Fairness, Accountability, and Transparency (FAccT 2022).  
   Cited in: The Functionality Fallacy, Overview  
-- Raji, I. D., Smart, A., White, R. N., Mitchell, M., Gebru, T., et al. (2020). [Closing the AI accountability gap: Defining an end-to-end framework for internal algorithmic auditing](https://arxiv.org/abs/2001.00973). Proceedings of the Conference on Fairness, Accountability, and Transparency (FAT\* 2020).  
+- Raji, I. D., Smart, A., White, R. N., Mitchell, M., Gebru, T., et al. (2020). [Closing the AI accountability gap: Defining an end-to-end framework for internal algorithmic auditing](https://arxiv.org/abs/2001.00973). Proceedings of the Conference on Fairness, Accountability, and Transparency (FAT\\* 2020).  
   Cited in: Being Pragmatic  
 - Rakova, B., Yang, J., Cramer, H., & Chowdhury, R. (2021). [Where responsible AI meets reality: Practitioner perspectives on enablers for shifting organizational practices](https://doi.org/10.1145/3449081). Proceedings of the ACM on Human-Computer Interaction, 5(CSCW1).  
   Cited in: Being Pragmatic  
-- Recht, B., Roelofs, R., Schmidt, L., & Shankar, V. (2019). [Do ImageNet classifiers generalize to ImageNet?](https://arxiv.org/abs/1902.10811) Proceedings of the International Conference on Machine Learning (ICML 2019).  
+- Recht, B., Roelofs, R., Schmidt, L., & Shankar, V. (2019). [Do ImageNet classifiers generalize to ImageNet?](https://arxiv.org/abs/1902.10811). Proceedings of the International Conference on Machine Learning (ICML 2019).  
   Cited in: Adaptive Overfitting, Distribution Shift  
 - Reiter, E. (2018). [A structured review of the validity of BLEU](https://doi.org/10.1162/coli_a_00322). Computational Linguistics, 44(3), 393-401.  
   Cited in: The Metric Mirage  
 - Reuel, A., Hardy, A., Smith, C., Lamparth, M., Hardy, M., & Kochenderfer, M. J. (2024). [BetterBench: Assessing AI benchmarks, uncovering issues, and establishing best practices](https://arxiv.org/abs/2411.12990). NeurIPS 2024 Datasets and Benchmarks Track.  
   Cited in: No Error Bars, No Result, The Reproducibility Rule  
-- Ribeiro, M. T., Wu, T., Guestrin, C., & Singh, S. (2020). [Beyond accuracy: Behavioral testing of NLP models with CheckList](https://arxiv.org/abs/2005.04118). Proceedings of ACL 2020\.  
+- Ribeiro, M. T., Wu, T., Guestrin, C., & Singh, S. (2020). [Beyond accuracy: Behavioral testing of NLP models with CheckList](https://arxiv.org/abs/2005.04118). Proceedings of ACL 2020.  
   Cited in: The Clever Hans Effect, Glossary, Overview  
-- Roelofs, R., Shankar, V., Recht, B., Fridovich-Keil, S., Hardt, M., Miller, J., & Schmidt, L. (2019). A meta-analysis of overfitting in machine learning. Advances in Neural Information Processing Systems (NeurIPS 2019).  
+- Roelofs, R., Shankar, V., Recht, B., Fridovich-Keil, S., Hardt, M., Miller, J., & Schmidt, L. (2019). [A meta-analysis of overfitting in machine learning](https://proceedings.neurips.cc/paper/2019/hash/ee39e503b6bedf0c98c388b7e8589aca-Abstract.html). Advances in Neural Information Processing Systems 32 (NeurIPS 2019).  
   Cited in: Adaptive Overfitting  
 - Rogers, E. M. (2003). Diffusion of innovations (5th ed.). Free Press. *(Book)*  
   Cited in: Being Pragmatic  
-- Sainz, O., Campos, J. A., García-Ferrero, I., Etxaniz, J., Lopez de Lacalle, O., & Agirre, E. (2023). [NLP evaluation in trouble: On the need to measure LLM data contamination for each benchmark](https://arxiv.org/abs/2310.18018). Findings of EMNLP 2023\.  
+- Sainz, O., Campos, J. A., García-Ferrero, I., Etxaniz, J., Lopez de Lacalle, O., & Agirre, E. (2023). [NLP evaluation in trouble: On the need to measure LLM data contamination for each benchmark](https://arxiv.org/abs/2310.18018). Findings of EMNLP 2023.  
   Cited in: Data Contamination, Overview  
 - Salaudeen, O., et al. (2025). [Measurement to meaning: A validity-centered framework for AI evaluation](https://arxiv.org/abs/2505.10573). arXiv:2505.10573. *(Preprint)*  
   Cited in: The Construct Gap  
-- Schaeffer, R., Miranda, B., & Koyejo, S. (2023). [Are emergent abilities of large language models a mirage?](https://arxiv.org/abs/2304.15004) Advances in Neural Information Processing Systems (NeurIPS 2023).  
+- Schaeffer, R., Miranda, B., & Koyejo, S. (2023). [Are emergent abilities of large language models a mirage?](https://arxiv.org/abs/2304.15004). Advances in Neural Information Processing Systems (NeurIPS 2023).  
   Cited in: The Metric Mirage  
 - Sclar, M., Choi, Y., Tsvetkov, Y., & Suhr, A. (2024). [Quantifying language models' sensitivity to spurious features in prompt design or: How I learned to start worrying about prompt formatting](https://arxiv.org/abs/2310.11324). International Conference on Learning Representations (ICLR 2024).  
   Cited in: Prompt Sensitivity, Playbook  
-- Selbst, A. D., boyd, d., Friedler, S. A., Venkatasubramanian, S., & Vertesi, J. (2019). [Fairness and abstraction in sociotechnical systems](https://doi.org/10.1145/3287560.3287598). Proceedings of the Conference on Fairness, Accountability, and Transparency (FAT\* 2019).  
+- Selbst, A. D., boyd, d., Friedler, S. A., Venkatasubramanian, S., & Vertesi, J. (2019). [Fairness and abstraction in sociotechnical systems](https://doi.org/10.1145/3287560.3287598). Proceedings of the Conference on Fairness, Accountability, and Transparency (FAT\\* 2019).  
   Cited in: The Lab-to-Field Gap  
-- Shankar, S., Garcia, R., Hellerstein, J. M., & Parameswaran, A. G. (2024). ["We have no idea how models will behave in production until production": How engineers operationalize machine learning](https://doi.org/10.1145/3653697). Proceedings of the ACM on Human-Computer Interaction, 8(CSCW1), Article 206\.  
+- Shankar, S., Garcia, R., Hellerstein, J. M., & Parameswaran, A. G. (2024). ["We have no idea how models will behave in production until production": How engineers operationalize machine learning](https://doi.org/10.1145/3653697). Proceedings of the ACM on Human-Computer Interaction, 8(CSCW1), Article 206.  
   Cited in: Being Pragmatic  
 - Shankar, S., Zamfirescu-Pereira, J. D., Hartmann, B., Parameswaran, A. G., & Arawjo, I. (2024). [Who validates the validators? Aligning LLM-assisted evaluation of LLM outputs with human preferences](https://doi.org/10.1145/3654777.3676450). Proceedings of the ACM Symposium on User Interface Software and Technology (UIST 2024).  
   Cited in: Judge Bias, Criteria Drift, Being Pragmatic, Playbook  
 - Shevlane, T., et al. (2023). [Model evaluation for extreme risks](https://arxiv.org/abs/2305.15324). arXiv:2305.15324. *(Preprint)*  
   Cited in: Presence, Not Absence, Overview  
-- Singh, S., Nan, Y., Wang, A., D'Souza, D., Kapoor, S., et al. (2025). [The leaderboard illusion](https://arxiv.org/abs/2504.20879). Advances in Neural Information Processing Systems (NeurIPS 2025).  
-  Cited in: Goodhart's Law, Campbell's Law  
+- Singh, S., Nan, Y., Wang, A., D'Souza, D., Kapoor, S., et al. (2025). [The leaderboard illusion](https://arxiv.org/abs/2504.20879). Advances in Neural Information Processing Systems (NeurIPS 2025), Datasets and Benchmarks Track.  
+  Cited in: Goodhart's Law, Campbell's Law, Overview  
 - Strathern, M. (1997). 'Improving ratings': Audit in the British university system. European Review, 5(3), 305-321.  
   Cited in: Goodhart's Law  
+- Sturm, B. L. (2014). [A simple method to determine if a music information retrieval system is a "horse"](https://doi.org/10.1109/TMM.2014.2330697). IEEE Transactions on Multimedia, 16(6), 1636-1644.  
+  Cited in: The Clever Hans Effect  
+- Turpin, M., Michael, J., Perez, E., & Bowman, S. R. (2023). [Language models don't always say what they think: Unfaithful explanations in chain-of-thought prompting](https://proceedings.neurips.cc/paper_files/paper/2023/hash/ed3fea9033a80fea1376299fa7863f4a-Abstract-Conference.html). Advances in Neural Information Processing Systems 36 (NeurIPS 2023).  
+  Cited in: The Clever Hans Effect  
 - Vaccaro, M., Almaatouq, A., & Malone, T. (2024). [When combinations of humans and AI are useful: A systematic review and meta-analysis](https://doi.org/10.1038/s41562-024-02024-1). Nature Human Behaviour, 8, 2293-2303.  
   Cited in: The Team Is the System, The Jagged Frontier, Playbook  
-- van der Lee, C., Gatt, A., van Miltenburg, E., & Krahmer, E. (2021). [Human evaluation of automatically generated text: Current trends and best practice guidelines](https://doi.org/10.1016/j.csl.2020.101151). Computer Speech & Language, 67, 101151\.  
+- van der Lee, C., Gatt, A., van Miltenburg, E., & Krahmer, E. (2021). [Human evaluation of automatically generated text: Current trends and best practice guidelines](https://doi.org/10.1016/j.csl.2020.101151). Computer Speech & Language, 67, 101151.  
   Cited in: The Gold Standard Myth, Overview  
 - van der Maden, W., Sadek, M., Xiao, Z., Mottelson, A., Liao, Q. V., & Zhu, J. (2026). [Results-actionability gap: Understanding how practitioners evaluate LLM products in the wild](https://doi.org/10.1145/3772318.3791069). Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2026).  
   Cited in: Being Pragmatic, Glossary  
 - van der Weij, T., Hofstätter, F., Jaffe, O., Brown, S. F., & Ward, F. R. (2025). [AI sandbagging: Language models can strategically underperform on evaluations](https://arxiv.org/abs/2406.07358). International Conference on Learning Representations (ICLR 2025).  
   Cited in: Presence, Not Absence, Evaluation Awareness, Glossary  
-- Wallach, H., Desai, M., Cooper, A. F., Wang, A., Atalla, C., et al. (2025). [Position: Evaluating generative AI systems is a social science measurement challenge](https://arxiv.org/abs/2502.00561). Proceedings of the International Conference on Machine Learning (ICML 2025), PMLR 267\.  
+- Wallach, H., Desai, M., Cooper, A. F., Wang, A., Atalla, C., et al. (2025). [Position: Evaluating generative AI systems is a social science measurement challenge](https://arxiv.org/abs/2502.00561). Proceedings of the International Conference on Machine Learning (ICML 2025), PMLR 267.  
   Cited in: The Construct Gap, Being Pragmatic, Overview  
-- Wang, P., et al. (2024). [Large language models are not fair evaluators](https://aclanthology.org/2024.acl-long.511/). Proceedings of ACL 2024\.  
+- Wang, P., et al. (2024). [Large language models are not fair evaluators](https://aclanthology.org/2024.acl-long.511/). Proceedings of ACL 2024.  
   Cited in: Judge Bias  
 - Weidinger, L., Rauh, M., Marchal, N., Manzini, A., et al. (2023). [Sociotechnical safety evaluation of generative AI systems](https://arxiv.org/abs/2310.11986). arXiv:2310.11986. *(Preprint)*  
   Cited in: The Lab-to-Field Gap, Overview  
 - Wong, A., Otles, E., Donnelly, J. P., et al. (2021). [External validation of a widely implemented proprietary sepsis prediction model in hospitalized patients](https://pubmed.ncbi.nlm.nih.gov/34152373/). JAMA Internal Medicine, 181(8), 1065-1070.  
   Cited in: The Functionality Fallacy, Distribution Shift  
-- Wu, T., Ribeiro, M. T., Heer, J., & Weld, D. (2019). [Errudite: Scalable, reproducible, and testable error analysis](https://aclanthology.org/P19-1073/). Proceedings of ACL 2019\.  
+- Wu, T., Ribeiro, M. T., Heer, J., & Weld, D. (2019). [Errudite: Scalable, reproducible, and testable error analysis](https://aclanthology.org/P19-1073/). Proceedings of ACL 2019.  
   Cited in: Being Pragmatic, Glossary  
 - Yao, S., Shinn, N., Razavi, P., & Narasimhan, K. (2025). [τ-bench: A benchmark for tool-agent-user interaction in real-world domains](https://arxiv.org/abs/2406.12045). International Conference on Learning Representations (ICLR 2025).  
   Cited in: Once Is Not Reliable, Playbook, Glossary  
 - Zhang, H., Da, J., Lee, D., Robinson, V., Wu, C., et al. (2024). [A careful examination of large language model performance on grade school arithmetic](https://arxiv.org/abs/2405.00332). NeurIPS 2024 Datasets and Benchmarks Track.  
   Cited in: Data Contamination  
-- Zheng, L., Chiang, W.-L., Sheng, Y., Zhuang, S., Wu, Z., et al. (2023). [Judging LLM-as-a-judge with MT-Bench and Chatbot Arena](https://arxiv.org/abs/2306.05685). NeurIPS 2023 Datasets and Benchmarks Track.  
-  Cited in: Judge Bias, Playbook, Glossary, Overview
+- Zheng, L., Chiang, W.-L., Sheng, Y., Zhuang, S., Wu, Z., et al. (2023). [Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena](https://arxiv.org/abs/2306.05685). NeurIPS 2023 Datasets and Benchmarks Track.  
+  Cited in: Judge Bias, Playbook, Glossary, Overview  
 
 &nbsp;

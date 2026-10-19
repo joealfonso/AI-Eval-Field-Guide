@@ -1,0 +1,10 @@
+{
+  "_about": "Unlabeled sources that are not ordinary peer-reviewed research papers. The Bibliography tags them and its introduction names them, so that the statement about unlabeled entries stays true. 'group' is the wording used in the introduction; 'tag' is shown on the entry; 'short' is how the introduction cites it. Matching is by title.",
+  "works": [
+    {"title": "Rethink reporting of evaluation results in AI", "group": "commentary pieces", "tag": "Policy forum article", "short": "Burnell et al., 2023, a Science Policy Forum article"},
+    {"title": "Troubling trends in machine learning scholarship", "group": "commentary pieces", "tag": "Magazine article", "short": "Lipton and Steinhardt, 2019, in the practitioner magazine ACM Queue"},
+    {"title": "The neural hype and comparisons against weak baselines", "group": "commentary pieces", "tag": "Opinion paper", "short": "Lin, 2019, an opinion paper in ACM SIGIR Forum"},
+    {"title": "Problems of monetary management: The U.K. experience", "group": "older classics that were not journal articles", "tag": "Conference paper", "short": "Goodhart, 1975, a conference paper"},
+    {"title": "Notes on structured programming (EWD249)", "group": "older classics that were not journal articles", "tag": "Technical note", "short": "Dijkstra, 1970, a technical note"}
+  ]
+}

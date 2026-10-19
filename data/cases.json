@@ -1,0 +1,118 @@
+{
+  "intro": "Seven documented cases where one of the patterns showed up in published research on a real system or benchmark. Each summary reports what the source says and no more. Each links to the primary source, and each was checked against that source's abstract or full text. Each case also says what it does not show, and notes later updates or public disputes that we are aware of.",
+  "note": "These cases show a pattern occurring. They do not show that the system, the research group, or the organization involved is bad. Studying how a system behaves under evaluation is how the field improves.",
+  "cases": [
+    {
+      "limits": "This case does not show that any leaderboard result was wrong, that any provider broke a rule, or how good any model is. It reports practices and estimates from one paper, and the platform it studied disputes some of them.",
+      "id": "arena-private-variants",
+      "title": "Private variants on a public leaderboard",
+      "patterns": [
+        "goodharts-law",
+        "campbells-law"
+      ],
+      "what": "Singh et al. (2025) studied Chatbot Arena, a public leaderboard that ranks models by votes from users. They report that some providers could test several model variants privately before release and choose which scores to publish. The most extreme case they identify is Meta, which they observed testing as many as 27 private variants in a single month before the Llama 4 release. They also estimate that Google and OpenAI received about 19.2% and 20.4% of all Arena test prompts, while 83 open-weight models together received about 29.7% of the total data. In a controlled experiment, fine-tuning a model on Arena-style data raised its win rate against a baseline model on an Arena-derived benchmark (ArenaHard) by up to 112% in relative terms, while performance on a broader benchmark (MMLU) slightly declined. The paper appeared in the NeurIPS 2025 Datasets and Benchmarks Track; the figures here are from the arXiv version (v2).",
+      "dispute": "LMArena, the platform studied, published a response on 9 May 2025 disputing parts of the paper. It says, for example, that the paper's figure for open-source models leaves out open-weight models such as Llama and Gemma, that a pre-release-testing plot in the paper was a simulation rather than Arena data, and that the 112% experiment used a static benchmark rather than Chatbot Arena itself. This page reports both sides and does not settle the dispute; read the paper and the response together.",
+      "check": "Ask how many variants were tried before the reported one, and whether the score was confirmed on a second measure that nobody optimized. A published result should say how many candidates it was selected from.",
+      "source": {
+        "label": "Singh et al. (2025), The Leaderboard Illusion, NeurIPS 2025 Datasets and Benchmarks Track, arXiv:2504.20879",
+        "url": "https://arxiv.org/abs/2504.20879"
+      },
+      "alsoRead": {
+        "label": "LMArena (2025), Our response to the Leaderboard Illusion writeup, 9 May 2025",
+        "url": "https://arena.ai/blog/our-response/"
+      }
+    },
+    {
+      "limits": "This case does not show that public benchmarks are useless or that every model memorized test items: the authors report minimal overfitting for many frontier models, and the gaps they measured apply to the models they tested.",
+      "id": "gsm1k",
+      "title": "Fresh grade-school math problems, lower scores",
+      "patterns": [
+        "data-contamination"
+      ],
+      "what": "Zhang et al. (2024) had human annotators write GSM1k, a new set of grade-school math problems built to match the popular GSM8K benchmark in style and difficulty. Some model families scored up to 8% lower on GSM1k than on GSM8K. Models that assigned higher probability to the GSM8K test items showed bigger gaps (Spearman rank correlation of 0.36), which the authors take to suggest partial memorization, though they note outliers. Many frontier models showed little or no gap, which the authors say could reflect better generalization or more careful data handling.",
+      "check": "Build a small private set of look-alike items that has never been posted online, and compare scores on public and private items. A large gap is the warning sign; a small gap is some reassurance, not proof.",
+      "source": {
+        "label": "Zhang et al. (2024), A careful examination of large language model performance on grade school arithmetic, arXiv:2405.00332",
+        "url": "https://arxiv.org/abs/2405.00332"
+      }
+    },
+    {
+      "limits": "This case does not show that the screening system was inaccurate or that such tools should not be used. It reports what researchers learned from observation and interviews in clinics, not a test of the system's accuracy, and it does not show that the same problems arise elsewhere.",
+      "id": "thailand-clinics",
+      "title": "A screening tool studied in eleven clinics",
+      "patterns": [
+        "the-lab-to-field-gap",
+        "distribution-shift"
+      ],
+      "what": "Beede et al. (2020) studied a deep learning system for detecting diabetic eye disease through observation and interviews with nurses across eleven clinics in Thailand. They found that several socio-environmental factors affected model performance, nursing workflows, and the patient experience. They describe a tension between the model's thresholds for data quality and the data quality that an imperfect, resource-constrained clinic could produce. They argue that this kind of human-centered study should accompany prospective tests of accuracy.",
+      "check": "Before scaling, pilot in a few real sites and watch the system in use. Measure the workflow (time, rejected inputs, handoffs), not only the model's accuracy on clean validation data.",
+      "source": {
+        "label": "Beede et al. (2020), A human-centered evaluation of a deep learning system deployed in clinics for the detection of diabetic retinopathy, CHI 2020",
+        "url": "https://doi.org/10.1145/3313831.3376718"
+      }
+    },
+    {
+      "limits": "This case does not show how an agent would perform with real customers: τ-bench uses simulated users in two domains (retail and airline), and the results are for the models the authors tested.",
+      "id": "tau-bench",
+      "title": "Succeeds once, fails the next time",
+      "patterns": [
+        "once-is-not-reliable"
+      ],
+      "what": "Yao et al. introduced τ-bench, which simulates conversations between a user and an agent that has tools and policies to follow, in two domains: retail and airline. They report that even state-of-the-art function-calling agents such as gpt-4o succeed on fewer than 50% of tasks; that figure is an average over the two domains (about 61% in retail and 35% in airline for gpt-4o). They also propose pass^k, the probability that all k attempts at the same task succeed, averaged over tasks, and report that pass^8 is below 25% in the retail domain.",
+      "check": "Run every test case several times and report the all-runs-pass rate next to the average. A single run per item cannot show whether a success was repeatable.",
+      "source": {
+        "label": "Yao et al. (2025), τ-bench, ICLR 2025, arXiv:2406.12045",
+        "url": "https://arxiv.org/abs/2406.12045"
+      }
+    },
+    {
+      "limits": "This case does not show how Epic's current model performs, or how the original model performed at other hospitals. It is one health system's retrospective validation of the first version, using admissions from December 2018 to October 2019.",
+      "id": "epic-sepsis",
+      "title": "A widely used sepsis model, validated locally",
+      "patterns": [
+        "distribution-shift",
+        "the-functionality-fallacy",
+        "the-lab-to-field-gap"
+      ],
+      "what": "Wong et al. (2021) externally validated the original version of the Epic Sepsis Model, a proprietary tool in use at many US hospitals, on 38,455 hospitalizations at Michigan Medicine between December 2018 and October 2019, where sepsis occurred in about 7%. They report a hospitalization-level AUC of 0.63, that the model did not identify about 67% of patients with sepsis, and that, at the alert threshold Michigan Medicine used (a score of 6 or higher), it generated alerts for about 18% of all hospitalized patients. They conclude that it has poor discrimination and calibration. Epic released a revised version of the model in 2022. A 2026 multicenter study of the updated model (Wong et al., JAMA Network Open) reported encounter-level AUROC of 0.82 to 0.92 across four US health systems, with high variability between sites and a high alert burden.",
+      "check": "Validate on your own site's data, with the metrics and alert threshold fixed in advance, before relying on a vendor's reported performance. Count the alert burden as well as the hits.",
+      "source": {
+        "label": "Wong et al. (2021), External validation of a widely implemented proprietary sepsis prediction model in hospitalized patients, JAMA Internal Medicine 181(8)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/34152373/"
+      },
+      "alsoRead": {
+        "label": "Wong et al. (2026), Multicenter prospective validation of an updated proprietary sepsis prediction model, JAMA Network Open 9(2):e260181",
+        "url": "https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2845595"
+      }
+    },
+    {
+      "limits": "This case describes three specific gender classification systems tested on one dataset at one point in time. It does not show how those systems, or other face-analysis systems and uses, perform today.",
+      "id": "gender-shades",
+      "title": "One accuracy number, three commercial classifiers",
+      "patterns": [
+        "the-averaging-trap"
+      ],
+      "what": "Buolamwini and Gebru (2018) found that two common face-analysis benchmarks were heavily weighted toward lighter-skinned subjects (79.6% and 86.2%). They built a dataset balanced by gender and skin type and tested three commercial gender classification systems on it in April and May 2017. Error rates were up to 34.7% for darker-skinned women, against a maximum of 0.8% for lighter-skinned men. These figures describe the systems as they were then, not today's versions.",
+      "check": "Define the groups that matter before looking at the overall score, report results for each, and show the worst one next to the average. Make sure each group has enough examples to carry its own error bars.",
+      "source": {
+        "label": "Buolamwini & Gebru (2018), Gender shades, PMLR 81",
+        "url": "https://proceedings.mlr.press/v81/buolamwini18a.html"
+      }
+    },
+    {
+      "limits": "This case does not show that no covid-19 prediction model is useful: a later update identified two promising models and called for validation in more cohorts. It is a review of how models were built and reported, not a test of each model on new patients.",
+      "id": "covid-prediction",
+      "title": "Covid-19 prediction models, reviewed",
+      "patterns": [
+        "distribution-shift",
+        "the-reproducibility-rule"
+      ],
+      "what": "Wynants et al. (2020) ran a living systematic review of prediction models for diagnosing and predicting the course of covid-19, updated several times. In update 1 (51 studies describing 66 models), all models were rated at high or unclear risk of bias, mostly because of non-representative selection of control patients, exclusion of patients who had not yet had the outcome, a high risk of overfitting, and vague reporting. The authors concluded that the reported performance was probably optimistic and did not recommend any of the models for use in practice. By update 3, the review had screened 37,421 titles and included 169 studies describing 232 models, and the authors report that nearly all were poorly reported and at high risk of bias.",
+      "check": "Ask whether the data represent the people the model will be used on, whether the model was tested on a cohort it was not built from, and whether the report is complete enough to rerun and audit.",
+      "source": {
+        "label": "Wynants et al. (2020), Prediction models for diagnosis and prognosis of covid-19: systematic review and critical appraisal, BMJ 369:m1328",
+        "url": "https://doi.org/10.1136/bmj.m1328"
+      }
+    }
+  ]
+}

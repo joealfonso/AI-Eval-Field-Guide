@@ -38,7 +38,7 @@
 
   --fs-hero: 64px;  --fs-hero-compact: 44px;  --fs-h1-law: 76px;  --fs-quote: 34px;
   --fs-h2-section: 26px; --fs-h2-category: 28px; --fs-card-title: 25px; --fs-card-quote: 17px;
-  --fs-body: 16px; --fs-small: 14px; --fs-xs: 13px; --fs-mono: 12px; --fs-mono-xs: 11px;
+  --fs-body: 16px; --fs-small: 14px; --fs-xs: 13px; --fs-mono: 13px; --fs-mono-xs: 12px;  /* site-wide floor: nothing renders under 12px */
   --lh-body: 1.65; --lh-tight: 1.1;
 
   /* Space (px) */

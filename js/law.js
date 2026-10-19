@@ -69,6 +69,40 @@
     });
   });
 
+  /* ---------- share this ----------
+     Touch devices with a native share sheet get it; everywhere else the quote and link are copied.
+     Nothing is sent anywhere by this code. */
+  var shareBtn = document.querySelector('[data-share]');
+  if (shareBtn) {
+    var shareStatus = document.querySelector('[data-share-status]');
+    var shareTimer = null;
+    var say = function (msg) {
+      if (shareStatus) {
+        shareStatus.textContent = '';
+        window.setTimeout(function () { shareStatus.textContent = msg; }, 30);
+      }
+      window.clearTimeout(shareTimer);
+      shareTimer = window.setTimeout(function () { if (shareStatus) shareStatus.textContent = ''; }, 3000);
+    };
+    shareBtn.addEventListener('click', function () {
+      var title = shareBtn.getAttribute('data-share-title');
+      var text = shareBtn.getAttribute('data-share-text');
+      var url = shareBtn.getAttribute('data-share-url');
+      var touch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+      var copyIt = function () {
+        copy(text + '\n' + url).then(function () { say('Quote and link copied'); }, function () { say('Could not copy. Select the quote and copy it manually.'); });
+      };
+      if (navigator.share && touch) {
+        navigator.share({ title: title, text: text, url: url }).catch(function (err) {
+          if (err && err.name === 'AbortError') return;
+          copyIt();
+        });
+      } else {
+        copyIt();
+      }
+    });
+  }
+
   /* ---------- cite box ---------- */
   var cite = document.querySelector('[data-cite]');
   if (cite) {

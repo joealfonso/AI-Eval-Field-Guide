@@ -18,6 +18,7 @@
 <link rel="alternate" type="application/rss+xml" title="AI Evaluation Field Guide changelog" href="feed.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="js/boot.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Public+Sans:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/styles.css">
@@ -30,28 +31,48 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <a class="wordmark" href="index.html"><span class="wordmark__mark" aria-hidden="true">§</span><span class="wordmark__text">AI Evaluation Field Guide</span></a>
-  <nav class="site-nav" id="site-nav" aria-label="Primary"><a href="index.html">Patterns</a><a href="use-it-now.html">Use it now</a><div class="nav-group"><button type="button" class="nav-group__btn" aria-expanded="false" aria-controls="nav-tools" data-nav-group>Tools</button><div class="nav-group__menu" id="nav-tools"><a href="situation-finder.html">Find your patterns</a><a href="claim-checker.html">Claim checker</a><a href="design-rubric.html">Design Rubric</a><a href="readiness-review.html">Readiness Review</a></div></div><a href="about.html">About</a></nav>
-  <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog"><span>Search patterns</span><kbd data-kbd>⌘K</kbd></button>
+  <nav class="site-nav" id="site-nav" aria-label="Primary"><a href="index.html">Patterns</a><a href="use-it-now.html">Use it now</a><details class="nav-group"><summary>Tools</summary><div class="nav-group__menu"><a href="situation-finder.html">Find your patterns</a><a href="claim-checker.html">Claim checker</a><a href="design-rubric.html">Design Rubric</a><a href="readiness-review.html">Readiness Review</a><a href="sample-size.html">Sample size</a><a href="case-studies.html">Case studies</a><a href="templates.html">Templates</a></div></details><a href="guide.html">Guide</a><a href="about.html" aria-current="true">About</a></nav>
   <div class="header-actions">
-    <button class="icon-btn" type="button" data-search-open aria-haspopup="dialog">Find</button>
-    <button class="icon-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <button class="search-btn" type="button" data-search-open aria-haspopup="dialog"><svg aria-hidden="true" focusable="false" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6.5" cy="6.5" r="4.75"/><path d="M10 10l4.5 4.5" stroke-linecap="round"/></svg><span class="search-btn__text">Search</span></button>
+    <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
   </div>
 </header>
 <main id="main" class="page page--prose">
   <header class="page__head"><p class="eyebrow">Policy</p><h1>Privacy</h1>
   <p class="page__lede">There are no accounts and no ads, and nothing here is sold. This page lists what is collected and by whom.</p></header>
-  <section><h2 id="analytics">Analytics</h2>
-  <p>The site uses Google Analytics to count visits: which pages are viewed, roughly where visitors are, and what device and browser they use. It sets cookies to do this. For visitors in the EU, the European Economic Area, the UK, and Switzerland, analytics storage is denied by default, so Google Analytics does not set analytics cookies there. Google may still receive limited signals that do not use cookies.</p></section>
+  <section class="callout" aria-labelledby="in-short"><h2 id="in-short">In short</h2>
+  <ul>
+    <li><strong>This site uses Google Analytics</strong> to count visits. Google receives your IP address, the page you view, and your browser and device details.</li>
+    <li><strong>Google Fonts</strong> also receives your IP address and browser details when the fonts load.</li>
+    <li><strong>My patterns is stored in your browser</strong> (local storage), on your device. The list itself is not sent anywhere, but when you open the brief or checklist your selection appears in the page address, which Google Analytics receives (see below).</li>
+    <li>What you type into the claim checker, Find your patterns, the checklist, the quick brief, and Use it now stays in your browser.</li>
+  </ul></section>
+  <section><h2 id="analytics">Google Analytics</h2>
+  <p>Every page loads Google Analytics (measurement ID G-Y7P4TJ9J52) from Google’s servers. Each page view sends Google the page address, the page you came from, your IP address, and your browser, device, and language details. Google uses the IP address to estimate roughly where visitors are. This site’s code does not apply any extra IP-masking setting. It does not turn off Google’s advertising-related storage outside the regions below, and it does not set user IDs or send anything you type. Depending on how the Google Analytics property is configured, which the page code does not control, Google may also record events such as outbound link clicks and scrolling.</p>
+  <p>The page address includes any query string. On the quick brief, the checklist, and the patterns index, the address can contain the patterns you selected or a role filter (for example <code>?patterns=3,7</code>), so those selections are visible to Google Analytics along with the rest of the address.</p>
+  <h3>Cookies and consent</h3>
+  <p>Outside the regions below, Google Analytics sets its cookies when the page loads. There is no consent banner and no opt-in or opt-out control on this site.</p>
+  <p>For visitors in the EU, the European Economic Area (including Iceland, Liechtenstein, and Norway), the UK, and Switzerland, the site tells Google Analytics to deny analytics and advertising storage by default, so Google Analytics does not set cookies there. The Google script still loads and may still receive cookieless signals about the visit, such as the page address and your IP address. Because there is no banner, visitors in those regions have no way to opt in.</p>
+  <p>To block Google Analytics everywhere, use your browser’s tracking protection or a content blocker, or Google’s <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener">Analytics opt-out browser add-on</a>. The site works without it.</p></section>
   <section><h2 id="fonts">Fonts</h2>
-  <p>The fonts load from Google Fonts. Loading them sends your IP address and browser details to Google.</p></section>
+  <p>The fonts load from Google Fonts. Loading them sends your IP address and browser details to Google.</p>
+  <h2 id="hosting">Hosting</h2>
+  <p>As with any website, the server that delivers these pages receives your IP address and request details, and may keep standard server logs.</p></section>
   <section><h2 id="your-device">What stays on your device</h2>
-  <p>The claim checker, Find your patterns, the checklist, the quick brief, and Use it now run in your browser. What you type into them is not sent anywhere. The patterns you add to My patterns, and some view preferences, are saved in your browser’s local storage on your device. Clearing your browser data removes them.</p></section>
+  <p>The claim checker, Find your patterns, the checklist, the quick brief, and Use it now run in your browser. What you type into them is not sent anywhere. The Share and Copy buttons use only your device’s clipboard or share menu.</p>
+  <p>The site saves two things in your browser’s local storage. Neither is sent to the site’s server or to Google by this site’s code.</p>
+  <ul>
+    <li><strong>My patterns:</strong> the numbers of the patterns you add with the Add buttons, so they are still there on your next visit and on the brief and checklist pages.</li>
+    <li><strong>Last-seen date:</strong> the date of the latest update you had seen when you last opened the patterns index, so it can mark what is new since your last visit.</li>
+  </ul>
+  <p>Clearing your browser’s site data removes both. Local storage stays on one browser and one device. It does not follow you to another.</p></section>
   <section><h2 id="contact">Questions</h2>
-  <p>Use the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. Last updated 7 Oct 2026.</p></section>
+  <p>Use the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. Last updated 19 Oct 2026.</p></section>
 </main>
 <footer class="site-footer">
+  <nav class="site-footer__nav" aria-label="Footer"><a href="index.html">Patterns</a> · <a href="use-it-now.html">Use it now</a> · <a href="situation-finder.html">Find your patterns</a> · <a href="claim-checker.html">Claim checker</a> · <a href="design-rubric.html">Design Rubric</a> · <a href="readiness-review.html">Readiness Review</a> · <a href="sample-size.html">Sample size</a> · <a href="case-studies.html">Case studies</a> · <a href="templates.html">Templates</a> · <a href="guide.html">Guide</a> · <a href="about.html">About</a></nav>
   <p>Independent reference. No vendor funding. <a href="about.html#editorial-policy">Editorial policy</a></p>
-  <p>CC BY 4.0 · <a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="changelog.html">Changelog</a> · <a href="feed.xml">RSS</a> · Last updated 7 Oct 2026</p>
+  <p>CC BY 4.0 · <a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="changelog.html">Changelog</a> · <a href="feed.xml">RSS</a> · Last updated 19 Oct 2026</p>
 </footer>
 <script src="js/collection.js" defer></script>
 <script src="js/site.js" defer></script>

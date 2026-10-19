@@ -1,4 +1,4 @@
-/* Laws index: Grid / By category view, role filter, since-last-visit markers. */
+/* Home page: Grid / By category layout of the one pattern list, role filter, since-last-visit markers. */
 (function () {
   'use strict';
 
@@ -11,13 +11,15 @@
     role: ['building', 'buying', 'designing'].indexOf(params.get('role')) !== -1 ? params.get('role') : 'all'
   };
 
+  var list = main.querySelector('#patterns');
   var viewBtns = main.querySelectorAll('[data-view-btn]');
   var roleBtns = main.querySelectorAll('[data-role-btn]');
-  var panels = main.querySelectorAll('[data-view-panel]');
-  var heroes = main.querySelectorAll('[data-hero]');
   var jump = main.querySelector('[data-jump]');
   var status = main.querySelector('[data-status]');
-  var items = main.querySelectorAll('[data-roles]');
+  var items = list.querySelectorAll('[data-roles]');
+
+  // Controls that need script are hidden in the HTML so they do not show up dead without it.
+  Array.prototype.forEach.call(main.querySelectorAll('[data-js-only]'), function (el) { el.hidden = false; });
 
   function matches(el) {
     return state.role === 'all' || el.getAttribute('data-roles').split(' ').indexOf(state.role) !== -1;
@@ -34,8 +36,7 @@
   function apply() {
     Array.prototype.forEach.call(viewBtns, function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-view-btn') === state.view)); });
     Array.prototype.forEach.call(roleBtns, function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-role-btn') === state.role)); });
-    Array.prototype.forEach.call(panels, function (p) { p.hidden = p.getAttribute('data-view-panel') !== state.view; });
-    Array.prototype.forEach.call(heroes, function (h) { h.hidden = h.getAttribute('data-hero') !== state.view; });
+    main.setAttribute('data-view', state.view);
     if (jump) jump.hidden = state.view !== 'grid';
 
     var visible = 0;
@@ -43,7 +44,7 @@
       var show = matches(el);
       var holder = el.closest('li') || el;
       holder.hidden = !show;
-      if (show && el.closest('[data-view-panel="' + state.view + '"]')) visible++;
+      if (show) visible++;
     });
 
     // per-category counts and empty categories
@@ -54,13 +55,6 @@
       var count = sec.querySelector('[data-count]');
       count.textContent = state.role === 'all' ? cards.length + ' of ' + cards.length + ' published' : shown + ' of ' + cards.length + ' shown';
     });
-    Array.prototype.forEach.call(main.querySelectorAll('.catcol'), function (col) {
-      var entries = col.querySelectorAll('.catcol__entry');
-      var shown = Array.prototype.filter.call(entries, matches).length;
-      col.hidden = shown === 0;
-      col.querySelector('[data-count]').textContent = shown + ' of ' + entries.length;
-    });
-
     if (status) {
       status.textContent = state.role === 'all'
         ? 'Showing all ' + main.getAttribute('data-total') + ' patterns.'
@@ -73,6 +67,17 @@
   });
   Array.prototype.forEach.call(roleBtns, function (b) {
     b.addEventListener('click', function () { state.role = b.getAttribute('data-role-btn'); apply(); updateUrl(); });
+  });
+
+  // "All patterns for building" links in Start here: filter in place when script runs, plain link otherwise.
+  Array.prototype.forEach.call(main.querySelectorAll('[data-role-link]'), function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      state.role = a.getAttribute('data-role-link');
+      apply();
+      updateUrl();
+      list.scrollIntoView();
+    });
   });
 
   /* ---------- since last visit ---------- */

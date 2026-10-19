@@ -18,6 +18,7 @@
 <link rel="alternate" type="application/rss+xml" title="AI Evaluation Field Guide changelog" href="feed.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="js/boot.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Public+Sans:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/styles.css">
@@ -30,11 +31,10 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <a class="wordmark" href="index.html"><span class="wordmark__mark" aria-hidden="true">§</span><span class="wordmark__text">AI Evaluation Field Guide</span></a>
-  <nav class="site-nav" id="site-nav" aria-label="Primary"><a href="index.html">Patterns</a><a href="use-it-now.html" aria-current="page">Use it now</a><div class="nav-group"><button type="button" class="nav-group__btn" aria-expanded="false" aria-controls="nav-tools" data-nav-group>Tools</button><div class="nav-group__menu" id="nav-tools"><a href="situation-finder.html">Find your patterns</a><a href="claim-checker.html">Claim checker</a><a href="design-rubric.html">Design Rubric</a><a href="readiness-review.html">Readiness Review</a></div></div><a href="about.html">About</a></nav>
-  <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog"><span>Search patterns</span><kbd data-kbd>⌘K</kbd></button>
+  <nav class="site-nav" id="site-nav" aria-label="Primary"><a href="index.html">Patterns</a><a href="use-it-now.html" aria-current="page">Use it now</a><details class="nav-group"><summary>Tools</summary><div class="nav-group__menu"><a href="situation-finder.html">Find your patterns</a><a href="claim-checker.html">Claim checker</a><a href="design-rubric.html">Design Rubric</a><a href="readiness-review.html">Readiness Review</a><a href="sample-size.html">Sample size</a><a href="case-studies.html">Case studies</a><a href="templates.html">Templates</a></div></details><a href="guide.html">Guide</a><a href="about.html">About</a></nav>
   <div class="header-actions">
-    <button class="icon-btn" type="button" data-search-open aria-haspopup="dialog">Find</button>
-    <button class="icon-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <button class="search-btn" type="button" data-search-open aria-haspopup="dialog"><svg aria-hidden="true" focusable="false" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6.5" cy="6.5" r="4.75"/><path d="M10 10l4.5 4.5" stroke-linecap="round"/></svg><span class="search-btn__text">Search</span></button>
+    <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
   </div>
 </header>
 <main id="main" class="page page--room" data-page="room">
@@ -45,18 +45,24 @@
   <h2 id="score-h" class="room__heard">“It scores 94% on the benchmark.”</h2>
   <ul class="room__qs"><li><button type="button" class="room__q" data-copy="What does that benchmark measure, and how close is it to what we’ll use this for?" aria-label="Copy question: What does that benchmark measure, and how close is it to what we’ll use this for?"><span>What does that benchmark measure, and how close is it to what we’ll use this for?</span><span class="room__copy" aria-hidden="true">Copy</span></button></li><li><button type="button" class="room__q" data-copy="Is that one run or an average across several? What was the spread?" aria-label="Copy question: Is that one run or an average across several? What was the spread?"><span>Is that one run or an average across several? What was the spread?</span><span class="room__copy" aria-hidden="true">Copy</span></button></li><li><button type="button" class="room__q" data-copy="Do we know the model hasn’t seen those test questions before?" aria-label="Copy question: Do we know the model hasn’t seen those test questions before?"><span>Do we know the model hasn’t seen those test questions before?</span><span class="room__copy" aria-hidden="true">Copy</span></button></li></ul>
   <p class="room__good"><strong>A good answer:</strong> Names the task, gives a range or number of runs, and says how contamination was checked, or admits it wasn’t.</p>
+  <p class="room__weak"><strong>A weak answer:</strong> “It’s a standard benchmark, so it’s a fair test. We ran it once and it came out on top.”</p>
+  <p class="room__why"><strong>Why it’s weak:</strong> The answer never says what the benchmark measures, reports one run with no spread, and treats “standard” as proof that the test questions were not in the training data. None of the three questions gets a real answer (The Construct Gap, Once Is Not Reliable, Data Contamination).</p>
   <p class="room__laws">Why: <a href="patterns/the-construct-gap.html">The Construct Gap</a>, <a href="patterns/once-is-not-reliable.html">Once Is Not Reliable</a>, <a href="patterns/data-contamination.html">Data Contamination</a></p>
 </section><section class="room__card" id="better" aria-labelledby="better-h">
   <p class="room__label">When you hear</p>
   <h2 id="better-h" class="room__heard">“Model A beats Model B.”</h2>
   <ul class="room__qs"><li><button type="button" class="room__q" data-copy="Were both run the same way: same prompts, same settings, same data?" aria-label="Copy question: Were both run the same way: same prompts, same settings, same data?"><span>Were both run the same way: same prompts, same settings, same data?</span><span class="room__copy" aria-hidden="true">Copy</span></button></li><li><button type="button" class="room__q" data-copy="How big is the gap compared with the run-to-run noise?" aria-label="Copy question: How big is the gap compared with the run-to-run noise?"><span>How big is the gap compared with the run-to-run noise?</span><span class="room__copy" aria-hidden="true">Copy</span></button></li><li><button type="button" class="room__q" data-copy="What does each one cost per task, and does the gap justify it?" aria-label="Copy question: What does each one cost per task, and does the gap justify it?"><span>What does each one cost per task, and does the gap justify it?</span><span class="room__copy" aria-hidden="true">Copy</span></button></li></ul>
   <p class="room__good"><strong>A good answer:</strong> Same setup for both, a gap larger than the noise, and a cost number next to the quality number.</p>
+  <p class="room__weak"><strong>A weak answer:</strong> “B is a newer model, so of course it’s better. It scored 2 points higher.”</p>
+  <p class="room__why"><strong>Why it’s weak:</strong> It does not say whether both were run with the same prompts and settings, whether 2 points is larger than the run-to-run noise, or what each costs. A gap that small can disappear when the prompt changes or the run is repeated (Prompt Sensitivity, No Error Bars, No Result).</p>
   <p class="room__laws">Why: <a href="patterns/prompt-sensitivity.html">Prompt Sensitivity</a>, <a href="patterns/no-error-bars-no-result.html">No Error Bars, No Result</a>, <a href="patterns/the-cost-frontier.html">The Cost Frontier</a></p>
 </section><section class="room__card" id="demo" aria-labelledby="demo-h">
   <p class="room__label">When you hear</p>
   <h2 id="demo-h" class="room__heard">A great demo, or “it worked on my examples.”</h2>
   <ul class="room__qs"><li><button type="button" class="room__q" data-copy="How were these examples picked?" aria-label="Copy question: How were these examples picked?"><span>How were these examples picked?</span><span class="room__copy" aria-hidden="true">Copy</span></button></li><li><button type="button" class="room__q" data-copy="Can we try a few messy ones from our own work?" aria-label="Copy question: Can we try a few messy ones from our own work?"><span>Can we try a few messy ones from our own work?</span><span class="room__copy" aria-hidden="true">Copy</span></button></li><li><button type="button" class="room__q" data-copy="Where does it fail? Can you show me one?" aria-label="Copy question: Where does it fail? Can you show me one?"><span>Where does it fail? Can you show me one?</span><span class="room__copy" aria-hidden="true">Copy</span></button></li></ul>
   <p class="room__good"><strong>A good answer:</strong> Examples were chosen before seeing results, our own data gets tried, and failures are shown without being asked twice.</p>
+  <p class="room__weak"><strong>A weak answer:</strong> “Those were just typical examples. It works great on everything we’ve tried.”</p>
+  <p class="room__why"><strong>Why it’s weak:</strong> “Typical” does not say how the examples were picked, and no failure is shown. A demo can show that something works; on its own it cannot show where it stops working (Presence, Not Absence, The Jagged Frontier).</p>
   <p class="room__laws">Why: <a href="patterns/the-jagged-frontier.html">The Jagged Frontier</a>, <a href="patterns/distribution-shift.html">Distribution Shift</a>, <a href="patterns/presence-not-absence.html">Presence, Not Absence</a></p>
 </section><section class="room__card" id="judge" aria-labelledby="judge-h">
   <p class="room__label">When you hear</p>
@@ -81,6 +87,8 @@
   <h2 id="number-h" class="room__heard">“It’s 95% accurate.”</h2>
   <ul class="room__qs"><li><button type="button" class="room__q" data-copy="95% of what? Which cases, and how common are they?" aria-label="Copy question: 95% of what? Which cases, and how common are they?"><span>95% of what? Which cases, and how common are they?</span><span class="room__copy" aria-hidden="true">Copy</span></button></li><li><button type="button" class="room__q" data-copy="What is a simple baseline score on the same data?" aria-label="Copy question: What is a simple baseline score on the same data?"><span>What is a simple baseline score on the same data?</span><span class="room__copy" aria-hidden="true">Copy</span></button></li><li><button type="button" class="room__q" data-copy="Which kinds of mistakes matter most, and how often do those happen?" aria-label="Copy question: Which kinds of mistakes matter most, and how often do those happen?"><span>Which kinds of mistakes matter most, and how often do those happen?</span><span class="room__copy" aria-hidden="true">Copy</span></button></li></ul>
   <p class="room__good"><strong>A good answer:</strong> A defined population, a baseline for comparison, and error types broken out instead of one average.</p>
+  <p class="room__weak"><strong>A weak answer:</strong> “It’s 95% accurate across the board.”</p>
+  <p class="room__why"><strong>Why it’s weak:</strong> “Accurate” is not defined, there is no baseline, and “across the board” is a single average. If most cases are easy, a trivial rule might score nearly as well, and the rare costly mistakes can sit in the remaining 5% (The Averaging Trap, The Baseline Rule).</p>
   <p class="room__laws">Why: <a href="patterns/the-averaging-trap.html">The Averaging Trap</a>, <a href="patterns/the-baseline-rule.html">The Baseline Rule</a></p>
 </section><section class="room__card" id="target" aria-labelledby="target-h">
   <p class="room__label">When you hear</p>
@@ -89,12 +97,14 @@
   <p class="room__good"><strong>A good answer:</strong> A fresh test set is held back, and someone has looked at what the metric leaves out.</p>
   <p class="room__laws">Why: <a href="patterns/goodharts-law.html">Goodhart’s Law</a>, <a href="patterns/adaptive-overfitting.html">Adaptive Overfitting</a>, <a href="patterns/campbells-law.html">Campbell’s Law</a></p>
 </section></div>
-  <p class="room__foot">Want the full reasoning? Each pattern page has the evidence and sources. Reviewing a specific claim? Try the <a href="claim-checker.html">claim checker</a>. Longer lists: <a href="questions-to-ask-ai-vendor.html">buying an AI model or vendor</a>, <a href="ai-launch-review-questions.html">a launch review</a>, <a href="how-to-build-an-ai-evaluation.html">building an evaluation</a>.</p>
+  <p class="room__editorial">The weak answers are editorial illustrations written for this page, not quotes from a real vendor or team.</p>
+  <p class="room__foot">Want the full reasoning? Each pattern page has the evidence and sources. Reviewing a specific claim? Try the <a href="claim-checker.html">claim checker</a>. Longer lists: <a href="questions-to-ask-ai-vendor.html">buying an AI model or vendor</a>, <a href="ai-launch-review-questions.html">a launch review</a>, <a href="how-to-build-an-ai-evaluation.html">building an evaluation</a>. Templates you can copy: <a href="templates.html">vendor questionnaire, eval plan, results report</a>. Real examples: <a href="case-studies.html">case studies</a>. How many items is enough: <a href="sample-size.html">sample size and error bars</a>.</p>
   <p class="room__status" role="status" aria-live="polite" data-room-status></p>
 </main>
 <footer class="site-footer">
+  <nav class="site-footer__nav" aria-label="Footer"><a href="index.html">Patterns</a> · <a href="use-it-now.html">Use it now</a> · <a href="situation-finder.html">Find your patterns</a> · <a href="claim-checker.html">Claim checker</a> · <a href="design-rubric.html">Design Rubric</a> · <a href="readiness-review.html">Readiness Review</a> · <a href="sample-size.html">Sample size</a> · <a href="case-studies.html">Case studies</a> · <a href="templates.html">Templates</a> · <a href="guide.html">Guide</a> · <a href="about.html">About</a></nav>
   <p>Independent reference. No vendor funding. <a href="about.html#editorial-policy">Editorial policy</a></p>
-  <p>CC BY 4.0 · <a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="changelog.html">Changelog</a> · <a href="feed.xml">RSS</a> · Last updated 7 Oct 2026</p>
+  <p>CC BY 4.0 · <a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="changelog.html">Changelog</a> · <a href="feed.xml">RSS</a> · Last updated 19 Oct 2026</p>
 </footer>
 <script src="js/data.js"></script>
 <script src="js/collection.js" defer></script>

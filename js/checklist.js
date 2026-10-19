@@ -1,10 +1,12 @@
-/* Printable checklist builder. State lives in the URL: ?preset=buying or ?preset=custom&laws=1,2,3 */
+/* Printable checklist builder. State lives in the URL: ?preset=buying&stakes=medium or ?preset=custom&patterns=1,2,3&stakes=high
+   (the older ?laws= form is still read). Questions are grouped by phase and scaled by stakes; see checklist in data/editorial.json. */
 (function () {
   'use strict';
 
   var page = document.querySelector('[data-page="checklist"]');
   var LAI = window.LAI;
-  if (!page || !LAI) return;
+  var CL = window.LAICL;
+  if (!page || !LAI || !CL) return;
 
   var presetsEl = page.querySelector('[data-presets]');
   var gridEl = page.querySelector('[data-law-grid]');
@@ -12,6 +14,10 @@
   var sheetEl = page.querySelector('[data-sheet]');
   var printBtn = page.querySelector('[data-print]');
   var emptyEl = page.querySelector('[data-empty]');
+  var stakesEl = page.querySelector('[data-stakes]');
+  var stakesNoteEl = page.querySelector('[data-stakes-note]');
+  var stakesById = {};
+  CL.stakes.forEach(function (s) { stakesById[s.id] = s; });
   var byNo = {};
   LAI.laws.forEach(function (l) { byNo[parseInt(l.no, 10)] = l; });
   var allNos = LAI.laws.map(function (l) { return parseInt(l.no, 10); });
@@ -25,10 +31,12 @@
   }
 
   var params = new URLSearchParams(window.location.search);
-  var state = { preset: 'buying', selected: [] };
+  var state = { preset: 'buying', selected: [], stakes: 'medium' };
   (function init() {
     var p = params.get('preset');
-    var laws = (params.get('laws') || '').split(',').map(function (x) { return parseInt(x, 10); }).filter(function (n) { return byNo[n]; });
+    var sk = params.get('stakes');
+    if (sk && Object.prototype.hasOwnProperty.call(stakesById, sk)) state.stakes = sk;
+    var laws = (window.LAIC ? window.LAIC.readPatternsParam(params) : (params.get('patterns') || params.get('laws') || '')).split(',').map(function (x) { return parseInt(x, 10); }).filter(function (n) { return byNo[n]; });
     if (p && Object.prototype.hasOwnProperty.call(LAI.presets, p)) {
       state.preset = p;
       state.selected = toNums(LAI.presets[p].laws);
@@ -53,13 +61,17 @@
 
   function typo(s) { return String(s).replace(/(\w)'(\w)/g, '$1’$2'); }
 
+  function questionsFor(no) {
+    return byNo[no].questions.slice(0, stakesById[state.stakes].perPattern);
+  }
+
   function questionCount() {
-    return state.selected.reduce(function (n, no) { return n + byNo[no].questions.length; }, 0);
+    return state.selected.reduce(function (n, no) { return n + questionsFor(no).length; }, 0);
   }
 
   function updateUrl() {
-    var q = 'preset=' + state.preset;
-    if (state.preset === 'custom') q += '&laws=' + state.selected.slice().sort(function (a, b) { return a - b; }).join(',');
+    var q = 'preset=' + state.preset + '&stakes=' + state.stakes;
+    if (state.preset === 'custom') q += '&patterns=' + state.selected.slice().sort(function (a, b) { return a - b; }).join(',');
     try { window.history.replaceState(null, '', window.location.pathname + '?' + q); } catch (e) { /* file:// */ }
   }
 
@@ -79,6 +91,24 @@
       });
       presetsEl.appendChild(b);
     });
+  }
+
+  function renderStakes() {
+    stakesEl.innerHTML = '';
+    CL.stakes.forEach(function (st) {
+      var b = el('button', '', st.label);
+      b.type = 'button';
+      b.setAttribute('aria-pressed', String(st.id === state.stakes));
+      b.addEventListener('click', function () {
+        state.stakes = st.id;
+        renderStakes();
+        renderCounts();
+        renderSheet();
+        updateUrl();
+      });
+      stakesEl.appendChild(b);
+    });
+    stakesNoteEl.textContent = stakesById[state.stakes].note;
   }
 
   function renderGrid() {
@@ -142,7 +172,7 @@
     brand.appendChild(el('span', '', 'AI Evaluation Field Guide'));
     left.appendChild(brand);
     left.appendChild(el('h2', '', 'Evaluation checklist'));
-    left.appendChild(el('p', 'sheet__sub', label + ' · ' + state.selected.length + (state.selected.length === 1 ? ' pattern' : ' patterns') + ' · ' + q + (q === 1 ? ' question' : ' questions')));
+    left.appendChild(el('p', 'sheet__sub', label + ' · ' + stakesById[state.stakes].label + ' · ' + state.selected.length + (state.selected.length === 1 ? ' pattern' : ' patterns') + ' · ' + q + (q === 1 ? ' question' : ' questions')));
     var right = el('p', 'sheet__gen');
     right.appendChild(document.createTextNode('Generated ' + dateText()));
     right.appendChild(document.createElement('br'));
@@ -154,15 +184,16 @@
     var fields = el('div', 'sheet__fields');
     ['System or claim under review', 'Reviewer', 'Date'].forEach(function (f) { fields.appendChild(el('div', 'sheet__field', f)); });
     inner.appendChild(fields);
-    inner.appendChild(el('p', 'sheet__intro', 'For each question, write down the evidence you were given, then mark Yes, No, or N/A. A No or an N/A is a finding: note what would change your decision. Each pattern is explained at the address shown under its name.'));
+    inner.appendChild(el('p', 'sheet__intro', 'For each question, write down the evidence you were given, then mark Yes, No, or N/A. A No or an N/A is a finding: note what would change your decision. Questions marked Must ask are the ones to settle before you decide. Each pattern is explained at the address shown under its name.'));
 
     var n = 0;
-    LAI.categories.forEach(function (c) {
-      var laws = state.selected.filter(function (no) { return byNo[no].cat === c.id; });
+    var mustAsk = stakesById[state.stakes].mustAsk;
+    CL.phases.forEach(function (ph) {
+      var laws = state.selected.filter(function (no) { return CL.phaseOf[byNo[no].no] === ph.id; });
       if (!laws.length) return;
       var head = el('h3', 'sheet__cat');
-      head.appendChild(el('span', '', c.id + '.'));
-      head.appendChild(document.createTextNode(typo(c.name)));
+      head.appendChild(document.createTextNode(ph.label));
+      head.appendChild(el('span', 'sheet__phasenote', ph.note));
       inner.appendChild(head);
       laws.forEach(function (no) {
         var l = byNo[no];
@@ -173,12 +204,15 @@
         block.appendChild(lh);
         block.appendChild(el('p', 'sheet__quote', '“' + typo(l.aphorism) + '”'));
         block.appendChild(el('p', 'sheet__url', base + '/patterns/' + l.slug));
-        l.questions.forEach(function (text) {
+        questionsFor(no).forEach(function (text, qi) {
           n += 1;
           var qrow = el('div', 'sheet__q');
           qrow.appendChild(el('span', 'sheet__qn', String(n)));
           var qt = el('div');
-          qt.appendChild(el('div', 'sheet__qt', typo(text)));
+          var qtext = el('div', 'sheet__qt');
+          if (qi < mustAsk) qtext.appendChild(el('b', 'sheet__must', 'Must ask'));
+          qtext.appendChild(document.createTextNode(typo(text)));
+          qt.appendChild(qtext);
           qt.appendChild(el('div', 'sheet__notes'));
           qrow.appendChild(qt);
           var yn = el('div', 'sheet__yn');
@@ -234,6 +268,7 @@
 
   function refresh() {
     renderPresets();
+    renderStakes();
     renderGrid();
     renderCounts();
     renderSheet();
