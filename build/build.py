@@ -931,7 +931,7 @@ def build_law(i, law):
         terms = "".join("<dt>%s</dt><dd>%s</dd>" % (esc(typo(t["term"])), inline(t["definition"])) for t in law["terms"][:4])
         aside.append('<details class="aside-block" open><summary>Terms used here</summary><dl class="terms">%s</dl></details>' % terms)
     if law["alsoKnownAs"]:
-        aside.append('<details class="aside-block" open><summary>Also known as</summary><ul class="chips">%s</ul></details>' % "".join("<li>%s</li>" % esc(typo(a)) for a in law["alsoKnownAs"]))
+        aside.append('<details class="aside-block" open><summary>Related terms</summary><ul class="chips">%s</ul></details>' % "".join("<li>%s</li>" % esc(typo(a)) for a in law["alsoKnownAs"]))
     aside.append(
         '<details class="aside-block" open><summary>Take it with you</summary><ul class="takeaway">'
         '<li><a href="../brief.html?patterns=%s" data-collection-link="../brief.html" data-collection-extra="%s">Quick brief <span>Short overview</span></a></li>'
