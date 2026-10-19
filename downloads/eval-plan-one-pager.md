@@ -53,8 +53,8 @@ Out of scope (what a high score would not tell us):
 
 ## 6. Prompt variants and repeats
 
-- Prompt variants (this guide's rule of thumb is at least 3 to 5; use more if results swing widely), listed or linked:
-- Runs per item (this guide's rule of thumb is at least 3 to 5 for stochastic outputs; use more if results vary a lot):
+- Prompt variants (as many as you can afford; there is no fixed minimum, and the number needed depends on how much results differ between variants), listed or linked:
+- Runs per item (for stochastic outputs, more than one; there is no fixed minimum, so use enough that run-to-run variation is small next to the differences that matter). Repeats reduce run-to-run noise only, not the uncertainty from which items you chose:
 - Settings held fixed (model version or date, temperature, system prompt):
 - Reported as: average, range across variants, and all-runs-pass rate.
 
@@ -62,21 +62,21 @@ Out of scope (what a high score would not tell us):
 
 - Who or what scores outputs (people, rules, an AI model)?
 - If an AI model: which one, and is it from the same family as the system under test?
-- Human check: sample size (50 to 100 is a reasonable start), who labels, how agreement is measured and the threshold for trusting the grader:
+- Human check: sample size (a rate measured on 50 items is imprecise: 45 of 50 in agreement is 90%, but its 95% Wilson interval runs from about 79% to 96%, so use more items if the decision depends on it), who labels, how agreement is measured and the threshold for trusting the grader:
 - Order and length controls:
 
 ## 8. Slices and sample size
 
 - Groups or input types that matter (defined before looking at the overall score):
-- Items per slice, and the interval width we can afford (see https://evalfieldguide.com/sample-size):
+- Items per slice, and the interval width we can afford. These intervals cover which items were drawn, not run-to-run variation (see https://evalfieldguide.com/sample-size):
 - Smallest difference between systems that would matter to the decision:
-- Expected disagreement rate between systems (from a pilot), and the number of items that implies:
+- Expected disagreement rate between systems (from a pilot; a pilot of 50 to 100 items gives only a rough rate, so also note the items needed at the high end of its range), and the number of items that implies:
 
 ## 9. Stopping rules
 
 - Stop when: (for example, the planned number of items and runs are complete, or a hard failure class appears)
 - We will not: add items, change metrics, or change prompts after seeing locked-test results without recording it as a new plan version.
-- What happens if the result is not clearly different (the interval for the difference includes zero)?
+- What happens if the interval for the difference includes zero? (No difference has been shown. That is not proof the systems are equal.)
 
 ## 10. Reproducibility
 

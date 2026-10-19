@@ -37,15 +37,15 @@ Report every score with its sample size and interval.
 | Current process | | | | | | |
 | Simplest baseline | | | | | | |
 
-How the intervals were computed (for example, Wilson interval for accuracy; standard errors clustered by document where items come in groups):
+How the intervals were computed (for example, Wilson interval for accuracy; standard errors clustered by document where items come in groups). These intervals cover which items were drawn; say separately how run-to-run variation from the model was handled:
 
 ### Comparison
 
 | Comparison | Difference (points) | 95% interval | Method | Reading |
 |------------|---------------------|--------------|--------|---------|
-| New vs current | | | Paired, same items | Larger than noise / within noise |
+| New vs current | | | Paired, same items | Interval excludes zero / includes zero (no difference shown) |
 
-Treat a difference whose interval includes zero as not shown to differ (which is not the same as equal).
+If the interval for a difference includes zero, report that no difference was shown. Do not report it as equal.
 
 ### Reliability
 
@@ -63,7 +63,7 @@ Slices defined in the plan before the overall number was seen.
 
 Worst-performing slice, and whether it has enough items to support its own interval:
 
-Examples of failures a person read (we suggest at least five), and what they have in common:
+Examples of failures a person read (read as many as you can; five is a suggested minimum, not a statistical threshold), and what they have in common:
 
 ## Grader
 

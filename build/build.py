@@ -1697,31 +1697,46 @@ def calc_form(kind, title, hint, fields, button_note=""):
 
 
 def build_sample_size():
+    import math
     import sample_stats as S
     z = S.z_two_sided(0.95)
+    zb = S.z_power(0.80)
+    minus = "−"
     rows = ""
     for n in (50, 100, 200, 500, 1000, 5000):
-        rows += "<tr><td>%s</td><td>±%.1f</td><td>±%.1f</td></tr>" % (format(n, ","), S.worst_case_margin(n, z) * 100, S.margin(0.9, n, z) * 100)
+        half50 = S.wilson_offsets(n // 2, n, z)[0] * 100
+        below90, above90 = (x * 100 for x in S.wilson_offsets(round(0.9 * n), n, z))
+        rows += "<tr><td>%s</td><td>±%.1f</td><td>%s%.1f / +%.1f</td></tr>" % (format(n, ","), half50, minus, below90, above90)
     table = (
-        '<div class="table-wrap"><table><caption class="visually-hidden">Approximate 95% margin of error by number of items</caption><thead><tr><th scope="col">Items (n)</th><th scope="col">Margin if accuracy is near 50%</th><th scope="col">Margin if accuracy is near 90%</th></tr></thead><tbody>'
+        '<div class="table-wrap"><table><caption class="visually-hidden">Wilson 95% interval, in percentage points either side of the observed accuracy, by number of items</caption><thead><tr><th scope="col">Items (n)</th><th scope="col">Observed accuracy 50%: points either side</th><th scope="col">Observed accuracy 90%: points below / above</th></tr></thead><tbody>'
         + rows
-        + '</tbody></table></div><p class="calc__hint">Margins are in percentage points, using the usual 95% formula 1.96 \u00d7 \u221a(p(1\u2212p)/n). Accuracy near 50% is the widest case, so the first column is the worst case. Assumes independent items scored right or wrong.</p>'
+        + '</tbody></table></div><p class="calc__hint">These are Wilson 95%% intervals, in percentage points. At 50%% the interval is symmetric and is the widest it gets, so the first column is the worst case. Near 0%% or 100%% it is not symmetric, so the second column gives the points below and above 90%%. For example, 45 correct out of 50 gives %.1f%% to %.1f%%, not a symmetric ± figure. The usual symmetric formula, 1.96 × √(p(1−p)/n), is too narrow there. Assumes independent items scored right or wrong, so the intervals cover which items were drawn and nothing else.</p>' % tuple(100 * x for x in S.wilson(0.9, 50, z))
     )
     lo, hi = S.wilson(0.8, 200, z)
+    n97 = S.n_for_margin(0.5, 0.10, z)
     n385 = S.n_for_margin(0.5, 0.05, z)
+    n1068 = S.n_for_margin(0.5, 0.03, z)
     ni = S.n_independent(0.80, 0.85)
+    nicc = S.n_independent_cc(0.80, 0.85)
     np10 = S.n_paired(0.10, 0.05)
     np20 = S.n_paired(0.20, 0.05)
+    ex10, ex20 = S.n_paired_exact(0.10, 0.05), S.n_paired_exact(0.20, 0.05)
+    d_norm = S.max_disagreements_for_gap(200, 6, "normal", z)
+    d_exact = S.max_disagreements_for_gap(200, 6, "exact", z)
+    se_unpaired = math.sqrt(0.82 * 0.18 / 200 + 0.79 * 0.21 / 200)
+    unpaired_half = z * se_unpaired * 100
+    plo5, phi5, pn5lo, pn5hi = S.pilot_range(5, 50, 0.05, z, zb, z)
+    plo10, phi10, pn10lo, pn10hi = S.pilot_range(10, 100, 0.05, z, zb, z)
     forms = "".join([
-        calc_form("ci", "1. How precise is my score?", "Enter the number of items and the accuracy you observed. You get a Wilson 95% interval.",
+        calc_form("ci", "1. How precise is my score?", "Enter the number of items and the accuracy you observed. You get a Wilson interval at the confidence level you choose.",
                   [("n", "Number of items", 200, 'min="1" step="1"'), ("acc", "Observed accuracy (%)", 80, 'min="0" max="100" step="any"'), ("select", "conf", "Confidence", ("90", "95", "99"), "95")]),
         calc_form("margin", "2. How many items for a target margin of error?", "Planning figure for a score you have not collected yet. If you have no idea of the accuracy, use 50, which is the most cautious.",
                   [("acc", "Expected accuracy (%)", 50, 'min="1" max="99" step="any"'), ("e", "Margin of error (± points)", 5, 'min="0.1" max="49" step="any"'), ("select", "conf", "Confidence", ("90", "95", "99"), "95")]),
         calc_form("independent", "3a. Compare two systems on different items", "Use this when the two systems are scored on separate samples of items, for example two groups of real users.",
                   [("base", "Baseline accuracy (%)", 80, 'min="1" max="99" step="any"'), ("diff", "Difference to detect (points)", 5, 'min="-99" max="99" step="any"'), ("select", "conf", "Confidence", ("90", "95", "99"), "95"), ("select", "power", "Power", ("80", "90", "95"), "80")]),
         calc_form("paired", "3b. Compare two systems on the same items", "Use this when you run both systems on one test set. It depends on how often they disagree.",
-                  [("diff", "Difference to detect (points)", 5, 'min="-99" max="99" step="any"'), ("dis", "Disagreement rate (% of items where exactly one is right)", 10, 'min="0.1" max="100" step="any"'), ("select", "conf", "Confidence", ("90", "95", "99"), "95"), ("select", "power", "Power", ("80", "90", "95"), "80")]),
-        calc_form("pairedci", "4. Did system A really beat system B on the same items?", "After the run, count the items where only A was right and where only B was right. You get the difference and its 95% interval.",
+                  [("diff", "Difference to detect (points)", 5, 'min="-99" max="99" step="any"'), ("dis", "Disagreement rate (% of items where exactly one is right)", 10, 'min="0.1" max="100" step="any"'), ("pilot", "Pilot size (items), optional", "", 'min="1" step="1"'), ("select", "conf", "Confidence", ("90", "95", "99"), "95"), ("select", "power", "Power", ("80", "90", "95"), "80")]),
+        calc_form("pairedci", "4. Did system A really beat system B on the same items?", "After the run, count the items where only A was right and where only B was right. You get the difference and its confidence interval.",
                   [("n", "Number of items", 200, 'min="2" step="1"'), ("b", "Only A right", 30, 'min="0" step="1"'), ("c", "Only B right", 18, 'min="0" step="1"'), ("select", "conf", "Confidence", ("90", "95", "99"), "95")]),
     ])
     lede = (
@@ -1731,30 +1746,31 @@ def build_sample_size():
     sec.append(
         '<section><h2 id="short-version">The short version</h2><ul>'
         '<li>A score on %d items is a range, not a point. For %d items scored at 80%%, the Wilson 95%% interval runs from %.1f%% to %.1f%%.</li>'
-        '<li>Halving the margin of error takes about four times as many items. Going from ±10 points to ±5 takes you from roughly 100 to roughly %d items; ±3 takes about 1,070.</li>'
-        '<li>Telling two systems apart needs far more items than measuring one. Detecting 80%% against 85%% on two separate samples takes about %d items per system. On the same items, if the systems disagree on 10%% of them, about %d.</li>'
-        '<li>If two systems differ by less than the noise, nobody has shown they differ. See %s.</li>'
+        '<li>Halving the margin of error takes about four times as many items. As planning figures, ±10 points takes about %d items, ±5 about %d, and ±3 about %s (normal approximation, accuracy near 50%%, the cautious case).</li>'
+        '<li>Telling two systems apart needs far more items than measuring one. Detecting 80%% against 85%% on two separate samples takes about %d items per system by the standard formula, or about %d with a continuity correction. On the same items, if the systems disagree on 10%% of them, about %d by the normal approximation; an exact test needs about %d.</li>'
+        '<li>If the gap between two systems is within what the choice of items could produce, the test has not shown that they differ. See %s.</li>'
         '<li>A single run of a single prompt is also a sample. See %s and %s.</li></ul></section>'
-        % (200, 200, lo * 100, hi * 100, n385, ni, np10, law_link("no-error-bars-no-result"), law_link("once-is-not-reliable"), law_link("prompt-sensitivity"))
+        % (200, 200, lo * 100, hi * 100, n97, n385, format(n1068, ","), ni, nicc, np10, ex10, law_link("no-error-bars-no-result"), law_link("once-is-not-reliable"), law_link("prompt-sensitivity"))
     )
-    sec.append('<section><h2 id="table">Margin of error by test-set size</h2>%s</section>' % table)
+    sec.append('<section><h2 id="table">Interval by test-set size</h2>%s</section>' % table)
     sec.append('<section><h2 id="calculators">Calculators</h2><p>These run in your browser and send nothing anywhere. They give planning figures from standard formulas, listed under <a href="#sources">Sources</a>; read <a href="#assumptions">the assumptions</a> before relying on them.</p>%s</section>' % forms)
     sec.append(
         '<section><h2 id="worked">Worked examples</h2><ul>'
-        '<li><strong>Is 82%% vs 79%% a win?</strong> On 200 items, a score of 80%% has a 95%% interval of %.1f%% to %.1f%%, roughly five to six points either side. A 3-point gap sits well inside that. Even when both systems run on the same items, a 3-point gap on 200 items is distinguishable from noise only if the systems disagree on fewer than about 5%% of items.</li>'
-        '<li><strong>Same items, small disagreement.</strong> To detect a 5-point gap with 80%% power when the systems disagree on 10%% of items you need about %d items. If they disagree on 20%% of items, about %d. More disagreement means more noise in the comparison, so you need more items.</li>'
-        '<li><strong>Different items.</strong> The same 5-point gap on two separate samples needs about %d items per system, because nothing is cancelled out by sharing items.</li>'
-        '<li><strong>Do not know the disagreement rate?</strong> Run both systems on 50 to 100 items first and count the items where exactly one is right.</li></ul>'
-        '<p>Every figure above and in the table is checked by <code>build/test_sample_size.py</code> in the site repository, which also confirms the power by exact calculation rather than relying on the approximation.</p></section>'
-        % (lo * 100, hi * 100, np10, np20, ni)
+        '<li><strong>Is 82%% vs 79%% a win?</strong> On 200 items, a score of 80%% has a 95%% interval of %.1f%% to %.1f%%, roughly five to six points either side. If the two systems are scored on separate samples of 200 items, the 95%% interval for a 3-point gap is about ±%.1f points, so the gap is well within noise. Running both systems on the same items gives a sharper test, but a 3-point gap on 200 items is a net of 6 items, and it passes a 5%% test only if the systems disagree on few items: at most %d (%d%%) by the McNemar normal-approximation test, or at most %d (%d%%) by the exact McNemar test. If they disagree on more items than that, the gap is within what the choice of items could produce.</li>'
+        '<li><strong>Same items, small disagreement.</strong> To detect a 5-point gap with 80%% power when the systems disagree on 10%% of items you need about %d items by the normal approximation, or about %d by an exact test. If they disagree on 20%% of items, about %d (exact: about %d). More disagreement means more noise in the comparison, so you need more items.</li>'
+        '<li><strong>Different items.</strong> The same 5-point gap on two separate samples needs about %d items per system by the standard formula without a continuity correction, or about %d with it, because nothing is cancelled out by sharing items.</li>'
+        '<li><strong>Do not know the disagreement rate?</strong> Run both systems on a pilot first and count the items where exactly one is right. A pilot of 50 to 100 items gives only a rough rate. If 5 of 50 items disagree (10%%), the 95%% Wilson range for the true rate is %.1f%% to %.1f%%, and the items needed for a 5-point gap run from about %d to about %d. With 10 of 100, the range is %.1f%% to %.1f%% and the items needed run from about %d to about %d. The disagreement rate cannot be below the gap itself, so where the Wilson range reaches below 5%%, as it does for 5 of 50, the low end is raised to 5%%. Plan with the upper end of the range if you want to be safe.</li></ul>'
+        '<p>The main figures on this page are generated from <code>build/sample_stats.py</code> and checked by <code>build/test_sample_size.py</code> in the site repository. That test reads the built page and checks every number in the interval table, the short version, and these worked examples against separate calculations, including exact power for the sample-size figures. It does not check the wording of the assumptions below or the sources, and it checks formulas, not whether they suit your data.</p></section>'
+        % (lo * 100, hi * 100, unpaired_half, d_norm, round(100 * d_norm / 200), d_exact, round(100 * d_exact / 200), np10, ex10, np20, ex20, ni, nicc,
+           plo5 * 100, phi5 * 100, pn5lo, pn5hi, plo10 * 100, phi10 * 100, pn10lo, pn10hi)
     )
     sec.append(
         '<section><h2 id="assumptions">What the numbers assume, and where they fail</h2><ul>'
         '<li><strong>Independent items.</strong> The formulas treat each item as an independent draw. Items that come in groups (several questions about one document, or many prompts from one user) are correlated, and the true interval is wider. Miller (2024) gives a clustered standard error for this. With strong clustering, count the groups, not the items.</li>'
         '<li><strong>Items are a sample from what you care about.</strong> The interval only covers the luck of which items you drew. It says nothing about whether the test items resemble real use. See %s and %s.</li>'
         '<li><strong>Judge noise is extra.</strong> If an AI model grades the answers, its errors and preferences add to the uncertainty and can bias the score in one direction. The interval above does not include that. Check the grader against people (%s).</li>'
-        '<li><strong>Model randomness is separate.</strong> Running each item several times reduces noise from the model’s own variation, but not noise from which items you picked. Both matter (%s).</li>'
-        '<li><strong>Approximations.</strong> Wilson intervals behave well at small n and for accuracy near 0%% or 100%%; the planning formulas for sample size do not. Below about 30 items, or with fewer than about 25 disagreements in a paired comparison, treat the figures as rough and consider an exact method.</li>'
+        '<li><strong>Model randomness is separate, and the intervals are over items.</strong> Running each item several times reduces noise from the model’s own variation, but not noise from which items you picked. The intervals on this page describe the choice of items; repeating runs on the same items does not make them narrower, and the run-to-run variation is an additional source of uncertainty. Both matter (%s).</li>'
+        '<li><strong>Approximations.</strong> Wilson intervals have much better coverage than the usual symmetric formula at small n and for accuracy near 0%% or 100%%, though they are still approximate (Brown, Cai and DasGupta, 2001). The sample-size formulas are normal approximations, and an exact test can need more items. As a rough guide, not a sharp cut-off, treat the figures as rough below about 30 items, or with fewer than about 25 disagreements in a paired comparison, and consider an exact method.</li>'
         '<li><strong>Many comparisons.</strong> The calculators cover one comparison. If you test many variants against one test set and report the best, the best will look better than it is (%s). This page does not cover corrections for multiple comparisons.</li>'
         '<li><strong>Point of the plan.</strong> The sample size depends on the smallest difference that would change your decision. Decide that first and write it down (see the <a href="templates.html">eval plan template</a>).</li></ul></section>'
         % (law_link("distribution-shift"), law_link("the-construct-gap"), law_link("judge-bias"), law_link("once-is-not-reliable"), law_link("adaptive-overfitting"))
@@ -1771,16 +1787,16 @@ def build_sample_size():
         ("Wilson, E. B. (1927). Probable inference, the law of succession, and statistical inference. <em>Journal of the American Statistical Association</em>, 22(158), 209–212.", "https://doi.org/10.1080/01621459.1927.10502953", "The Wilson score interval."),
         ("Brown, L. D., Cai, T. T., &amp; DasGupta, A. (2001). Interval estimation for a binomial proportion. <em>Statistical Science</em>, 16(2), 101–133.", "https://doi.org/10.1214/ss/1009213286", "Compares intervals by coverage; recommends Wilson or Jeffreys for small samples and Agresti–Coull for larger ones."),
         ("Miller, E. (2024). Adding error bars to evals: A statistical approach to language model evaluations. arXiv:2411.00640.", "https://arxiv.org/abs/2411.00640", "Standard errors (including clustered), paired differences between models (eq. 7), and power analysis for evals (section 5)."),
-        ("Fleiss, J. L., Levin, B., &amp; Paik, M. C. (2003). <em>Statistical Methods for Rates and Proportions</em>. Wiley.", "https://doi.org/10.1002/0471445428", "Sample size for comparing two independent proportions."),
+        ("Fleiss, J. L., Levin, B., &amp; Paik, M. C. (2003). <em>Statistical Methods for Rates and Proportions</em>. Wiley.", "https://doi.org/10.1002/0471445428", "Sample size for comparing two independent proportions, with and without a continuity correction."),
         ("Connor, R. J. (1987). Sample size for testing differences in proportions for the paired-sample design. <em>Biometrics</em>, 43(1).", "https://doi.org/10.2307/2531961", "Sample size when both systems are scored on the same items (the McNemar setting)."),
     ]
     items = "".join('<li>%s <a href="%s" rel="noopener">%s</a><br><span class="calc__hint">%s</span></li>' % (s, u, u, esc(typo(d))) for s, u, d in sources)
-    sec.append('<section><h2 id="sources">Sources</h2><ul class="plain-list">%s</ul><p>The formulas in the calculators are standard textbook results; this page applies them to eval data and does not add to them. The sample-size formulas in 3a and 3b are normal approximations. Miller’s worked example for detecting a 3-point difference, under the assumptions in his paper, comes to roughly 1,000 questions.</p></section>' % items)
-    note = "Planning aid, not a statistical consultation. For a high-stakes decision, have someone with statistics training check the design. Formulas are checked by build/test_sample_size.py in the site repository."
+    sec.append('<section><h2 id="sources">Sources</h2><ul class="plain-list">%s</ul><p>The formulas in the calculators are standard textbook results; this page applies them to eval data and does not add to them. The sample-size formulas in 3a and 3b are normal approximations. Figures for an exact test, and the pilot ranges, are computed on this site by enumerating the exact distributions and applying the Wilson interval; they are not from the sources above. Miller’s worked example for detecting a 3-point difference, under the assumptions in his paper, comes to roughly 1,000 questions.</p></section>' % items)
+    note = "Planning aid, not a statistical consultation. For a high-stakes decision, have someone with statistics training check the design. The figures in the table and worked examples are checked by build/test_sample_size.py in the site repository."
     practitioner_page(
         "sample-size.html",
         "Sample size and error bars",
-        "How many test items you need, with a confidence-interval calculator, a margin-of-error table, and sample sizes for comparing two AI systems.",
+        "How many test items you need, with a confidence-interval calculator, an interval table, and sample sizes for comparing two AI systems.",
         "sample-size", lede, "".join(sec), note, scripts=("sample-size.js",),
     )
 
