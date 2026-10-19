@@ -8,5 +8,39 @@
     "published": "2026-10-05",
     "version": "v1.0",
     "evidenceChecked": "2026-09-15"
-  }
+  },
+  "newsletter": {
+    "_note": "Leave action empty to show an RSS box instead of a form. To turn the signup on, set action to the https URL your mail service gives you for a hosted form (it receives a POST), set field to the name of that form's email input, add any other required inputs under hidden, and edit privacy to match the service. The build then adds that origin to form-action in the CSP in _headers.",
+    "action": "",
+    "label": "Get an email when patterns are added or revised",
+    "field": "email",
+    "hidden": {},
+    "privacy": "Your address is used only to send these updates. It is not sold or shared, and every email says how to unsubscribe."
+  },
+  "startHere": [
+    {
+      "role": "building",
+      "label": "Building",
+      "who": "You design, run or maintain evaluations of AI systems.",
+      "patterns": ["goodharts-law", "prompt-sensitivity", "no-error-bars-no-result"],
+      "tool": {"label": "Find your patterns", "href": "situation-finder.html", "why": "Describe what you are testing and see which patterns to check first."},
+      "list": {"label": "How to build an AI evaluation", "href": "how-to-build-an-ai-evaluation.html"}
+    },
+    {
+      "role": "buying",
+      "label": "Buying",
+      "who": "You choose, buy or sign off on an AI model, vendor or feature.",
+      "patterns": ["data-contamination", "the-baseline-rule", "the-lab-to-field-gap"],
+      "tool": {"label": "Claim checker", "href": "claim-checker.html", "why": "Paste a claim and see which patterns apply to it."},
+      "list": {"label": "Questions to ask an AI vendor", "href": "questions-to-ask-ai-vendor.html"}
+    },
+    {
+      "role": "designing",
+      "label": "Designing",
+      "who": "You design the experience around an AI feature.",
+      "patterns": ["the-functionality-fallacy", "the-averaging-trap", "the-team-is-the-system"],
+      "tool": {"label": "Design Rubric", "href": "design-rubric.html", "why": "Run a feature through 18 checks across six areas."},
+      "list": {"label": "AI launch review questions", "href": "ai-launch-review-questions.html"}
+    }
+  ]
 }

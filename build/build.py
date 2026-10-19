@@ -44,24 +44,41 @@ CATS = [
 for _c in CATS:
     _c["thread"] = EDIT["categories"][_c["id"]]["thread"]
 CAT = {c["id"]: c for c in CATS}
+# One list drives the header nav, the mobile menu and the footer. Groups are (label, [(label, href), ...]).
+# The current page is marked in write(), from its file name, so pages do not need to say where they sit.
 NAV = [
-    ("Patterns", "index.html", "laws"),
-    ("Use it now", "use-it-now.html", "room"),
+    ("Patterns", "index.html"),
+    ("Use it now", "use-it-now.html"),
     ("Tools", [
-        ("Find your patterns", "situation-finder.html", "situation"),
-        ("Claim checker", "claim-checker.html", "claim"),
-        ("Design Rubric", "design-rubric.html", "rubric"),
-        ("Readiness Review", "readiness-review.html", "review"),
-    ], None),
-    ("About", "about.html", "about"),
+        ("Find your patterns", "situation-finder.html"),
+        ("Claim checker", "claim-checker.html"),
+        ("Design Rubric", "design-rubric.html"),
+        ("Readiness Review", "readiness-review.html"),
+        ("Sample size", "sample-size.html"),
+        ("Case studies", "case-studies.html"),
+        ("Templates", "templates.html"),
+    ]),
+    ("Guide", "guide.html"),
+    ("About", "about.html"),
 ]
-GUIDE_PAGES = [
-    ("guide.html", "Overview"),
-    ("being-pragmatic.html", "Being Pragmatic"),
-    ("playbook.html", "Playbook"),
-    ("glossary.html", "Glossary"),
-    ("bibliography.html", "Bibliography"),
-    ("methodology.html", "Methodology"),
+# Pages that belong to a nav item without being in the nav themselves (marked as the section, not the page).
+NAV_SECTION = {
+    "brief.html": "index.html",
+    "checklist.html": "index.html",
+    "changelog.html": "about.html",
+    "privacy.html": "about.html",
+}
+# The guide: three chapters in reading order, then reference pages. The question lists (INTENT_PAGES) are
+# the "Playbooks by situation" group. guide.html is the hub; the overview essay lives at overview.html.
+GUIDE_CHAPTERS = [
+    ("overview.html", "Overview", "What AI evaluation is, why it is hard, and how to use the patterns."),
+    ("playbook.html", "Playbook", "Ten questions for reading any AI claim, a sequence for building your own eval, red flags, and an eval card template."),
+    ("being-pragmatic.html", "Being Pragmatic", "How to do this inside a real team, with deadlines, a small budget, and a model that changed last Tuesday."),
+]
+GUIDE_REFERENCE = [
+    ("glossary.html", "Glossary", "Definitions of the terms used across the patterns."),
+    ("bibliography.html", "Bibliography", "Every source cited on this site, and where each is used."),
+    ("methodology.html", "Methodology", "How the patterns were chosen, what counts as a source, and what the guide does not claim."),
 ]
 FONTS = (
     "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500"
@@ -185,7 +202,7 @@ def prep_laws():
 BY_SLUG = prep_laws()
 BY_SLUG_NAMES = {l["name"] for l in LAWS}
 NAMES = sorted([(l["name"], l["slug"]) for l in LAWS], key=lambda t: -len(t[0]))
-PAGE_LINKS = {"Overview": "guide.html", "Being Pragmatic": "being-pragmatic.html", "Playbook": "playbook.html", "Glossary": "glossary.html"}
+PAGE_LINKS = {"Overview": "overview.html", "Being Pragmatic": "being-pragmatic.html", "Playbook": "playbook.html", "Glossary": "glossary.html"}
 
 
 def link_laws(h, prefix=""):
@@ -296,6 +313,7 @@ def analytics_inline_js():
 
 
 TITLE_TAGS = {
+    "Guide": "AI evaluation guide: what to read first, and what next",
     "Glossary": "AI evaluation glossary: key terms explained",
     "Playbook": "Playbook for reading AI claims and building evals",
     "Being Pragmatic": "AI evaluation on a real team: being pragmatic",
@@ -308,6 +326,60 @@ TITLE_TAGS = {
 }
 
 
+def nav_html(p):
+    """Primary nav from NAV. Tools is a <details> disclosure, so it opens without JavaScript."""
+    out = ""
+    for label, target in NAV:
+        if isinstance(target, list):
+            menu = "".join('<a href="%s%s">%s</a>' % (p, h, l) for l, h in target)
+            out += '<details class="nav-group"><summary>%s</summary><div class="nav-group__menu">%s</div></details>' % (label, menu)
+        else:
+            out += '<a href="%s%s">%s</a>' % (p, target, label)
+    return out
+
+
+def footer_nav_html(p):
+    """The same list, flattened, so a visitor without JavaScript can reach every page from the footer."""
+    out = []
+    for label, target in NAV:
+        for l, h in (target if isinstance(target, list) else [(label, target)]):
+            out.append('<a href="%s%s">%s</a>' % (p, h, l))
+    return " \u00b7 ".join(out)
+
+
+def nav_hrefs():
+    return [h for _, t in NAV for h in ([x[1] for x in t] if isinstance(t, list) else [t])]
+
+
+def guide_files():
+    return {f for f, _, _ in GUIDE_CHAPTERS + GUIDE_REFERENCE} | {pg["file"] for pg in INTENT_PAGES}
+
+
+def mark_nav(rel, content):
+    """Add aria-current to this page's nav link ("page"), or to the nav item it belongs to ("true")."""
+    exact = rel in nav_hrefs()
+    if exact:
+        target = rel
+    elif rel.startswith("patterns/"):
+        target = "index.html"
+    elif rel in NAV_SECTION:
+        target = NAV_SECTION[rel]
+    elif rel in guide_files():
+        target = "guide.html"
+    else:
+        return content
+    m = re.search(r'<nav class="site-nav".*?</nav>', content, re.S)
+    if not m:
+        return content
+    p = "../" * rel.count("/")
+    needle = '<a href="%s%s"' % (p, target)
+    block = m.group(0).replace(needle, needle + ' aria-current="%s"' % ("page" if exact else "true"), 1)
+    for label, group in NAV:
+        if isinstance(group, list) and target in [h for _, h in group]:
+            block = block.replace("<summary>%s</summary>" % label, '<summary aria-current="true">%s</summary>' % label, 1)
+    return content[: m.start()] + block + content[m.end() :]
+
+
 def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, skip="Skip to content", page_class="", head_extra="", og_image=None):
     p = "../" * depth
     if title == SITE["title"]:
@@ -317,19 +389,8 @@ def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, ski
         full_title = "%s \u00b7 %s" % (tag, SITE["title"])
         if len(full_title) > 72:
             full_title = tag
-    def _link(href, label, key):
-        return '<a href="%s%s"%s>%s</a>' % (p, href, ' aria-current="page"' if key == current else "", label)
-
-    nav = ""
-    for label, href, key in NAV:
-        if isinstance(href, list):
-            here = any(k == current for _, _, k in href)
-            nav += (
-                '<div class="nav-group"><button type="button" class="nav-group__btn"%s aria-expanded="false" aria-controls="nav-tools" data-nav-group>%s</button>'
-                '<div class="nav-group__menu" id="nav-tools">%s</div></div>'
-            ) % (' aria-current="true"' if here else "", label, "".join(_link(h, l, k) for l, h, k in href))
-        else:
-            nav += _link(href, label, key)
+    nav = nav_html(p)
+    footer_nav = footer_nav_html(p)
     scripts_html = ""
     if data:
         scripts_html += '<script src="%sjs/data.js"></script>\n' % p
@@ -363,6 +424,7 @@ def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, ski
 <link rel="alternate" type="application/rss+xml" title="%(site)s changelog" href="%(p)sfeed.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="%(p)sjs/boot.js"></script>
 <link rel="stylesheet" href="%(fonts)s">
 <link rel="stylesheet" href="%(p)scss/tokens.css">
 <link rel="stylesheet" href="%(p)scss/styles.css">
@@ -372,14 +434,14 @@ def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, ski
 <header class="site-header">
   <a class="wordmark" href="%(p)sindex.html"><span class="wordmark__mark" aria-hidden="true">\u00a7</span><span class="wordmark__text">AI Evaluation Field Guide</span></a>
   <nav class="site-nav" id="site-nav" aria-label="Primary">%(nav)s</nav>
-  <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog"><span>Search patterns</span><kbd data-kbd>\u2318K</kbd></button>
   <div class="header-actions">
-    <button class="icon-btn" type="button" data-search-open aria-haspopup="dialog">Find</button>
-    <button class="icon-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <button class="search-btn" type="button" data-search-open aria-haspopup="dialog"><svg aria-hidden="true" focusable="false" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6.5" cy="6.5" r="4.75"/><path d="M10 10l4.5 4.5" stroke-linecap="round"/></svg><span class="search-btn__text">Search</span></button>
+    <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
   </div>
 </header>
 %(body)s
 <footer class="site-footer">
+  <nav class="site-footer__nav" aria-label="Footer">%(footer_nav)s</nav>
   <p>Independent reference. No vendor funding. <a href="%(p)sabout.html#editorial-policy">Editorial policy</a></p>
   <p>CC BY 4.0 \u00b7 <a href="%(p)smethodology.html">Methodology</a> \u00b7 <a href="%(p)sprivacy.html">Privacy</a> \u00b7 <a href="%(p)schangelog.html">Changelog</a> \u00b7 <a href="%(p)sfeed.xml">RSS</a> \u00b7 Last updated %(updated)s</p>
 </footer>
@@ -394,6 +456,7 @@ def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, ski
         "p": p,
         "fonts": FONTS,
         "nav": nav,
+        "footer_nav": footer_nav,
         "body": body,
         "skip": esc(skip),
         "updated": fmt_date(SITE["updated"]),
@@ -410,6 +473,7 @@ def write(rel, content):
         if rel == "index.html":
             tags += '<script type="application/ld+json">%s</script>\n' % json.dumps({"@context": "https://schema.org", "@type": "WebSite", "name": SITE["title"], "url": SITE["baseUrl"], "description": "26 short, sourced patterns for judging whether an AI system actually holds up.", "inLanguage": "en", "author": {"@type": "Person", "name": "Joseph Alfonso", "url": "https://josephalfonso.com"}}, ensure_ascii=False)
         content = content.replace("</head>", tags + "</head>", 1)
+        content = mark_nav(rel, content)
     path = ROOT / rel
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")
@@ -453,68 +517,130 @@ def law_card(law, prefix=""):
     )
 
 
+NEWS = SITE.get("newsletter") or {}
+
+
+def newsletter_action():
+    """The signup endpoint from data/site.json, or "" when the signup is not set up."""
+    action = (NEWS.get("action") or "").strip()
+    if action and not action.startswith("https://"):
+        raise SystemExit("data/site.json: newsletter.action must be an https:// URL (or empty)")
+    return action
+
+
+def follow_box(heading="h2"):
+    """"Follow along" box. A plain POST form when a signup endpoint is configured, otherwise a pointer to the RSS feed."""
+    action = newsletter_action()
+    if action:
+        hidden = "".join('<input type="hidden" name="%s" value="%s">' % (esc(k), esc(v)) for k, v in (NEWS.get("hidden") or {}).items())
+        return (
+            '<section class="follow" id="follow" aria-labelledby="follow-h">'
+            '<%(h)s id="follow-h">Follow along</%(h)s>'
+            '<form class="follow__form" method="post" action="%(action)s">'
+            '<label for="follow-email">%(label)s</label>'
+            '<div class="follow__row"><input id="follow-email" type="email" name="%(field)s" autocomplete="email" required>'
+            '<button class="btn btn--ink" type="submit">Subscribe</button></div>%(hidden)s'
+            '</form><p class="follow__note">%(privacy)s <a href="privacy.html">Privacy</a></p>'
+            '<p class="follow__note">Prefer a feed reader? <a href="feed.xml">Use the RSS feed</a>.</p></section>'
+        ) % {"h": heading, "action": esc(action), "label": esc(typo(NEWS["label"])), "field": esc(NEWS.get("field") or "email"), "hidden": hidden, "privacy": esc(typo(NEWS["privacy"]))}
+    return (
+        '<section class="follow" id="follow" aria-labelledby="follow-h">'
+        '<%(h)s id="follow-h">Follow along</%(h)s>'
+        '<p>Patterns are added and revised as the research changes, and every change is logged. '
+        'Subscribe to the <a href="feed.xml">RSS feed</a> to get each update in a feed reader, or read the <a href="changelog.html">changelog</a>.</p></section>'
+    ) % {"h": heading}
+
+
+def start_here():
+    cards = ""
+    for r in SITE["startHere"]:
+        reads = "".join(
+            '<li><a href="%s"><span class="start__name">%s</span><span class="start__quote">“%s”</span></a></li>'
+            % (law_url(sl), esc(typo(BY_SLUG[sl]["name"])), esc(typo(BY_SLUG[sl]["aphorism"])))
+            for sl in r["patterns"]
+        )
+        cards += (
+            '<li class="start__card"><h3 class="start__role">%(label)s</h3><p class="start__who">%(who)s</p>'
+            '<p class="start__step"><span class="start__n" aria-hidden="true">1</span>Read these three patterns</p><ul class="start__reads">%(reads)s</ul>'
+            '<p class="start__step"><span class="start__n" aria-hidden="true">2</span>Then use one tool</p>'
+            '<p class="start__tool"><a class="btn btn--accent btn--sm" href="%(thref)s">%(tlabel)s</a> <span>%(twhy)s</span></p>'
+            '<p class="start__more">Ready-made questions: <a href="%(lhref)s">%(llabel)s</a><br>'
+            '<a href="index.html?role=%(role)s#patterns" data-role-link="%(role)s">All patterns for %(lower)s</a></p></li>'
+        ) % {
+            "label": esc(r["label"]), "who": esc(typo(r["who"])), "reads": reads, "role": r["role"], "lower": esc(r["label"].lower()),
+            "thref": r["tool"]["href"], "tlabel": esc(r["tool"]["label"]), "twhy": esc(typo(r["tool"]["why"])),
+            "lhref": r["list"]["href"], "llabel": esc(r["list"]["label"]),
+        }
+    return (
+        '<section class="start" id="start-here" aria-labelledby="start-h">'
+        '<div class="start__head"><h2 id="start-h">Start here</h2>'
+        '<p>Pick the role closest to yours. Read three patterns, then use one tool on the claim or system in front of you.</p></div>'
+        '<ul class="start__grid">%s</ul></section>' % cards
+    )
+
+
 def build_index():
     total = len(LAWS)
-    sections, columns = [], []
-    chips = []
+    sections, chips = [], []
     for c in CATS:
         laws = [l for l in LAWS if l["category"] == c["id"]]
         cards = "".join(law_card(l) for l in laws)
         sections.append(
             '<section class="category cat-%d" id="cat-%s" aria-labelledby="cat-%s-h">'
-            '<div class="category__head"><span class="category__num">%s</span><h2 id="cat-%s-h">%s</h2>'
+            '<div class="category__head"><span class="category__num">%s</span><h3 id="cat-%s-h">%s</h3>'
             '<span class="category__count" data-count data-total="%d">%d of %d published</span></div>'
             '<ul class="card-grid">%s</ul></section>' % (c["n"], c["id"], c["id"], roman_label(c["id"]), c["id"], esc(typo(c["name"])), len(laws), len(laws), len(laws), cards)
         )
-        entries = "".join(
-            '<li class="law-item"><a class="catcol__entry" href="%s" data-no="%s" data-roles="%s" data-published="%s" data-revised="%s">'
-            '<span class="catcol__no">No. %s<span class="badge" data-badge hidden></span></span>'
-            '<span class="catcol__title">%s</span><span class="catcol__quote">\u201c%s\u201d</span></a>%s</li>'
-            % (law_url(l["slug"]), l["no"], esc(" ".join(r.lower() for r in l["roles"])), l["published"], l["revised"] or "", l["no"], esc(typo(l["name"])), esc(typo(l["aphorism"])), pick_button(l, "pick pick--corner", "Add", "Added"))
-            for l in laws
-        )
-        columns.append(
-            '<li class="catcol cat-%d"><details open><summary><span class="catcol__sq" aria-hidden="true"></span>'
-            '<span class="catcol__head"><span class="catcol__meta"><span class="catcol__roman">%s</span> \u00b7 <span data-count data-total="%d">%d of %d</span></span>'
-            '<span class="catcol__name">%s</span></span><span class="catcol__toggle" aria-hidden="true"></span></summary>'
-            '<ul class="catcol__list">%s</ul></details></li>' % (c["n"], c["id"], len(laws), len(laws), len(laws), esc(typo(c["name"])), entries)
-        )
         chips.append('<a class="chip cat-%d" href="#cat-%s"><span class="chip__sq" aria-hidden="true"></span>%s</a>' % (c["n"], c["id"], c["id"]))
+    lists = "".join('<a class="btn btn--outline btn--sm" href="%s">%s</a>' % (pg["file"], esc(pg["cta"])) for pg in INTENT_PAGES)
 
+    # One copy of the pattern list. "By category" is the same markup laid out as columns (CSS keys off data-view),
+    # so the page holds 26 patterns once. Without JavaScript the list is the category-by-category grid.
     body = """<main id="main" data-page="index" data-view="grid" data-total="%(total)d" data-updated="%(updated)s">
-  <section class="hero" data-hero="grid">
+  <section class="hero">
     <div class="hero__text">
-      <h1>Principles for judging whether an AI system <em>actually</em> holds up.</h1>
-      <p class="hero__sub">%(total)d short, sourced patterns for people who build, buy, or design with AI. <a href="guide.html">How to use this guide</a></p>
+      <h1>Don’t get fooled by an AI claim: principles for judging whether a system <em>actually</em> holds up.</h1>
+      <p class="hero__sub">%(total)d short, sourced patterns on how AI evaluation goes wrong, for people who build, buy, or design with AI. Read three for your role, then use one tool on the claim in front of you.</p>
+      <div class="hero__actions">
+        <a class="btn btn--accent" href="#start-here">Start here</a>
+        <span class="hero__or">Need questions for a specific moment?</span>
+        <span class="hero__lists">%(lists)s</span>
+      </div>
     </div>
-    <p class="hero__meta"><span data-published-count>%(total)d of %(total)d published</span><br>Updated %(updated_h)s \u00b7 <a href="feed.xml">RSS</a></p>
+    <p class="hero__meta">Updated %(updated_h)s<br><a href="feed.xml">RSS</a> · <a href="changelog.html">Changelog</a></p>
   </section>
-  <section class="hero hero--category" data-hero="category" hidden>
-    <h1>All patterns, by where they bite</h1>
+  %(start)s
+  <section class="patterns" id="patterns" aria-labelledby="patterns-h">
+    <div class="patterns__head">
+      <h2 id="patterns-h">All %(total)d patterns</h2>
+      <p class="patterns__why"><strong>Why these %(total)d?</strong> They are an editorial selection, not a systematic review: recurring ways AI evaluation goes wrong that have published research behind them. Another reasonable list would differ. Each page says whether its name is an established term or this site’s own. <a href="methodology.html#selection">How they were chosen and checked</a>.</p>
+    </div>
+    <div class="since" data-since hidden>
+      <span class="since__badge" data-since-badge></span>
+      <span data-since-text></span>
+      <a href="changelog.html">See what changed</a>
+      <button class="since__dismiss" type="button" data-since-dismiss>Dismiss</button>
+    </div>
+    <div class="toolbar">
+      <div class="toolbar__js" data-js-only hidden>
+        <div class="seg seg--ink" role="group" aria-label="View">
+          <button type="button" data-view-btn="grid" aria-pressed="true">Grid</button>
+          <button type="button" data-view-btn="category" aria-pressed="false">By category</button>
+        </div>
+        <div class="seg seg--rule" role="group" aria-label="Filter by role">
+          <button type="button" data-role-btn="all" aria-pressed="true">All roles</button>
+          <button type="button" data-role-btn="building" aria-pressed="false">Building</button>
+          <button type="button" data-role-btn="buying" aria-pressed="false">Buying</button>
+          <button type="button" data-role-btn="designing" aria-pressed="false">Designing</button>
+        </div>
+        <a class="btn btn--outline btn--sm toolbar__brief" href="brief.html" data-collection-link="brief.html">Quick brief<span data-collection-badge hidden> (<span data-collection-count>0</span>)</span></a>
+      </div>
+      <div class="toolbar__jump" data-jump><span class="toolbar__label">Jump to</span>%(chips)s</div>
+      <p class="visually-hidden" role="status" aria-live="polite" data-status></p>
+    </div>
+    <div class="patterns__list">%(sections)s</div>
   </section>
-  <div class="since" data-since hidden>
-    <span class="since__badge" data-since-badge></span>
-    <span data-since-text></span>
-    <a href="changelog.html">See what changed</a>
-    <button class="since__dismiss" type="button" data-since-dismiss>Dismiss</button>
-  </div>
-  <div class="toolbar">
-    <div class="seg seg--ink" role="group" aria-label="View">
-      <button type="button" data-view-btn="grid" aria-pressed="true">Grid</button>
-      <button type="button" data-view-btn="category" aria-pressed="false">By category</button>
-    </div>
-    <div class="seg seg--rule" role="group" aria-label="Filter by role">
-      <button type="button" data-role-btn="all" aria-pressed="true">All roles</button>
-      <button type="button" data-role-btn="building" aria-pressed="false">Building</button>
-      <button type="button" data-role-btn="buying" aria-pressed="false">Buying</button>
-      <button type="button" data-role-btn="designing" aria-pressed="false">Designing</button>
-    </div>
-    <a class="btn btn--outline btn--sm toolbar__brief" href="brief.html" data-collection-link="brief.html">Quick brief<span data-collection-badge hidden> (<span data-collection-count>0</span>)</span></a>
-    <div class="toolbar__jump" data-jump><span class="toolbar__label">Jump to</span>%(chips)s</div>
-    <p class="visually-hidden" role="status" aria-live="polite" data-status></p>
-  </div>
-  <div data-view-panel="grid">%(sections)s</div>
-  <div class="catview" data-view-panel="category" hidden><ul class="catview__grid">%(columns)s</ul></div>
+  %(follow)s
 </main>
 <div class="tray no-print" data-tray hidden role="region" aria-label="My patterns">
   <p class="tray__count"><strong data-collection-count>0</strong> <span data-tray-word>patterns</span> in My patterns</p>
@@ -528,9 +654,11 @@ def build_index():
         "total": total,
         "updated": SITE["updated"],
         "updated_h": fmt_date(SITE["updated"]),
+        "lists": lists,
+        "start": start_here(),
         "chips": "".join(chips),
         "sections": "".join(sections),
-        "columns": "".join(columns),
+        "follow": follow_box(),
     }
     write(
         "index.html",
@@ -946,17 +1074,68 @@ def build_about():
 
 
 def guide_nav(active):
-    items = "".join('<li><a href="%s"%s>%s</a></li>' % (href, ' aria-current="page"' if href == active else "", label) for href, label in GUIDE_PAGES)
-    return '<nav class="guide-nav" aria-label="Guide sections"><ul>%s</ul></nav>' % items
+    """Where this page sits in the guide: the reading order, the playbooks by situation, then reference."""
+    def group(label, items):
+        links = "".join('<li><a href="%s"%s>%s</a></li>' % (href, ' aria-current="page"' if href == active else "", text) for href, text in items)
+        return '<div class="guide-nav__group"><p class="guide-nav__label">%s</p><ul>%s</ul></div>' % (label, links)
+
+    chapters = [(f, "%d. %s" % (n, t)) for n, (f, t, _) in enumerate(GUIDE_CHAPTERS, 1)]
+    playbooks = [(pg["file"], pg["short"]) for pg in INTENT_PAGES]
+    reference = [(f, t) for f, t, _ in GUIDE_REFERENCE]
+    home = '<a class="guide-nav__home" href="guide.html"%s>Guide</a>' % (' aria-current="page"' if active == "guide.html" else "")
+    return '<nav class="guide-nav" aria-label="Guide sections">%s%s%s%s</nav>' % (home, group("Read in order", chapters), group("Playbooks by situation", playbooks), group("Reference", reference))
+
+
+def guide_pager(fname):
+    """Previous and next links for the three chapters, so the reading order can be followed page to page."""
+    files = [f for f, _, _ in GUIDE_CHAPTERS]
+    if fname not in files:
+        return ""
+    i = files.index(fname)
+    if i:
+        prev_ = '<a class="pn pn--prev" href="%s"><span class="pn__k">\u2190 Previous chapter</span><span class="pn__t">%s</span></a>' % (files[i - 1], GUIDE_CHAPTERS[i - 1][1])
+    else:
+        prev_ = '<a class="pn pn--prev" href="guide.html"><span class="pn__k">\u2190 Guide</span><span class="pn__t">Reading order</span></a>'
+    if i + 1 < len(files):
+        next_ = '<a class="pn pn--next" href="%s"><span class="pn__k">Next chapter \u2192</span><span class="pn__t">%s</span></a>' % (files[i + 1], GUIDE_CHAPTERS[i + 1][1])
+    else:
+        next_ = '<a class="pn pn--next" href="guide.html#playbooks"><span class="pn__k">Next \u2192</span><span class="pn__t">Playbooks by situation</span></a>'
+    return '<nav class="pn-row" aria-label="Previous and next chapter">%s%s</nav>' % (prev_, next_)
 
 
 def guide_page(fname, title, eyebrow, desc, lede, blocks_html, extra=""):
     body = """<main id="main" class="page page--prose">
   %s
   <header class="page__head"><p class="eyebrow">%s</p><h1>%s</h1>%s</header>
-  %s%s
-</main>""" % (guide_nav(fname), esc(eyebrow), esc(title), lede, blocks_html, extra)
+  %s%s%s
+</main>""" % (guide_nav(fname), esc(eyebrow), esc(title), lede, blocks_html, extra, guide_pager(fname))
     write(fname, layout(title, desc, body, current=None))
+
+
+def build_guide_hub():
+    """guide.html: the one place that says what to read first and what to read next."""
+    def item(tag, href, title, desc, num=False):
+        return '<li class="chapter"><span class="chapter__n%s" aria-hidden="true">%s</span><div><a class="chapter__title" href="%s">%s</a><p>%s</p></div></li>' % ("" if num else " chapter__n--tag", tag, href, esc(title), esc(typo(desc)))
+
+    chapters = "".join(item(str(n), f, t, d, True) for n, (f, t, d) in enumerate(GUIDE_CHAPTERS, 1))
+    playbooks = "".join(item(pg["role"], pg["file"], pg["cta"], pg["for"]) for pg in INTENT_PAGES)
+    reference = "".join(item("ref", f, t, d) for f, t, d in GUIDE_REFERENCE)
+    body = """<main id="main" class="page page--prose page--hub">
+  <header class="page__head"><p class="eyebrow">Guide</p><h1>Guide to AI evaluation</h1>
+  <p class="page__lede">The patterns are the core of this site. The guide is the order to read everything else in: three short chapters, then question lists for the moment you are in, then reference pages.</p></header>
+  <p class="hub__quick">Short on time? Pick a role under <a href="index.html#start-here">Start here</a> on the home page, or go straight to <a href="use-it-now.html">Use it now</a> for questions you can ask today.</p>
+  <section aria-labelledby="order"><h2 id="order">Read in this order</h2>
+  <ol class="chapters">%(chapters)s</ol></section>
+  <section aria-labelledby="playbooks"><h2 id="playbooks">Playbooks by situation</h2>
+  <p>Each one takes the patterns that matter most for a single situation and turns them into questions, with the evidence one click away. They apply the general <a href="playbook.html">Playbook</a> chapter and do not repeat it.</p>
+  <ul class="chapters">%(playbooks)s</ul></section>
+  <section aria-labelledby="reference"><h2 id="reference">Reference</h2>
+  <ul class="chapters">%(reference)s</ul></section>
+  <section aria-labelledby="apply"><h2 id="apply">Apply it to your own case</h2>
+  <p>The <a href="situation-finder.html">situation finder</a> and <a href="claim-checker.html">claim checker</a> match your text to the patterns that apply. Collect patterns with the Add buttons for a <a href="brief.html">quick brief</a> or a printable <a href="checklist.html">checklist</a>. All the tools are under Tools in the menu.</p></section>
+  %(follow)s
+</main>""" % {"chapters": chapters, "playbooks": playbooks, "reference": reference, "follow": follow_box()}
+    write("guide.html", layout("Guide", "Where to start with AI evaluation and what to read next: three chapters in order, question lists by situation, and reference pages.", body, current=None))
 
 
 def glossary_jsonld():
@@ -967,16 +1146,17 @@ def glossary_jsonld():
 
 def build_guide_pages():
     overview = manuscript_region("## AI Evaluation, an Overview", "## The Patterns")
+    build_guide_hub()
     guide_page(
-        "guide.html",
+        "overview.html",
         "AI Evaluation, an Overview",
-        "How to use this guide",
+        "Guide \u00b7 Chapter 1",
         "What AI evaluation is, why it is hard, and how to use the patterns.",
         "",
         md_blocks(overview),
     )
     pragmatic = manuscript_region("## Being Pragmatic", "## Playbook")
-    guide_page("being-pragmatic.html", "Being Pragmatic", "Guide", "How to do AI evaluation inside a real team with deadlines, limited budget, and a model that changed last Tuesday.", "", md_blocks(pragmatic))
+    guide_page("being-pragmatic.html", "Being Pragmatic", "Guide \u00b7 Chapter 3", "How to do AI evaluation inside a real team with deadlines, limited budget, and a model that changed last Tuesday.", "", md_blocks(pragmatic))
 
     field = manuscript_region("## Playbook", "## Glossary")
     # split the eval card template out of the regular flow
@@ -999,12 +1179,14 @@ def build_guide_pages():
     card = '<div class="evalcard" role="group" aria-label="Eval card template"><p class="evalcard__title">Eval card</p>%s</div>' % "".join(card_rows)
     before = md_blocks(field[:start])
     after = md_blocks(field[end:])
-    guide_page("playbook.html", "Playbook", "Guide", "Questions for reading an AI claim, a sequence for building your own eval, red flags, and an eval card template.", "", before + '<h2 id="4-eval-card-template">4. Eval card template</h2><p>Copy this into any eval you run. It borrows from model cards (Mitchell et al., 2019).</p>' + card + after)
+    playbooks = ", ".join('<a href="%s">%s</a>' % (pg["file"], esc(pg["short"].lower())) for pg in INTENT_PAGES)
+    pb_lede = '<p class="page__lede">The general sequence. For the same questions applied to one situation, use the playbooks for %s.</p>' % playbooks
+    guide_page("playbook.html", "Playbook", "Guide \u00b7 Chapter 2", "Questions for reading an AI claim, a sequence for building your own eval, red flags, and an eval card template.", pb_lede, before + '<h2 id="4-eval-card-template">4. Eval card template</h2><p>Copy this into any eval you run. It borrows from model cards (Mitchell et al., 2019).</p>' + card + after)
 
     gl = "".join('<div class="gloss__row"><dt id="%s">%s</dt><dd>%s%s</dd></div>' % (
         slugify(g["term"]), esc(typo(g["term"])), inline(g["definition"]),
         (" See " + ", ".join(link_laws(inline(n)) for n in g["see"]) + ".") if g["see"] else "") for g in GLOSS)
-    guide_page("glossary.html", "Glossary", "Guide", "Definitions of the terms used across the patterns.", "", '<dl class="gloss">%s</dl>' % gl + glossary_jsonld())
+    guide_page("glossary.html", "Glossary", "Guide \u00b7 Reference", "Definitions of the terms used across the patterns.", "", '<dl class="gloss">%s</dl>' % gl + glossary_jsonld())
 
     bib_lines = manuscript_region("## Bibliography", "\u0000end")
     entries, cur = [], None
@@ -1027,7 +1209,7 @@ def build_guide_pages():
             if label in rest:
                 cited.append('<a href="%s">%s</a>' % (href, label))
         items += '<li class="bib__item"><span>%s</span><span class="bib__cited">Cited in: %s</span></li>' % (inline(e["ref"]), ", ".join(cited))
-    guide_page("bibliography.html", "Bibliography", "Guide", "Every source cited on this site.", '<p class="page__lede">%s</p>' % inline(intro), '<ul class="bib">%s</ul>' % items)
+    guide_page("bibliography.html", "Bibliography", "Guide \u00b7 Reference", "Every source cited on this site.", '<p class="page__lede">%s</p>' % inline(intro), '<ul class="bib">%s</ul>' % items)
 
 
 # ---------------------------------------------------------------- situation finder
@@ -1186,6 +1368,21 @@ def build_data_js():
     write("js/data.js", "/* Generated by build/build.py. Do not edit. */\nwindow.LAI = %s;\n" % json.dumps(data, ensure_ascii=False, separators=(",", ":")))
 
 
+def page_search_entries():
+    """Whole pages (guide, playbooks, tools) so search finds them by name."""
+    pages = [("guide.html", "Guide to AI evaluation", "Where to start and what to read next.")]
+    pages += [(f, t, d) for f, t, d in GUIDE_CHAPTERS + GUIDE_REFERENCE]
+    pages += [(pg["file"], pg["title"], pg["for"]) for pg in INTENT_PAGES]
+    pages += [
+        ("use-it-now.html", "Use it now", "Questions to ask when someone shares an AI result."),
+        ("claim-checker.html", "Claim checker", "Paste a claim and see which patterns apply."),
+        ("situation-finder.html", "Find your patterns", "Describe your situation and see which patterns to check first."),
+        ("brief.html", "Quick brief", "Pick patterns and get a short overview."),
+        ("checklist.html", "Checklist builder", "Build a printable checklist of questions."),
+    ]
+    return [{"k": "Page", "n": "", "t": t, "s": d, "u": f} for f, t, d in pages]
+
+
 def build_search_index():
     entries = []
     for l in LAWS:
@@ -1209,6 +1406,7 @@ def build_search_index():
         entries.append({"k": "Review", "n": c["id"], "t": c["criterion"], "s": "%s \u00b7 %s" % (dims[c["dimension"]], ", ".join(c["references"])), "u": "readiness-review.html#%s" % c["id"]})
     for e in CHANGELOG:
         entries.append({"k": "Changelog", "n": fmt_date(e["date"], short=True), "t": e["text"], "u": "changelog.html"})
+    entries.extend(page_search_entries())
     write("js/search-index.js", "/* Generated by build/build.py. Do not edit. */\nwindow.LAI_SEARCH = %s;\n" % json.dumps(entries, ensure_ascii=False, separators=(",", ":")))
 
 
@@ -1216,6 +1414,11 @@ INTENT_PAGES = [
     {
         "file": "questions-to-ask-ai-vendor.html",
         "preset": "buying",
+        "role": "buying",
+        "short": "Buying a model or vendor",
+        "cta": "Questions to ask an AI vendor",
+        "for": "For choosing or signing off on an AI model, vendor or feature. Questions to put to the people selling it.",
+        "see": 'To read a single claim quickly, see <a href="playbook.html#1-reading-an-ai-claim">Playbook: reading an AI claim</a>, or paste it into the <a href="claim-checker.html">claim checker</a>.',
         "title": "Questions to ask when buying an AI model or vendor",
         "desc": "Questions to put to an AI vendor or internal team before you rely on a model, each tied to a documented pattern in AI evaluation research.",
         "lede": "A vendor\u2019s numbers answer the questions the vendor chose to ask. These questions are drawn from the patterns on this site. Each one comes from a documented pattern in the research, with the evidence one click away.",
@@ -1223,6 +1426,11 @@ INTENT_PAGES = [
     {
         "file": "ai-launch-review-questions.html",
         "preset": "launch",
+        "role": "launch",
+        "short": "Launch review",
+        "cta": "AI launch review questions",
+        "for": "For the last review before an AI feature ships. Questions about reliability, edge cases and real-world use.",
+        "see": 'For the warning signs to look for, see <a href="playbook.html#3-red-flags">Playbook: red flags</a>. For a longer checklist, see the <a href="readiness-review.html">Readiness Review</a>.',
         "title": "Questions for an AI launch review",
         "desc": "Questions to ask before launching an AI feature, covering reliability, edge cases, real-world conditions, and how people will use it.",
         "lede": "A launch review is the last cheap moment to ask what the evaluation did not cover. These questions come from the patterns most relevant to shipping an AI feature, each with its evidence.",
@@ -1230,6 +1438,11 @@ INTENT_PAGES = [
     {
         "file": "how-to-build-an-ai-evaluation.html",
         "preset": "building",
+        "role": "building",
+        "short": "Building an evaluation",
+        "cta": "How to build an AI evaluation",
+        "for": "For designing your own evaluation. Questions to check the design before you trust a score.",
+        "see": 'For the step-by-step sequence, see <a href="playbook.html#2-building-your-own-eval">Playbook: building your own eval</a>. To record what you ran, copy the <a href="playbook.html#4-eval-card-template">eval card template</a>.',
         "title": "Questions to ask when building an AI evaluation",
         "desc": "What to ask while designing your own AI evaluation, from choosing the metric to reporting uncertainty, drawn from documented evaluation pitfalls.",
         "lede": "Most evaluation mistakes are made before the first score is computed. These questions, drawn from the patterns, help you check the design before you trust the result.",
@@ -1246,13 +1459,16 @@ def build_intent_pages():
             qs = "".join("<li>%s</li>" % esc(typo(q)) for q in l["questions"])
             secs += '<section><h2 id="%s">%s</h2><p>%s</p><ul class="dash">%s</ul><p><a href="%s">Read the evidence: %s</a></p></section>' % (
                 sl, esc(typo(l["name"])), esc(typo(l["plainTerms"])), qs, law_url(sl), esc(typo(l["name"])))
+        others = ", ".join('<a href="%s">%s</a>' % (o["file"], esc(o["short"].lower())) for o in INTENT_PAGES if o is not pg)
         body = """<main id="main" class="page page--prose">
-  <header class="page__head"><p class="eyebrow">Guide</p><h1>%(title)s</h1>
+  %(nav)s
+  <header class="page__head"><p class="eyebrow">Guide \u00b7 Playbook</p><h1>%(title)s</h1>
   <p class="page__lede">%(lede)s</p>
+  <p class="page__see">%(see)s</p>
   <p><a class="btn btn--ink btn--sm" href="checklist.html?preset=%(preset)s">Print this as a one-page checklist</a></p></header>
   %(secs)s
-  <p class="page__note">Looking for something shorter? <a href="use-it-now.html">Use it now</a> has friendly questions for common moments. To see which patterns fit your situation, try <a href="situation-finder.html">Find your patterns</a>.</p>
-</main>""" % {"title": esc(pg["title"]), "lede": esc(typo(pg["lede"])), "preset": pg["preset"], "secs": secs}
+  <p class="page__note">Other playbooks: %(others)s. Shorter, friendlier questions for common moments are in <a href="use-it-now.html">Use it now</a>. Back to the <a href="guide.html">guide</a>.</p>
+</main>""" % {"nav": guide_nav(pg["file"]), "title": esc(pg["title"]), "lede": esc(typo(pg["lede"])), "see": pg["see"], "preset": pg["preset"], "secs": secs, "others": others}
         write(pg["file"], layout(pg["title"], pg["desc"], body, current=None))
 
 
@@ -1301,7 +1517,25 @@ def build_privacy():
     write("privacy.html", layout("Privacy", "What this site collects, who receives it, and what stays on your device.", body, current=None))
 
 
+# Old URLs kept alive after renames or merges: (from, to). Add a line here when a page is merged away.
+REDIRECTS = [
+    ("/field-guide.html", "/playbook.html"),
+    ("/field-guide", "/playbook"),
+    ("/laws/*", "/patterns/:splat"),
+    ("/laws", "/patterns"),
+]
+
+
 def build_security():
+    # The signup form posts to an outside mail service only when data/site.json newsletter.action is set.
+    # That one origin is then allowed in form-action; otherwise forms may only post to this site.
+    action = newsletter_action()
+    form_action = "'self'"
+    news_comment = ""
+    if action:
+        u = urllib.parse.urlsplit(action)
+        form_action += " %s://%s" % (u.scheme, u.netloc)
+        news_comment = "# form-action also allows the newsletter signup endpoint set in data/site.json (newsletter.action).\n"
     csp = "; ".join([
         "default-src 'self'",
         "script-src 'self' 'sha256-%s' https://*.googletagmanager.com" % base64.b64encode(hashlib.sha256(analytics_inline_js().encode("utf-8")).digest()).decode(),
@@ -1311,20 +1545,20 @@ def build_security():
         "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
         "object-src 'none'",
         "base-uri 'self'",
-        "form-action 'self'",
+        "form-action " + form_action,
         "frame-ancestors 'none'",
     ])
     headers = (
         "# Generated by build/build.py. Applied by Cloudflare Pages / Workers static assets.\n"
-        "/*\n"
+        "%s/*\n"
         "  Content-Security-Policy: %s\n"
         "  X-Frame-Options: DENY\n"
         "  Referrer-Policy: strict-origin-when-cross-origin\n"
         "  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()\n"
-        "  Cross-Origin-Opener-Policy: same-origin\n" % csp
+        "  Cross-Origin-Opener-Policy: same-origin\n" % (news_comment, csp)
     )
     write("_headers", headers)
-    write("_redirects", "# Generated by build/build.py. Old URLs kept alive after renames.\n/field-guide.html /playbook.html 301\n/field-guide /playbook 301\n/laws/* /patterns/:splat 301\n/laws /patterns 301\n")
+    write("_redirects", "# Generated by build/build.py. Old URLs kept alive after renames.\n" + "".join("%s %s 301\n" % r for r in REDIRECTS))
     expires = (datetime.date.fromisoformat(SITE["updated"]) + datetime.timedelta(days=365)).isoformat()
     write(".well-known/security.txt", "Contact: https://josephalfonso.com/pages/contact.html\nExpires: %sT00:00:00.000Z\nPreferred-Languages: en\nCanonical: %s/.well-known/security.txt\n" % (expires, SITE["baseUrl"]))
 
