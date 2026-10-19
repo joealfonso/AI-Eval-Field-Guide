@@ -1,5 +1,5 @@
 {
-  "_note": "established = the term is used in the literature; named-here = the underlying idea is established but the name is this site's. Derived from each pattern's Origins text.",
+  "_note": "established = the term is used in the literature; named-here = the underlying idea is established but the name is this site's; coinedRecently = the name was coined in one recent paper and is not yet widely established. Derived from each pattern's Origins text.",
   "evidenceCriteria": {
     "_note": "Evidence base is computed in build/build.py from each pattern's source list in data/laws.json. It rates the sources cited on the page, not the whole literature. Thresholds live here so the About page and the build use the same numbers. 'Peer-reviewed or classic' means a source with no Preprint, Report, Working paper or Book label. 'Separate lead authors' counts distinct first authors among those sources, a proxy for studies by different research groups.",
     "wellEstablished": {"minSources": 4, "minPeerReviewed": 4, "minPeerShare": 0.6, "minLeadAuthors": 3},
@@ -13,11 +13,13 @@
     "adaptive-overfitting",
     "the-clever-hans-effect",
     "prompt-sensitivity",
-    "criteria-drift",
     "the-benchmark-lottery",
     "evaluation-awareness",
     "distribution-shift",
     "the-jagged-frontier"
+  ],
+  "coinedRecently": [
+    "criteria-drift"
   ],
   "namedHere": [
     "the-construct-gap",

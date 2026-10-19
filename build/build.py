@@ -870,13 +870,12 @@ def build_law(i, law):
 
     plain_box = '<section class="plain" aria-labelledby="plain-terms"><h2 class="plain__label" id="plain-terms">In plain terms</h2><p>%s</p></section>' % esc(typo(law["plainTerms"]))
 
-    established = law["slug"] in NAMING["established"]
-    name_tag = "Established term" if established else "Named here"
-    name_note = (
-        "This name is used in the research literature."
-        if established
-        else "The idea is established in the research. The name is this site\u2019s, chosen to make it easier to remember."
-    )
+    if law["slug"] in NAMING["established"]:
+        name_tag, name_note = "Established term", "This name is used in the research literature."
+    elif law["slug"] in NAMING.get("coinedRecently", []):
+        name_tag, name_note = "Recent term", "This name was coined in one recent paper and is not yet widely established."
+    else:
+        name_tag, name_note = "Named here", "The idea is established in the research. The name is this site\u2019s, chosen to make it easier to remember."
     ev = evidence_base(law)
     # One compact line (reviewed, sources, version) with the detail behind a disclosure, so the first
     # screen on a phone is the pattern itself. Sources and Cite stay as direct links.
@@ -1157,6 +1156,14 @@ def build_changelog():
     write("changelog.html", layout("Changelog", "Every change to the AI Evaluation Field Guide: new patterns, tools, corrections, and source checks, with dates.", body, current="changelog"))
 
 
+def NAME_TAG(slug):
+    if slug in NAMING["established"]:
+        return "Established term"
+    if slug in NAMING.get("coinedRecently", []):
+        return "Recent term"
+    return "Named here"
+
+
 def build_about():
     crit = NAMING["evidenceCriteria"]
     wk, dv = crit["wellEstablished"], crit["developing"]
@@ -1166,7 +1173,7 @@ def build_about():
         counts[ev["key"]] += 1
         rows += '<tr><td>%s</td><td><a href="patterns/%s.html">%s</a></td><td>%s</td><td>%s</td><td>%s</td></tr>' % (
             l["no"], l["slug"], esc(typo(l["name"])), ev["label"],
-            "Established term" if l["slug"] in NAMING["established"] else "Named here", esc(ev["why"]),
+            NAME_TAG(l["slug"]), esc(ev["why"]),
         )
     evidence = '''  <section><h2 id="evidence">How strong is the evidence?</h2>
   <p>Each pattern page carries an <strong>Evidence base</strong> label. It describes the sources cited on that page. It does not rate the whole research literature on the topic, and it does not say a pattern is more or less important. It is computed from the source list by fixed rules, so anyone can check it.</p>
@@ -1176,7 +1183,7 @@ def build_about():
     <li><strong>Emerging (%(c_em)d):</strong> everything else. Typically one peer-reviewed source or fewer, with the rest preprints or reports. The idea may still be sound; the cited support is thin so far.</li>
   </ul>
   <p>\u201cPeer-reviewed or classic\u201d means any source not labeled a preprint, report, working paper, or book on the pattern page. \u201cLead author\u201d is the first author listed, used as a rough stand-in for a separate research group. The rules count sources. They cannot tell whether a study is good, and a pattern can rest on a few strong papers or a large pile of weak ones. Read the Evidence section and the sources themselves. The same limits apply to the labels: they are an editorial summary, not a measurement. The rules were written for this guide and are not a published standard.</p>
-  <p>This is separate from the name. <strong>Established term</strong> means the name is used in the research literature. <strong>Named here</strong> means the idea is established but the name is this site\u2019s own. A pattern can be well established under a name used only here, and a pattern with a standard name can still have a thin evidence base. The table lists both for every pattern.</p>
+  <p>This is separate from the name. <strong>Established term</strong> means the name is used in the research literature. <strong>Recent term</strong> means the name was coined in one recent paper and is not yet widely established. <strong>Named here</strong> means the idea is established but the name is this site\u2019s own. A pattern can be well established under a name used only here, and a pattern with a standard name can still have a thin evidence base. The table lists both for every pattern.</p>
   <div class="table-wrap"><table><thead><tr><th scope="col">No.</th><th scope="col">Pattern</th><th scope="col">Evidence base</th><th scope="col">Name</th><th scope="col">Basis</th></tr></thead><tbody>%(rows)s</tbody></table></div></section>
 ''' % {
         "c_well": counts["well"], "c_dev": counts["developing"], "c_em": counts["emerging"],
@@ -1189,12 +1196,13 @@ def build_about():
   <p>Not every pattern name is standard. The idea behind each pattern is established in the research, but for some the name is this site\u2019s own.</p>
   <ul>
     <li><strong>Established terms (%(n_est)d):</strong> the name is used in the research literature.</li>
+    <li><strong>Recent terms from a single paper (%(n_recent)d):</strong> the name was coined in one recent paper and is not yet widely established, so cite that paper.</li>
     <li><strong>Named on this site (%(n_here)d):</strong> the idea is established but the name is this site\u2019s own. Please do not cite these names as established terms. Cite the sources linked on each page instead.</li>
   </ul>
   <p>Which is which, along with how strong each pattern\u2019s evidence is, is in the <a href="#evidence">table below</a>.</p>
   <h3>Review</h3>
   <p>See the <a href="methodology.html">methodology</a> for how sources were chosen and checked. No outside reviewer has signed off on any pattern yet. If you work in evaluation, statistics, or a related field and see something wrong, or a better source, please say so on the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. Corrections are recorded in the <a href="changelog.html">Changelog</a>.</p></section>
-''' % {"n_est": len(NAMING["established"]), "n_here": len(NAMING["namedHere"])}
+''' % {"n_est": len(NAMING["established"]), "n_here": len(NAMING["namedHere"]), "n_recent": len(NAMING.get("coinedRecently", []))}
     body = """<main id="main" class="page page--prose">
   <header class="page__head"><p class="eyebrow">About</p><h1>About this guide</h1>
   <p class="page__lede">An independent reference for people who build, buy, or design with AI. It collects the reliable ways AI evaluation goes wrong, with the research behind each one.</p></header>

@@ -155,6 +155,10 @@
     },
     "prompt-sensitivity": {
       "roles": ["Building"],
+      "version": "v1.1",
+      "revised": "2026-10-19",
+      "evidenceChecked": "2026-10-19",
+      "history": [{ "v": "v1.1", "d": "2026-10-19", "t": "Added that the 76-point swing is the worst case (about 10 points on average), the best-prompt recommendation for product teams, and softened the origins and the prompt-count advice." }, { "v": "v1.0", "d": "2026-10-05", "t": "Published." }],
       "plainTerms": "Small changes in wording or formatting can swing a model's score. A result from one prompt is a result for that prompt.",
       "questionsSource": "handoff",
       "questions": [
@@ -164,16 +168,24 @@
     },
     "judge-bias": {
       "roles": ["Building"],
-      "plainTerms": "Using an AI to grade AI is fast and cheap, but graders have favorites: the first answer, the longer answer, and answers that sound like their own. Check the grader against people.",
+      "version": "v1.1",
+      "revised": "2026-10-19",
+      "evidenceChecked": "2026-10-19",
+      "history": [{ "v": "v1.1", "d": "2026-10-19", "t": "Corrected the self-enhancement claim (Zheng et al. could not confirm it), added that the 80% agreement excludes ties, narrowed the self-preference evidence, and marked untested advice." }, { "v": "v1.0", "d": "2026-10-05", "t": "Published." }],
+      "plainTerms": "Using an AI to grade AI is fast and cheap, but graders can have favorites: the first answer, the longer answer, and answers that sound like their own. Check the grader against people.",
       "questionsSource": "handoff",
       "questions": [
         "Was the AI grader checked against human judgments on a sample?",
-        "Were answer order and length controlled for, and is the grader from the same model family?"
+        "Were answer order and length controlled for, and was the grader one of the systems being compared?"
       ]
     },
     "criteria-drift": {
       "roles": ["Designing", "Building"],
-      "plainTerms": "You work out what \"good\" means by reading real outputs, so your rubric will change as you grade. Version it, and re-grade a fixed set when it does.",
+      "version": "v1.1",
+      "revised": "2026-10-19",
+      "evidenceChecked": "2026-10-19",
+      "history": [{ "v": "v1.1", "d": "2026-10-19", "t": "Reframed the evidence as one qualitative study of nine practitioners, changed the badge from established term to recent term, and marked untested advice." }, { "v": "v1.0", "d": "2026-10-05", "t": "Published." }],
+      "plainTerms": "You work out what \"good\" means by reading real outputs, so your rubric is likely to change as you grade. Version it, and re-grade a fixed set when it does.",
       "questionsSource": "derived",
       "questions": [
         "Was the rubric written after reading real outputs, and is it versioned with a date and a reason for each change?",
@@ -182,7 +194,11 @@
     },
     "once-is-not-reliable": {
       "roles": ["Building", "Buying"],
-      "plainTerms": "A system that works once may fail the next time. Customers live with the all-runs-pass rate, not the best-run rate.",
+      "version": "v1.1",
+      "revised": "2026-10-19",
+      "evidenceChecked": "2026-10-19",
+      "history": [{ "v": "v1.1", "d": "2026-10-19", "t": "Fixed the \u03c4-bench figures (per-domain results, not one average), reworded the pass^k claim, added scope notes for Rabanser et al., and updated that paper to its ICML 2026 publication." }, { "v": "v1.0", "d": "2026-10-05", "t": "Published." }],
+      "plainTerms": "A system that works once may fail the next time. The all-runs-pass rate matters when the same kind of task keeps coming up or each failure is costly. The best-run rate only shows what is possible.",
       "questionsSource": "handoff",
       "questions": [
         "How many runs per item, and what is the pass rate across all of them?",
@@ -191,7 +207,11 @@
     },
     "the-cost-frontier": {
       "roles": ["Buying", "Building"],
-      "plainTerms": "You can buy accuracy with more compute, so a score without its cost is half a result. Compare systems at matched cost, or show the whole tradeoff.",
+      "version": "v1.1",
+      "revised": "2026-10-19",
+      "evidenceChecked": "2026-10-19",
+      "history": [{ "v": "v1.1", "d": "2026-10-19", "t": "Scoped the simple-baseline finding to HumanEval and the joint-optimization result to one HotPotQA experiment, and softened the claim that more compute buys accuracy." }, { "v": "v1.0", "d": "2026-10-05", "t": "Published." }],
+      "plainTerms": "You can often buy accuracy with more compute, so a score without its cost is half a result. Compare systems at matched cost, or show the whole tradeoff.",
       "questionsSource": "derived",
       "questions": [
         "What did each task cost in tokens or dollars, and what was the latency, next to every accuracy number?",
@@ -324,7 +344,7 @@
     "the-gold-standard-myth": [0, [0, 1]],
     "prompt-sensitivity": [0, [0, 1]],
     "judge-bias": [0, [0, 1]],
-    "criteria-drift": [0, [0]],
+    "criteria-drift": [0, [0, 1]],
     "once-is-not-reliable": [0, [0, 1, 2]],
     "the-cost-frontier": [0, [0, 1]],
     "no-error-bars-no-result": [2, [0]],
@@ -462,7 +482,7 @@
           { "slug": "distribution-shift", "fit": "likely", "why": "Performance on one population does not automatically carry over to another.", "ask": 0 },
           { "slug": "the-lab-to-field-gap", "fit": "likely", "why": "Real use adds workflows, time pressure, and people that the lab left out.", "ask": 0 },
           { "slug": "the-averaging-trap", "fit": "likely", "why": "Production accuracy is an average. Check the worst-performing groups.", "ask": 0 },
-          { "slug": "once-is-not-reliable", "fit": "likely", "why": "Customers do not get your best run. What matters is how often it works each time, not once.", "ask": 0 },
+          { "slug": "once-is-not-reliable", "fit": "likely", "why": "For customer-facing work, one good run is not enough. Check how often it works every time.", "ask": 0 },
           { "slug": "evaluation-awareness", "fit": "worth", "why": "Behavior under test may differ from behavior in real use, so check monitored real traffic.", "ask": 1 }
         ]
       },
@@ -777,7 +797,7 @@
           {
             "slug": "criteria-drift",
             "fit": "likely",
-            "why": "The grading prompt is your rubric, and it will change as you read outputs. Version it and re-grade a fixed reference set.",
+            "why": "The grading prompt is your rubric, and it is likely to change as you read outputs. Version it and re-grade a fixed reference set.",
             "ask": 0
           },
           {
@@ -988,7 +1008,7 @@
           {
             "slug": "the-cost-frontier",
             "fit": "strong",
-            "why": "You can buy accuracy with more compute. Report cost and latency next to every accuracy number and compare at matched cost.",
+            "why": "You can often buy accuracy with more compute. Report cost and latency next to every accuracy number and compare at matched cost.",
             "ask": 0
           },
           {
