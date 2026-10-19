@@ -620,8 +620,8 @@ def build_index():
     body = """<main id="main" data-page="index" data-view="grid" data-total="%(total)d" data-updated="%(updated)s">
   <section class="hero">
     <div class="hero__text">
-      <h1>Don’t get fooled by an AI claim: principles for judging whether a system <em>actually</em> holds up.</h1>
-      <p class="hero__sub">%(total)d short, sourced patterns on how AI evaluation goes wrong, for people who build, buy, or design with AI. Read three for your role, then use one tool on the claim in front of you.</p>
+      <h1>Principles for judging whether an AI system <em>actually</em> holds up.</h1>
+      <p class="hero__sub">%(total)d short, sourced patterns for people who build, buy, or design with AI. <a href="guide.html">How to use this guide</a></p>
       <div class="hero__actions">
         <a class="btn btn--accent" href="#start-here">Start here</a>
         <span class="hero__or">Need questions for a specific moment?</span>
