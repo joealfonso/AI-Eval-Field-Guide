@@ -5,10 +5,6 @@
   var root = document.body.getAttribute('data-root') || '';
   var isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
 
-  Array.prototype.forEach.call(document.querySelectorAll('[data-kbd]'), function (k) {
-    k.textContent = isMac ? '⌘K' : 'Ctrl K';
-  });
-
   /* ---------- mobile menu ---------- */
   var menuBtn = document.querySelector('[data-menu-toggle]');
   var nav = document.getElementById('site-nav');
@@ -22,22 +18,6 @@
       if (e.key === 'Escape' && nav.classList.contains('is-open')) { setMenu(false); menuBtn.focus(); }
     });
     window.matchMedia('(min-width: 1181px)').addEventListener('change', function (e) { if (e.matches) setMenu(false); });
-  }
-
-  /* ---------- Tools group in the nav ---------- */
-  var group = document.querySelector('.nav-group');
-  var groupBtn = group && group.querySelector('[data-nav-group]');
-  if (groupBtn) {
-    var setGroup = function (open) {
-      group.classList.toggle('is-open', open);
-      groupBtn.setAttribute('aria-expanded', String(open));
-    };
-    groupBtn.addEventListener('click', function () { setGroup(!group.classList.contains('is-open')); });
-    document.addEventListener('click', function (e) { if (!group.contains(e.target)) setGroup(false); });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && group.classList.contains('is-open')) { setGroup(false); groupBtn.focus(); }
-    });
-    group.addEventListener('focusout', function (e) { if (!group.contains(e.relatedTarget)) setGroup(false); });
   }
 
   /* ---------- <details> that are always open on wide screens ---------- */
@@ -59,16 +39,29 @@
     apply();
     mq.addEventListener('change', apply);
   }
-  syncDetails('.catcol details', '(min-width: 900px)', false);
+  /* Tools is a <details> dropdown on wide screens (native, works without JS) and an always-open list in the mobile menu. */
+  syncDetails('.nav-group', '(max-width: 1180px)', false);
   syncDetails('.toc', '(min-width: 1100px)', false);
   syncDetails('.aside-block', '(min-width: 700px)', true);
 
+  var group = document.querySelector('.nav-group');
+  if (group) {
+    var wide = window.matchMedia('(min-width: 1181px)');
+    var closeGroup = function () { if (wide.matches) group.open = false; };
+    document.addEventListener('click', function (e) { if (!group.contains(e.target)) closeGroup(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && wide.matches && group.open) { group.open = false; group.querySelector('summary').focus(); }
+    });
+    group.addEventListener('focusout', function (e) { if (e.relatedTarget && !group.contains(e.relatedTarget)) closeGroup(); });
+  }
+
   /* ---------- search ---------- */
-  var KIND_ORDER = { Pattern: 0, Section: 1, Rubric: 2, Review: 3, Changelog: 4 };
+  var KIND_ORDER = { Pattern: 0, Section: 1, Page: 2, Rubric: 3, Review: 4, Changelog: 5 };
   var TYPE_FILTERS = [
     { id: 'all', label: 'All', kinds: null },
     { id: 'laws', label: 'Patterns', kinds: ['Pattern'] },
     { id: 'sections', label: 'Sections', kinds: ['Section'] },
+    { id: 'pages', label: 'Pages', kinds: ['Page'] },
     { id: 'tools', label: 'Tools', kinds: ['Rubric', 'Review'] },
     { id: 'changelog', label: 'Changelog', kinds: ['Changelog'] }
   ];

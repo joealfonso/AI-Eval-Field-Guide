@@ -29,6 +29,8 @@ The site is static. Pages are generated from the files in `data/` and `content/`
 python3 build/build.py
 ```
 
+Email signup is off by default; the home page shows an RSS box instead. To turn it on, set `newsletter.action` in `data/site.json` to your mail service's hosted-form URL (https), set `newsletter.field` to its email input name, and rebuild. The build adds that one origin to `form-action` in `_headers`.
+
 The default social share image and the per-pattern images are generated with `python3 build/make_og.py` (needs Pillow).
 
 ## License
