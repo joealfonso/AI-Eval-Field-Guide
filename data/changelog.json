@@ -2,6 +2,26 @@
   "entries": [
     {
       "date": "2026-10-19",
+      "text": "The AI vendor questionnaire template now has four parts and 34 questions. Part A is the original 17 evidence questions. New parts cover contract and operations, data handling, and security and misuse; these are this guide’s own questions, not drawn from the patterns. It adds a 0 to 2 scoring scheme that reports each part separately instead of one total, a list of which questions to ask at which risk tier, fallbacks for when a vendor will not answer, and a summary sheet.",
+      "links": [
+        {
+          "label": "Templates: AI vendor questionnaire",
+          "href": "templates.html#vendor-questionnaire"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "text": "Wording corrections after an independent content review. The GSM1k correlation is now stated as the paper reports it (a Spearman statistic of 0.36, written as r² in its abstract). The Goodhart’s Law page now says the 27 Meta variants were tested in March 2025 alone. The paired-comparison rule on the No Error Bars page matches the sample-size page (about 3% to 4% disagreement). Wong et al. (2021) is removed from the Distribution Shift page, which had called it not a clean case, and the Clark et al. (2021) point on the Gold Standard Myth page now says it concerns spotting machine text.",
+      "links": [
+        {
+          "label": "Methodology: how the evidence was checked",
+          "href": "methodology.html#checking"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-19",
       "text": "Reading aids and a clearer line between the research and this guide’s own framework. Every pattern page now opens with a one-sentence bottom line and its main caveat, which the Share button copies together with the link. A new walkthrough, “A claim, read slowly”, is now chapter 1 of the Guide: it takes three real cases through choosing the claim, testing it and deciding. The About page has a new section on what comes from the research and what is this guide’s own, plus a trust block, and “this guide’s own” markers run through the long-form pages. The Evidence base labels have clearer names. Three patterns have reworded aphorisms, and the rule of thumb for prompt variants, repeated runs and labels is now consistent across pages.",
       "links": [
         {

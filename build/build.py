@@ -1959,7 +1959,7 @@ WALKTHROUGH = [
         "anchor": "walk-benchmark",
         "title": "A benchmark score",
         "told": [
-            "You are told that a model scores highly on GSM8K, a popular grade-school math benchmark. Then you read Zhang et al. (2024). Human annotators wrote GSM1k, a new set of grade-school math problems built to match GSM8K in style and difficulty. Some model families scored up to 8% lower on GSM1k than on GSM8K. Models that assigned higher probability to the GSM8K test items showed bigger gaps (Spearman rank correlation of 0.36), which the authors take to suggest partial memorization, though they note outliers and say contamination is likely not the full story. Many frontier models showed little or no gap, which the authors say could reflect better generalization or more careful data handling.",
+            "You are told that a model scores highly on GSM8K, a popular grade-school math benchmark. Then you read Zhang et al. (2024). Human annotators wrote GSM1k, a new set of grade-school math problems built to match GSM8K in style and difficulty. Some model families scored up to 8% lower on GSM1k than on GSM8K. Models that assigned higher probability to the GSM8K test items showed bigger gaps (the paper reports a Spearman statistic of 0.36, written as r² in its abstract), which the authors take to suggest partial memorization, though they note outliers and say contamination is likely not the full story. Many frontier models showed little or no gap, which the authors say could reflect better generalization or more careful data handling.",
         ],
         "choose": "The claim is that the score shows the model can do grade-school math. The decision that rides on it is whether to trust that score, or to choose the model because of it. The claim assumes the model had not already seen the test items.",
         "test": [
@@ -2037,7 +2037,7 @@ TEMPLATES = [
         "id": "vendor-questionnaire",
         "file": "ai-vendor-questionnaire.md",
         "title": "AI vendor questionnaire",
-        "blurb": "Seventeen questions to send a vendor or internal team before you rely on an AI system, each with what a good answer and a red flag look like. Built from the questions on the pattern pages and the buying-a-model list.",
+        "blurb": "Thirty-four questions in four parts (does it work, contract and operations, data handling, security and misuse) to send a vendor or internal team before you rely on an AI system. Each has what a good answer and a red flag look like, with a 0 to 2 scoring scheme, a list of which questions to ask at which risk tier, and a summary sheet. Part A comes from the pattern pages; parts B to D are this guide's own.",
     },
     {
         "id": "eval-plan",

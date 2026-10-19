@@ -26,7 +26,7 @@
       },
       {
         "lead": "Leaderboards feel it too.",
-        "text": "Singh et al. (2025) documented how private testing on Chatbot Arena let some providers try many model variants and publish only the best. The authors identified 27 private variants they attribute to Meta in the lead-up to the Llama 4 release (attribution inferred from each model's self-identification, January to March 2025). In a controlled fine-tuning experiment, adding Arena data raised one model's win rate on ArenaHard, a test set drawn from Arena prompts, by up to 112% relative, with limited gains on other tasks. LMArena disputes parts of the analysis (its response is linked on the [case studies page](../case-studies.html#arena-private-variants))."
+        "text": "Singh et al. (2025) documented how private testing on Chatbot Arena let some providers try many model variants and publish only the best. The authors identified 27 private variants they attribute to Meta in March 2025 alone, in the lead-up to the Llama 4 release (attribution inferred from each model's self-identification; the data window is January to March 2025). In a controlled fine-tuning experiment, adding Arena data raised one model's win rate on ArenaHard, a test set drawn from Arena prompts, by up to 112% relative, with limited gains on other tasks. LMArena disputes parts of the analysis (its response is linked on the [case studies page](../case-studies.html#arena-private-variants))."
       },
       {
         "lead": "It's getting more common.",
@@ -559,7 +559,7 @@
     "evidence": [
       {
         "lead": "Fresh questions, lower scores.",
-        "text": "Zhang et al. (2024) had human annotators write GSM1k, a new set of grade school math problems matched to the popular GSM8K benchmark. Some model families dropped up to 8% in accuracy. Models that assigned higher probability to the GSM8K test items tended to show bigger gaps (Spearman rank correlation of 0.36), which suggests partial memorization, though the authors note outliers and say contamination is likely not the full story. Many frontier models showed little or no gap, which the authors say could reflect better generalization or more careful data handling, so this is a check to run, not a blanket verdict."
+        "text": "Zhang et al. (2024) had human annotators write GSM1k, a new set of grade school math problems matched to the popular GSM8K benchmark. Some model families dropped up to 8% in accuracy. Models that assigned higher probability to the GSM8K test items tended to show bigger gaps (the paper reports a Spearman statistic of 0.36, written as r² in its abstract), which suggests partial memorization, though the authors note outliers and say contamination is likely not the full story. Many frontier models showed little or no gap, which the authors say could reflect better generalization or more careful data handling, so this is a check to run, not a blanket verdict."
       },
       {
         "lead": "Measure it per benchmark.",
@@ -847,7 +847,7 @@
         "text": "Aroyo and Welty (2015) describe seven myths of human annotation, including that every item has one right answer and that disagreement is bad. They argue disagreement is a signal, not noise: it can show that an item is ambiguous or vague, or that a worker is not doing a good job."
       },
       {
-        "lead": "Raters can be at chance.",
+        "lead": "Untrained raters can miss machine text.",
         "text": "Clark et al. (2021) asked non-expert crowdworkers to tell GPT-3 text from human-written text. Without training they scored at chance (49.9%), and training raised accuracy only to about 55%, with no significant gain within any of the three text types they tested. This tests spotting machine authorship, not rating quality."
       },
       {
@@ -1238,7 +1238,7 @@
       "Decide how many test items you need before running the eval."
     ],
     "whatItMeans": [
-      "If a model scores 80% on 200 questions, the \"true\" score on similar questions could easily be a few points higher or lower. A rough standard error for accuracy is the square root of p(1 - p) / n. For 80% on 200 items, that's about 2.8 points, so a 95% confidence interval runs roughly 5.5 points in each direction. (For small samples or scores near 0% or 100%, use a Wilson interval instead of this rough formula.) A rival model at 83% on the same test hasn't clearly won anything. Comparing the two on the same questions can cut the noise, but a 3-point gap on 200 items still stands out only if the models disagree on roughly 3% to 5% of items or fewer, meaning they give nearly identical answers.",
+      "If a model scores 80% on 200 questions, the \"true\" score on similar questions could easily be a few points higher or lower. A rough standard error for accuracy is the square root of p(1 - p) / n. For 80% on 200 items, that's about 2.8 points, so a 95% confidence interval runs roughly 5.5 points in each direction. (For small samples or scores near 0% or 100%, use a Wilson interval instead of this rough formula.) A rival model at 83% on the same test hasn't clearly won anything. Comparing the two on the same questions can cut the noise, but a 3-point gap on 200 items still stands out only if the models disagree on roughly 3% to 4% of items or fewer (about 4% by the normal approximation, 3% by the exact test; see the sample-size page), meaning they give nearly identical answers.",
       "Randomness adds more noise: sampling temperature, random seeds, and data order all shift results between runs."
     ],
     "evidence": [
@@ -1807,10 +1807,6 @@
         "text": "Koh et al. (2021) built WILDS, a benchmark of ten datasets with real distribution shifts across hospitals, cameras, regions, and time. Models showed large gaps between in-distribution and out-of-distribution performance."
       },
       {
-        "lead": "A caution from a clinical model.",
-        "text": "Wong et al. (2021) tested a widely deployed sepsis model at one health system and found an AUC of 0.63, against 0.76 to 0.83 in the developer's documentation. They attribute much of the gap to how they handled the timing of sepsis predictions, not to a different patient population. It shows why a vendor's reported figure shouldn't be assumed to hold at your site, but it is not a clean case of distribution shift."
-      },
-      {
         "lead": "Drift erodes gains.",
         "text": "Hand (2006) argued that population drift over time is one reason gains from sophisticated models shrink in practice."
       }
@@ -1855,14 +1851,6 @@
         "title": "Do ImageNet classifiers generalize to ImageNet?",
         "venue": "Proceedings of the International Conference on Machine Learning (ICML 2019)",
         "url": "https://arxiv.org/abs/1902.10811",
-        "label": null
-      },
-      {
-        "authors": "Wong, A., Otles, E., Donnelly, J. P., et al.",
-        "year": "2021",
-        "title": "External validation of a widely implemented proprietary sepsis prediction model in hospitalized patients",
-        "venue": "JAMA Internal Medicine, 181(8), 1065-1070",
-        "url": "https://pubmed.ncbi.nlm.nih.gov/34152373/",
         "label": null
       }
     ]
