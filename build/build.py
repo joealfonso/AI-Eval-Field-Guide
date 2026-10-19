@@ -74,9 +74,10 @@ NAV_SECTION = {
     "changelog.html": "about.html",
     "privacy.html": "about.html",
 }
-# The guide: three chapters in reading order, then reference pages. The question lists (INTENT_PAGES) are
+# The guide: four chapters in reading order (the walkthrough first), then reference pages. The question lists (INTENT_PAGES) are
 # the "Playbooks by situation" group. guide.html is the hub; the overview essay lives at overview.html.
 GUIDE_CHAPTERS = [
+    ("walkthrough.html", "Walkthrough", "Three real cases read slowly in three steps: choose the claim, test it against the patterns, decide what you can and cannot conclude."),
     ("overview.html", "Overview", "What AI evaluation is, why it is hard, and how to use the patterns."),
     ("playbook.html", "Playbook", "Ten questions for reading any AI claim, a sequence for building your own eval, red flags, and an eval card template."),
     ("being-pragmatic.html", "Being Pragmatic", "How to do this inside a real team, with deadlines, a small budget, and a model that changed last Tuesday."),
@@ -320,6 +321,7 @@ def analytics_inline_js():
 
 TITLE_TAGS = {
     "Guide": "AI evaluation guide: what to read first, and what next",
+    "A claim, read slowly": "A claim, read slowly: three AI evaluation cases",
     "Glossary": "AI evaluation glossary: key terms explained",
     "Playbook": "Playbook for reading AI claims and building evals",
     "Being Pragmatic": "AI evaluation on a real team: being pragmatic",
@@ -599,7 +601,8 @@ def start_here():
     return (
         '<section class="start" id="start-here" aria-labelledby="start-h">'
         '<div class="start__head"><h2 id="start-h">Start here</h2>'
-        '<p>Pick the role closest to yours. Read three patterns, then use one tool on the claim or system in front of you.</p></div>'
+        '<p>Pick the role closest to yours. Read three patterns, then use one tool on the claim or system in front of you.</p>'
+        '<p class="start__walk">Want to see it done? <a href="walkthrough.html">Read a claim slowly</a>.</p></div>'
         '<ul class="start__grid">%s</ul></section>' % cards
     )
 
@@ -1245,8 +1248,13 @@ def guide_nav(active):
     return '<nav class="guide-nav" aria-label="Guide sections">%s%s%s%s</nav>' % (home, group("Read in order", chapters), group("Playbooks by situation", playbooks), group("Reference", reference))
 
 
+def chapter_eyebrow(fname):
+    """"Guide · Chapter N", with N taken from the reading order so adding a chapter cannot leave a stale number."""
+    return "Guide \u00b7 Chapter %d" % ([f for f, _, _ in GUIDE_CHAPTERS].index(fname) + 1)
+
+
 def guide_pager(fname):
-    """Previous and next links for the three chapters, so the reading order can be followed page to page."""
+    """Previous and next links for the chapters, so the reading order can be followed page to page."""
     files = [f for f, _, _ in GUIDE_CHAPTERS]
     if fname not in files:
         return ""
@@ -1281,8 +1289,10 @@ def build_guide_hub():
     reference = "".join(item("ref", f, t, d) for f, t, d in GUIDE_REFERENCE)
     body = """<main id="main" class="page page--prose page--hub">
   <header class="page__head"><p class="eyebrow">Guide</p><h1>Guide to AI evaluation</h1>
-  <p class="page__lede">The patterns are the core of this site. The guide is the order to read everything else in: three short chapters, then question lists for the moment you are in, then reference pages.</p></header>
+  <p class="page__lede">The patterns are the core of this site. The guide is the order to read everything else in: four short chapters, starting with a worked example, then question lists for the moment you are in, then reference pages.</p></header>
   <p class="hub__quick">Short on time? Pick a role under <a href="index.html#start-here">Start here</a> on the home page, or go straight to <a href="use-it-now.html">Use it now</a> for questions you can ask today.</p>
+  <section aria-labelledby="how"><h2 id="how">How this guide works</h2>
+  <p>%(arc)s</p></section>
   <section aria-labelledby="order"><h2 id="order">Read in this order</h2>
   <ol class="chapters">%(chapters)s</ol></section>
   <section aria-labelledby="playbooks"><h2 id="playbooks">Playbooks by situation</h2>
@@ -1293,8 +1303,9 @@ def build_guide_hub():
   <section aria-labelledby="apply"><h2 id="apply">Apply it to your own case</h2>
   <p>The <a href="situation-finder.html">situation finder</a> and <a href="claim-checker.html">claim checker</a> match your text to the patterns that apply. Collect patterns with the Add buttons for a <a href="brief.html">quick brief</a> or a printable <a href="checklist.html">checklist</a>. All the tools are under Tools in the menu.</p></section>
   %(follow)s
-</main>""" % {"chapters": chapters, "playbooks": playbooks, "reference": reference, "follow": follow_box()}
-    write("guide.html", layout("Guide", "Where to start with AI evaluation and what to read next: three chapters in order, question lists by situation, and reference pages.", body, current=None))
+</main>""" % {"chapters": chapters, "playbooks": playbooks, "reference": reference, "follow": follow_box(),
+        "arc": 'This guide is built around three moves. <strong>Choose a claim</strong>: write down exactly what is being claimed and what decision depends on it. <strong>Test it</strong>: find the patterns that apply and ask their questions, in order, of the evidence behind the claim. <strong>Decide</strong> what you can conclude and what you still cannot, and say both. The <a href="walkthrough.html">walkthrough</a> does all three slowly, on three real published cases.'}
+    write("guide.html", layout("Guide", "Where to start with AI evaluation and what to read next: four chapters in order, question lists by situation, and reference pages.", body, current=None))
 
 
 def glossary_jsonld():
@@ -1309,13 +1320,13 @@ def build_guide_pages():
     guide_page(
         "overview.html",
         "AI Evaluation, an Overview",
-        "Guide \u00b7 Chapter 1",
+        chapter_eyebrow("overview.html"),
         "What AI evaluation is, why it is hard, the three layers it works at, and how to use the 26 patterns to read an AI claim.",
         "",
         md_blocks(overview),
     )
     pragmatic = manuscript_region("## Being Pragmatic", "## Playbook")
-    guide_page("being-pragmatic.html", "Being Pragmatic", "Guide \u00b7 Chapter 3", "How to do AI evaluation inside a real team with deadlines, limited budget, and a model that changed last Tuesday.", "", md_blocks(pragmatic))
+    guide_page("being-pragmatic.html", "Being Pragmatic", chapter_eyebrow("being-pragmatic.html"), "How to do AI evaluation inside a real team with deadlines, limited budget, and a model that changed last Tuesday.", "", md_blocks(pragmatic))
 
     field = manuscript_region("## Playbook", "## Glossary")
     # split the eval card template out of the regular flow
@@ -1340,7 +1351,7 @@ def build_guide_pages():
     after = md_blocks(field[end:])
     playbooks = ", ".join('<a href="%s">%s</a>' % (pg["file"], esc(pg["short"].lower())) for pg in INTENT_PAGES)
     pb_lede = '<p class="page__lede">The general sequence. For the same questions applied to one situation, use the playbooks for %s.</p>' % playbooks
-    guide_page("playbook.html", "Playbook", "Guide \u00b7 Chapter 2", "Questions for reading an AI claim, a sequence for building your own eval, red flags, and an eval card template.", pb_lede, before + '<h2 id="4-eval-card-template">4. Eval card template</h2><p>Copy this into any eval you run. It borrows from model cards (Mitchell et al., 2019).</p>' + card + after)
+    guide_page("playbook.html", "Playbook", chapter_eyebrow("playbook.html"), "Questions for reading an AI claim, a sequence for building your own eval, red flags, and an eval card template.", pb_lede, before + '<h2 id="4-eval-card-template">4. Eval card template</h2><p>Copy this into any eval you run. It borrows from model cards (Mitchell et al., 2019).</p>' + card + after)
 
     gl = "".join('<div class="gloss__row"><dt id="%s">%s</dt><dd>%s%s</dd></div>' % (
         slugify(g["term"]), esc(typo(g["term"])), inline(g["definition"]),
@@ -1832,6 +1843,114 @@ def build_cases():
     )
 
 
+# The walkthrough re-tells three entries from data/cases.json (same facts, same numbers, nothing added), in
+# three steps: choose the claim, test it, decide. [[slug]] becomes a link to that pattern page.
+WALKTHROUGH = [
+    {
+        "id": "arena-private-variants",
+        "anchor": "walk-leaderboard",
+        "title": "A leaderboard rank",
+        "told": [
+            "You are told that a model ranks near the top of Chatbot Arena, a public leaderboard that ranks models by votes from users. Then you read Singh et al. (2025), who studied the platform. They report that some providers could test several model variants privately before release and choose which scores to publish. The most extreme case they identify is Meta, which they observed testing as many as 27 private variants in a single month before the Llama 4 release.",
+        ],
+        "choose": "The claim is that this model is better than its rivals, because of where it ranks. The decision that rides on it is which model to pick or recommend. The claim assumes the published score is a fair picture of the model, not the best of several tries.",
+        "test": [
+            "Start with [[goodharts-law]]. A rank stands in for quality, and the harder anyone pushes on a stand-in, the further it can drift. Ask what improved: the capability, or the fit to the test. In the paper’s controlled experiment, fine-tuning a model on Arena-style data raised its win rate against a baseline on an Arena-derived benchmark (ArenaHard) by up to 112% in relative terms, while performance on a broader benchmark (MMLU) slightly declined.",
+            "Then [[campbells-law]]. When a number drives buying and press, everyone has a reason to game it, often without anyone deciding to cheat. Ask how many variants were tried before the reported one, and whether a second measure that nobody optimized agrees.",
+        ],
+        "decide": "You can conclude that a rank alone does not say how many candidates it was selected from, and a published result should say. Treat it as one input. You still do not know whether any leaderboard result was wrong, whether any provider broke a rule, or how good any model is. LMArena, the platform, published a response on 9 May 2025 disputing parts of the paper. It says, for example, that the 112% experiment used a static benchmark rather than Chatbot Arena itself. This page does not settle the dispute; read both.",
+    },
+    {
+        "id": "epic-sepsis",
+        "anchor": "walk-sepsis",
+        "title": "A clinical model that “works”",
+        "told": [
+            "You are told that a sepsis prediction model in use at many US hospitals works. Then you read Wong et al. (2021), who externally validated the original version of the Epic Sepsis Model on 38,455 hospitalizations at Michigan Medicine between December 2018 and October 2019, where sepsis occurred in about 7%. They report a hospitalization-level AUC of 0.63, that the model did not identify about 67% of patients with sepsis, and that, at the alert threshold Michigan Medicine used (a score of 6 or higher), it generated alerts for about 18% of all hospitalized patients. They conclude that it has poor discrimination and calibration.",
+        ],
+        "choose": "The claim is that the model works, so a hospital can rely on its alerts. The decision that rides on it is whether to rely on it for your own patients. “Works” needs defining first: how well it separates patients who develop sepsis from those who do not, and how many alerts it takes.",
+        "test": [
+            "Start with [[the-functionality-fallacy]]. Whether it works is the first question, not a settled one. Vendor-reported performance is a claim; independent validation is evidence.",
+            "Then [[distribution-shift]]. Ask where the data came from and how it compares with yours: this is one health system’s retrospective validation. Last, [[the-lab-to-field-gap]]: count the alert burden as well as the hits.",
+        ],
+        "decide": "You can conclude that this validation found poor discrimination and calibration for the original version. Epic released a revised version in 2022, and a 2026 multicenter study of the updated model (Wong et al., JAMA Network Open) reported encounter-level AUROC of 0.82 to 0.92 across four US health systems, with high variability between sites and a high alert burden. You still do not know how either version performs at your hospital, and the 2026 study found high variability between sites. The next step is to validate on your own data, with the metrics and alert threshold fixed in advance.",
+    },
+    {
+        "id": "gsm1k",
+        "anchor": "walk-benchmark",
+        "title": "A benchmark score",
+        "told": [
+            "You are told that a model scores highly on GSM8K, a popular grade-school math benchmark. Then you read Zhang et al. (2024). Human annotators wrote GSM1k, a new set of grade-school math problems built to match GSM8K in style and difficulty. Some model families scored up to 8% lower on GSM1k than on GSM8K. Models that assigned higher probability to the GSM8K test items showed bigger gaps (Spearman rank correlation of 0.36), which the authors take to suggest partial memorization, though they note outliers. Many frontier models showed little or no gap, which the authors say could reflect better generalization or more careful data handling.",
+        ],
+        "choose": "The claim is that the score shows the model can do grade-school math. The decision that rides on it is whether to trust that score, or to choose the model because of it. The claim assumes the model had not already seen the test items.",
+        "test": [
+            "The pattern here is [[data-contamination]]: if the test was in the training data, the score measures memory, not skill. You usually cannot inspect a model’s training data, so the test has to be indirect. Compare scores on public items with scores on look-alike items that have never been posted online, as the GSM1k authors did, and ask whether the gap is larger for the models that are most familiar with the public items.",
+        ],
+        "decide": "You can conclude that a large gap is the warning sign, and that a small gap is some reassurance, not proof. Many frontier models showed little or no gap. You still do not know whether any one model memorized test items. This case does not show that public benchmarks are useless or that every model memorized test items, and the gaps apply to the models the authors tested. To find out for your own model, build a small private set of look-alike items and compare.",
+    },
+]
+
+
+def build_walkthrough():
+    CASES = load("cases.json")
+    by_id = {c["id"]: c for c in CASES["cases"]}
+
+    def prose(t):
+        return re.sub(r"\[\[([a-z0-9-]+)\]\]", lambda m: law_link(m.group(1)), esc(typo(t)))
+
+    def step(n, label, inner):
+        return '<h3 class="walk__step"><span class="walk__n" aria-hidden="true">%d</span>%s</h3>%s' % (n, label, inner)
+
+    secs = []
+    for i, w in enumerate(WALKTHROUGH, 1):
+        c = by_id[w["id"]]
+        patterns = ", ".join(law_link(s) for s in c["patterns"])
+        told = "".join('<p class="walk__told">%s</p>' % prose(t) for t in w["told"])
+        secs.append(
+            '<section class="walk" id="%(a)s" aria-labelledby="%(a)s-h"><p class="walk__case">Case %(i)d</p><h2 id="%(a)s-h">%(title)s</h2>'
+            '%(told)s%(s1)s%(s2)s%(s3)s'
+            '<p class="case__src"><span class="case__k">Patterns</span> %(patterns)s</p>'
+            '<p class="case__src"><span class="case__k">Primary source</span> <a href="%(url)s" rel="noopener">%(label)s</a></p>'
+            '<p class="case__src"><a href="case-studies.html#%(id)s">Full case-study entry</a></p></section>'
+            % {
+                "a": w["anchor"], "i": i, "title": esc(typo(w["title"])), "told": told,
+                "s1": step(1, "Choose the claim", "<p>%s</p>" % prose(w["choose"])),
+                "s2": step(2, "Test it", "".join("<p>%s</p>" % prose(t) for t in w["test"])),
+                "s3": step(3, "Decide", "<p>%s</p>" % prose(w["decide"])),
+                "patterns": patterns, "url": esc(c["source"]["url"]), "label": esc(typo(c["source"]["label"])), "id": c["id"],
+            }
+        )
+    toc = "".join('<li><a href="#%s">%s</a></li>' % (w["anchor"], esc(typo(w["title"]))) for w in WALKTHROUGH)
+    arc = (
+        '<ol class="walk__arc">'
+        '<li><strong>Choose the claim.</strong> Say exactly what is being claimed, and what decision rides on it.</li>'
+        '<li><strong>Test it.</strong> Find the patterns that apply, in order, and ask what each one asks.</li>'
+        '<li><strong>Decide.</strong> Say what you can conclude, and what you still would not know.</li></ol>'
+    )
+    lede = '<p class="page__lede">Choose a claim, test it, decide. This page does that three times, slowly, on real published cases: a leaderboard rank, a clinical model, and a benchmark score.</p>'
+    intro = (
+        arc
+        + '<p class="case__note"><strong>Read this first.</strong> %s</p>' % esc(typo(CASES["note"]))
+        + '<nav aria-label="Cases"><ul class="case__toc">%s</ul></nav>' % toc
+    )
+    outro = (
+        '<section class="walk walk--next" id="your-turn" aria-labelledby="your-turn-h"><h2 id="your-turn-h">Now try it on a claim you have</h2>'
+        '<p>Write down the claim and the decision that depends on it. Then:</p>'
+        '<ul><li>Paste the claim into the <a href="claim-checker.html">Claim checker</a> to see which patterns apply.</li>'
+        '<li>Describe your situation in <a href="situation-finder.html">Find your patterns</a> to see which to check first.</li>'
+        '<li>Fill in a <a href="templates.html">template</a> (the eval plan one-pager is the place to write down the decision) before you run anything.</li></ul>'
+        '<p>The <a href="case-studies.html">case studies</a> page has more cases, each with its primary source. The numbers and wording above follow each source; for anything you plan to repeat, read the source.</p></section>'
+    )
+    body = """<main id="main" class="page page--prose page--walk">
+  %s
+  <header class="page__head"><p class="eyebrow">%s</p><h1>A claim, read slowly</h1>%s</header>
+  %s%s%s%s
+</main>""" % (guide_nav("walkthrough.html"), esc(chapter_eyebrow("walkthrough.html")), lede, intro, "".join(secs), outro, guide_pager("walkthrough.html"))
+    write("walkthrough.html", layout(
+        "A claim, read slowly",
+        "Three real AI claims read slowly in three steps: choose the claim, test it against the patterns, then decide what you can and cannot conclude.",
+        body, current=None))
+
+
 TEMPLATES = [
     {
         "id": "vendor-questionnaire",
@@ -2061,6 +2180,7 @@ def main():
     build_methodology()
     build_sample_size()
     build_cases()
+    build_walkthrough()
     build_templates()
     build_intent_pages()
     build_privacy()
