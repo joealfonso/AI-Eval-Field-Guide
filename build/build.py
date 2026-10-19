@@ -174,6 +174,8 @@ def prep_laws():
         ed = EDIT["laws"][law["slug"]]
         law["roles"] = ed["roles"]
         law["plainTerms"] = ed["plainTerms"]
+        law["bottomLine"] = ed["bottomLine"]
+        law["bottomLineCaveat"] = ed["bottomLineCaveat"]
         law["questions"] = ed["questions"]
         law["alsoKnownAs"] = ed.get("alsoKnownAs", [])
         law["workedExample"] = ed.get("workedExample")
@@ -805,7 +807,7 @@ def law_jsonld(law):
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": law["name"],
-        "description": law["aphorism"],
+        "description": "%s %s" % (law["aphorism"], law["bottomLine"]),
         "url": "%s/patterns/%s" % (SITE["baseUrl"], law["slug"]),
         "datePublished": law["published"],
         "dateModified": law.get("revised") or law["published"],
@@ -818,6 +820,26 @@ def law_jsonld(law):
         "citation": ["%s (%s). %s." % (txt(x["authors"]), x["year"], txt(x["title"])) for x in law["sources"]],
     }
     return '<script type="application/ld+json">%s</script>\n' % json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
+
+
+def case_line(law):
+    """"See it in a real case" line linking to the matching entries on the case-studies page (ids from build_cases)."""
+    cases = [c for c in load("cases.json")["cases"] if law["slug"] in c["patterns"]]
+    if not cases:
+        return ""
+    links = "; ".join('<a href="../case-studies.html#%s">%s</a>' % (c["id"], esc(typo(c["title"]))) for c in cases)
+    return '<p class="law__case">See it in a real case: %s</p>' % links
+
+
+def bottom_line_box(law):
+    """The quotable one-sentence takeaway with its main caveat directly beneath it."""
+    return (
+        '<section class="bottomline" aria-labelledby="bottom-line">'
+        '<h2 class="bottomline__label" id="bottom-line">The bottom line</h2>'
+        '<p class="bottomline__text">%s</p>'
+        '<p class="bottomline__caveat"><span class="bottomline__k">Keep in mind:</span> %s</p></section>'
+        % (esc(typo(law["bottomLine"])), esc(typo(law["bottomLineCaveat"])))
+    )
 
 
 def build_law(i, law):
@@ -919,7 +941,7 @@ def build_law(i, law):
         )
     )
 
-    share_text = "\u201c%s\u201d \u2014 %s, AI Evaluation Field Guide" % (typo(law["aphorism"]), typo(law["name"]))
+    share_text = "%s \u2014 %s, AI Evaluation Field Guide" % (typo(law["bottomLine"]), typo(law["name"]))
     share = (
         '<div class="law__share"><button class="btn btn--outline btn--sm" type="button" data-share data-share-title="%s" data-share-text="%s" data-share-url="%s">Share this</button>'
         '<span class="law__share-status" role="status" aria-live="polite" data-share-status></span></div>'
@@ -967,6 +989,8 @@ def build_law(i, law):
     <div class="law__meta"><span class="law__no">No. %(no)s</span><a class="tag" href="%(cat_href)s">%(cat_short)s</a>%(pick)s<span class="law__for">For: %(roles)s</span></div>
     <h1 class="law__title">%(name)s</h1>
     <blockquote class="law__quote"><p>\u201c%(aphorism)s\u201d</p></blockquote>
+    %(bottom)s
+    %(case)s
     %(share)s
     %(trust)s
     %(plain)s
@@ -999,6 +1023,8 @@ def build_law(i, law):
         "toc": toc,
         "related": related,
         "share": share,
+        "bottom": bottom_line_box(law),
+        "case": case_line(law),
         "jump": jump,
         "pick": pick_button(law, "pick pick--inline", "Add to My patterns", "In My patterns"),
         "roles": " \u00b7 ".join(law["roles"]),
@@ -1574,7 +1600,7 @@ def build_search_index():
         u = "patterns/%s.html" % l["slug"]
         entries.append({"k": "Pattern", "n": l["no"], "t": l["name"], "s": l["aphorism"], "u": u})
         sections = [
-            ("takeaways", "Takeaways", " ".join(plain(t) for t in l["takeaways"])),
+            ("takeaways", "Takeaways", plain(l["bottomLine"]) + " " + " ".join(plain(t) for t in l["takeaways"])),
             ("what-it-means", "What it means", " ".join(plain(t) for t in l["whatItMeans"])),
             ("the-evidence", "The evidence", " ".join(plain(e["lead"] + " " + e["text"]) for e in l["evidence"])),
             ("use-it", "Use it", " ".join(plain(t) for t in l["useIt"])),

@@ -70,7 +70,7 @@
   });
 
   /* ---------- share this ----------
-     Touch devices with a native share sheet get it; everywhere else the quote and link are copied.
+     Touch devices with a native share sheet get it; everywhere else the bottom line and link are copied.
      Nothing is sent anywhere by this code. */
   var shareBtn = document.querySelector('[data-share]');
   if (shareBtn) {
@@ -90,7 +90,7 @@
       var url = shareBtn.getAttribute('data-share-url');
       var touch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
       var copyIt = function () {
-        copy(text + '\n' + url).then(function () { say('Quote and link copied'); }, function () { say('Could not copy. Select the quote and copy it manually.'); });
+        copy(text + '\n' + url).then(function () { say('Bottom line and link copied'); }, function () { say('Could not copy. Select the bottom line and copy it manually.'); });
       };
       if (navigator.share && touch) {
         navigator.share({ title: title, text: text, url: url }).catch(function (err) {
