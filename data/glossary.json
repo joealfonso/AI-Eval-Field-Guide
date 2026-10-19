@@ -240,7 +240,7 @@
   },
   {
     "term": "Risk tier",
-    "definition": "A category that sets how much evaluation a system needs, based on its potential impact. Risk-based prioritization is central to the NIST AI Risk Management Framework (2023).",
+    "definition": "A category that sets how much evaluation a system needs, based on its potential impact. Risk-based prioritization is central to the NIST AI Risk Management Framework (2023). The three tiers in Being Pragmatic are this guide's own model.",
     "see": [
       "Being Pragmatic"
     ]
