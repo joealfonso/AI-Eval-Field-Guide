@@ -26,7 +26,7 @@
       },
       {
         "lead": "Leaderboards feel it too.",
-        "text": "Singh et al. (2025) documented how private testing on Chatbot Arena let some providers try many model variants and publish only the best. The authors identified 27 private variants they attribute to Meta in the lead-up to the Llama 4 release (attribution inferred from each model's self-identification, January to March 2025). In a controlled fine-tuning experiment, adding Arena data raised one model's win rate on ArenaHard, a test set drawn from Arena prompts, by up to 112% relative, with limited gains on other tasks."
+        "text": "Singh et al. (2025) documented how private testing on Chatbot Arena let some providers try many model variants and publish only the best. The authors identified 27 private variants they attribute to Meta in the lead-up to the Llama 4 release (attribution inferred from each model's self-identification, January to March 2025). In a controlled fine-tuning experiment, adding Arena data raised one model's win rate on ArenaHard, a test set drawn from Arena prompts, by up to 112% relative, with limited gains on other tasks. LMArena disputes parts of the analysis (its response is linked on the [case studies page](../case-studies.html#arena-private-variants))."
       },
       {
         "lead": "It's getting more common.",
@@ -115,7 +115,7 @@
     "slug": "campbells-law",
     "name": "Campbell's Law",
     "category": "I",
-    "aphorism": "The more a number drives decisions, the more it gets corrupted, and the more it distorts the work it was meant to track.",
+    "aphorism": "The more a number drives decisions, the more pressure there is to corrupt it, and the more likely it is to distort the work it was meant to track.",
     "takeaways": [
       "Goodhart's Law is about the measure breaking. Campbell's Law is about people and institutions bending around it.",
       "Leaderboards influence funding, press, hiring, and buying decisions. That gives everyone a reason to game them, often without anyone deciding to cheat.",
@@ -133,7 +133,7 @@
       },
       {
         "lead": "Access is uneven.",
-        "text": "Singh et al. (2025) estimated, from each provider's share of battles played, that Google and OpenAI received about 19.2% and 20.4% of all Chatbot Arena test prompts, while 83 open-weight models together received about 29.7%. More data from the arena means more ability to fit the arena."
+        "text": "Singh et al. (2025) estimated, from each provider's share of battles played, that Google and OpenAI received about 19.2% and 20.4% of all Chatbot Arena test prompts, while 83 open-weight models together received about 29.7%. LMArena disputes parts of the analysis (its response is linked on the [case studies page](../case-studies.html#arena-private-variants)). More data from the arena means more ability to fit the arena."
       },
       {
         "lead": "Leaderboards encode someone's values.",
@@ -201,7 +201,7 @@
     "slug": "the-construct-gap",
     "name": "The Construct Gap",
     "category": "I",
-    "aphorism": "A benchmark measures what it measures, not what its name says.",
+    "aphorism": "A benchmark measures what it measures, which may not be what its name says.",
     "takeaways": [
       "Reasoning, safety, understanding, and helpfulness are constructs. Nothing measures them directly.",
       "A benchmark is one way of turning a construct into a test. Treat its name as a claim to check.",
@@ -469,9 +469,9 @@
     "slug": "benchmark-saturation",
     "name": "Benchmark Saturation",
     "category": "II",
-    "aphorism": "Every benchmark has a shelf life.",
+    "aphorism": "Benchmarks have a shelf life.",
     "takeaways": [
-      "Benchmarks go from hard to solved quickly. Once top scores bunch up near the ceiling, the test stops telling systems apart.",
+      "Some benchmarks go from hard to solved quickly. Once top scores bunch up near the ceiling, the test stops telling systems apart.",
       "A saturated benchmark can hide real differences between models and hide the failures that remain.",
       "A high score on an old benchmark is weak evidence about what a current system can do.",
       "Plan for renewal: refreshed or held-back test sets. Dynamic test sets are another option, but researchers disagree about them."
@@ -546,7 +546,7 @@
     "slug": "data-contamination",
     "name": "Data Contamination",
     "category": "II",
-    "aphorism": "If the test was in the training data, the score measures memory, not skill.",
+    "aphorism": "If the test was in the training data, the score may be measuring memory, not skill.",
     "takeaways": [
       "Large models train on huge scrapes of the internet, and public benchmarks live on the internet.",
       "Contaminated scores overstate how well a model handles problems it hasn't seen.",
@@ -632,19 +632,19 @@
     "slug": "adaptive-overfitting",
     "name": "Adaptive Overfitting",
     "category": "II",
-    "aphorism": "Every time you tune against the test set, it's worth a little less.",
+    "aphorism": "A test set only gives an unbiased score for choices made without looking at it.",
     "takeaways": [
       "A test set gives an unbiased read only for models chosen without looking at its results.",
-      "Choosing prompts, models, or settings based on test results slowly fits your system to that specific test.",
+      "Choosing prompts, models, or settings based on test results can fit your system to that specific test.",
       "The effect has been small in the large studies so far, but you can't know for your own test without a fresh one.",
       "Separate a dev set you iterate on from a locked test set you decide with."
     ],
     "whatItMeans": [
-      "Standard statistical guarantees assume you pick your analysis before looking at the data. Real teams don't work that way. They run the eval, tweak the prompt, run it again, try another model, run it again. Each look leaks a little information about the test set into the choices being made. After enough rounds, a high score partly reflects how well the team learned that particular test."
+      "Standard statistical guarantees assume you pick your analysis before looking at the data. Real teams don't work that way. They run the eval, tweak the prompt, run it again, try another model, run it again. Each look leaks a little information about the test set into the choices being made. After enough rounds, a high score can partly reflect how well the team learned that particular test."
     ],
     "evidence": [
       {
-        "lead": "Reuse is a known problem.",
+        "lead": "Reuse is a known risk in theory.",
         "text": "Dwork et al. (2015) noted that standard guarantees assume the analysis was fixed before the data were examined, and proposed a \"reusable holdout\" method, built on differential privacy, that lets one holdout set be used many times while keeping estimates valid."
       },
       {
@@ -941,7 +941,7 @@
       }
     ],
     "useIt": [
-      "Test several prompt variants and report the mean and range. Three to five is a practical minimum, this guide's rule of thumb rather than a figure from the studies.",
+      "Test several prompt variants and report the mean and range. Start with at least three to five (this guide's rule of thumb, not a figure from the studies).",
       "Use the same set of variants for every model you compare.",
       "Include messy, realistic user phrasings, not just clean templates.",
       "Save the exact prompts and scoring code alongside the results."
@@ -981,7 +981,7 @@
     "slug": "judge-bias",
     "name": "Judge Bias",
     "category": "III",
-    "aphorism": "An AI grader has preferences, including a preference for itself.",
+    "aphorism": "An AI grader can have preferences, including a preference for itself.",
     "takeaways": [
       "Using an LLM as a judge is fast and cheap, and in one major study a strong judge agreed with people about as often as people agree with each other, once tied votes were set aside.",
       "Judges also have known biases: which answer comes first, how long it is, and whether it sounds like the judge's own writing.",
@@ -1011,7 +1011,7 @@
     ],
     "useIt": [
       "Grade every pair twice with the order swapped. Treat inconsistent verdicts as ties or flags.",
-      "Hand-label at least a few dozen examples (more when differences are small), measure judge-human agreement with its uncertainty, and read the disagreements before scaling up.",
+      "Hand-label a few dozen examples as a first screen, and more when differences are small (this guide's rule of thumb). Measure judge-human agreement with its uncertainty, and read the disagreements before scaling up.",
       "Avoid using one of the systems being compared as the judge. Where you can, use a judge from a different developer, and check its verdicts against human labels.",
       "Give the judge a specific rubric, and check whether scores correlate with response length."
     ],
@@ -1058,7 +1058,7 @@
     "slug": "criteria-drift",
     "name": "Criteria Drift",
     "category": "III",
-    "aphorism": "You figure out what 'good' means by grading outputs, so your criteria will change.",
+    "aphorism": "You often figure out what 'good' means by grading outputs, so expect your criteria to change.",
     "takeaways": [
       "In the study that named this pattern, practitioners could not fully specify their criteria before grading real outputs.",
       "In that study, grading surfaced new criteria and changed how participants read the ones they had.",
@@ -1080,7 +1080,7 @@
       }
     ],
     "useIt": [
-      "Start with open coding. Read a few dozen real outputs (a rule of thumb, not a number from the study) and note what's good and bad before writing any rubric.",
+      "Start with open coding. Read a few dozen real outputs (this guide's rule of thumb, not a number from the study) and note what's good and bad before writing any rubric.",
       "Version the rubric, with a date and a reason for each change.",
       "Keep a fixed reference set and re-grade it when the rubric changes. The study did not test this, but it follows from wanting comparable trend lines.",
       "Involve the people who will actually use the output in defining the criteria."
@@ -1133,7 +1133,7 @@
       }
     ],
     "useIt": [
-      "Run each test case several times (three to five is this guide's rule of thumb for a minimum; the τ-bench study went up to eight) and report both the average success rate and the all-runs-pass rate.",
+      "Run each test case more than once, starting with at least three for stochastic outputs (this guide's rule of thumb; the τ-bench study went up to eight), and report both the average success rate and the all-runs-pass rate.",
       "Separate random, occasional failures from consistent failures on specific cases. They need different fixes.",
       "Include paraphrased versions of the same task in your test set.",
       "Set reliability thresholds based on the cost of a failure, not on what the model can currently hit."
@@ -2063,7 +2063,7 @@
     "slug": "the-jagged-frontier",
     "name": "The Jagged Frontier",
     "category": "V",
-    "aphorism": "AI capability is uneven, and its edges don't line up with what people find hard.",
+    "aphorism": "AI capability is uneven, and its edges don't always line up with what people find hard.",
     "takeaways": [
       "AI can excel at a task that seems hard and fail at one that seems easy.",
       "The edge is hard to see, so people can end up carrying trust from tasks inside it to tasks outside it.",

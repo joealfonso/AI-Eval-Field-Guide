@@ -721,27 +721,30 @@ SECTION_TOC = [
 
 EVIDENCE_LEVELS = {
     "well": {
-        "label": "Well established",
+        "label": "Well sourced",
         "dots": "●●●",
-        "short": "Several peer-reviewed or classic sources, from different lead authors.",
+        "short": "Several independent, mostly peer-reviewed sources, from different lead authors.",
     },
     "developing": {
         "label": "Developing",
         "dots": "●●○",
-        "short": "A smaller or mixed base: some peer-reviewed support, with preprints, reports or a thin source list.",
+        "short": "A smaller or mixed source list: some peer-reviewed sources, with preprints, reports or few sources.",
     },
     "emerging": {
-        "label": "Emerging",
+        "label": "Thin",
         "dots": "●○○",
-        "short": "A thin base: one peer-reviewed source or fewer, with the rest preprints or reports.",
+        "short": "A short source list: one peer-reviewed source or fewer, with the rest preprints or reports.",
     },
 }
+
+# What every Evidence base label does and does not say. The labels count sources; they are not about the effect.
+EVIDENCE_NOTE = "This describes how many independent, mostly peer-reviewed sources the page cites, not how large or certain the effect is."
 
 
 def evidence_base(law):
     """Evidence-base level for a pattern, computed from its source list only (thresholds in data/naming.json).
 
-    It rates the sources cited on the page, not the wider literature. Reviewed and transparent: the same
+    It counts the sources cited on the page. It does not rate the wider literature or the size or certainty of the effect. Reviewed and transparent: the same
     numbers are printed on the pattern page and explained on the About page.
     """
     crit = NAMING["evidenceCriteria"]
@@ -765,7 +768,7 @@ def evidence_base(law):
 
 def evidence_card_tag(law):
     ev = evidence_base(law)
-    return '<span class="law-card__ev ev-%s" title="Evidence base: %s"><span aria-hidden="true">%s</span> <span class="visually-hidden">Evidence base: </span>%s</span>' % (ev["key"], ev["label"], ev["dots"], ev["label"])
+    return '<span class="law-card__ev ev-%s" title="Evidence base: %s. %s"><span aria-hidden="true">%s</span> <span class="visually-hidden">Evidence base: </span>%s</span>' % (ev["key"], ev["label"], EVIDENCE_NOTE, ev["dots"], ev["label"])
 
 
 def source_mix(law):
@@ -916,7 +919,7 @@ def build_law(i, law):
         '<p class="trust__line">Reviewed %s \u00b7 <a href="#sources">%d %s</a> \u00b7 %s \u00b7 <a href="#cite-this-law">Cite</a></p>'
         '<details class="trust__more"><summary>Details</summary><dl>'
         '<div><dt>Source types</dt><dd>%s</dd></div>'
-        '<div><dt>Evidence base</dt><dd>%s. %s <a href="../about.html#evidence">How this is rated</a></dd></div>'
+        '<div><dt>Evidence base</dt><dd>%s. %s This counts sources, not how large or certain the effect is; the Evidence section says what the studies found. <a href="../about.html#evidence">How this is rated</a></dd></div>'
         '<div><dt>Name</dt><dd>%s: %s</dd></div>'
         '<div><dt>Version</dt><dd>%s, published %s</dd></div>'
         '</dl></details></div>'
@@ -1216,19 +1219,20 @@ def build_about():
             NAME_TAG(l["slug"]), esc(ev["why"]),
         )
     evidence = '''  <section><h2 id="evidence">How strong is the evidence?</h2>
-  <p>Each pattern page carries an <strong>Evidence base</strong> label. It describes the sources cited on that page. It does not rate the whole research literature on the topic, and it does not say a pattern is more or less important. It is computed from the source list by fixed rules, so anyone can check it.</p>
+  <p>Each pattern page carries an <strong>Evidence base</strong> label. The label describes how many independent, mostly peer-reviewed sources the page cites. It does not say how large or how certain the effect is, it does not rate the whole research literature on the topic, and it does not say a pattern is more or less important. What the studies found, including where they found little or no effect, is in the page\u2019s Evidence section. The label is computed from the source list by fixed rules, so anyone can check it.</p>
   <ul>
-    <li><strong>Well established (%(c_well)d):</strong> at least %(w_n)d sources, at least %(w_p)d of them peer-reviewed or classic works making up at least %(w_share)d%% of the list, and those works have at least %(w_a)d different lead authors. Several independent studies point the same way.</li>
+    <li><strong>Well sourced (%(c_well)d):</strong> at least %(w_n)d sources, at least %(w_p)d of them peer-reviewed or classic works making up at least %(w_share)d%% of the list, and those works have at least %(w_a)d different lead authors. The page cites several independent studies.</li>
     <li><strong>Developing (%(c_dev)d):</strong> at least %(d_n)d sources, at least %(d_p)d of them peer-reviewed or classic, but short of the bar above. The list is smaller, or leans on preprints and reports.</li>
-    <li><strong>Emerging (%(c_em)d):</strong> everything else. Typically one peer-reviewed source or fewer, with the rest preprints or reports. The idea may still be sound; the cited support is thin so far.</li>
+    <li><strong>Thin (%(c_em)d):</strong> everything else. Typically one peer-reviewed source or fewer, with the rest preprints or reports. The idea may still be sound; the page cites few sources for it so far.</li>
   </ul>
-  <p>\u201cPeer-reviewed or classic\u201d means any source not labeled a preprint, report, working paper, or book on the pattern page. \u201cLead author\u201d is the first author listed, used as a rough stand-in for a separate research group. The rules count sources. They cannot tell whether a study is good, and a pattern can rest on a few strong papers or a large pile of weak ones. Read the Evidence section and the sources themselves. The same limits apply to the labels: they are an editorial summary, not a measurement. The rules were written for this guide and are not a published standard.</p>
-  <p>This is separate from the name. <strong>Established term</strong> means the name is used in the research literature. <strong>Recent term</strong> means the name was coined in one recent paper and is not yet widely established. <strong>Named here</strong> means the idea is established but the name is this guide\u2019s own. A pattern can be well established under a name used only here, and a pattern with a standard name can still have a thin evidence base. The table lists both for every pattern.</p>
+  <p>\u201cPeer-reviewed or classic\u201d means any source not labeled a preprint, report, working paper, or book on the pattern page. \u201cLead author\u201d is the first author listed, used as a rough stand-in for a separate research group. The rules count sources. They cannot tell whether a study is good, and a pattern can rest on a few strong papers or a large pile of weak ones. A well-sourced page can also report a small or contested effect: %(ao_link)s is %(ao_label)s, and its Evidence section reports that the large studies found little or no sign of the effect. Read the Evidence section and the sources themselves. The same limits apply to the labels: they are an editorial summary, not a measurement. The rules were written for this guide and are not a published standard.</p>
+  <p>This is separate from the name. <strong>Established term</strong> means the name is used in the research literature. <strong>Recent term</strong> means the name was coined in one recent paper and is not yet widely established. <strong>Named here</strong> means the idea is established but the name is this guide\u2019s own. A pattern can be well sourced under a name used only here, and a pattern with a standard name can still have a thin source list. The table lists both for every pattern.</p>
   <div class="table-wrap"><table><thead><tr><th scope="col">No.</th><th scope="col">Pattern</th><th scope="col">Evidence base</th><th scope="col">Name</th><th scope="col">Basis</th></tr></thead><tbody>%(rows)s</tbody></table></div></section>
 ''' % {
         "c_well": counts["well"], "c_dev": counts["developing"], "c_em": counts["emerging"],
         "w_n": wk["minSources"], "w_p": wk["minPeerReviewed"], "w_share": round(wk["minPeerShare"] * 100), "w_a": wk["minLeadAuthors"],
         "d_n": dv["minSources"], "d_p": dv["minPeerReviewed"], "rows": rows,
+        "ao_link": '<a href="patterns/adaptive-overfitting.html">Adaptive Overfitting</a>', "ao_label": evidence_base(BY_SLUG["adaptive-overfitting"])["label"].lower(),
     }
     status = '''  <section><h2 id="status">Status of this guide</h2>
   <p>This is an independent, self-published reference built from published research. It has not been through formal peer review. Every pattern links to its sources, so you can check the evidence for yourself.</p>
@@ -1276,12 +1280,12 @@ def build_about():
     <li><strong>Which patterns are included.</strong> An editorial selection, not a systematic review. Another reasonable list would differ.</li>
     <li><strong>The grouping into %(n_parts)d parts</strong> and the order of the patterns.</li>
     <li><strong>The %(n_here)d names marked Named here:</strong> %(named)s.</li>
-    <li><strong>The Evidence base labels and their rules.</strong> They are computed from each page’s source list by fixed rules, written for this guide; they are not a published standard or a measurement (see <a href="#evidence">How strong is the evidence?</a>).</li>
+    <li><strong>The Evidence base labels and their rules.</strong> They count the sources on each page by fixed rules, written for this guide; they are not a published standard or a measurement, and they do not say how strong the effect is (see <a href="#evidence">How strong is the evidence?</a>).</li>
     <li><strong>Role tags</strong> (%(roles)s), the <strong>In plain terms</strong> summaries, and the <strong>questions to ask</strong> on each pattern page.</li>
     <li><strong>The matching rules</strong> in the claim checker and the situation finder. Both are published on their own pages.</li>
     <li><strong>The checklist’s phases and stakes levels:</strong> %(phases)d phases and %(stakes)d levels of stakes, and where each pattern’s question sits.</li>
     <li><strong>The models in the guide chapters,</strong> each marked in the text: the %(n_stages)d-stage maturity path, the %(n_tiers)d risk tiers and the minimum evidence for each, and the sequences in the Playbook.</li>
-    <li><strong>Rules of thumb,</strong> marked as such where they appear, for example “three to five” prompt variants or runs and “a few dozen” outputs to read. They are starting points from this guide, not findings of the studies cited nearby.</li>
+    <li><strong>Rules of thumb,</strong> marked as such where they appear: for prompt variants, several, starting with at least three to five; for runs per item, more than one, at least three for stochastic outputs; for human labels to check a judge, a few dozen as a first screen, more when differences are small; and a few dozen outputs to read. They are starting points from this guide, not standards and not findings of the studies cited nearby.</li>
     <li><strong>The tools’ content:</strong> the %(n_tpl)d templates, the Design Rubric’s %(n_rubric)d checks, and the Readiness Review’s %(n_airr)d criteria, tiers, and gates, along with which standards each criterion is based on. The standards themselves are not this guide’s.</li>
   </ul>
   <p>When a sentence in the guide chapters is this guide’s own, it says so in the text. See “How to read the labels” at the top of the <a href="playbook.html">Playbook</a>.</p></section>
@@ -1290,7 +1294,7 @@ def build_about():
   <header class="page__head"><p class="eyebrow">About</p><h1>About this guide</h1>
   <p class="page__lede">An independent reference for people who build, buy, or design with AI. It collects the reliable ways AI evaluation goes wrong, with the research behind each one.</p></header>
   <section class="callout" aria-labelledby="trust"><h2 id="trust">What you can rely on</h2>
-  <p>Every claim on a pattern page is traceable to a source listed on that page, and preprints, reports, working papers, and books are labeled as such. On 19 October 2026 I re-audited every claim on the pattern, guide, glossary, and bibliography pages against its primary source, with AI-assisted checking; the <a href="methodology.html#checking">methodology</a> says what that covered and what it could not. This guide is independent, with no vendor funding. It is self-published, has not been through formal peer review, and no outside reviewer has signed off on any pattern. If you find an error, tell me through the <a href="https://josephalfonso.com/pages/contact.html">contact page</a> or a pattern page\u2019s \u201cReport it\u201d link; every correction is recorded in the <a href="changelog.html">Changelog</a>.</p></section>
+  <p>Every claim on a pattern page is traceable to a source listed on that page, and preprints, reports, working papers, and books are labeled as such. On 19 October 2026 I re-audited every claim on the pattern, guide, glossary, and bibliography pages against its primary source where it could be read, and against abstracts or publisher records where it could not, with AI-assisted checking; the <a href="methodology.html#checking">methodology</a> says what that covered and what it could not. This guide is independent, with no vendor funding. It is self-published, has not been through formal peer review, and no outside reviewer has signed off on any pattern. If you find an error, tell me through the <a href="https://josephalfonso.com/pages/contact.html">contact page</a> or a pattern page\u2019s \u201cReport it\u201d link; every correction is recorded in the <a href="changelog.html">Changelog</a>.</p></section>
 %(own)s  <section><h2 id="what-a-pattern-is">What a \u201cpattern\u201d means here</h2>
   <p>A pattern here is a reliable way evaluation goes wrong, with research behind it. It is not a law of physics. Some are established terms, like Goodhart\u2019s Law. Others are named here: the idea is well documented, and the name is this guide\u2019s own, chosen to make it easier to remember. Each page says which.</p></section>
   <section><h2 id="editorial-policy">Editorial policy</h2>
@@ -1959,7 +1963,7 @@ WALKTHROUGH = [
         ],
         "choose": "The claim is that the score shows the model can do grade-school math. The decision that rides on it is whether to trust that score, or to choose the model because of it. The claim assumes the model had not already seen the test items.",
         "test": [
-            "The pattern here is [[data-contamination]]: if the test was in the training data, the score measures memory, not skill. You usually cannot inspect a model’s training data, so the test has to be indirect. Compare scores on public items with scores on look-alike items that have never been posted online, as the GSM1k authors did, and ask whether the gap is larger for the models that are most familiar with the public items.",
+            "The pattern here is [[data-contamination]]: if the test was in the training data, the score may be measuring memory, not skill. You usually cannot inspect a model’s training data, so the test has to be indirect. Compare scores on public items with scores on look-alike items that have never been posted online, as the GSM1k authors did, and ask whether the gap is larger for the models that are most familiar with the public items.",
         ],
         "decide": "You can conclude that a large gap is the warning sign, and that a small gap is some reassurance, not proof. Many frontier models showed little or no gap. You still do not know whether any one model memorized test items. This case does not show that public benchmarks are useless or that every model memorized test items, and the gaps apply to the models the authors tested. To find out for your own model, build a small private set of look-alike items that has never been posted online, score the model on both sets, and compare.",
     },
@@ -2095,7 +2099,7 @@ def build_methodology():
   <header class="page__head"><p class="eyebrow">Guide</p><h1>Methodology</h1>
   <p class="page__lede">How the patterns were chosen, what counts as a source, how the evidence was checked, and what this guide does not claim to be.</p></header>
   <section><h2 id="selection">How patterns are chosen</h2>
-  <p>The %(n_laws)d patterns are an editorial selection of recurring ways AI evaluation goes wrong, each with published research behind it. They are not the result of a systematic review, and another reasonable list would differ. Each pattern page says whether its name is an established term, a recent term, or named here (the idea is established, but the name is this guide\u2019s own), and gives an Evidence base of well established, developing, or emerging (see <a href="about.html#evidence">how the evidence base is described</a>).</p>
+  <p>The %(n_laws)d patterns are an editorial selection of recurring ways AI evaluation goes wrong, each with published research behind it. They are not the result of a systematic review, and another reasonable list would differ. Each pattern page says whether its name is an established term, a recent term, or named here (the idea is established, but the name is this guide\u2019s own), and gives an Evidence base of well sourced, developing, or thin, which counts its sources and does not measure the effect (see <a href="about.html#evidence">how the evidence base is described</a>).</p>
   <p>For what comes from the research and what is this guide\u2019s own, see <a href="about.html#own-vs-research">the line drawn on the About page</a>. The table of every pattern with its name label and Evidence base is in <a href="about.html#evidence">the same page</a>.</p></section>
   <section><h2 id="sources">What counts as a source</h2>
   <p>A <em>citation</em> is one source line on one pattern page, so a work cited by three patterns is three citations. A <em>work</em> is one distinct piece of research, counted once however many pages cite it.%(merged)s</p>
@@ -2113,11 +2117,11 @@ def build_methodology():
   <section><h2 id="not-covered">What this guide does not cover</h2>
   <p>These are gaps, not oversights. Each is a field of its own, and the guide treats it only briefly or not at all.</p>
   <ul>
-    <li><strong>Statistics beyond the basics.</strong> The <a href="sample-size.html">sample-size page</a> covers confidence intervals and the number of items for one or two comparisons. It does not cover statistical power in complex designs, corrections for many comparisons, Bayesian methods, or items that come in correlated groups beyond a brief mention.</li>
-    <li><strong>Calibration.</strong> Whether a system’s stated confidence matches how often it is right is not covered.</li>
-    <li><strong>Agent and tool-use evaluation.</strong> Agents appear through a few benchmarks and studies, such as τ-bench. Designing evaluations for multi-step agents, tool use, and long-running tasks is not covered in depth.</li>
+    <li><strong>Statistics beyond the basics.</strong> The <a href="sample-size.html">sample-size page</a> covers confidence intervals, the number of items for one comparison (with power for two systems), and a paired McNemar check of whether one system beat another on the same items. It does not cover corrections for many comparisons, significance testing within slices, power in complex designs, Bayesian methods, or items that come in correlated groups beyond a brief mention.</li>
+    <li><strong>Calibration.</strong> The Glossary defines it, but how to measure whether a system’s stated confidence matches how often it is right, or how to calibrate an AI judge, is not covered.</li>
+    <li><strong>Agent and tool-use evaluation.</strong> <a href="patterns/once-is-not-reliable.html">Once Is Not Reliable</a> covers repeated runs and the pass^k measure, with τ-bench as the main example. Evaluating the steps an agent takes (trajectories), tool use, and long-running tasks is not covered in depth.</li>
     <li><strong>Safety and red-team methods.</strong> <a href="patterns/presence-not-absence.html">Presence, Not Absence</a> explains why a failure to find a risk is weak evidence. How to run a red-team exercise, design adversarial tests, or assess dangerous capabilities is not covered.</li>
-    <li><strong>Validating an AI grader.</strong> <a href="patterns/judge-bias.html">Judge Bias</a> says to check a grader against people on a sample. It does not cover agreement measures, rubric design for judges, or how many labels are enough.</li>
+    <li><strong>Validating an AI grader.</strong> <a href="patterns/judge-bias.html">Judge Bias</a> says to check a grader against people on a sample, and the <a href="playbook.html">Playbook</a> (step 8) names a chance-corrected agreement measure (Cohen’s kappa), shows how wide the interval is on a small label set (45 matches out of 50 gives about 79%% to 96%%), and suggests a few dozen labels as a first screen. It does not explain how to compute or interpret agreement measures, how to choose a label count for a target precision, rubric design for judges, or judge calibration.</li>
     <li><strong>Building evaluation sets at scale.</strong> Sampling, annotation pipelines, quality control, and keeping a set fresh over time are not covered.</li>
     <li><strong>Fairness auditing, privacy, security, and legal compliance.</strong> These are touched on by the Readiness Review, which points to standards, but they are not treated as evaluation methods here.</li>
     <li><strong>Evidence from the last few months.</strong> Each pattern shows when its evidence was last checked. Newer work may not be reflected yet.</li>
