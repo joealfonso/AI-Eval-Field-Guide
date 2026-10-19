@@ -76,7 +76,7 @@ Out of scope (what a high score would not tell us):
 
 - Stop when: (for example, the planned number of items and runs are complete, or a hard failure class appears)
 - We will not: add items, change metrics, or change prompts after seeing locked-test results without recording it as a new plan version.
-- What happens if the result is a tie (interval includes zero)?
+- What happens if the result is not clearly different (the interval for the difference includes zero)?
 
 ## 10. Reproducibility
 

@@ -67,7 +67,7 @@
 <h3 id="eval-plan-8-slices-and-sample-size">8. Slices and sample size</h3>
 <ul><li>Groups or input types that matter (defined before looking at the overall score):</li><li>Items per slice, and the interval width we can afford (see https://evalfieldguide.com/sample-size):</li><li>Smallest difference between systems that would matter to the decision:</li><li>Expected disagreement rate between systems (from a pilot), and the number of items that implies:</li></ul>
 <h3 id="eval-plan-9-stopping-rules">9. Stopping rules</h3>
-<ul><li>Stop when: (for example, the planned number of items and runs are complete, or a hard failure class appears)</li><li>We will not: add items, change metrics, or change prompts after seeing locked-test results without recording it as a new plan version.</li><li>What happens if the result is a tie (interval includes zero)?</li></ul>
+<ul><li>Stop when: (for example, the planned number of items and runs are complete, or a hard failure class appears)</li><li>We will not: add items, change metrics, or change prompts after seeing locked-test results without recording it as a new plan version.</li><li>What happens if the result is not clearly different (the interval for the difference includes zero)?</li></ul>
 <h3 id="eval-plan-10-reproducibility">10. Reproducibility</h3>
 <ul><li>Where the prompts, data version, scoring code, and raw outputs are stored:</li><li>Canary set to rerun when the vendor updates the model:</li></ul>
 <h3 id="eval-plan-11-after-launch">11. After launch</h3>
@@ -87,7 +87,7 @@
 <p>How the intervals were computed (for example, Wilson interval for accuracy; standard errors clustered by document where items come in groups):</p>
 <h4 id="results-report-comparison">Comparison</h4>
 <div class="table-wrap"><table><thead><tr><th scope="col">Comparison</th><th scope="col">Difference (points)</th><th scope="col">95% interval</th><th scope="col">Method</th><th scope="col">Reading</th></tr></thead><tbody><tr><td>New vs current</td><td></td><td></td><td>Paired, same items</td><td>Larger than noise / within noise</td></tr></tbody></table></div>
-<p>Treat a difference whose interval includes zero as a tie.</p>
+<p>Treat a difference whose interval includes zero as not shown to differ (which is not the same as equal).</p>
 <h4 id="results-report-reliability">Reliability</h4>
 <ul><li>Average success rate across runs:</li><li>All-runs-pass rate:</li><li>Spread across prompt variants (lowest to highest):</li></ul>
 <h3 id="results-report-breakdowns">Breakdowns</h3>

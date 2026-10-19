@@ -649,7 +649,7 @@
       },
       {
         "lead": "Rebuilt test sets score lower.",
-        "text": "Recht et al. (2019) rebuilt test sets for CIFAR-10 and ImageNet following the original procedures. Accuracy dropped 3% to 15% on CIFAR-10 and 11% to 14% on ImageNet. The model rankings mostly held. The authors attribute the drop to a distribution gap (models generalizing worse to slightly harder images), not to adaptive overfitting, and found no sign that years of reuse had produced diminishing gains, though they note their experiments do not rule out every variant of it."
+        "text": "Recht et al. (2019) rebuilt test sets for CIFAR-10 and ImageNet following the original procedures. Accuracy dropped by 3 to 15 percentage points on CIFAR-10 and 11 to 14 points on ImageNet. The model rankings mostly held. The authors attribute the drop to a distribution gap (models generalizing worse to slightly harder images), not to adaptive overfitting, and found no sign that years of reuse had produced diminishing gains, though they note their experiments do not rule out every variant of it."
       },
       {
         "lead": "Competitions held up better than expected.",
@@ -1186,7 +1186,7 @@
       },
       {
         "lead": "Users care about more than accuracy.",
-        "text": "Ethayarajh and Jurafsky (2020), in a critique of NLP leaderboards, argue that leaderboards ignore costs like model size and energy use that matter to real users, and advocate reporting them."
+        "text": "Ethayarajh and Jurafsky (2020), in a critique of NLP leaderboards, argue that leaderboards ignore costs like model size and energy use that matter in practice, and advocate reporting them."
       }
     ],
     "useIt": [
@@ -1230,7 +1230,7 @@
     "slug": "no-error-bars-no-result",
     "name": "No Error Bars, No Result",
     "category": "IV",
-    "aphorism": "A difference smaller than the noise is not a difference.",
+    "aphorism": "A difference smaller than the noise has not been shown to be a difference.",
     "takeaways": [
       "Every eval score is an estimate from a limited set of questions and, often, a random process.",
       "Small test sets and small improvements frequently sit inside the margin of error.",

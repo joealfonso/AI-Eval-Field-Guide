@@ -45,7 +45,7 @@ How the intervals were computed (for example, Wilson interval for accuracy; stan
 |------------|---------------------|--------------|--------|---------|
 | New vs current | | | Paired, same items | Larger than noise / within noise |
 
-Treat a difference whose interval includes zero as a tie.
+Treat a difference whose interval includes zero as not shown to differ (which is not the same as equal).
 
 ### Reliability
 

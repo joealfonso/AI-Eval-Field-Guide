@@ -28,7 +28,7 @@ At its core, evaluation is measurement. Wallach et al. (2025) argue that evaluat
 - **Unknown training data.** You usually can't check whether a model has already seen the test (Sainz et al., 2023).  
 - **Moving targets.** Many benchmarks approach saturation quickly (Ott et al., 2022, who mapped computer vision and language benchmarks), and hosted models change under the same name.  
 - **Systems that respond to the test.** Models can often tell when they're being evaluated (Needham et al., 2025), and they increasingly find loopholes in evaluations (Bengio et al., 2026).  
-- **Context decides value.** The same model can succeed in a lab and struggle in a clinic (Beede et al., 2020).
+- **Context decides value.** Performance in a controlled test does not settle how a system behaves in real clinics (Beede et al., 2020).
 
 ### Three layers of evaluation
 
@@ -458,7 +458,7 @@ Standard statistical guarantees assume you pick your analysis before looking at 
 ##### The evidence
 
 - **Reuse is a known problem.** Dwork et al. (2015) noted that standard guarantees assume the analysis was fixed before the data were examined, and proposed a "reusable holdout" method, built on differential privacy, that lets one holdout set be used many times while keeping estimates valid.  
-- **Rebuilt test sets score lower.** Recht et al. (2019) rebuilt test sets for CIFAR-10 and ImageNet following the original procedures. Accuracy dropped 3% to 15% on CIFAR-10 and 11% to 14% on ImageNet. The model rankings mostly held. The authors attribute the drop to a distribution gap (models generalizing worse to slightly harder images), not to adaptive overfitting, and found no sign that years of reuse had produced diminishing gains, though they note their experiments do not rule out every variant of it.  
+- **Rebuilt test sets score lower.** Recht et al. (2019) rebuilt test sets for CIFAR-10 and ImageNet following the original procedures. Accuracy dropped by 3 to 15 percentage points on CIFAR-10 and 11 to 14 points on ImageNet. The model rankings mostly held. The authors attribute the drop to a distribution gap (models generalizing worse to slightly harder images), not to adaptive overfitting, and found no sign that years of reuse had produced diminishing gains, though they note their experiments do not rule out every variant of it.  
 - **Competitions held up better than expected.** Roelofs et al. (2019) analyzed 120 Kaggle classification competitions and found little to no sign of adaptive overfitting from leaderboard reuse. Effects among the top entries were small (typically under 1% accuracy), and the outliers usually had problems such as small or non-i.i.d. test sets. Together with Recht et al., this means the large studies found little or no sign of the effect: the risk is clearest in theory and for small, heavily reused benchmarks, and its practical size is unsettled.  
 - **Agent benchmarks are exposed.** Kapoor et al. (2025) reviewed 17 AI agent benchmarks and found most lack an appropriate holdout set, and 7 have none. The authors say this has led to fragile agents that take shortcuts and overfit to the benchmark.
 
@@ -742,7 +742,7 @@ A leaderboard that only shows accuracy invites a quiet arms race. Call the model
 
 - **Accuracy-only evaluation can produce bloated agents.** Kapoor et al. (2025) argued that a narrow focus on accuracy leads to needlessly complex and costly AI agents, and that cost and accuracy should be optimized together. On HumanEval, a coding benchmark, they found that simple baselines, such as retrying a model or escalating from a cheap model to a costlier one, did as well as or better than many more complex published agents at much lower cost. In one further experiment, on the HotPotQA question-answering benchmark, joint optimization lowered cost while keeping accuracy, which the authors call a starting point rather than a general result.  
 - **Efficiency belongs in the scorecard.** Liang et al. (2023) include efficiency as one of HELM's seven core metrics, split into training and inference efficiency.  
-- **Users care about more than accuracy.** Ethayarajh and Jurafsky (2020), in a critique of NLP leaderboards, argue that leaderboards ignore costs like model size and energy use that matter to real users, and advocate reporting them.
+- **Users care about more than accuracy.** Ethayarajh and Jurafsky (2020), in a critique of NLP leaderboards, argue that leaderboards ignore costs like model size and energy use that matter in practice, and advocate reporting them.
 
 ##### Use it
 
@@ -765,7 +765,7 @@ A leaderboard that only shows accuracy invites a quiet arms race. Call the model
 
 #### No Error Bars, No Result
 
-> A difference smaller than the noise is not a difference.
+> A difference smaller than the noise has not been shown to be a difference.
 
 ##### Takeaways
 
