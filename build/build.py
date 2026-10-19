@@ -433,7 +433,7 @@ def law_card(law, prefix=""):
     return (
         '<li class="law-item"><a class="law-card cat-%d" href="%s" data-no="%s" data-roles="%s" data-published="%s" data-revised="%s">'
         '<span class="law-card__row"><span class="law-card__no">No. %s</span><span class="badge" data-badge hidden></span>'
-        '<span class="tag">%s</span></span>'
+        '%s<span class="tag">%s</span></span>'
         '<span class="law-card__title">%s</span>'
         '<span class="law-card__quote">\u201c%s\u201d</span>'
         '<span class="law-card__cta">Read the pattern \u2192</span></a>%s</li>'
@@ -445,6 +445,7 @@ def law_card(law, prefix=""):
             law["published"],
             law["revised"] or "",
             law["no"],
+            evidence_card_tag(law),
             esc(cat["short"]),
             esc(typo(law["name"])),
             esc(typo(law["aphorism"])),
@@ -561,6 +562,55 @@ SECTION_TOC = [
 ]
 
 
+EVIDENCE_LEVELS = {
+    "well": {
+        "label": "Well established",
+        "dots": "●●●",
+        "short": "Several peer-reviewed or classic sources, from different lead authors.",
+    },
+    "developing": {
+        "label": "Developing",
+        "dots": "●●○",
+        "short": "A smaller or mixed base: some peer-reviewed support, with preprints, reports or a thin source list.",
+    },
+    "emerging": {
+        "label": "Emerging",
+        "dots": "●○○",
+        "short": "A thin base: one peer-reviewed source or fewer, with the rest preprints or reports.",
+    },
+}
+
+
+def evidence_base(law):
+    """Evidence-base level for a pattern, computed from its source list only (thresholds in data/naming.json).
+
+    It rates the sources cited on the page, not the wider literature. Reviewed and transparent: the same
+    numbers are printed on the pattern page and explained on the About page.
+    """
+    crit = NAMING["evidenceCriteria"]
+    wk, dv = crit["wellEstablished"], crit["developing"]
+    srcs = law["sources"]
+    n = len(srcs)
+    peer = [s for s in srcs if not s["label"]]
+    p = len(peer)
+    leads = {re.sub(r"[^a-z]", "", txt(s["authors"]).split(",")[0].lower()) for s in peer}
+    if n >= wk["minSources"] and p >= wk["minPeerReviewed"] and p / n >= wk["minPeerShare"] and len(leads) >= wk["minLeadAuthors"]:
+        key = "well"
+    elif n >= dv["minSources"] and p >= dv["minPeerReviewed"]:
+        key = "developing"
+    else:
+        key = "emerging"
+    why = "%d %s, %d peer-reviewed or classic" % (n, "source" if n == 1 else "sources", p)
+    if p:
+        why += " (from %d separate lead %s)" % (len(leads), "author" if len(leads) == 1 else "authors")
+    return dict(EVIDENCE_LEVELS[key], key=key, why=why, n=n, peer=p, leads=len(leads))
+
+
+def evidence_card_tag(law):
+    ev = evidence_base(law)
+    return '<span class="law-card__ev ev-%s" title="Evidence base: %s"><span aria-hidden="true">%s</span> <span class="visually-hidden">Evidence base: </span>%s</span>' % (ev["key"], ev["label"], ev["dots"], ev["label"])
+
+
 def source_mix(law):
     c = collections.Counter(s["label"] or "peer" for s in law["sources"])
     parts = []
@@ -580,7 +630,7 @@ def apa(law):
 def bibtex(law):
     d = datetime.date.fromisoformat(law["published"])
     return (
-        "@misc{lai-%s,\n  title        = {%s},\n  author       = {{AI Evaluation Field Guide}},\n  year         = {%d},\n  month        = %s,\n"
+        "@misc{efg-%s,\n  title        = {%s},\n  author       = {{AI Evaluation Field Guide}},\n  year         = {%d},\n  month        = %s,\n"
         "  note         = {Version %s},\n  howpublished = {\\url{%s/patterns/%s}}\n}"
         % (law["slug"], law["name"], d.year, d.strftime("%b").lower(), law["version"].lstrip("v"), SITE["baseUrl"], law["slug"])
     )
@@ -672,19 +722,55 @@ def build_law(i, law):
 
     plain_box = '<section class="plain" aria-labelledby="plain-terms"><h2 class="plain__label" id="plain-terms">In plain terms</h2><p>%s</p></section>' % esc(typo(law["plainTerms"]))
 
+    established = law["slug"] in NAMING["established"]
+    name_tag = "Established term" if established else "Named here"
     name_note = (
-        "Established term: this name is used in the research literature."
-        if law["slug"] in NAMING["established"]
-        else "The idea is established. The name is this site\u2019s, chosen to make it easier to remember."
+        "This name is used in the research literature."
+        if established
+        else "The idea is established in the research. The name is this site\u2019s, chosen to make it easier to remember."
     )
+    ev = evidence_base(law)
+    # One compact line (reviewed, sources, version) with the detail behind a disclosure, so the first
+    # screen on a phone is the pattern itself. Sources and Cite stay as direct links.
     trust = (
-        '<dl class="trust">'
-        '<div><dt>Last reviewed</dt><dd>%s</dd></div>'
-        '<div><dt>Sources</dt><dd><a href="#sources">%d</a> \u00b7 <a href="#cite-this-law">Cite</a></dd></div>'
-        '<div><dt>Source types</dt><dd class="trust__small">%s</dd></div>'
-        '<div><dt>Version</dt><dd>%s <span class="trust__small">%s</span></dd></div></dl>'
-        % (fmt_date(law["evidenceChecked"]), len(law["sources"]), esc(source_mix(law)), esc(law["version"]), fmt_date(law["published"]))
-    ) + '<p class="law__status">%s <a href="../about.html#status">About this guide\u2019s status</a></p>' % esc(name_note)
+        '<div class="trust">'
+        '<p class="trust__line">Reviewed %s \u00b7 <a href="#sources">%d %s</a> \u00b7 %s \u00b7 <a href="#cite-this-law">Cite</a></p>'
+        '<details class="trust__more"><summary>Details</summary><dl>'
+        '<div><dt>Source types</dt><dd>%s</dd></div>'
+        '<div><dt>Evidence base</dt><dd>%s. %s <a href="../about.html#evidence">How this is rated</a></dd></div>'
+        '<div><dt>Name</dt><dd>%s: %s</dd></div>'
+        '<div><dt>Version</dt><dd>%s, published %s</dd></div>'
+        '</dl></details></div>'
+        % (
+            fmt_date(law["evidenceChecked"]), len(law["sources"]), "source" if len(law["sources"]) == 1 else "sources", esc(law["version"]),
+            esc(source_mix(law)),
+            ev["label"], esc(ev["why"]) + ".",
+            name_tag, esc(name_note),
+            esc(law["version"]), fmt_date(law["published"]),
+        )
+    ) + (
+        # The single status statement on a pattern page. The full wording lives on About and Methodology.
+        '<p class="law__status"><span class="etag etag--%s">Evidence base: %s</span><span class="ntag">%s</span>'
+        '<span>Independent, not peer reviewed. <a href="../about.html#status">Status</a></span></p>'
+        % (ev["key"], ev["label"], name_tag)
+    )
+
+    jump_main = [("questions-to-ask", "Questions to ask"), ("limits", "Where this doesn\u2019t apply"), ("sources", "Sources"), ("cite-this-law", "Cite")]
+    jump = (
+        '<nav class="jump" aria-label="Jump to a section"><ul>%s</ul>'
+        '<details class="jump__all"><summary>All sections</summary><ol>%s</ol></details></nav>'
+        % (
+            "".join('<li><a href="#%s">%s</a></li>' % (sid, label) for sid, label in jump_main),
+            "".join('<li><a href="#%s">%s</a></li>' % (sid, label) for sid, label in SECTION_TOC),
+        )
+    )
+
+    share_text = "\u201c%s\u201d \u2014 %s, AI Evaluation Field Guide" % (typo(law["aphorism"]), typo(law["name"]))
+    share = (
+        '<div class="law__share"><button class="btn btn--outline btn--sm" type="button" data-share data-share-title="%s" data-share-text="%s" data-share-url="%s">Share this</button>'
+        '<span class="law__share-status" role="status" aria-live="polite" data-share-status></span></div>'
+        % (esc(typo(law["name"])), esc(share_text), esc(url))
+    )
 
     # right column
     aside = []
@@ -724,11 +810,13 @@ def build_law(i, law):
     <div class="related"><h2 class="rail-label">Related</h2><ul>%(related)s</ul></div>
   </aside>
   <article class="law">
-    <div class="law__meta"><span class="law__no">No. %(no)s</span><a class="tag" href="%(cat_href)s">%(cat_short)s</a><span class="chip-ver">%(version)s</span>%(pick)s<span class="law__for">For: %(roles)s</span></div>
+    <div class="law__meta"><span class="law__no">No. %(no)s</span><a class="tag" href="%(cat_href)s">%(cat_short)s</a>%(pick)s<span class="law__for">For: %(roles)s</span></div>
     <h1 class="law__title">%(name)s</h1>
     <blockquote class="law__quote"><p>\u201c%(aphorism)s\u201d</p></blockquote>
+    %(share)s
     %(trust)s
     %(plain)s
+    %(jump)s
     <section class="sec" aria-labelledby="takeaways">%(h_take)s<ul class="dash">%(takeaways)s</ul></section>
     <section class="sec" aria-labelledby="what-it-means">%(h_means)s%(means)s</section>
     <section class="sec" aria-labelledby="the-evidence">%(h_evid)s%(evidence)s</section>
@@ -756,7 +844,8 @@ def build_law(i, law):
         "crumb_next": crumb_next,
         "toc": toc,
         "related": related,
-        "version": esc(law["version"]),
+        "share": share,
+        "jump": jump,
         "pick": pick_button(law, "pick pick--inline", "Add to My patterns", "In My patterns"),
         "roles": " \u00b7 ".join(law["roles"]),
         "name": esc(typo(law["name"])),
@@ -910,19 +999,43 @@ def build_changelog():
 
 
 def build_about():
-    est = "; ".join(BY_SLUG[x]["name"] for x in NAMING["established"])
-    here = "; ".join(BY_SLUG[x]["name"] for x in NAMING["namedHere"])
+    crit = NAMING["evidenceCriteria"]
+    wk, dv = crit["wellEstablished"], crit["developing"]
+    rows, counts = "", collections.Counter()
+    for l in LAWS:
+        ev = evidence_base(l)
+        counts[ev["key"]] += 1
+        rows += '<tr><td>%s</td><td><a href="patterns/%s.html">%s</a></td><td>%s</td><td>%s</td><td>%s</td></tr>' % (
+            l["no"], l["slug"], esc(typo(l["name"])), ev["label"],
+            "Established term" if l["slug"] in NAMING["established"] else "Named here", esc(ev["why"]),
+        )
+    evidence = '''  <section><h2 id="evidence">How strong is the evidence?</h2>
+  <p>Each pattern page carries an <strong>Evidence base</strong> label. It describes the sources cited on that page. It does not rate the whole research literature on the topic, and it does not say a pattern is more or less important. It is computed from the source list by fixed rules, so anyone can check it.</p>
+  <ul>
+    <li><strong>Well established (%(c_well)d):</strong> at least %(w_n)d sources, at least %(w_p)d of them peer-reviewed or classic works making up at least %(w_share)d%% of the list, and those works have at least %(w_a)d different lead authors. Several independent studies point the same way.</li>
+    <li><strong>Developing (%(c_dev)d):</strong> at least %(d_n)d sources, at least %(d_p)d of them peer-reviewed or classic, but short of the bar above. The list is smaller, or leans on preprints and reports.</li>
+    <li><strong>Emerging (%(c_em)d):</strong> everything else. Typically one peer-reviewed source or fewer, with the rest preprints or reports. The idea may still be sound; the cited support is thin so far.</li>
+  </ul>
+  <p>\u201cPeer-reviewed or classic\u201d means any source not labeled a preprint, report, working paper, or book on the pattern page. \u201cLead author\u201d is the first author listed, used as a rough stand-in for a separate research group. The rules count sources. They cannot tell whether a study is good, and a pattern can rest on a few strong papers or a large pile of weak ones. Read the Evidence section and the sources themselves. The same limits apply to the labels: they are an editorial summary, not a measurement. The rules were written for this guide and are not a published standard.</p>
+  <p>This is separate from the name. <strong>Established term</strong> means the name is used in the research literature. <strong>Named here</strong> means the idea is established but the name is this site\u2019s own. A pattern can be well established under a name used only here, and a pattern with a standard name can still have a thin evidence base. The table lists both for every pattern.</p>
+  <div class="table-wrap"><table><thead><tr><th scope="col">No.</th><th scope="col">Pattern</th><th scope="col">Evidence base</th><th scope="col">Name</th><th scope="col">Basis</th></tr></thead><tbody>%(rows)s</tbody></table></div></section>
+''' % {
+        "c_well": counts["well"], "c_dev": counts["developing"], "c_em": counts["emerging"],
+        "w_n": wk["minSources"], "w_p": wk["minPeerReviewed"], "w_share": round(wk["minPeerShare"] * 100), "w_a": wk["minLeadAuthors"],
+        "d_n": dv["minSources"], "d_p": dv["minPeerReviewed"], "rows": rows,
+    }
     status = '''  <section><h2 id="status">Status of this guide</h2>
   <p>This is an independent, self-published reference built from published research. It has not been through formal peer review. Every pattern links to its sources, so you can check the evidence for yourself.</p>
   <h3>Established terms and names from this site</h3>
   <p>Not every pattern name is standard. The idea behind each pattern is established in the research, but for some the name is this site\u2019s own.</p>
   <ul>
-    <li><strong>Established terms (%(n_est)d):</strong> %(est)s.</li>
-    <li><strong>Named on this site (%(n_here)d):</strong> %(here)s. Please do not cite these as established terms. Cite the sources linked on each page instead.</li>
+    <li><strong>Established terms (%(n_est)d):</strong> the name is used in the research literature.</li>
+    <li><strong>Named on this site (%(n_here)d):</strong> the idea is established but the name is this site\u2019s own. Please do not cite these names as established terms. Cite the sources linked on each page instead.</li>
   </ul>
+  <p>Which is which, along with how strong each pattern\u2019s evidence is, is in the <a href="#evidence">table below</a>.</p>
   <h3>Review</h3>
   <p>See the <a href="methodology.html">methodology</a> for how sources were chosen and checked. No outside reviewer has signed off on any pattern yet. If you work in evaluation, statistics, or a related field and see something wrong, or a better source, please say so on the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. Corrections are recorded in the <a href="changelog.html">Changelog</a>.</p></section>
-''' % {"n_est": len(NAMING["established"]), "est": esc(typo(est)), "n_here": len(NAMING["namedHere"]), "here": esc(typo(here))}
+''' % {"n_est": len(NAMING["established"]), "n_here": len(NAMING["namedHere"])}
     body = """<main id="main" class="page page--prose">
   <header class="page__head"><p class="eyebrow">About</p><h1>About this guide</h1>
   <p class="page__lede">An independent reference for people who build, buy, or design with AI. It collects the reliable ways AI evaluation goes wrong, with the research behind each one.</p></header>
@@ -935,13 +1048,13 @@ def build_about():
     <li>The <a href="changelog.html">Changelog</a> records what changed and when. Corrections are made in the open.</li>
     <li>Role tags, plain-terms summaries, checklist questions, and claim-checker rules are editorial work built from the patterns themselves. They are starting points, not authority.</li>
   </ul></section>
-%(status)s  <section><h2 id="who">Who maintains it</h2>
+%(status)s%(evidence)s  <section><h2 id="who">Who maintains it</h2>
   <p>Hi, I\u2019m <a href="https://josephalfonso.com">Joseph Alfonso</a>, a UX design lead. I made this guide because I wanted to understand how AI really gets judged, and how those judgments go wrong. Writing it down was how I learned.</p>
   <p>I care about this because AI can feel like something that happens to us. I don\u2019t think it has to. The more we understand how it works and why it fails, the more we can use it on our own terms and ask better questions of the people selling it, building it, or telling us to trust it.</p>
   <p>I\u2019m still learning, and I\u2019ve tried to be honest about what I know and don\u2019t. If you find a mistake, or a better source, please tell me through the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. I\u2019d be grateful, and I\u2019ll fix it. I hope this helps you the way making it helped me.</p></section>
   <section><h2 id="how-to-use">How to use it</h2>
   <p>Start with the <a href="guide.html">guide</a>, browse the <a href="index.html">patterns</a>, describe your circumstances to <a href="situation-finder.html">find your patterns</a>, or paste a claim into the <a href="claim-checker.html">claim checker</a> to see which patterns apply. Collect any patterns with the Add buttons to get a <a href="brief.html">quick brief</a>, or turn them into a printable sheet with the <a href="checklist.html">checklist builder</a>. For ready-made question lists, see <a href="questions-to-ask-ai-vendor.html">buying an AI model or vendor</a>, <a href="ai-launch-review-questions.html">a launch review</a>, and <a href="how-to-build-an-ai-evaluation.html">building an evaluation</a>.</p></section>
-</main>""" % {"status": status}
+</main>""" % {"status": status, "evidence": evidence}
     write("about.html", layout("About", "About the AI Evaluation Field Guide: what a pattern means here, the editorial policy, and who maintains it.", body, current="about"))
 
 
@@ -1289,15 +1402,35 @@ def build_privacy():
     body = """<main id="main" class="page page--prose">
   <header class="page__head"><p class="eyebrow">Policy</p><h1>Privacy</h1>
   <p class="page__lede">There are no accounts and no ads, and nothing here is sold. This page lists what is collected and by whom.</p></header>
-  <section><h2 id="analytics">Analytics</h2>
-  <p>The site uses Google Analytics to count visits: which pages are viewed, roughly where visitors are, and what device and browser they use. It sets cookies to do this. For visitors in the EU, the European Economic Area, the UK, and Switzerland, analytics storage is denied by default, so Google Analytics does not set analytics cookies there. Google may still receive limited signals that do not use cookies.</p></section>
+  <section class="callout" aria-labelledby="in-short"><h2 id="in-short">In short</h2>
+  <ul>
+    <li><strong>This site uses Google Analytics</strong> to count visits. Google receives your IP address, the page you view, and your browser and device details.</li>
+    <li><strong>Google Fonts</strong> also receives your IP address and browser details when the fonts load.</li>
+    <li><strong>My patterns is stored in your browser</strong> (local storage), on your device. The list itself is not sent anywhere, but when you open the brief or checklist your selection appears in the page address, which Google Analytics receives (see below).</li>
+    <li>What you type into the claim checker, Find your patterns, the checklist, the quick brief, and Use it now stays in your browser.</li>
+  </ul></section>
+  <section><h2 id="analytics">Google Analytics</h2>
+  <p>Every page loads Google Analytics (measurement ID %(ga)s) from Google\u2019s servers. Each page view sends Google the page address, the page you came from, your IP address, and your browser, device, and language details. Google uses the IP address to estimate roughly where visitors are. This site\u2019s code does not apply any extra IP-masking setting. It does not turn off Google\u2019s advertising-related storage outside the regions below, and it does not set user IDs or send anything you type. Depending on how the Google Analytics property is configured, which the page code does not control, Google may also record events such as outbound link clicks and scrolling.</p>
+  <p>The page address includes any query string. On the quick brief, the checklist, and the patterns index, the address can contain the patterns you selected or a role filter (for example <code>?laws=3,7</code>), so those selections are visible to Google Analytics along with the rest of the address.</p>
+  <h3>Cookies and consent</h3>
+  <p>Outside the regions below, Google Analytics sets its cookies when the page loads. There is no consent banner and no opt-in or opt-out control on this site.</p>
+  <p>For visitors in the EU, the European Economic Area (including Iceland, Liechtenstein, and Norway), the UK, and Switzerland, the site tells Google Analytics to deny analytics and advertising storage by default, so Google Analytics does not set cookies there. The Google script still loads and may still receive cookieless signals about the visit, such as the page address and your IP address. Because there is no banner, visitors in those regions have no way to opt in.</p>
+  <p>To block Google Analytics everywhere, use your browser\u2019s tracking protection or a content blocker, or Google\u2019s <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener">Analytics opt-out browser add-on</a>. The site works without it.</p></section>
   <section><h2 id="fonts">Fonts</h2>
-  <p>The fonts load from Google Fonts. Loading them sends your IP address and browser details to Google.</p></section>
+  <p>The fonts load from Google Fonts. Loading them sends your IP address and browser details to Google.</p>
+  <h2 id="hosting">Hosting</h2>
+  <p>As with any website, the server that delivers these pages receives your IP address and request details, and may keep standard server logs.</p></section>
   <section><h2 id="your-device">What stays on your device</h2>
-  <p>The claim checker, Find your patterns, the checklist, the quick brief, and Use it now run in your browser. What you type into them is not sent anywhere. The patterns you add to My patterns, and some view preferences, are saved in your browser\u2019s local storage on your device. Clearing your browser data removes them.</p></section>
+  <p>The claim checker, Find your patterns, the checklist, the quick brief, and Use it now run in your browser. What you type into them is not sent anywhere. The Share and Copy buttons use only your device\u2019s clipboard or share menu.</p>
+  <p>The site saves two things in your browser\u2019s local storage. Neither is sent to the site\u2019s server or to Google by this site\u2019s code.</p>
+  <ul>
+    <li><strong>My patterns:</strong> the numbers of the patterns you add with the Add buttons, so they are still there on your next visit and on the brief and checklist pages.</li>
+    <li><strong>Last-seen date:</strong> the date of the latest update you had seen when you last opened the patterns index, so it can mark what is new since your last visit.</li>
+  </ul>
+  <p>Clearing your browser\u2019s site data removes both. Local storage stays on one browser and one device. It does not follow you to another.</p></section>
   <section><h2 id="contact">Questions</h2>
-  <p>Use the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. Last updated %s.</p></section>
-</main>""" % fmt_date(SITE["updated"])
+  <p>Use the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>. Last updated %(updated)s.</p></section>
+</main>""" % {"updated": fmt_date(SITE["updated"]), "ga": SITE["gaId"]}
     write("privacy.html", layout("Privacy", "What this site collects, who receives it, and what stays on your device.", body, current=None))
 
 
