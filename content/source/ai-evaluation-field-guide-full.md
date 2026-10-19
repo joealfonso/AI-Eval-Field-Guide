@@ -56,7 +56,7 @@ When two people argue about whether a model is "good at reasoning," they're usua
 | Method | What it tells you | Watch out for | Related patterns |
 | :---- | :---- | :---- | :---- |
 | Static benchmarks | Performance on a fixed, shared set of tasks | Saturation, contamination, construct gaps | Benchmark Saturation, Data Contamination, The Construct Gap |
-| Dynamic or adversarial benchmarks | Performance on fresh, hard examples, often written to beat current models (Kiela et al., 2021\) | Adversarial cases may be unrepresentative of real use (this site's caveat, not Kiela et al.'s) | The Clever Hans Effect |
+| Dynamic or adversarial benchmarks | Performance on fresh, hard examples, often written to beat current models (Kiela et al., 2021\) | Adversarial cases may be unrepresentative of real use (this guide's own caveat, not Kiela et al.'s) | The Clever Hans Effect |
 | Behavioral testing | Whether specific behaviors hold up under controlled changes (Ribeiro et al., 2020\) | Only tests the behaviors you think to write down | The Clever Hans Effect, Presence, Not Absence |
 | Human evaluation | How people judge output quality (van der Lee et al., 2021\) | Rater expertise, agreement, and fatigue | The Gold Standard Myth, Criteria Drift |
 | Pairwise preference arenas | Which outputs people prefer at scale (Chiang et al., 2024\) | Who votes, what they ask, and who gets to test privately (Singh et al., 2025\) | Goodhart's Law, Campbell's Law |
@@ -67,9 +67,11 @@ When two people argue about whether a model is "good at reasoning," they're usua
 | Production monitoring | How the system performs on live traffic over time | Privacy, consent, and slow feedback | Distribution Shift, Evaluation Awareness |
 | Audits and documentation | Whether claims hold up and are recorded in a checkable way (Mitchell et al., 2019; Raji et al., 2022\) | Access to models, data, and results | The Functionality Fallacy, The Reproducibility Rule |
 
+The "Related patterns" column is this guide's own mapping of methods to patterns; the cited papers do not make that mapping.
+
 ### Who evaluates, and why
 
-Different people need different evidence from the same system.
+Different people need different evidence from the same system. This grouping into five audiences is this guide's own; the citations below support the points they are attached to.
 
 - **Model developers** want to know if a new model is better than the last one.  
 - **Product teams** want to know if a model works for their users, in their workflow, at a cost they can afford. Kapoor et al. (2025) argue that benchmarks often conflate what model developers need with what downstream developers need.  
@@ -81,7 +83,7 @@ Hutchinson et al. (2022) studied papers from major computer vision and language 
 
 ### How to use the patterns
 
-**To learn,** read them by category:
+**To learn,** read them by category (the five parts are this guide's own grouping, not a standard taxonomy):
 
 - **What you're measuring:** Goodhart's Law, Campbell's Law, The Construct Gap, The Functionality Fallacy, The Metric Mirage  
 - **The test itself:** Benchmark Saturation, Data Contamination, Adaptive Overfitting, The Clever Hans Effect, The Gold Standard Myth  
@@ -95,7 +97,7 @@ Hutchinson et al. (2022) studied papers from major computer vision and language 
 
 ### A note on the word "pattern"
 
-A pattern here means a reliable way evaluation goes wrong, with research behind it. It is not a law of physics. Some have established names, like Goodhart's Law. Others are named on this site to make a well-documented idea easier to remember, and each page says which. Every page links to its sources, and preprints are labeled as preprints.
+A pattern here means a reliable way evaluation goes wrong, with research behind it. It is not a law of physics. Each pattern's name is one of three kinds, and its page says which: an established term, used in the research literature (like Goodhart's Law); a recent term, coined in one recent paper; or named here, meaning the idea is established but the name is this guide's own, chosen to make it easier to remember. Every page links to its sources, and preprints are labeled as preprints. The About page sets out [what comes from the research and what is this guide's own](about.html#own-vs-research).
 
 ### Good starting reads
 
@@ -1225,9 +1227,13 @@ Perfect evaluation doesn't exist. What you're after is evidence that's good enou
 
 ### Ten principles
 
+The ten principles are this guide's own synthesis. The studies cited under each support the specific findings they are cited for, not the principle as a whole.
+
 #### 1\. Match the rigor to the stakes
 
 Not every AI feature needs a full evaluation program. A tool that drafts internal meeting notes and a tool that flags patients for sepsis don't deserve the same process. The NIST AI Risk Management Framework (2023) says policies and resources should be prioritized by risk level and potential impact, and notes that trying to eliminate all negative risk can be counterproductive. The European Union's AI Act (2024) is also risk-based: some practices are banned outright, and its most extensive obligations fall on high-risk systems.
+
+The three tiers below, and the minimum evidence for each, are this guide's own model. They are not a standard and not the EU AI Act's risk categories.
 
 | Tier | Looks like | Minimum evidence before launch | Patterns to lean on |
 | :---- | :---- | :---- | :---- |
@@ -1241,7 +1247,7 @@ Engineers building LLM features have asked this question directly: where's the l
 
 Every team starts by trying the thing and seeing how it feels. That's fine. In interviews with 19 practitioners building LLM products, van der Maden et al. (2026) found informal "vibe checks" described as "irreplaceable, they are the first line of evaluation." The problem isn't vibe checks. It's stopping there.
 
-The move is to formalize gradually. Save the examples you tried. Write down what you were looking for. When the same note shows up three times, it's a criterion. Madaio et al. (2020) found that checklists can give teams infrastructure for formalizing ad hoc processes, as long as they're grounded in practitioners' real needs. Otherwise they can be misused.
+The move is to formalize gradually. Save the examples you tried. Write down what you were looking for. When the same note shows up three times, it's a criterion (a rule of thumb from this guide, not a standard). Madaio et al. (2020) found that checklists can give teams infrastructure for formalizing ad hoc processes, as long as they're grounded in practitioners' real needs. Otherwise they can be misused.
 
 #### 3\. Tie every eval to a decision
 
@@ -1256,7 +1262,7 @@ Two habits help:
 
 New processes that feel like extra work die quietly. Rogers (2003) identified what speeds up adoption of a new practice: it's clearly better than what people do now, compatible with how they already work, simple to understand, easy to try on a small scale, and visible to others. Evaluation is no different.
 
-- Add 15 minutes of output review to an existing sprint review or design critique instead of creating a new meeting.  
+- Add 15 minutes of output review (a rule of thumb from this guide, not a standard) to an existing sprint review or design critique instead of creating a new meeting.  
 - Put the eval card in the launch review template that already exists.  
 - Run a small canary eval in the same pipeline that runs other tests.  
 - Share one interesting failure in the team channel each week. It makes the work visible without a status report.
@@ -1289,7 +1295,7 @@ An eval that finds a problem is doing its job. If finding one feels like getting
 
 Evaluation costs money and time, and the costs add up. Engineers building product copilots described tests that cost a cent or two each, which became real money at scale, and one was asked to stop running benchmarks because of the cost (Parnin et al., 2025).
 
-Layer it:
+Layer it (this guide's own model):
 
 - **Every change:** a small, fast canary set with automated checks.  
 - **Every milestone:** the full locked test set with repeated runs and slices.  
@@ -1318,7 +1324,7 @@ And don't let the perfect eval block a good one. Breck et al. (2017) framed prod
 
 ### A maturity path
 
-This five-stage path is this site's own model, not an empirically observed sequence. Van der Maden et al. (2026) found practitioners at various points on a journey from vibe checks toward systematic evaluation, so expect different features, and different teams, to sit at different stages. Aim for the next stage, not the last one.
+This five-stage path is this guide's own model, not an empirically observed sequence. Van der Maden et al. (2026) found practitioners at various points on a journey from vibe checks toward systematic evaluation, so expect different features, and different teams, to sit at different stages. Aim for the next stage, not the last one.
 
 | Stage | What it looks like | Next small step |
 | :---- | :---- | :---- |
@@ -1330,6 +1336,8 @@ This five-stage path is this site's own model, not an empirically observed seque
 
 ### A starter plan for the first 30 days
 
+This plan and its numbers (30 to 50 examples, an hour, three prompt variants, three runs) are rules of thumb from this guide, not standards.
+
 **Week 1\. Look.** Pick one AI feature. Pull 30 to 50 real examples. Run a one-hour output review with product, design, engineering, and a domain expert. Note what's good, what's bad, and what people disagree about.
 
 **Week 2\. Define.** Write the construct in one sentence. Draft a rubric from the week 1 notes. Pick a baseline. Write one decision rule.
@@ -1340,7 +1348,7 @@ This five-stage path is this site's own model, not an empirically observed seque
 
 ### Who does what
 
-Small teams will combine these. What matters is that each job has a name next to it.
+Small teams will combine these. What matters is that each job has a name next to it. This split of roles is this guide's own model.
 
 | Role | Owns |
 | :---- | :---- |
@@ -1351,6 +1359,8 @@ Small teams will combine these. What matters is that each job has a name next to
 | Leadership | Time and budget, recognition, and making evaluation part of launch criteria |
 
 ### Common pushback, and how to answer it
+
+The replies below are this guide's own suggestions. Numbers in them, such as 30 examples and fifty labels, are rules of thumb from this guide, not standards.
 
 | You hear | Try |
 | :---- | :---- |
@@ -1385,11 +1395,13 @@ Small teams will combine these. What matters is that each job has a name next to
 
 ## Playbook
 
+**How to read the labels.** This guide marks who is speaking. A finding with a citation, such as (Zheng et al., 2023), comes from that source, and each pattern page lists the sources behind it. "This guide's own model" means a structure or grouping the guide made up. "A rule of thumb from this guide, not a standard" means a number or minimum the guide suggests as a starting point. Treat both as starting points to adapt, not as findings.
+
 For how to introduce these practices to a team without slowing it down, see Being Pragmatic.
 
 ### 1\. Reading an AI claim
 
-Ten questions for any benchmark result, vendor deck, or launch post.
+Ten questions for any benchmark result, vendor deck, or launch post. The selection and order of the questions are this guide's own model; the pattern named under each holds the research.
 
 1. **What decision is this number supposed to support?** If nobody can say, the number is marketing. *(The Functionality Fallacy)*  
 2. **What exactly was measured?** Read some test items. Does the benchmark's name match its contents? *(The Construct Gap)*  
@@ -1404,15 +1416,15 @@ Ten questions for any benchmark result, vendor deck, or launch post.
 
 ### 2\. Building your own eval
 
-A practical sequence for product teams. Scale each step to the stakes.
+A practical sequence for product teams, and this guide's own model. Scale each step to the stakes.
 
 1. **Start with the decision.** Write down what you'll do differently depending on the result.  
 2. **Define the construct in one sentence.** "Good" is not a definition. "Resolves the request without a follow-up" is.  
 3. **Collect test cases from real use.** Include edge cases and known past failures. Keep a private, locked test set that never touches prompt tuning.  
 4. **Read outputs before you write the rubric.** Expect the rubric to change, and version it (Shankar et al., 2024).  
-5. **Pick metrics before running.** Include at least one continuous metric, plus cost and latency.  
+5. **Pick metrics before running.** Include at least one continuous metric, plus cost and latency (a rule of thumb from this guide, not a standard).  
 6. **Set baselines.** The current workflow, a simple method, and the model you use today.  
-7. **Vary prompts and repeat runs.** As a rough rule of thumb (this guide's own, not a standard), start with at least three to five meaning-preserving prompt variants and three or more samples per case, and report the range. More variants keep widening the observed range (Sclar et al., 2024), so treat five as a minimum for a first look. Repeated trials show how reliable an agent is (Yao et al., 2025).  
+7. **Vary prompts and repeat runs.** Start with at least three to five meaning-preserving prompt variants and three or more samples per case (a rule of thumb from this guide, not a standard), and report the range. More variants keep widening the observed range (Sclar et al., 2024), so treat five as a minimum for a first look. Repeated trials show how reliable an agent is (Yao et al., 2025).  
 8. **Validate your graders.** Measure agreement between human raters, which shows whether the task is clear. If you use an LLM judge, also check it against human labels before relying on it (Zheng et al., 2023). A small label set gives an imprecise answer: 45 matches out of 50 is 90% agreement, but the 95% interval runs from about 79% to 96%. Use a chance-corrected measure such as Cohen's kappa, and label more for the slices and error types that matter most.  
 9. **Compute intervals and slice the results.** Report confidence intervals and paired comparisons (Miller, 2024). Choose the slices before you look, and show each slice's size and interval, because the lowest of many small slices will look bad partly by chance.  
 10. **Probe for what the score can't show.** Try shortcut tests, red teaming, and serious elicitation effort.  
@@ -1420,6 +1432,8 @@ A practical sequence for product teams. Scale each step to the stakes.
 12. **Document it, rerun it, monitor it.** Write an eval card, save raw outputs, rerun a canary set on every model update, and watch production after launch.
 
 ### 3\. Red flags
+
+The "It might mean" column is this guide's own reading of each sign, not a diagnosis. The pattern in the last column has the research.
 
 | You see | It might mean | Pattern |
 | :---- | :---- | :---- |
@@ -1582,7 +1596,7 @@ Next rerun trigger:
 
 **Reward hacking.** When an optimized system finds a way to score well on its objective without doing what the objective was meant to encourage. See *Goodhart's Law*.
 
-**Risk tier.** A category that sets how much evaluation a system needs, based on its potential impact. Risk-based prioritization is central to the NIST AI Risk Management Framework (2023). See *Being Pragmatic*.
+**Risk tier.** A category that sets how much evaluation a system needs, based on its potential impact. Risk-based prioritization is central to the NIST AI Risk Management Framework (2023). The three tiers in Being Pragmatic are this guide's own model. See *Being Pragmatic*.
 
 **Sandbagging.** Strategic underperformance on an evaluation. Van der Weij et al. (2025) showed that language models can be prompted or fine-tuned to do this on dangerous-capability tests.
 
