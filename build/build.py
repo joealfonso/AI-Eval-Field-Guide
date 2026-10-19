@@ -18,6 +18,8 @@ import re
 import collections
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+import sys
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 SRC = ROOT / "content/source"
 
 
@@ -1366,20 +1368,24 @@ def build_room():
     for m in ROOM["moments"]:
         qs = "".join('<li><button type="button" class="room__q" data-copy="%s" aria-label="Copy question: %s"><span>%s</span><span class="room__copy" aria-hidden="true">Copy</span></button></li>' % (esc(typo(q)), esc(typo(q)), esc(typo(q))) for q in m["questions"])
         laws = ", ".join('<a href="%s">%s</a>' % (law_url(sl), esc(typo(BY_SLUG[sl]["name"]))) for sl in m["laws"])
+        weak = ""
+        if m.get("weak"):
+            weak = '\n  <p class="room__weak"><strong>A weak answer:</strong> %s</p>\n  <p class="room__why"><strong>Why it\u2019s weak:</strong> %s</p>' % (esc(typo(m["weak"])), esc(typo(m["whyWeak"])))
         cards += """<section class="room__card" id="%s" aria-labelledby="%s-h">
   <p class="room__label">When you hear</p>
   <h2 id="%s-h" class="room__heard">%s</h2>
   <ul class="room__qs">%s</ul>
-  <p class="room__good"><strong>A good answer:</strong> %s</p>
+  <p class="room__good"><strong>A good answer:</strong> %s</p>%s
   <p class="room__laws">Why: %s</p>
-</section>""" % (m["id"], m["id"], m["id"], esc(typo(m["heard"])), qs, esc(typo(m["good"])), laws)
+</section>""" % (m["id"], m["id"], m["id"], esc(typo(m["heard"])), qs, esc(typo(m["good"])), weak, laws)
     body = """<main id="main" class="page page--room" data-page="room">
   <header class="page__head"><p class="eyebrow eyebrow--muted">Tool</p><h1>Use it now</h1>
   <p class="page__lede">%s</p></header>
   <div class="room__grid">%s</div>
-  <p class="room__foot">Want the full reasoning? Each pattern page has the evidence and sources. Reviewing a specific claim? Try the <a href="claim-checker.html">claim checker</a>. Longer lists: <a href="questions-to-ask-ai-vendor.html">buying an AI model or vendor</a>, <a href="ai-launch-review-questions.html">a launch review</a>, <a href="how-to-build-an-ai-evaluation.html">building an evaluation</a>.</p>
+  <p class="room__editorial">%s</p>
+  <p class="room__foot">Want the full reasoning? Each pattern page has the evidence and sources. Reviewing a specific claim? Try the <a href="claim-checker.html">claim checker</a>. Longer lists: <a href="questions-to-ask-ai-vendor.html">buying an AI model or vendor</a>, <a href="ai-launch-review-questions.html">a launch review</a>, <a href="how-to-build-an-ai-evaluation.html">building an evaluation</a>. Templates you can copy: <a href="templates.html">vendor questionnaire, eval plan, results report</a>. Real examples: <a href="case-studies.html">case studies</a>. How many items is enough: <a href="sample-size.html">sample size and error bars</a>.</p>
   <p class="room__status" role="status" aria-live="polite" data-room-status></p>
-</main>""" % (esc(typo(ROOM["intro"])), cards)
+</main>""" % (esc(typo(ROOM["intro"])), cards, esc(typo(ROOM["weakNote"])))
     write("use-it-now.html", layout("Use it now", "Friendly questions you can use today when someone shares an AI result at work, with what a good answer sounds like.", body, current="room", data=True, scripts=("room.js",)))
 
 
@@ -1534,6 +1540,13 @@ def build_search_index():
     dims = {d["code"]: d["title"] for d in AIRR["dimensions"]}
     for c in AIRR["criteria"]:
         entries.append({"k": "Review", "n": c["id"], "t": c["criterion"], "s": "%s \u00b7 %s" % (dims[c["dimension"]], ", ".join(c["references"])), "u": "readiness-review.html#%s" % c["id"]})
+    entries.append({"k": "Section", "n": "Page", "t": "Sample size and error bars", "s": "Confidence intervals, margin of error, and how many test items you need to compare two AI systems.", "u": "sample-size.html"})
+    entries.append({"k": "Section", "n": "Page", "t": "AI evaluation case studies", "s": "Documented cases mapped to the patterns, each with a primary source.", "u": "case-studies.html"})
+    for c in load("cases.json")["cases"]:
+        entries.append({"k": "Section", "n": "Case", "t": "Case: " + c["title"], "x": c["what"] + " " + c["check"], "u": "case-studies.html#%s" % c["id"]})
+    entries.append({"k": "Section", "n": "Page", "t": "Templates for AI evaluation", "s": "Vendor questionnaire, eval plan one-pager, and results-reporting template.", "u": "templates.html"})
+    for t in TEMPLATES:
+        entries.append({"k": "Section", "n": "Template", "t": "Template: " + t["title"], "s": t["blurb"], "u": "templates.html#%s" % t["id"]})
     for e in CHANGELOG:
         entries.append({"k": "Changelog", "n": fmt_date(e["date"], short=True), "t": e["text"], "u": "changelog.html"})
     entries.extend(page_search_entries())
@@ -1602,6 +1615,201 @@ def build_intent_pages():
         write(pg["file"], layout(pg["title"], pg["desc"], body, current=None))
 
 
+# ---------------------------------------------------------------- practitioner pages: sample size, cases, templates
+def practitioner_page(fname, title, desc, current, intro_html, sections_html, note, scripts=(), eyebrow="Tool"):
+    body = """<main id="main" class="page page--prose page--practice">
+  <header class="page__head"><p class="eyebrow">%s</p><h1>%s</h1>%s</header>
+  %s
+  <p class="page__note">%s</p>
+</main>""" % (esc(eyebrow), esc(title), intro_html, sections_html, note)
+    write(fname, layout(title, desc, body, current=current, scripts=scripts))
+
+
+def law_link(slug, prefix=""):
+    return '<a href="%s">%s</a>' % (law_url(slug, prefix), esc(typo(BY_SLUG[slug]["name"])))
+
+
+def calc_form(kind, title, hint, fields, button_note=""):
+    """One calculator. fields: list of (name, label, default, attrs) or ('select', name, label, options, default)."""
+    rows = ""
+    for f in fields:
+        if f[0] == "select":
+            _, name, label, opts, default = f
+            options = "".join('<option value="%s"%s>%s%%</option>' % (o, " selected" if o == default else "", o) for o in opts)
+            rows += '<div class="calc__field"><label for="%s-%s">%s</label><select id="%s-%s" name="%s">%s</select></div>' % (kind, name, esc(label), kind, name, name, options)
+        else:
+            name, label, default, attrs = f
+            rows += '<div class="calc__field"><label for="%s-%s">%s</label><input id="%s-%s" name="%s" type="number" inputmode="decimal" value="%s" %s></div>' % (kind, name, esc(label), kind, name, name, default, attrs)
+    return (
+        '<form class="calc" data-calc="%s" aria-labelledby="calc-%s-h"><h3 id="calc-%s-h">%s</h3><p class="calc__hint">%s</p>'
+        '<div class="calc__fields">%s</div><div class="calc__out" data-out role="status" aria-live="polite"><p class="calc__noscript">The calculator needs JavaScript. The table and worked examples on this page work without it.</p></div></form>'
+        % (kind, kind, kind, esc(title), esc(typo(hint)), rows)
+    )
+
+
+def build_sample_size():
+    import sample_stats as S
+    z = S.z_two_sided(0.95)
+    rows = ""
+    for n in (50, 100, 200, 500, 1000, 5000):
+        rows += "<tr><td>%s</td><td>±%.1f</td><td>±%.1f</td></tr>" % (format(n, ","), S.worst_case_margin(n, z) * 100, S.margin(0.9, n, z) * 100)
+    table = (
+        '<div class="table-wrap"><table><caption class="visually-hidden">Approximate 95% margin of error by number of items</caption><thead><tr><th scope="col">Items (n)</th><th scope="col">Margin if accuracy is near 50%</th><th scope="col">Margin if accuracy is near 90%</th></tr></thead><tbody>'
+        + rows
+        + '</tbody></table></div><p class="calc__hint">Margins are in percentage points, using the usual 95% formula 1.96 \u00d7 \u221a(p(1\u2212p)/n). Accuracy near 50% is the widest case, so the first column is the worst case. Assumes independent items scored right or wrong.</p>'
+    )
+    lo, hi = S.wilson(0.8, 200, z)
+    n385 = S.n_for_margin(0.5, 0.05, z)
+    ni = S.n_independent(0.80, 0.85)
+    np10 = S.n_paired(0.10, 0.05)
+    np20 = S.n_paired(0.20, 0.05)
+    forms = "".join([
+        calc_form("ci", "1. How precise is my score?", "Enter the number of items and the accuracy you observed. You get a Wilson 95% interval.",
+                  [("n", "Number of items", 200, 'min="1" step="1"'), ("acc", "Observed accuracy (%)", 80, 'min="0" max="100" step="any"'), ("select", "conf", "Confidence", ("90", "95", "99"), "95")]),
+        calc_form("margin", "2. How many items for a target margin of error?", "Planning figure for a score you have not collected yet. If you have no idea of the accuracy, use 50, which is the most cautious.",
+                  [("acc", "Expected accuracy (%)", 50, 'min="1" max="99" step="any"'), ("e", "Margin of error (± points)", 5, 'min="0.1" max="49" step="any"'), ("select", "conf", "Confidence", ("90", "95", "99"), "95")]),
+        calc_form("independent", "3a. Compare two systems on different items", "Use this when the two systems are scored on separate samples of items, for example two groups of real users.",
+                  [("base", "Baseline accuracy (%)", 80, 'min="1" max="99" step="any"'), ("diff", "Difference to detect (points)", 5, 'min="-99" max="99" step="any"'), ("select", "conf", "Confidence", ("90", "95", "99"), "95"), ("select", "power", "Power", ("80", "90", "95"), "80")]),
+        calc_form("paired", "3b. Compare two systems on the same items", "Use this when you run both systems on one test set. It depends on how often they disagree.",
+                  [("diff", "Difference to detect (points)", 5, 'min="-99" max="99" step="any"'), ("dis", "Disagreement rate (% of items where exactly one is right)", 10, 'min="0.1" max="100" step="any"'), ("select", "conf", "Confidence", ("90", "95", "99"), "95"), ("select", "power", "Power", ("80", "90", "95"), "80")]),
+        calc_form("pairedci", "4. Did system A really beat system B on the same items?", "After the run, count the items where only A was right and where only B was right. You get the difference and its 95% interval.",
+                  [("n", "Number of items", 200, 'min="2" step="1"'), ("b", "Only A right", 30, 'min="0" step="1"'), ("c", "Only B right", 18, 'min="0" step="1"'), ("select", "conf", "Confidence", ("90", "95", "99"), "95")]),
+    ])
+    lede = (
+        '<p class="page__lede">Every score on a test set is an estimate. How far it could move if you had drawn different items depends mostly on how many items you used. This page shows how to put numbers on that, and how many items you need before a comparison means anything.</p>'
+    )
+    sec = []
+    sec.append(
+        '<section><h2 id="short-version">The short version</h2><ul>'
+        '<li>A score on %d items is a range, not a point. For %d items scored at 80%%, the Wilson 95%% interval runs from %.1f%% to %.1f%%.</li>'
+        '<li>Halving the margin of error takes about four times as many items. Going from ±10 points to ±5 takes you from roughly 100 to roughly %d items; ±3 takes about 1,070.</li>'
+        '<li>Telling two systems apart needs far more items than measuring one. Detecting 80%% against 85%% on two separate samples takes about %d items per system. On the same items, if the systems disagree on 10%% of them, about %d.</li>'
+        '<li>If two systems differ by less than the noise, nobody has shown they differ. See %s.</li>'
+        '<li>A single run of a single prompt is also a sample. See %s and %s.</li></ul></section>'
+        % (200, 200, lo * 100, hi * 100, n385, ni, np10, law_link("no-error-bars-no-result"), law_link("once-is-not-reliable"), law_link("prompt-sensitivity"))
+    )
+    sec.append('<section><h2 id="table">Margin of error by test-set size</h2>%s</section>' % table)
+    sec.append('<section><h2 id="calculators">Calculators</h2><p>These run in your browser and send nothing anywhere. They give planning figures from standard formulas, listed under <a href="#sources">Sources</a>; read <a href="#assumptions">the assumptions</a> before relying on them.</p>%s</section>' % forms)
+    sec.append(
+        '<section><h2 id="worked">Worked examples</h2><ul>'
+        '<li><strong>Is 82%% vs 79%% a win?</strong> On 200 items, a score of 80%% has a 95%% interval of %.1f%% to %.1f%%, roughly five to six points either side. A 3-point gap sits well inside that. Even when both systems run on the same items, a 3-point gap on 200 items is distinguishable from noise only if the systems disagree on fewer than about 5%% of items.</li>'
+        '<li><strong>Same items, small disagreement.</strong> To detect a 5-point gap with 80%% power when the systems disagree on 10%% of items you need about %d items. If they disagree on 20%% of items, about %d. More disagreement means more noise in the comparison, so you need more items.</li>'
+        '<li><strong>Different items.</strong> The same 5-point gap on two separate samples needs about %d items per system, because nothing is cancelled out by sharing items.</li>'
+        '<li><strong>Do not know the disagreement rate?</strong> Run both systems on 50 to 100 items first and count the items where exactly one is right.</li></ul>'
+        '<p>Every figure above and in the table is checked by <code>build/test_sample_size.py</code> in the site repository, which also confirms the power by exact calculation rather than relying on the approximation.</p></section>'
+        % (lo * 100, hi * 100, np10, np20, ni)
+    )
+    sec.append(
+        '<section><h2 id="assumptions">What the numbers assume, and where they fail</h2><ul>'
+        '<li><strong>Independent items.</strong> The formulas treat each item as an independent draw. Items that come in groups (several questions about one document, or many prompts from one user) are correlated, and the true interval is wider. Miller (2024) gives a clustered standard error for this. With strong clustering, count the groups, not the items.</li>'
+        '<li><strong>Items are a sample from what you care about.</strong> The interval only covers the luck of which items you drew. It says nothing about whether the test items resemble real use. See %s and %s.</li>'
+        '<li><strong>Judge noise is extra.</strong> If an AI model grades the answers, its errors and preferences add to the uncertainty and can bias the score in one direction. The interval above does not include that. Check the grader against people (%s).</li>'
+        '<li><strong>Model randomness is separate.</strong> Running each item several times reduces noise from the model’s own variation, but not noise from which items you picked. Both matter (%s).</li>'
+        '<li><strong>Approximations.</strong> Wilson intervals behave well at small n and for accuracy near 0%% or 100%%; the planning formulas for sample size do not. Below about 30 items, or with fewer than about 25 disagreements in a paired comparison, treat the figures as rough and consider an exact method.</li>'
+        '<li><strong>Many comparisons.</strong> The calculators cover one comparison. If you test many variants against one test set and report the best, the best will look better than it is (%s). This page does not cover corrections for multiple comparisons.</li>'
+        '<li><strong>Point of the plan.</strong> The sample size depends on the smallest difference that would change your decision. Decide that first and write it down (see the <a href="templates.html">eval plan template</a>).</li></ul></section>'
+        % (law_link("distribution-shift"), law_link("the-construct-gap"), law_link("judge-bias"), law_link("once-is-not-reliable"), law_link("adaptive-overfitting"))
+    )
+    sec.append(
+        '<section><h2 id="related">Related patterns</h2><ul>'
+        '<li>%s: every score is an estimate; show the interval.</li>'
+        '<li>%s: one run, or one prompt, is a single draw.</li>'
+        '<li>%s: an average needs enough items in each slice to carry its own interval.</li></ul>'
+        '<p>For real examples, see the <a href="case-studies.html">case studies</a>. For a reporting layout that includes intervals, see the <a href="templates.html">results template</a>.</p></section>'
+        % (law_link("no-error-bars-no-result"), law_link("once-is-not-reliable"), law_link("the-averaging-trap"))
+    )
+    sources = [
+        ("Wilson, E. B. (1927). Probable inference, the law of succession, and statistical inference. <em>Journal of the American Statistical Association</em>, 22(158), 209–212.", "https://doi.org/10.1080/01621459.1927.10502953", "The Wilson score interval."),
+        ("Brown, L. D., Cai, T. T., &amp; DasGupta, A. (2001). Interval estimation for a binomial proportion. <em>Statistical Science</em>, 16(2), 101–133.", "https://doi.org/10.1214/ss/1009213286", "Compares intervals by coverage; recommends Wilson or Jeffreys for small samples and Agresti–Coull for larger ones."),
+        ("Miller, E. (2024). Adding error bars to evals: A statistical approach to language model evaluations. arXiv:2411.00640.", "https://arxiv.org/abs/2411.00640", "Standard errors (including clustered), paired differences between models (eq. 7), and power analysis for evals (section 5)."),
+        ("Fleiss, J. L., Levin, B., &amp; Paik, M. C. (2003). <em>Statistical Methods for Rates and Proportions</em>. Wiley.", "https://doi.org/10.1002/0471445428", "Sample size for comparing two independent proportions."),
+        ("Connor, R. J. (1987). Sample size for testing differences in proportions for the paired-sample design. <em>Biometrics</em>, 43(1).", "https://doi.org/10.2307/2531961", "Sample size when both systems are scored on the same items (the McNemar setting)."),
+    ]
+    items = "".join('<li>%s <a href="%s" rel="noopener">%s</a><br><span class="calc__hint">%s</span></li>' % (s, u, u, esc(typo(d))) for s, u, d in sources)
+    sec.append('<section><h2 id="sources">Sources</h2><ul class="plain-list">%s</ul><p>The formulas in the calculators are standard textbook results; this page applies them to eval data and does not add to them. The sample-size formulas in 3a and 3b are normal approximations. Miller’s worked example for detecting a 3-point difference, under the assumptions in his paper, comes to roughly 1,000 questions.</p></section>' % items)
+    note = "Planning aid, not a statistical consultation. For a high-stakes decision, have someone with statistics training check the design. Formulas are checked by build/test_sample_size.py in the site repository."
+    practitioner_page(
+        "sample-size.html",
+        "Sample size and error bars",
+        "How many test items you need, with a confidence-interval calculator, a margin-of-error table, and sample sizes for comparing two AI systems.",
+        "sample-size", lede, "".join(sec), note, scripts=("sample-size.js",),
+    )
+
+
+def build_cases():
+    CASES = load("cases.json")
+    secs = []
+    for c in CASES["cases"]:
+        tags = ", ".join(law_link(s) for s in c["patterns"])
+        secs.append(
+            '<section class="case" id="%s" aria-labelledby="%s-h"><h2 id="%s-h">%s</h2>'
+            '<p class="case__patterns"><span class="case__k">Patterns</span> %s</p>'
+            '<h3>What the source reports</h3><p>%s</p>'
+            '<h3>The check that helps</h3><p>%s</p>'
+            '<p class="case__src"><span class="case__k">Primary source</span> <a href="%s" rel="noopener">%s</a></p></section>'
+            % (c["id"], c["id"], c["id"], esc(typo(c["title"])), tags, esc(typo(c["what"])), esc(typo(c["check"])), esc(c["source"]["url"]), esc(typo(c["source"]["label"])))
+        )
+    toc = "".join('<li><a href="#%s">%s</a></li>' % (c["id"], esc(typo(c["title"]))) for c in CASES["cases"])
+    lede = '<p class="page__lede">%s</p>' % esc(typo(CASES["intro"]))
+    intro = '%s<p class="case__note"><strong>Read this first.</strong> %s</p><nav aria-label="Cases"><ul class="case__toc">%s</ul></nav>' % (lede, esc(typo(CASES["note"])), toc)
+    practitioner_page(
+        "case-studies.html",
+        "AI evaluation case studies",
+        "Seven documented cases, each mapped to the evaluation patterns it shows, with the check that helps and a link to the primary source.",
+        "cases", "", intro + "".join(secs) + '<p>To turn these into questions you can ask, see <a href="use-it-now.html">Use it now</a> and the <a href="templates.html">templates</a>. The numbers and wording above follow each source; for anything you plan to repeat, read the source.</p>',
+        "Each case was checked against the abstract or full text of the linked source. Spot a mistake? Every pattern page has a Report it link, or use the contact page.",
+        eyebrow="Evidence in practice",
+    )
+
+
+TEMPLATES = [
+    {
+        "id": "vendor-questionnaire",
+        "file": "ai-vendor-questionnaire.md",
+        "title": "AI vendor questionnaire",
+        "blurb": "Seventeen questions to send a vendor or internal team before you rely on an AI system, each with what a good answer and a red flag look like. Built from the questions on the pattern pages and the buying-a-model list.",
+    },
+    {
+        "id": "eval-plan",
+        "file": "eval-plan-one-pager.md",
+        "title": "Eval plan one-pager",
+        "blurb": "Fill this in before you run an evaluation: the decision, what is measured, data, locked test set, metrics, baselines, repeats, grader validation, stopping rules, and the owner.",
+    },
+    {
+        "id": "results-report",
+        "file": "results-reporting-template.md",
+        "title": "Results-reporting template",
+        "blurb": "A layout for reporting results: n, intervals, baselines, breakdowns, cost, and a section on what the evaluation cannot show.",
+    },
+]
+
+
+def build_templates():
+    secs = []
+    for t in TEMPLATES:
+        raw = (ROOT / "downloads" / t["file"]).read_text(encoding="utf-8")
+        raw = re.sub(r"^<!--.*?-->\s*", "", raw, flags=re.S)
+        lines = raw.split("\n")
+        lines = [l for l in lines if not l.startswith("# ")]
+        rendered = md_blocks(lines, h2="##")
+        rendered = re.sub(r'<h([23]) id="([^"]+)">(.*?)</h\1>', lambda m: '<h%d id="%s-%s">%s</h%d>' % (int(m.group(1)) + 1, t["id"], m.group(2), m.group(3), int(m.group(1)) + 1), rendered)
+        secs.append(
+            '<section class="tpl" id="%s" aria-labelledby="%s-h"><h2 id="%s-h">%s</h2><p>%s</p>'
+            '<p class="tpl__actions"><a class="btn btn--ink btn--sm" href="downloads/%s" download>Download (Markdown)</a></p>'
+            '<details class="tpl__view" open><summary>View on this page</summary><div class="tpl__body">%s</div></details></section>'
+            % (t["id"], t["id"], t["id"], esc(typo(t["title"])), esc(typo(t["blurb"])), t["file"], rendered)
+        )
+    lede = '<p class="page__lede">Three plain-text templates you can copy into a document, a ticket, or a repository. Each is on this page and also downloadable as a Markdown file.</p>'
+    intro = lede + '<p>They are licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>: copy, adapt, and share them with credit to the AI Evaluation Field Guide. They are starting points. Delete what does not fit and add what does.</p>'
+    practitioner_page(
+        "templates.html",
+        "Templates for AI evaluation",
+        "Downloadable templates: an AI vendor questionnaire with good answers and red flags, an eval plan one-pager, and a results-reporting template.",
+        "templates", intro, "".join(secs),
+        "Questions in the vendor questionnaire come from the pattern pages. Worked examples in the templates use invented numbers for layout only. See also the sample-size page and case studies.",
+    )
+
+
 def build_methodology():
     srcs = [x for l in LAWS for x in l["sources"]]
     c = collections.Counter(x["label"] or "peer" for x in srcs)
@@ -1611,14 +1819,27 @@ def build_methodology():
   <header class="page__head"><p class="eyebrow">Guide</p><h1>Methodology</h1>
   <p class="page__lede">How the patterns were chosen, what counts as a source, how the evidence was checked, and what this guide does not claim to be.</p></header>
   <section><h2 id="selection">How patterns are chosen</h2>
-  <p>The %(n_laws)d patterns are an editorial selection of recurring ways AI evaluation goes wrong, each with published research behind it. They are not the result of a systematic review, and another reasonable list would differ. Each pattern page says whether its name is an established term or this site\u2019s own name for an established idea. The full list is on the <a href="about.html#status">About page</a>.</p></section>
+  <p>The %(n_laws)d patterns are an editorial selection of recurring ways AI evaluation goes wrong, each with published research behind it. They are not the result of a systematic review, and another reasonable list would differ. Each pattern page says whether its name is an established term or this site\u2019s own name for an established idea (see <a href="about.html#evidence">how the evidence base is described</a>). The full list is on the <a href="about.html#status">About page</a>.</p></section>
   <section><h2 id="sources">What counts as a source</h2>
   <p>The guide cites %(n_src)d sources across all patterns. Of these, %(mix)s. Anything that is not peer reviewed or a classic in its field is labeled on the pattern page. The Evidence section reports what the authors found, and where results are mixed or limited the page says so, for example in <a href="patterns/adaptive-overfitting.html">Adaptive Overfitting</a> and <a href="patterns/data-contamination.html">Data Contamination</a>. Every pattern also has a \u201cWhere this doesn\u2019t apply\u201d section.</p></section>
   <section><h2 id="checking">How the evidence was checked</h2>
   <p>Each pattern shows when its evidence was last reviewed. In October 2026, more than 40 specific figures and findings on the pattern pages were compared with the source\u2019s abstract or full text, covering at least one claim in 25 of the 26 patterns. No discrepancies were found. Every source link was also tested, and every DOI resolves.</p>
   <p>The limits of that check: it covered numbers and the main finding of each source, not whether every interpretation or piece of advice goes beyond the source. A few details were confirmed through secondary descriptions rather than the paper itself, such as the exact \u201c19 percentage points\u201d figure in <a href="patterns/the-jagged-frontier.html">The Jagged Frontier</a>. It was a spot-check, not an audit.</p></section>
   <section><h2 id="tools">The tools</h2>
-  <p>The claim checker, Find your patterns, the checklist, the quick brief, and Use it now are reading aids. The claim checker and Find your patterns match your text against published rules, which you can read on each page. They do not assess a system, and they run in your browser. The Design Rubric and Readiness Review are checklists. They do not calculate a score.</p></section>
+  <p>The claim checker, Find your patterns, the checklist, the quick brief, and Use it now are reading aids. The claim checker and Find your patterns match your text against published rules, which you can read on each page. They do not assess a system, and they run in your browser. The Design Rubric and Readiness Review are checklists. They do not calculate a score. The <a href="sample-size.html">sample-size calculators</a> apply standard formulas, listed on that page and checked by a test script in the site repository. The <a href="case-studies.html">case studies</a> summarize published studies and link to each primary source. The <a href="templates.html">templates</a> are editorial starting points.</p></section>
+  <section><h2 id="not-covered">What this guide does not cover</h2>
+  <p>These are gaps, not oversights. Each is a field of its own, and the guide treats it only briefly or not at all.</p>
+  <ul>
+    <li><strong>Statistics beyond the basics.</strong> The <a href="sample-size.html">sample-size page</a> covers confidence intervals and the number of items for one or two comparisons. It does not cover statistical power in complex designs, corrections for many comparisons, Bayesian methods, or items that come in correlated groups beyond a brief mention.</li>
+    <li><strong>Calibration.</strong> Whether a system’s stated confidence matches how often it is right is not covered.</li>
+    <li><strong>Agent and tool-use evaluation.</strong> Agents appear through a few benchmarks and studies, such as τ-bench. Designing evaluations for multi-step agents, tool use, and long-running tasks is not covered in depth.</li>
+    <li><strong>Safety and red-team methods.</strong> <a href="patterns/presence-not-absence.html">Presence, Not Absence</a> explains why a failure to find a risk is weak evidence. How to run a red-team exercise, design adversarial tests, or assess dangerous capabilities is not covered.</li>
+    <li><strong>Validating an AI grader.</strong> <a href="patterns/judge-bias.html">Judge Bias</a> says to check a grader against people on a sample. It does not cover agreement measures, rubric design for judges, or how many labels are enough.</li>
+    <li><strong>Building evaluation sets at scale.</strong> Sampling, annotation pipelines, quality control, and keeping a set fresh over time are not covered.</li>
+    <li><strong>Fairness auditing, privacy, security, and legal compliance.</strong> These are touched on by the Readiness Review, which points to standards, but they are not treated as evaluation methods here.</li>
+    <li><strong>Evidence from the last few months.</strong> Each pattern shows when its evidence was last checked. Newer work may not be reflected yet.</li>
+  </ul>
+  <p>If you know a good source for any of these, please say so through the contact page.</p></section>
   <section><h2 id="not">What this guide is not</h2>
   <ul>
     <li>It is not a ranking or benchmark of any AI model or vendor.</li>
@@ -1752,6 +1973,9 @@ def main():
     build_search_index()
     build_feed()
     build_methodology()
+    build_sample_size()
+    build_cases()
+    build_templates()
     build_intent_pages()
     build_privacy()
     build_seo()

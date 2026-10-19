@@ -835,3 +835,40 @@ body.has-tray { padding-bottom: 64px; }
 
 /* Status notes */
 .law__status { margin-top: var(--space-3, 12px); font: 400 var(--fs-xs)/1.4 var(--font-body); color: var(--ink-soft); }
+
+/* ------------------------------------------------------------ Practitioner pages: sample size, case studies, templates, Use it now annotations */
+.room__weak, .room__why { margin: 6px 0 0; font-size: .95rem; }
+.room__weak { padding-left: 10px; border-left: 3px solid var(--rule-soon); }
+.room__why { color: var(--ink-soft); }
+.room__editorial { margin-top: var(--space-4); font: 400 var(--fs-mono)/1.6 var(--font-mono); color: var(--muted); }
+
+.calc { border: var(--border); background: var(--surface); padding: var(--space-5); margin-top: var(--space-4); }
+.page--prose .calc h3 { margin: 0 0 var(--space-2); font-size: 20px; }
+.calc__hint { font-size: var(--fs-small); line-height: 1.5; color: var(--muted); }
+.page--prose p.calc__hint { margin-top: var(--space-2); }
+.calc__fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: var(--space-3) var(--space-4); margin-top: var(--space-3); }
+.calc__field { display: flex; flex-direction: column; gap: 4px; }
+.calc__field label { font: 500 var(--fs-xs)/1.35 var(--font-body); color: var(--ink-soft); }
+.calc__field input, .calc__field select { font: inherit; padding: 8px 10px; border: 1px solid var(--ink); background: var(--surface-hi); color: var(--ink); min-height: 40px; width: 100%; }
+.calc__out { margin-top: var(--space-4); padding-top: var(--space-3); border-top: 1px solid var(--rule-faint); }
+.page--prose .calc__result { font: 500 18px/1.4 var(--font-display); margin: 0; }
+.page--prose .calc__extra, .page--prose .calc__noscript { font-size: var(--fs-small); color: var(--ink-soft); margin-top: var(--space-2); }
+.page--prose .calc__err { color: var(--accent); font-size: var(--fs-small); margin: 0; }
+.page--prose .plain-list > li { padding-left: 0; }
+.page--prose .plain-list > li::before { content: none; }
+.page--prose .page--practice code, .page--practice code { font-family: var(--font-mono); font-size: .9em; }
+
+.case { border-top: 2px solid var(--ink); margin-top: var(--space-8); padding-top: var(--space-2); }
+.page--prose .case h3 { font: 500 var(--fs-mono)/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: var(--space-4) 0 var(--space-1); }
+.case__k { font: 500 var(--fs-mono)/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-right: var(--space-2); }
+.case__note { border-left: 3px solid var(--accent); padding-left: var(--space-4); margin-top: var(--space-4); }
+.page--prose .case__toc { margin-top: var(--space-4); }
+
+.tpl { border-top: 2px solid var(--ink); margin-top: var(--space-8); padding-top: var(--space-2); }
+.tpl__actions { margin-top: var(--space-3); }
+.tpl__view { margin-top: var(--space-4); border: var(--border); background: var(--surface); }
+.tpl__view > summary { cursor: pointer; padding: var(--space-3) var(--space-4); font: 500 var(--fs-mono)/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; }
+.tpl__body { padding: 0 var(--space-4) var(--space-5); }
+.page--prose .tpl__body h3 { font-size: 22px; margin-top: var(--space-6); }
+.page--prose .tpl__body h4 { font: 600 var(--fs-body)/1.3 var(--font-body); margin: var(--space-4) 0 var(--space-1); }
+@media print { .calc, .tpl__actions { break-inside: avoid; } }

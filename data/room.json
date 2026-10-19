@@ -10,7 +10,13 @@
         "Do we know the model hasn't seen those test questions before?"
       ],
       "good": "Names the task, gives a range or number of runs, and says how contamination was checked, or admits it wasn't.",
-      "laws": ["the-construct-gap", "once-is-not-reliable", "data-contamination"]
+      "laws": [
+        "the-construct-gap",
+        "once-is-not-reliable",
+        "data-contamination"
+      ],
+      "weak": "“It's a standard benchmark, so it's a fair test. We ran it once and it came out on top.”",
+      "whyWeak": "The answer never says what the benchmark measures, gives one run with no spread, and treats “standard” as proof that the test questions were not in the training data. Each of the three questions goes unanswered (The Construct Gap, Once Is Not Reliable, Data Contamination)."
     },
     {
       "id": "better",
@@ -21,7 +27,13 @@
         "What does each one cost per task, and does the gap justify it?"
       ],
       "good": "Same setup for both, a gap larger than the noise, and a cost number next to the quality number.",
-      "laws": ["prompt-sensitivity", "no-error-bars-no-result", "the-cost-frontier"]
+      "laws": [
+        "prompt-sensitivity",
+        "no-error-bars-no-result",
+        "the-cost-frontier"
+      ],
+      "weak": "“B is a newer model, so of course it's better. It scored 2 points higher.”",
+      "whyWeak": "It does not say whether both were run with the same prompts and settings, whether 2 points is larger than the run-to-run noise, or what each costs. A gap that small can disappear when the prompt changes or the run is repeated (Prompt Sensitivity, No Error Bars, No Result)."
     },
     {
       "id": "demo",
@@ -32,7 +44,13 @@
         "Where does it fail? Can you show me one?"
       ],
       "good": "Examples were chosen before seeing results, our own data gets tried, and failures are shown without being asked twice.",
-      "laws": ["the-jagged-frontier", "distribution-shift", "presence-not-absence"]
+      "laws": [
+        "the-jagged-frontier",
+        "distribution-shift",
+        "presence-not-absence"
+      ],
+      "weak": "“Those were just typical examples. It works great on everything we've tried.”",
+      "whyWeak": "“Typical” does not say how the examples were picked, and no failure is shown. A demo can show that something works; it cannot show where it stops working (Presence, Not Absence, The Jagged Frontier)."
     },
     {
       "id": "judge",
@@ -43,7 +61,10 @@
         "What does the grader reward: correct answers, or longer, more confident ones?"
       ],
       "good": "A human spot-check exists, the grader is separate, and there is a known list of biases it was checked for.",
-      "laws": ["judge-bias", "the-gold-standard-myth"]
+      "laws": [
+        "judge-bias",
+        "the-gold-standard-myth"
+      ]
     },
     {
       "id": "users",
@@ -54,7 +75,11 @@
         "Is that preference the same as getting the task done correctly?"
       ],
       "good": "A described group, blind comparison, and a separate check for correctness.",
-      "laws": ["the-metric-mirage", "criteria-drift", "the-construct-gap"]
+      "laws": [
+        "the-metric-mirage",
+        "criteria-drift",
+        "the-construct-gap"
+      ]
     },
     {
       "id": "ship",
@@ -65,7 +90,11 @@
         "How will we know in a month if it's getting worse?"
       ],
       "good": "A named owner, a monitoring plan, and a stated list of known gaps.",
-      "laws": ["the-lab-to-field-gap", "the-team-is-the-system", "presence-not-absence"]
+      "laws": [
+        "the-lab-to-field-gap",
+        "the-team-is-the-system",
+        "presence-not-absence"
+      ]
     },
     {
       "id": "number",
@@ -76,7 +105,12 @@
         "Which kinds of mistakes matter most, and how often do those happen?"
       ],
       "good": "A defined population, a baseline for comparison, and error types broken out instead of one average.",
-      "laws": ["the-averaging-trap", "the-baseline-rule"]
+      "laws": [
+        "the-averaging-trap",
+        "the-baseline-rule"
+      ],
+      "weak": "“It's 95% accurate across the board.”",
+      "whyWeak": "“Accurate” is not defined, there is no baseline, and “across the board” is a single average. If most cases are easy, a trivial rule might score nearly as well, and the rare costly mistakes can sit in the remaining 5% (The Averaging Trap, The Baseline Rule)."
     },
     {
       "id": "target",
@@ -87,7 +121,12 @@
         "Is there anything we stopped measuring because the number was fine?"
       ],
       "good": "A fresh test set is held back, and someone has looked at what the metric leaves out.",
-      "laws": ["goodharts-law", "adaptive-overfitting", "campbells-law"]
+      "laws": [
+        "goodharts-law",
+        "adaptive-overfitting",
+        "campbells-law"
+      ]
     }
-  ]
+  ],
+  "weakNote": "The weak answers are editorial illustrations written for this page, not quotes from a real vendor or team."
 }
