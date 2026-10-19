@@ -944,11 +944,12 @@ def build_law(i, law):
         )
     )
 
-    share_text = "%s \u2014 %s, AI Evaluation Field Guide" % (typo(law["bottomLine"]), typo(law["name"]))
+    # Shared text = bottom line + its "Keep in mind" caveat (the caveat travels with the claim); the link is added by js/law.js.
+    share_text = "%s\nKeep in mind: %s" % (typo(law["bottomLine"]), typo(law["bottomLineCaveat"]))
     share = (
         '<div class="law__share"><button class="btn btn--outline btn--sm" type="button" data-share data-share-title="%s" data-share-text="%s" data-share-url="%s">Share this</button>'
         '<span class="law__share-status" role="status" aria-live="polite" data-share-status></span></div>'
-        % (esc(typo(law["name"])), esc(share_text), esc(url))
+        % (esc(typo(law["name"])), esc(share_text).replace("\n", "&#10;"), esc(url))
     )
 
     # right column
@@ -1062,7 +1063,10 @@ def build_law(i, law):
         "aside": "".join(aside),
         "bar_next": bar_next,
     }
-    page = layout(law["name"], "%s %s" % (law["aphorism"], law["plainTerms"]), body, depth=1, current="laws", scripts=("law.js",), head_extra=law_jsonld(law), og_image="img/og/%s.png" % law["slug"])
+    # Per-pattern description: the bottom line with the pattern name when that fits one search-result line, else aphorism + plain terms.
+    bl_desc = "%s: %s" % (law["name"], law["bottomLine"])
+    desc = bl_desc if len(bl_desc) <= 155 else "%s %s" % (law["aphorism"], law["plainTerms"])
+    page = layout(law["name"], desc, body, depth=1, current="laws", scripts=("law.js",), head_extra=law_jsonld(law), og_image="img/og/%s.png" % law["slug"])
     write("patterns/%s.html" % law["slug"], page)
 
 
@@ -1927,37 +1931,37 @@ WALKTHROUGH = [
         ],
         "choose": "The claim is that this model is better than its rivals, because of where it ranks. The decision that rides on it is which model to pick or recommend. The claim assumes the published score is a fair picture of the model, not the best of several tries.",
         "test": [
-            "Start with [[goodharts-law]]. A rank stands in for quality, and the harder anyone pushes on a stand-in, the further it can drift. Ask what improved: the capability, or the fit to the test. In the paper’s controlled experiment, fine-tuning a model on Arena-style data raised its win rate against a baseline on an Arena-derived benchmark (ArenaHard) by up to 112% in relative terms, while performance on a broader benchmark (MMLU) slightly declined.",
+            "Start with [[goodharts-law]]. A rank stands in for quality, and the harder anyone pushes on a stand-in, the further it can drift. Ask what improved: the capability, or the fit to the test. In the paper’s controlled experiment, fine-tuning a model on Arena-style data raised its win rate against a baseline on an Arena-derived benchmark (ArenaHard) by up to 112% in relative terms, while performance on a broader benchmark (MMLU) slightly declined (step 3 gives LMArena’s response to this experiment).",
             "Then [[campbells-law]]. When a number drives buying and press, everyone has a reason to game it, often without anyone deciding to cheat. Ask how many variants were tried before the reported one, and whether a second measure that nobody optimized agrees.",
         ],
-        "decide": "You can conclude that a rank alone does not say how many candidates it was selected from, and a published result should say. Treat it as one input. You still do not know whether any leaderboard result was wrong, whether any provider broke a rule, or how good any model is. LMArena, the platform, published a response on 9 May 2025 disputing parts of the paper. It says, for example, that the 112% experiment used a static benchmark rather than Chatbot Arena itself. This page does not settle the dispute; read both.",
+        "decide": "You can conclude that a rank alone does not say how many candidates it was selected from, and a published result should say. Treat it as one input. You still do not know whether any leaderboard result was wrong, whether any provider broke a rule, or how good any model is. LMArena, the platform, published a response on 9 May 2025 disputing parts of the paper. It says, for example, that the 112% experiment used a static benchmark rather than Chatbot Arena itself. This page does not settle the dispute; read both. Before you choose on rank, ask how many variants were tried before the reported one, and look for a second measure that nobody optimized.",
     },
     {
         "id": "epic-sepsis",
         "anchor": "walk-sepsis",
         "title": "A clinical model that “works”",
         "told": [
-            "You are told that a sepsis prediction model in use at many US hospitals works. Then you read Wong et al. (2021), who externally validated the original version of the Epic Sepsis Model on 38,455 hospitalizations at Michigan Medicine between December 2018 and October 2019, where sepsis occurred in about 7%. They report a hospitalization-level AUC of 0.63, that the model did not identify about 67% of patients with sepsis, and that, at the alert threshold Michigan Medicine used (a score of 6 or higher), it generated alerts for about 18% of all hospitalized patients. They conclude that it has poor discrimination and calibration.",
+            "You are told that a sepsis prediction model in use at many US hospitals works. Then you read Wong et al. (2021), who externally validated the original version of the Epic Sepsis Model on 38,455 hospitalizations at Michigan Medicine between December 2018 and October 2019, where sepsis occurred in about 7%. They report a hospitalization-level AUC of 0.63, that the model did not identify about 67% of patients with sepsis, and that, at the alert threshold Michigan Medicine used (a score of 6 or higher), it generated alerts for about 18% of all hospitalized patients. They conclude that it has poor discrimination and calibration. The developer’s documentation reported an AUC of 0.76 to 0.83. The authors say the difference is likely due to how they treated the timing of sepsis predictions: when they also counted scores up to 3 hours after sepsis onset, which their main analysis excluded, the AUC rose to 0.80.",
         ],
-        "choose": "The claim is that the model works, so a hospital can rely on its alerts. The decision that rides on it is whether to rely on it for your own patients. “Works” needs defining first: how well it separates patients who develop sepsis from those who do not, and how many alerts it takes.",
+        "choose": "The claim is that the model works, so a hospital can rely on its alerts. The decision that rides on it is whether to rely on it for your own patients. “Works” needs defining first: how well it separates patients who develop sepsis from those who do not, how many alerts it takes, and when a prediction counts, since the same model scored 0.63 or 0.80 depending on whether scores after onset were counted.",
         "test": [
-            "Start with [[the-functionality-fallacy]]. Whether it works is the first question, not a settled one. Vendor-reported performance is a claim; independent validation is evidence.",
-            "Then [[distribution-shift]]. Ask where the data came from and how it compares with yours: this is one health system’s retrospective validation. Last, [[the-lab-to-field-gap]]: count the alert burden as well as the hits.",
+            "Start with [[the-functionality-fallacy]]. Whether it works is the first question, not a settled one. Vendor-reported performance is a claim; independent validation is evidence. This is an independent validation, and it found 0.63 against the developer’s 0.76 to 0.83. Then ask why the numbers differ. The authors say it is likely how they treated timing, so before you compare any two figures, ask when a prediction counted and how sepsis was defined.",
+            "Then [[the-lab-to-field-gap]], which asks what changes when a model is used in a real clinic. Here, count the alert burden as well as the hits: at the threshold Michigan Medicine used, the model alerted for about 18% of all hospitalized patients.",
         ],
-        "decide": "You can conclude that this validation found poor discrimination and calibration for the original version. Epic released a revised version in 2022, and a 2026 multicenter study of the updated model (Wong et al., JAMA Network Open) reported encounter-level AUROC of 0.82 to 0.92 across four US health systems, with high variability between sites and a high alert burden. You still do not know how either version performs at your hospital, and the 2026 study found high variability between sites. The next step is to validate on your own data, with the metrics and alert threshold fixed in advance.",
+        "decide": "You can conclude that this validation found poor discrimination and calibration for the original version, and that the definition of timing changed the headline number, so a figure without its definition is hard to compare. Epic released a revised version in 2022, and a 2026 multicenter study of the updated model (Wong et al., JAMA Network Open) reported encounter-level AUROC of 0.82 to 0.92 across four US health systems, with high variability between sites and a high alert burden. You still do not know how either version performs at your hospital. The next step is to ask the vendor how timing and sepsis were defined in its figures, then validate on your own data, with the metrics, timing rule, and alert threshold fixed in advance.",
     },
     {
         "id": "gsm1k",
         "anchor": "walk-benchmark",
         "title": "A benchmark score",
         "told": [
-            "You are told that a model scores highly on GSM8K, a popular grade-school math benchmark. Then you read Zhang et al. (2024). Human annotators wrote GSM1k, a new set of grade-school math problems built to match GSM8K in style and difficulty. Some model families scored up to 8% lower on GSM1k than on GSM8K. Models that assigned higher probability to the GSM8K test items showed bigger gaps (Spearman rank correlation of 0.36), which the authors take to suggest partial memorization, though they note outliers. Many frontier models showed little or no gap, which the authors say could reflect better generalization or more careful data handling.",
+            "You are told that a model scores highly on GSM8K, a popular grade-school math benchmark. Then you read Zhang et al. (2024). Human annotators wrote GSM1k, a new set of grade-school math problems built to match GSM8K in style and difficulty. Some model families scored up to 8% lower on GSM1k than on GSM8K. Models that assigned higher probability to the GSM8K test items showed bigger gaps (Spearman rank correlation of 0.36), which the authors take to suggest partial memorization, though they note outliers and say contamination is likely not the full story. Many frontier models showed little or no gap, which the authors say could reflect better generalization or more careful data handling.",
         ],
         "choose": "The claim is that the score shows the model can do grade-school math. The decision that rides on it is whether to trust that score, or to choose the model because of it. The claim assumes the model had not already seen the test items.",
         "test": [
             "The pattern here is [[data-contamination]]: if the test was in the training data, the score measures memory, not skill. You usually cannot inspect a model’s training data, so the test has to be indirect. Compare scores on public items with scores on look-alike items that have never been posted online, as the GSM1k authors did, and ask whether the gap is larger for the models that are most familiar with the public items.",
         ],
-        "decide": "You can conclude that a large gap is the warning sign, and that a small gap is some reassurance, not proof. Many frontier models showed little or no gap. You still do not know whether any one model memorized test items. This case does not show that public benchmarks are useless or that every model memorized test items, and the gaps apply to the models the authors tested. To find out for your own model, build a small private set of look-alike items and compare.",
+        "decide": "You can conclude that a large gap is the warning sign, and that a small gap is some reassurance, not proof. Many frontier models showed little or no gap. You still do not know whether any one model memorized test items. This case does not show that public benchmarks are useless or that every model memorized test items, and the gaps apply to the models the authors tested. To find out for your own model, build a small private set of look-alike items that has never been posted online, score the model on both sets, and compare.",
     },
 ]
 
@@ -2003,6 +2007,7 @@ def build_walkthrough():
         arc
         + '<p class="case__note"><strong>Read this first.</strong> %s</p>' % esc(typo(CASES["note"]))
         + '<nav aria-label="Cases"><ul class="case__toc">%s</ul></nav>' % toc
+        + '<p class="case__note">Each case here has a fuller entry on the <a href="case-studies.html">case studies page</a>, including what it does not show.</p>'
     )
     outro = (
         '<section class="walk walk--next" id="your-turn" aria-labelledby="your-turn-h"><h2 id="your-turn-h">Now try it on a claim you have</h2>'
