@@ -1,0 +1,15 @@
+{
+  "_about": "Versions of one study that are listed as separate sources. The counting code and the Bibliography treat each group as one work: primaryUrl is the version shown as the entry, and each alsoCirculatedAs link is listed under it as another version. Matching is by link, so a changed title does not break it.",
+  "works": [
+    {
+      "id": "dellacqua-jagged-frontier",
+      "primaryUrl": "https://doi.org/10.1287/orsc.2025.21838",
+      "alsoCirculatedAs": [
+        {
+          "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321",
+          "note": "Earlier working paper version (Harvard Business School Working Paper 24-013, 2023). Some figures are reported only in the working paper, not in the published abstract."
+        }
+      ]
+    }
+  ]
+}

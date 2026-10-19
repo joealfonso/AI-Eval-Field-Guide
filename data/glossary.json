@@ -37,7 +37,7 @@
   },
   {
     "term": "Calibration",
-    "definition": "How well a system's confidence matches how often it's actually right. A calibrated model that says \"90% sure\" is right about 90% of the time. Modern neural networks are often overconfident (Guo et al., 2017).",
+    "definition": "How well a system's confidence matches how often it's actually right. A calibrated model that says \"90% sure\" is right about 90% of the time. Guo et al. (2017) found that modern image and document classifiers were often overconfident. How well language models are calibrated varies with how they were trained.",
     "see": []
   },
   {
@@ -52,7 +52,7 @@
   },
   {
     "term": "Confidence interval",
-    "definition": "A range that likely contains the true value of a measurement, given sampling noise.",
+    "definition": "A range computed so that, if you repeated the same sampling and calculation many times, about 95% of such ranges (for a 95% interval) would contain the true value, such as a model's true accuracy on the kind of tasks the test set was drawn from. It does not mean there is a 95% chance that one particular range contains the truth. It captures sampling noise in the test items, not other sources of variation such as prompt wording or rater differences.",
     "see": [
       "No Error Bars, No Result"
     ]
@@ -71,7 +71,7 @@
   },
   {
     "term": "Contamination",
-    "definition": "When test data, or close copies of it, appear in a model's training data.",
+    "definition": "When test data, or close copies of it, appear in a model's training data. It is the language-model form of the broader problem of data leakage.",
     "see": [
       "Data Contamination"
     ]
@@ -81,6 +81,13 @@
     "definition": "The way evaluation criteria change as people grade real outputs.",
     "see": [
       "Criteria Drift"
+    ]
+  },
+  {
+    "term": "Data leakage",
+    "definition": "Information from outside the training data that improperly shapes a model or its evaluation, such as test examples in the training set, preprocessing done before the data is split, or inputs that give away the answer (Kapoor & Narayanan, 2023).",
+    "see": [
+      "Data Contamination"
     ]
   },
   {
@@ -147,12 +154,14 @@
   },
   {
     "term": "Holdout set",
-    "definition": "Data kept separate from training and tuning so it can give an unbiased estimate of performance (see Dwork et al., 2015).",
-    "see": []
+    "definition": "Data kept separate from training and tuning so it can give an unbiased estimate of performance, as long as it is used sparingly. Reusing a holdout to guide many choices wears that protection away (Dwork et al., 2015).",
+    "see": [
+      "Adaptive Overfitting"
+    ]
   },
   {
     "term": "Inter-rater agreement",
-    "definition": "How often independent human raters give the same judgment. Low agreement means the task, the instructions, or the construct needs work.",
+    "definition": "How consistently independent human raters judge the same items, ideally measured with a chance-corrected statistic such as Cohen's kappa or Krippendorff's alpha rather than raw percent agreement. Low agreement can mean unclear instructions, untrained raters, an ill-defined construct, or items that are genuinely ambiguous.",
     "see": []
   },
   {
@@ -200,7 +209,7 @@
   },
   {
     "term": "pass@k and pass^k",
-    "definition": "pass@k is the chance of at least one success in k attempts. pass^k is the chance of success on all k attempts, a measure of consistency (Yao et al., 2025).",
+    "definition": "pass@k is the chance of at least one success in k attempts (Chen et al., 2021). pass^k is the chance of success on all k attempts, a measure of consistency (Yao et al., 2025). Both need at least k attempts per task to estimate.",
     "see": [
       "Once Is Not Reliable"
     ]
@@ -214,7 +223,7 @@
   },
   {
     "term": "Red teaming",
-    "definition": "Deliberately trying to make a system fail or cause harm, to find problems before others do.",
+    "definition": "Deliberately trying to elicit failures or harmful outputs from a system in a controlled setting, to find problems before others do.",
     "see": []
   },
   {
@@ -238,7 +247,7 @@
   },
   {
     "term": "Sandbagging",
-    "definition": "Strategic underperformance on an evaluation (van der Weij et al., 2025).",
+    "definition": "Strategic underperformance on an evaluation. Van der Weij et al. (2025) showed that language models can be prompted or fine-tuned to do this on dangerous-capability tests.",
     "see": []
   },
   {

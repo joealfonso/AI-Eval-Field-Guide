@@ -7,7 +7,7 @@
   "lawDefaults": {
     "published": "2026-10-05",
     "version": "v1.0",
-    "evidenceChecked": "2026-09-15"
+    "evidenceChecked": "2026-10-19"
   },
   "newsletter": {
     "_note": "Leave action empty to show an RSS box instead of a form. To turn the signup on, set action to the https URL your mail service gives you for a hosted form (it receives a POST), set field to the name of that form's email input, add any other required inputs under hidden, and edit privacy to match the service. The build then adds that origin to form-action in the CSP in _headers.",

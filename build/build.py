@@ -15,7 +15,11 @@ import html
 import json
 import pathlib
 import re
+import sys
 import collections
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import bibliography  # noqa: E402  (source counts and the Bibliography, computed from data)
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 import sys
@@ -764,7 +768,10 @@ def source_mix(law):
     parts = []
     if c["peer"]:
         parts.append("%d peer-reviewed or classic" % c["peer"])
-    for key, one, many in (("Preprint", "preprint", "preprints"), ("Report", "report", "reports"), ("Working paper", "working paper", "working papers"), ("Book", "book", "books")):
+    known = [(k, one, many) for k, (one, many) in bibliography.LABEL_PLURAL.items()]
+    for key in sorted(set(c) - {"peer"} - {k for k, _, _ in known}):
+        known.append((key, key.lower(), key.lower() + "s"))
+    for key, one, many in known:
         if c[key]:
             parts.append("%d %s" % (c[key], one if c[key] == 1 else many))
     return ", ".join(parts)
@@ -1210,7 +1217,7 @@ def build_about():
   <p>A pattern here is a reliable way evaluation goes wrong, with research behind it. It is not a law of physics. Some have established names, like Goodhart\u2019s Law. Others are named on this site to make a well-documented idea easier to remember, and each page says which.</p></section>
   <section><h2 id="editorial-policy">Editorial policy</h2>
   <ul>
-    <li>Every pattern links to its sources. Preprints, reports, working papers, and books are labeled as such. Everything else is peer-reviewed or a classic in its field.</li>
+    <li>Every pattern links to its sources. Preprints, reports, regulations, working papers, and books are labeled as such. Every other source appeared in a peer-reviewed venue or is a long-established classic, apart from a few commentary pieces and older documents that the <a href=\"bibliography.html\">Bibliography</a> tags. The <a href=\"methodology.html\">methodology</a> explains how sources are counted and how the evidence was checked.</li>
     <li>Each pattern shows when its evidence was last checked and carries a version number and revision history.</li>
     <li>The <a href="changelog.html">Changelog</a> records what changed and when. Corrections are made in the open.</li>
     <li>Role tags, plain-terms summaries, checklist questions, and claim-checker rules are editorial work built from the patterns themselves. They are starting points, not authority.</li>
@@ -1340,28 +1347,33 @@ def build_guide_pages():
         (" See " + ", ".join(link_laws(inline(n)) for n in g["see"]) + ".") if g["see"] else "") for g in GLOSS)
     guide_page("glossary.html", "Glossary", "Guide \u00b7 Reference", "Plain-language definitions of the terms used across the patterns, such as contamination, construct validity, and judge bias.", "", '<dl class="gloss">%s</dl>' % gl + glossary_jsonld())
 
-    bib_lines = manuscript_region("## Bibliography", "\u0000end")
-    entries, cur = [], None
-    for ln in bib_lines:
-        if ln.startswith("- "):
-            cur = {"ref": ln[2:].rstrip(), "cited": ""}
-            entries.append(cur)
-        elif ln.strip().startswith("Cited in:") and cur is not None:
-            cur["cited"] = ln.strip()[len("Cited in:") :].strip()
-    intro = next((l for l in bib_lines if l.strip() and not l.startswith("-")), "")
+    model = bibliography.build_model(LAWS)
+    for where, src, prim in model["mismatches"]:
+        print("warning: one work is listed with different details in %s and elsewhere: %s (%s)" % (where, src["title"][:60], src["year"]))
+    names = {l["slug"]: l["name"] for l in LAWS}
+
+    def bib_ref(src, tag=None):
+        venue = txt(src["venue"]).rstrip(".")
+        title = esc(typo(txt(src["title"])))
+        if src["url"]:
+            title = '<a href="%s" rel="noopener">%s</a>' % (esc(src["url"]), title)
+        out = "%s (%s). %s%s" % (esc(typo(txt(src["authors"]))), src["year"], title, "" if txt(src["title"]).rstrip().endswith(("?", "!")) else ".")
+        if venue:
+            out += " %s." % esc(typo(venue))
+        if tag:
+            out += " <em>(%s)</em>" % esc(tag)
+        return out
+
     items = ""
-    for e in entries:
-        cited = []
-        rest = e["cited"]
-        for n, s in NAMES:
-            if n in rest:
-                cited.append('<a href="patterns/%s.html">%s</a>' % (s, esc(typo(n))))
-                rest = rest.replace(n, "")
-        for label, href in PAGE_LINKS.items():
-            if label in rest:
-                cited.append('<a href="%s">%s</a>' % (href, label))
-        items += '<li class="bib__item"><span>%s</span><span class="bib__cited">Cited in: %s</span></li>' % (inline(e["ref"]), ", ".join(cited))
-    guide_page("bibliography.html", "Bibliography", "Guide \u00b7 Reference", "Every source cited across the 26 patterns, with its type (peer-reviewed, preprint, report, book) and where it is used on this site.", '<p class="page__lede">%s</p>' % inline(intro), '<ul class="bib">%s</ul>' % items)
+    for e in model["entries"]:
+        p = e["primary"]
+        cited = ['<a href="patterns/%s.html">%s</a>' % (slug, esc(typo(names[slug]))) for slug in e["patterns"]]
+        cited += ['<a href="%s">%s</a>' % (PAGE_LINKS[n], n) for n in e["pages"]]
+        ref = bib_ref(p, p["label"] or (e["kind"]["tag"] if e["kind"] else None))
+        for alt in e["alsoAs"]:
+            ref += "<br><em>Also circulated as:</em> " + bib_ref(alt, alt["label"])
+        items += '<li class="bib__item"><span>%s</span><span class="bib__cited">Cited in: %s</span></li>' % (ref, ", ".join(cited))
+    guide_page("bibliography.html", "Bibliography", "Guide \u00b7 Reference", "Every source cited across the 26 patterns, with its type (peer-reviewed, preprint, report, book) and where it is used on this site.", '<p class="page__lede">%s</p>' % esc(typo(bibliography.intro_text(model))), '<ul class="bib">%s</ul>' % items)
 
 
 # ---------------------------------------------------------------- situation finder
@@ -1852,10 +1864,20 @@ def build_templates():
     )
 
 
+def join_and(parts):
+    return parts[0] if len(parts) == 1 else ", ".join(parts[:-1]) + ", and " + parts[-1]
+
+
 def build_methodology():
-    srcs = [x for l in LAWS for x in l["sources"]]
-    c = collections.Counter(x["label"] or "peer" for x in srcs)
-    mix = "%d are peer-reviewed or classic works, %d are preprints, %d are reports, %d is a working paper, and %d is a book" % (c["peer"], c["Preprint"], c["Report"], c["Working paper"], c["Book"])
+    model = bibliography.build_model(LAWS)
+    c = bibliography.counts(model)
+    mix = esc(typo(join_and(bibliography.type_breakdown_text(c))))
+    kinds = esc(typo(bibliography.kinds_sentence(c)))
+    no_link = sum(1 for e in model["entries"] if not e["primary"]["url"])
+    merged = esc(typo(join_and([bibliography.dedupe_note(e) for e in c["merged"]]))) if c["merged"] else ""
+    sources_extra = (" Two versions of one study count as one work: %s%s" % (merged, "" if merged.endswith(".") else ".")) if merged else ""
+    kinds_extra = (" A few unlabeled entries are not ordinary peer-reviewed papers, and the Bibliography tags them: %s." % kinds) if kinds else ""
+    checked = fmt_date(SITE["lawDefaults"]["evidenceChecked"])
     body = """<main id="main" class="page page--prose">
   %(nav)s
   <header class="page__head"><p class="eyebrow">Guide</p><h1>Methodology</h1>
@@ -1863,10 +1885,16 @@ def build_methodology():
   <section><h2 id="selection">How patterns are chosen</h2>
   <p>The %(n_laws)d patterns are an editorial selection of recurring ways AI evaluation goes wrong, each with published research behind it. They are not the result of a systematic review, and another reasonable list would differ. Each pattern page says whether its name is an established term or this site\u2019s own name for an established idea (see <a href="about.html#evidence">how the evidence base is described</a>). The full list is on the <a href="about.html#status">About page</a>.</p></section>
   <section><h2 id="sources">What counts as a source</h2>
-  <p>The guide cites %(n_src)d sources across all patterns. Of these, %(mix)s. Anything that is not peer reviewed or a classic in its field is labeled on the pattern page. The Evidence section reports what the authors found, and where results are mixed or limited the page says so, for example in <a href="patterns/adaptive-overfitting.html">Adaptive Overfitting</a> and <a href="patterns/data-contamination.html">Data Contamination</a>. Every pattern also has a \u201cWhere this doesn\u2019t apply\u201d section.</p></section>
+  <p>A <em>citation</em> is one source line on one pattern page, so a work cited by three patterns is three citations. A <em>work</em> is one distinct piece of research, counted once however many pages cite it.%(merged)s</p>
+  <p>The %(n_laws)d pattern pages make %(n_cit)d citations to %(n_wp)d distinct works. The <a href="bibliography.html">Bibliography</a> lists %(n_tot)d works in all, which adds %(n_else)d that appear only in the Overview, Being Pragmatic, Playbook or Glossary. Counting each work once, of the %(n_tot)d, %(mix)s.%(kinds)s</p>
+  <p>Preprints, reports, regulations, working papers, and books are labeled on the pattern page and in the Bibliography. The Evidence section reports what the authors found, and where results are mixed or limited the page says so, for example in <a href="patterns/adaptive-overfitting.html">Adaptive Overfitting</a> and <a href="patterns/data-contamination.html">Data Contamination</a>. Every pattern also has a \u201cWhere this doesn\u2019t apply\u201d section.</p></section>
   <section><h2 id="checking">How the evidence was checked</h2>
-  <p>Each pattern shows when its evidence was last reviewed. In October 2026, more than 40 specific figures and findings on the pattern pages were compared with the source\u2019s abstract or full text, covering at least one claim in 25 of the 26 patterns. No discrepancies were found. Every source link was also tested, and every DOI resolves.</p>
-  <p>The limits of that check: it covered numbers and the main finding of each source, not whether every interpretation or piece of advice goes beyond the source. A few details were confirmed through secondary descriptions rather than the paper itself, such as the exact \u201c19 percentage points\u201d figure in <a href="patterns/the-jagged-frontier.html">The Jagged Frontier</a>. It was a spot-check, not an audit.</p></section>
+  <p>Each pattern shows when its evidence was last reviewed (currently %(checked)s). The evidence has been checked twice, and neither check is independent peer review.</p>
+  <ul>
+    <li><strong>Early October 2026: a spot-check.</strong> More than 40 specific figures and findings on the pattern pages were compared with the source\u2019s abstract or full text, covering at least one claim in 25 of the 26 patterns. It found no discrepancies, but it compared only numbers and headline findings, so it could not catch statements that went beyond their sources or left out a caveat.</li>
+    <li><strong>19 October 2026: a full re-audit.</strong> Every claim on the pattern pages, the guide pages, the glossary, and the bibliography was checked against its primary source, including whether each statement was supported as strongly as it was worded. Every DOI was checked against Crossref and every arXiv entry against arXiv\u2019s records. This found five factual errors (a misquoted sentence, a wrong author name, a wrong statistical rule, two experiments reported as one, and a measure described as something it was not), plus several dozen statements that were stronger than their sources or missing a caveat. Those have been corrected, softened, or removed. Every source link was also tested: none returned a not-found error, although some publishers block automated checks. %(no_link)d sources are listed without a link.</li>
+  </ul>
+  <p>Limits of the re-audit. Some sources could not be read in full: paywalled journal articles, some conference papers in the ACM Digital Library, books, and recent legal texts were checked against abstracts, publisher records, or secondary descriptions, and the pages are worded to match what could be verified. Whether a preprint has since been published in a journal was not checked exhaustively. The re-audit was carried out by the site\u2019s author with AI-assisted checking, not by an outside expert, so errors may remain. If you find one, please report it.</p></section>
   <section><h2 id="tools">The tools</h2>
   <p>The claim checker, Find your patterns, the checklist, the quick brief, and Use it now are reading aids. The claim checker and Find your patterns match your text against published rules, which you can read on each page. They do not assess a system, and they run in your browser. The Design Rubric and Readiness Review are checklists. They do not calculate a score. The <a href="sample-size.html">sample-size calculators</a> apply standard formulas, listed on that page and checked by a test script in the site repository. The <a href="case-studies.html">case studies</a> summarize published studies and link to each primary source. The <a href="templates.html">templates</a> are editorial starting points.</p></section>
   <section><h2 id="not-covered">What this guide does not cover</h2>
@@ -1890,7 +1918,7 @@ def build_methodology():
   </ul></section>
   <section><h2 id="changes">How it changes</h2>
   <p>Each pattern has a version number and a revision history, and site-wide changes are in the <a href="changelog.html">changelog</a>. Corrections are made in the open and logged there. If you find a mistake or a better source, every pattern page has a \u201cReport it\u201d link, or you can use the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>.</p></section>
-</main>""" % {"nav": guide_nav("methodology.html"), "n_laws": len(LAWS), "n_src": len(srcs), "mix": mix}
+</main>""" % {"nav": guide_nav("methodology.html"), "n_laws": len(LAWS), "n_cit": c["citations"], "n_wp": c["works_on_patterns"], "n_tot": c["works_total"], "n_else": c["only_elsewhere"], "mix": mix, "kinds": kinds_extra, "merged": sources_extra, "checked": checked, "no_link": no_link}
     write("methodology.html", layout("Methodology", "How the patterns were chosen, what counts as a source, how the evidence was checked, and what this guide does not claim to be.", body, current=None))
 
 

@@ -26,6 +26,8 @@ UNLINKED = {
     ("Strathern", "1997"): ("'Improving ratings': Audit in the British university system", "European Review, 5(3), 305-321"),
     ("Roelofs", "2019"): ("A meta-analysis of overfitting in machine learning", "Advances in Neural Information Processing Systems (NeurIPS 2019)"),
     ("Moravec", "1988"): ("Mind children: The future of robot and human intelligence", "Harvard University Press"),
+    ("Kohavi", "2020"): ("Trustworthy online controlled experiments: A practical guide to A/B testing", "Cambridge University Press"),
+    ("Rogers", "2003"): ("Diffusion of innovations (5th ed.)", "Free Press"),
 }
 
 
@@ -69,7 +71,7 @@ def blocks(lines):
 def parse_source(line):
     raw = line[2:].strip()
     label = None
-    m = re.search(r"\s*\*\((Preprint|Report|Working paper|Book)\)\*\s*$", raw)
+    m = re.search(r"\s*\*\(([A-Z][A-Za-z -]+)\)\*\s*$", raw)
     if m:
         label = m.group(1)
         raw = raw[: m.start()]
