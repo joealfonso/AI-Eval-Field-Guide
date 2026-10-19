@@ -1,0 +1,1160 @@
+{
+ "adcock2001": {
+  "patterns": [
+   "The Construct Gap"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "amershi2019": {
+  "patterns": [
+   "The Team Is the System"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "amodei2016": {
+  "patterns": [
+   "Goodhart's Law"
+  ],
+  "pages": [],
+  "tag": "Preprint",
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "aroyo2015": {
+  "patterns": [
+   "The Gold Standard Myth"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "balloccu2024": {
+  "patterns": [
+   "Data Contamination"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "bansal2021": {
+  "patterns": [
+   "The Team Is the System"
+  ],
+  "pages": [
+   "Glossary",
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "bean2025": {
+  "patterns": [
+   "The Construct Gap"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "beede2020": {
+  "patterns": [
+   "The Lab-to-Field Gap"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "bengio2026": {
+  "patterns": [
+   "Goodhart's Law",
+   "Data Contamination",
+   "Evaluation Awareness",
+   "The Lab-to-Field Gap"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": "Report",
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "beyer2016": {
+  "patterns": [],
+  "pages": [
+   "Being Pragmatic",
+   "Glossary"
+  ],
+  "tag": "Book",
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "biderman2024": {
+  "patterns": [
+   "Prompt Sensitivity",
+   "The Reproducibility Rule"
+  ],
+  "pages": [],
+  "tag": "Preprint",
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "bouthillier2021": {
+  "patterns": [
+   "No Error Bars, No Result"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "bowman2021": {
+  "patterns": [
+   "Benchmark Saturation"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "breck2017": {
+  "patterns": [],
+  "pages": [
+   "Being Pragmatic"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "buolamwini2018": {
+  "patterns": [
+   "The Averaging Trap"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "burnell2023": {
+  "patterns": [
+   "The Averaging Trap"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": "Policy forum article",
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "bucinca2021": {
+  "patterns": [
+   "The Team Is the System"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "campbell1979": {
+  "patterns": [
+   "Campbell's Law"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "card2020": {
+  "patterns": [
+   "No Error Bars, No Result"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "chang2024": {
+  "patterns": [],
+  "pages": [
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "chen2021": {
+  "patterns": [],
+  "pages": [
+   "Glossary"
+  ],
+  "tag": "Preprint",
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "chiang2024": {
+  "patterns": [],
+  "pages": [
+   "Glossary",
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "clark2021": {
+  "patterns": [
+   "The Gold Standard Myth"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "cronbach1955": {
+  "patterns": [
+   "The Construct Gap"
+  ],
+  "pages": [
+   "Glossary"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "dehghani2021": {
+  "patterns": [
+   "Campbell's Law",
+   "The Benchmark Lottery"
+  ],
+  "pages": [],
+  "tag": "Preprint",
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "dellacqua2026": {
+  "patterns": [
+   "The Jagged Frontier"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": [
+   {
+    "title": "Navigating the jagged technological frontier: Field experimental evidence of the effects of AI on knowledge worker productivity and quality",
+    "year": "2023",
+    "venue": "Harvard Business School Working Paper 24-013 (an earlier version of the study published in Organization Science, 2026)",
+    "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321"
+   }
+  ]
+ },
+ "dijkstra1970": {
+  "patterns": [
+   "Presence, Not Absence"
+  ],
+  "pages": [],
+  "tag": "Technical note",
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "dror2018": {
+  "patterns": [
+   "No Error Bars, No Result"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "dwork2015": {
+  "patterns": [
+   "Adaptive Overfitting"
+  ],
+  "pages": [
+   "Glossary"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "edmondson1999": {
+  "patterns": [],
+  "pages": [
+   "Being Pragmatic"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "engstrom2020": {
+  "patterns": [
+   "Distribution Shift"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "eriksson2025": {
+  "patterns": [
+   "The Benchmark Lottery"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "ethayarajh2020": {
+  "patterns": [
+   "Campbell's Law",
+   "The Cost Frontier",
+   "The Benchmark Lottery"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "eu2024": {
+  "patterns": [],
+  "pages": [
+   "Being Pragmatic"
+  ],
+  "tag": "Regulation",
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "feng2019": {
+  "patterns": [
+   "The Clever Hans Effect"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "ferraridacrema2019": {
+  "patterns": [
+   "The Baseline Rule"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "ganguli2022": {
+  "patterns": [
+   "Presence, Not Absence"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": "Preprint",
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "gao2023": {
+  "patterns": [
+   "Goodhart's Law"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "gebru2021": {
+  "patterns": [
+   "The Reproducibility Rule"
+  ],
+  "pages": [
+   "Glossary"
+  ],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "geirhos2020": {
+  "patterns": [
+   "The Clever Hans Effect"
+  ],
+  "pages": [
+   "Glossary"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "goodhart1975": {
+  "patterns": [
+   "Goodhart's Law"
+  ],
+  "pages": [],
+  "tag": "Conference paper",
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "guo2017": {
+  "patterns": [],
+  "pages": [
+   "Glossary"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "gururangan2018": {
+  "patterns": [
+   "The Clever Hans Effect"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "hand2006": {
+  "patterns": [
+   "The Baseline Rule",
+   "Distribution Shift"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "holstein2019": {
+  "patterns": [],
+  "pages": [
+   "Being Pragmatic"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "hutchinson2022": {
+  "patterns": [
+   "The Functionality Fallacy",
+   "The Lab-to-Field Gap"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "jacobs2021": {
+  "patterns": [
+   "The Construct Gap"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "kapoor2023": {
+  "patterns": [
+   "Data Contamination"
+  ],
+  "pages": [
+   "Glossary"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "kapoor2025": {
+  "patterns": [
+   "Adaptive Overfitting",
+   "The Cost Frontier",
+   "The Reproducibility Rule"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "karpinska2021": {
+  "patterns": [
+   "The Gold Standard Myth"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "kiela2021": {
+  "patterns": [
+   "Benchmark Saturation"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "koh2021": {
+  "patterns": [
+   "Distribution Shift"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "kohavi2020": {
+  "patterns": [],
+  "pages": [
+   "Being Pragmatic",
+   "Glossary"
+  ],
+  "tag": "Book",
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "lapuschkin2019": {
+  "patterns": [
+   "The Clever Hans Effect"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "liang2023": {
+  "patterns": [
+   "The Metric Mirage",
+   "The Cost Frontier",
+   "The Benchmark Lottery"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "liao2023": {
+  "patterns": [
+   "Criteria Drift",
+   "The Lab-to-Field Gap"
+  ],
+  "pages": [],
+  "tag": "Preprint",
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "lin2019": {
+  "patterns": [
+   "The Baseline Rule"
+  ],
+  "pages": [],
+  "tag": "Opinion paper",
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "lipton2019": {
+  "patterns": [
+   "Campbell's Law"
+  ],
+  "pages": [],
+  "tag": "Magazine article",
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "madaio2020": {
+  "patterns": [],
+  "pages": [
+   "Being Pragmatic"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "madaio2022": {
+  "patterns": [],
+  "pages": [
+   "Being Pragmatic"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "manheim2018": {
+  "patterns": [
+   "Goodhart's Law"
+  ],
+  "pages": [],
+  "tag": "Preprint",
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "mccoy2019": {
+  "patterns": [
+   "The Clever Hans Effect"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "melis2018": {
+  "patterns": [
+   "The Baseline Rule"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "messick1995": {
+  "patterns": [
+   "The Construct Gap"
+  ],
+  "pages": [
+   "Glossary",
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "miller2024": {
+  "patterns": [
+   "No Error Bars, No Result"
+  ],
+  "pages": [
+   "Playbook"
+  ],
+  "tag": "Preprint",
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "mitchell2019": {
+  "patterns": [
+   "The Averaging Trap",
+   "The Reproducibility Rule"
+  ],
+  "pages": [
+   "Playbook",
+   "Glossary",
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "mizrahi2024": {
+  "patterns": [
+   "Prompt Sensitivity"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "moravec1988": {
+  "patterns": [
+   "The Jagged Frontier"
+  ],
+  "pages": [],
+  "tag": "Book",
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "nist2023": {
+  "patterns": [
+   "The Functionality Fallacy"
+  ],
+  "pages": [
+   "Being Pragmatic",
+   "Glossary",
+   "Overview"
+  ],
+  "tag": "Report",
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "needham2025": {
+  "patterns": [
+   "Evaluation Awareness"
+  ],
+  "pages": [
+   "Glossary",
+   "Overview"
+  ],
+  "tag": "Preprint",
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "northcutt2021": {
+  "patterns": [
+   "Benchmark Saturation",
+   "The Gold Standard Myth"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "novikova2017": {
+  "patterns": [
+   "The Metric Mirage"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "oakdenrayner2020": {
+  "patterns": [
+   "The Averaging Trap"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "ott2022": {
+  "patterns": [
+   "Benchmark Saturation"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "pan2022": {
+  "patterns": [
+   "Goodhart's Law"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "panickssery2024": {
+  "patterns": [
+   "Judge Bias"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "parasuraman1997": {
+  "patterns": [
+   "The Team Is the System"
+  ],
+  "pages": [
+   "Glossary"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "parnin2025": {
+  "patterns": [],
+  "pages": [
+   "Being Pragmatic"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "pfungst1911": {
+  "patterns": [
+   "The Clever Hans Effect"
+  ],
+  "pages": [],
+  "tag": "Book",
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "pineau2021": {
+  "patterns": [
+   "The Reproducibility Rule"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "rabanser2026": {
+  "patterns": [
+   "Once Is Not Reliable"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "raji2021": {
+  "patterns": [
+   "The Construct Gap"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "raji2022": {
+  "patterns": [
+   "The Functionality Fallacy"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "raji2020": {
+  "patterns": [],
+  "pages": [
+   "Being Pragmatic"
+  ],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "rakova2021": {
+  "patterns": [],
+  "pages": [
+   "Being Pragmatic"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "recht2019": {
+  "patterns": [
+   "Adaptive Overfitting",
+   "Distribution Shift"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "reiter2018": {
+  "patterns": [
+   "The Metric Mirage"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "reuel2024": {
+  "patterns": [
+   "No Error Bars, No Result",
+   "The Reproducibility Rule"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "ribeiro2020": {
+  "patterns": [
+   "The Clever Hans Effect"
+  ],
+  "pages": [
+   "Glossary",
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "roelofs2019": {
+  "patterns": [
+   "Adaptive Overfitting"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "rogers2003": {
+  "patterns": [],
+  "pages": [
+   "Being Pragmatic"
+  ],
+  "tag": "Book",
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "sainz2023": {
+  "patterns": [
+   "Data Contamination"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "salaudeen2025": {
+  "patterns": [
+   "The Construct Gap"
+  ],
+  "pages": [],
+  "tag": "Preprint",
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "schaeffer2023": {
+  "patterns": [
+   "The Metric Mirage"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "sclar2024": {
+  "patterns": [
+   "Prompt Sensitivity"
+  ],
+  "pages": [
+   "Playbook"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "selbst2019": {
+  "patterns": [
+   "The Lab-to-Field Gap"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "shankar2024": {
+  "patterns": [],
+  "pages": [
+   "Being Pragmatic"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "shankar2024a": {
+  "patterns": [
+   "Judge Bias",
+   "Criteria Drift"
+  ],
+  "pages": [
+   "Being Pragmatic",
+   "Playbook"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "shevlane2023": {
+  "patterns": [
+   "Presence, Not Absence"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": "Preprint",
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "singh2025": {
+  "patterns": [
+   "Goodhart's Law",
+   "Campbell's Law"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "strathern1997": {
+  "patterns": [
+   "Goodhart's Law"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "sturm2014": {
+  "patterns": [
+   "The Clever Hans Effect"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "turpin2023": {
+  "patterns": [
+   "The Clever Hans Effect"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "vaccaro2024": {
+  "patterns": [
+   "The Team Is the System",
+   "The Jagged Frontier"
+  ],
+  "pages": [
+   "Playbook"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "vanderlee2021": {
+  "patterns": [
+   "The Gold Standard Myth"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "vandermaden2026": {
+  "patterns": [],
+  "pages": [
+   "Being Pragmatic",
+   "Glossary"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "vanderweij2025": {
+  "patterns": [
+   "Presence, Not Absence",
+   "Evaluation Awareness"
+  ],
+  "pages": [
+   "Glossary"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "wallach2025": {
+  "patterns": [
+   "The Construct Gap"
+  ],
+  "pages": [
+   "Being Pragmatic",
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "wang2024": {
+  "patterns": [
+   "Judge Bias"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "weidinger2023": {
+  "patterns": [
+   "The Lab-to-Field Gap"
+  ],
+  "pages": [
+   "Overview"
+  ],
+  "tag": "Preprint",
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "wong2021": {
+  "patterns": [
+   "The Functionality Fallacy"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "wu2019": {
+  "patterns": [],
+  "pages": [
+   "Being Pragmatic",
+   "Glossary"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "yao2025": {
+  "patterns": [
+   "Once Is Not Reliable"
+  ],
+  "pages": [
+   "Playbook",
+   "Glossary"
+  ],
+  "tag": null,
+  "authorsTruncated": false,
+  "alsoCirculatedAs": []
+ },
+ "zhang2024": {
+  "patterns": [
+   "Data Contamination"
+  ],
+  "pages": [],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ },
+ "zheng2023": {
+  "patterns": [
+   "Judge Bias"
+  ],
+  "pages": [
+   "Playbook",
+   "Glossary",
+   "Overview"
+  ],
+  "tag": null,
+  "authorsTruncated": true,
+  "alsoCirculatedAs": []
+ }
+}

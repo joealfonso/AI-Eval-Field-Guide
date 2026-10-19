@@ -14,7 +14,7 @@ Definitions used everywhere on the site:
 
 Python 3 standard library only. Run `python3 build/bibliography.py --write-manuscript` to refresh the
 Bibliography section of the manuscript (content/source/ai-evaluation-field-guide-full.md) from the data,
-and `python3 build/bibliography.py` to print the counts.
+and `python3 build/bibliography.py` to print the counts. `--write-csl` exports the same works as CSL-JSON (see below).
 """
 import collections
 import json
@@ -245,6 +245,80 @@ def write_manuscript(model):
     SRC.write_text("\n".join(lines), encoding="utf-8")
 
 
+# --- Structured export (CSL-JSON) for other projects, e.g. the book ------------------------------------------------------
+# `python3 build/bibliography.py --write-csl` writes data/references.csl.json (one CSL-JSON item per work, same entries as
+# the Bibliography) and data/references.index.json (which patterns and pages cite each work). The book repository syncs both
+# from a pinned commit; nothing downstream edits them.
+
+_NAME = re.compile(r"\s*([^,]+?),\s*((?:[A-Za-z]\.[\s-]*)+)")
+
+
+def csl_authors(authors):
+    """'Amodei, D., Olah, C., & Mane, D.' -> (names, truncated, editors).
+
+    names are CSL name objects. truncated is True when the source line ends in 'et al.', meaning the full author list is not
+    stored (CSL has no et-al marker, so the missing authors have to be filled in before print). editors is True for '(Eds.)'.
+    Anything that does not look like 'Family, I.' is kept as a single literal name."""
+    text = authors.replace("&", ",").strip()
+    editors = bool(re.search(r"\(Eds?\.\)\s*$", text))
+    text = re.sub(r"\s*\(Eds?\.\)\s*$", "", text)
+    et_al = re.search(r",?\s*et al\.?\s*$", text)
+    if et_al:
+        text = text[: et_al.start()]
+    out, pos = [], 0
+    for m in _NAME.finditer(text):
+        if text[pos : m.start()].strip(" ,"):
+            return [{"literal": authors}], False, False
+        out.append({"family": m.group(1).strip(), "given": m.group(2).strip()})
+        pos = m.end()
+    if not out or text[pos:].strip(" ,"):
+        return [{"literal": authors}], False, False
+    return out, bool(et_al), editors
+
+
+def _ascii(s):
+    import unicodedata
+    return re.sub(r"[^a-z0-9]", "", unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode().lower())
+
+
+ORG_IDS = {"National Institute of Standards and Technology": "nist", "European Union": "eu"}
+CSL_TYPES = {"Preprint": "article", "Book": "book", "Report": "report", "Working paper": "report", "Regulation": "legislation"}
+
+
+def csl_items(model):
+    """(items, index): CSL-JSON items with stable ids (first author family + year, then a, b, ...) and a cited-in index."""
+    names = {l["slug"]: l["name"] for l in model["laws"]}
+    items, index, seen = [], {}, collections.Counter()
+    for e in model["entries"]:
+        p = e["primary"]
+        authors, truncated, editors = csl_authors(p["authors"])
+        lead = authors[0]
+        family = ORG_IDS.get(lead.get("literal", "")) or _ascii(lead.get("family") or lead["literal"].split(",")[0])[:24] or "anon"
+        base = family + p["year"]
+        seen[base] += 1
+        cid = base if seen[base] == 1 else base + chr(ord("a") + seen[base] - 2)
+        venue = p["venue"]
+        kind = CSL_TYPES.get(p["label"]) or ("paper-conference" if re.search(r"Proceedings|Conference|NeurIPS|ICML|ICLR|ACL|EACL|EMNLP", venue) else "article-journal")
+        item = {"id": cid, "type": kind, "editor" if editors else "author": authors, "issued": {"date-parts": [[int(p["year"])]]}, "title": p["title"], "container-title": venue}
+        if p["url"]:
+            item["URL"] = p["url"]
+        tag = p["label"] or (e["kind"]["tag"] if e["kind"] else None)
+        if tag:
+            item["note"] = tag
+        items.append(item)
+        index[cid] = {"patterns": [names[s] for s in e["patterns"]], "pages": e["pages"],
+                      "tag": tag, "authorsTruncated": truncated, "alsoCirculatedAs": [{"title": a["title"], "year": a["year"], "venue": a["venue"], "url": a["url"]} for a in e["alsoAs"]]}
+    return items, index
+
+
+def write_csl(model):
+    items, index = csl_items(model)
+    d = ROOT / "data"
+    (d / "references.csl.json").write_text(json.dumps(items, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    (d / "references.index.json").write_text(json.dumps(index, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    return items
+
+
 if __name__ == "__main__":
     m = build_model()
     c = counts(m)
@@ -256,3 +330,5 @@ if __name__ == "__main__":
     if "--write-manuscript" in sys.argv:
         write_manuscript(m)
         print("manuscript Bibliography section rewritten")
+    if "--write-csl" in sys.argv:
+        print("wrote data/references.csl.json and data/references.index.json (%d items)" % len(write_csl(m)))

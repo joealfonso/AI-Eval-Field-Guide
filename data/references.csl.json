@@ -1,0 +1,3332 @@
+[
+ {
+  "id": "adcock2001",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Adcock",
+    "given": "R."
+   },
+   {
+    "family": "Collier",
+    "given": "D."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2001
+    ]
+   ]
+  },
+  "title": "Measurement validity: A shared standard for qualitative and quantitative research",
+  "container-title": "American Political Science Review, 95(3), 529-546",
+  "URL": "https://doi.org/10.1017/S0003055401003100"
+ },
+ {
+  "id": "amershi2019",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Amershi",
+    "given": "S."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2019
+    ]
+   ]
+  },
+  "title": "Guidelines for human-AI interaction",
+  "container-title": "Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2019)",
+  "URL": "https://doi.org/10.1145/3290605.3300233"
+ },
+ {
+  "id": "amodei2016",
+  "type": "article",
+  "author": [
+   {
+    "family": "Amodei",
+    "given": "D."
+   },
+   {
+    "family": "Olah",
+    "given": "C."
+   },
+   {
+    "family": "Steinhardt",
+    "given": "J."
+   },
+   {
+    "family": "Christiano",
+    "given": "P."
+   },
+   {
+    "family": "Schulman",
+    "given": "J."
+   },
+   {
+    "family": "Mané",
+    "given": "D."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2016
+    ]
+   ]
+  },
+  "title": "Concrete problems in AI safety",
+  "container-title": "arXiv:1606.06565",
+  "URL": "https://arxiv.org/abs/1606.06565",
+  "note": "Preprint"
+ },
+ {
+  "id": "aroyo2015",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Aroyo",
+    "given": "L."
+   },
+   {
+    "family": "Welty",
+    "given": "C."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2015
+    ]
+   ]
+  },
+  "title": "Truth is a lie: Crowd truth and the seven myths of human annotation",
+  "container-title": "AI Magazine, 36(1), 15-24",
+  "URL": "https://doi.org/10.1609/aimag.v36i1.2564"
+ },
+ {
+  "id": "balloccu2024",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Balloccu",
+    "given": "S."
+   },
+   {
+    "family": "Schmidtová",
+    "given": "P."
+   },
+   {
+    "family": "Lango",
+    "given": "M."
+   },
+   {
+    "family": "Dušek",
+    "given": "O."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "title": "Leak, cheat, repeat: Data contamination and evaluation malpractices in closed-source LLMs",
+  "container-title": "Proceedings of EACL 2024 (Volume 1: Long Papers), 67-93",
+  "URL": "https://aclanthology.org/2024.eacl-long.5/"
+ },
+ {
+  "id": "bansal2021",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Bansal",
+    "given": "G."
+   },
+   {
+    "family": "Wu",
+    "given": "T."
+   },
+   {
+    "family": "Zhou",
+    "given": "J."
+   },
+   {
+    "family": "Fok",
+    "given": "R."
+   },
+   {
+    "family": "Nushi",
+    "given": "B."
+   },
+   {
+    "family": "Kamar",
+    "given": "E."
+   },
+   {
+    "family": "Ribeiro",
+    "given": "M. T."
+   },
+   {
+    "family": "Weld",
+    "given": "D."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "Does the whole exceed its parts? The effect of AI explanations on complementary team performance",
+  "container-title": "Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2021)",
+  "URL": "https://arxiv.org/abs/2006.14779"
+ },
+ {
+  "id": "bean2025",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Bean",
+    "given": "A. M."
+   },
+   {
+    "family": "Kearns",
+    "given": "R. O."
+   },
+   {
+    "family": "Romanou",
+    "given": "A."
+   },
+   {
+    "family": "Hafner",
+    "given": "F. S."
+   },
+   {
+    "family": "Mayne",
+    "given": "H."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2025
+    ]
+   ]
+  },
+  "title": "Measuring what matters: Construct validity in large language model benchmarks",
+  "container-title": "Advances in Neural Information Processing Systems (NeurIPS 2025), Datasets and Benchmarks Track",
+  "URL": "https://arxiv.org/abs/2511.04703"
+ },
+ {
+  "id": "beede2020",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Beede",
+    "given": "E."
+   },
+   {
+    "family": "Baylor",
+    "given": "E."
+   },
+   {
+    "family": "Hersch",
+    "given": "F."
+   },
+   {
+    "family": "Iurchenko",
+    "given": "A."
+   },
+   {
+    "family": "Wilcox",
+    "given": "L."
+   },
+   {
+    "family": "Ruamviboonsuk",
+    "given": "P."
+   },
+   {
+    "family": "Vardoulakis",
+    "given": "L. M."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2020
+    ]
+   ]
+  },
+  "title": "A human-centered evaluation of a deep learning system deployed in clinics for the detection of diabetic retinopathy",
+  "container-title": "Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2020)",
+  "URL": "https://doi.org/10.1145/3313831.3376718"
+ },
+ {
+  "id": "bengio2026",
+  "type": "report",
+  "author": [
+   {
+    "family": "Bengio",
+    "given": "Y."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2026
+    ]
+   ]
+  },
+  "title": "International AI Safety Report 2026",
+  "container-title": "International AI Safety Report; arXiv:2602.21012",
+  "URL": "https://internationalaisafetyreport.org/publication/international-ai-safety-report-2026",
+  "note": "Report"
+ },
+ {
+  "id": "beyer2016",
+  "type": "book",
+  "editor": [
+   {
+    "family": "Beyer",
+    "given": "B."
+   },
+   {
+    "family": "Jones",
+    "given": "C."
+   },
+   {
+    "family": "Petoff",
+    "given": "J."
+   },
+   {
+    "family": "Murphy",
+    "given": "N. R."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2016
+    ]
+   ]
+  },
+  "title": "Site reliability engineering: How Google runs production systems",
+  "container-title": "O'Reilly Media",
+  "URL": "https://sre.google/sre-book/table-of-contents/",
+  "note": "Book"
+ },
+ {
+  "id": "biderman2024",
+  "type": "article",
+  "author": [
+   {
+    "family": "Biderman",
+    "given": "S."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "title": "Lessons from the trenches on reproducible evaluation of language models",
+  "container-title": "arXiv:2405.14782",
+  "URL": "https://arxiv.org/abs/2405.14782",
+  "note": "Preprint"
+ },
+ {
+  "id": "bouthillier2021",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Bouthillier",
+    "given": "X."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "Accounting for variance in machine learning benchmarks",
+  "container-title": "Proceedings of Machine Learning and Systems (MLSys 2021)",
+  "URL": "https://arxiv.org/abs/2103.03098"
+ },
+ {
+  "id": "bowman2021",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Bowman",
+    "given": "S. R."
+   },
+   {
+    "family": "Dahl",
+    "given": "G. E."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "What will it take to fix benchmarking in natural language understanding?",
+  "container-title": "Proceedings of NAACL-HLT 2021",
+  "URL": "https://arxiv.org/abs/2104.02145"
+ },
+ {
+  "id": "breck2017",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Breck",
+    "given": "E."
+   },
+   {
+    "family": "Cai",
+    "given": "S."
+   },
+   {
+    "family": "Nielsen",
+    "given": "E."
+   },
+   {
+    "family": "Salib",
+    "given": "M."
+   },
+   {
+    "family": "Sculley",
+    "given": "D."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2017
+    ]
+   ]
+  },
+  "title": "The ML test score: A rubric for ML production readiness and technical debt reduction",
+  "container-title": "Proceedings of the IEEE International Conference on Big Data",
+  "URL": "https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/"
+ },
+ {
+  "id": "buolamwini2018",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Buolamwini",
+    "given": "J."
+   },
+   {
+    "family": "Gebru",
+    "given": "T."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2018
+    ]
+   ]
+  },
+  "title": "Gender shades: Intersectional accuracy disparities in commercial gender classification",
+  "container-title": "Proceedings of the Conference on Fairness, Accountability and Transparency (FAT\\* 2018), PMLR 81, 77-91",
+  "URL": "https://proceedings.mlr.press/v81/buolamwini18a.html"
+ },
+ {
+  "id": "burnell2023",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Burnell",
+    "given": "R."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2023
+    ]
+   ]
+  },
+  "title": "Rethink reporting of evaluation results in AI",
+  "container-title": "Science, 380(6641), 136-138",
+  "URL": "https://doi.org/10.1126/science.adf6369",
+  "note": "Policy forum article"
+ },
+ {
+  "id": "bucinca2021",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Buçinca",
+    "given": "Z."
+   },
+   {
+    "family": "Malaya",
+    "given": "M. B."
+   },
+   {
+    "family": "Gajos",
+    "given": "K. Z."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "To trust or to think: Cognitive forcing functions can reduce overreliance on AI in AI-assisted decision-making",
+  "container-title": "Proceedings of the ACM on Human-Computer Interaction, 5(CSCW1), 1-21",
+  "URL": "https://arxiv.org/abs/2102.09692"
+ },
+ {
+  "id": "campbell1979",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Campbell",
+    "given": "D. T."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1979
+    ]
+   ]
+  },
+  "title": "Assessing the impact of planned social change",
+  "container-title": "Evaluation and Program Planning, 2(1), 67-90",
+  "URL": "https://doi.org/10.1016/0149-7189(79)90048-X"
+ },
+ {
+  "id": "card2020",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Card",
+    "given": "D."
+   },
+   {
+    "family": "Henderson",
+    "given": "P."
+   },
+   {
+    "family": "Khandelwal",
+    "given": "U."
+   },
+   {
+    "family": "Jia",
+    "given": "R."
+   },
+   {
+    "family": "Mahowald",
+    "given": "K."
+   },
+   {
+    "family": "Jurafsky",
+    "given": "D."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2020
+    ]
+   ]
+  },
+  "title": "With little power comes great responsibility",
+  "container-title": "Proceedings of EMNLP 2020",
+  "URL": "https://arxiv.org/abs/2010.06595"
+ },
+ {
+  "id": "chang2024",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Chang",
+    "given": "Y."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "title": "A survey on evaluation of large language models",
+  "container-title": "ACM Transactions on Intelligent Systems and Technology, 15(3)",
+  "URL": "https://arxiv.org/abs/2307.03109"
+ },
+ {
+  "id": "chen2021",
+  "type": "article",
+  "author": [
+   {
+    "family": "Chen",
+    "given": "M."
+   },
+   {
+    "family": "Tworek",
+    "given": "J."
+   },
+   {
+    "family": "Jun",
+    "given": "H."
+   },
+   {
+    "family": "Yuan",
+    "given": "Q."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "Evaluating large language models trained on code",
+  "container-title": "arXiv:2107.03374",
+  "URL": "https://arxiv.org/abs/2107.03374",
+  "note": "Preprint"
+ },
+ {
+  "id": "chiang2024",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Chiang",
+    "given": "W.-L."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "title": "Chatbot Arena: An open platform for evaluating LLMs by human preference",
+  "container-title": "Proceedings of the International Conference on Machine Learning (ICML 2024)",
+  "URL": "https://arxiv.org/abs/2403.04132"
+ },
+ {
+  "id": "clark2021",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Clark",
+    "given": "E."
+   },
+   {
+    "family": "August",
+    "given": "T."
+   },
+   {
+    "family": "Serrano",
+    "given": "S."
+   },
+   {
+    "family": "Haduong",
+    "given": "N."
+   },
+   {
+    "family": "Gururangan",
+    "given": "S."
+   },
+   {
+    "family": "Smith",
+    "given": "N. A."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "All that's 'human' is not gold: Evaluating human evaluation of generated text",
+  "container-title": "Proceedings of ACL-IJCNLP 2021",
+  "URL": "https://arxiv.org/abs/2107.00061"
+ },
+ {
+  "id": "cronbach1955",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Cronbach",
+    "given": "L. J."
+   },
+   {
+    "family": "Meehl",
+    "given": "P. E."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1955
+    ]
+   ]
+  },
+  "title": "Construct validity in psychological tests",
+  "container-title": "Psychological Bulletin, 52(4), 281-302",
+  "URL": "https://doi.org/10.1037/h0040957"
+ },
+ {
+  "id": "dehghani2021",
+  "type": "article",
+  "author": [
+   {
+    "family": "Dehghani",
+    "given": "M."
+   },
+   {
+    "family": "Tay",
+    "given": "Y."
+   },
+   {
+    "family": "Gritsenko",
+    "given": "A. A."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "The benchmark lottery",
+  "container-title": "arXiv:2107.07002",
+  "URL": "https://arxiv.org/abs/2107.07002",
+  "note": "Preprint"
+ },
+ {
+  "id": "dellacqua2026",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Dell'Acqua",
+    "given": "F."
+   },
+   {
+    "family": "McFowland III",
+    "given": "E."
+   },
+   {
+    "family": "Mollick",
+    "given": "E."
+   },
+   {
+    "family": "Lifshitz",
+    "given": "H."
+   },
+   {
+    "family": "Kellogg",
+    "given": "K."
+   },
+   {
+    "family": "Rajendran",
+    "given": "S."
+   },
+   {
+    "family": "Krayer",
+    "given": "L."
+   },
+   {
+    "family": "Candelon",
+    "given": "F."
+   },
+   {
+    "family": "Lakhani",
+    "given": "K. R."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2026
+    ]
+   ]
+  },
+  "title": "Navigating the jagged technological frontier: Field experimental evidence of the effects of artificial intelligence on knowledge worker productivity and quality",
+  "container-title": "Organization Science, 37(2), 403-423",
+  "URL": "https://doi.org/10.1287/orsc.2025.21838"
+ },
+ {
+  "id": "dijkstra1970",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Dijkstra",
+    "given": "E. W."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1970
+    ]
+   ]
+  },
+  "title": "Notes on structured programming (EWD249)",
+  "container-title": "Technological University Eindhoven (first circulated 1969; second edition April 1970)",
+  "URL": "https://www.cs.utexas.edu/~EWD/transcriptions/EWD02xx/EWD249/EWD249.html",
+  "note": "Technical note"
+ },
+ {
+  "id": "dror2018",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Dror",
+    "given": "R."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2018
+    ]
+   ]
+  },
+  "title": "The hitchhiker's guide to testing statistical significance in natural language processing",
+  "container-title": "Proceedings of ACL 2018",
+  "URL": "https://aclanthology.org/P18-1128/"
+ },
+ {
+  "id": "dwork2015",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Dwork",
+    "given": "C."
+   },
+   {
+    "family": "Feldman",
+    "given": "V."
+   },
+   {
+    "family": "Hardt",
+    "given": "M."
+   },
+   {
+    "family": "Pitassi",
+    "given": "T."
+   },
+   {
+    "family": "Reingold",
+    "given": "O."
+   },
+   {
+    "family": "Roth",
+    "given": "A."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2015
+    ]
+   ]
+  },
+  "title": "The reusable holdout: Preserving validity in adaptive data analysis",
+  "container-title": "Science, 349(6248), 636-638",
+  "URL": "https://doi.org/10.1126/science.aaa9375"
+ },
+ {
+  "id": "edmondson1999",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Edmondson",
+    "given": "A."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1999
+    ]
+   ]
+  },
+  "title": "Psychological safety and learning behavior in work teams",
+  "container-title": "Administrative Science Quarterly, 44(2), 350-383",
+  "URL": "https://doi.org/10.2307/2666999"
+ },
+ {
+  "id": "engstrom2020",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Engstrom",
+    "given": "L."
+   },
+   {
+    "family": "Ilyas",
+    "given": "A."
+   },
+   {
+    "family": "Santurkar",
+    "given": "S."
+   },
+   {
+    "family": "Tsipras",
+    "given": "D."
+   },
+   {
+    "family": "Steinhardt",
+    "given": "J."
+   },
+   {
+    "family": "Madry",
+    "given": "A."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2020
+    ]
+   ]
+  },
+  "title": "Identifying statistical bias in dataset replication",
+  "container-title": "Proceedings of the International Conference on Machine Learning (ICML 2020)",
+  "URL": "https://arxiv.org/abs/2005.09619"
+ },
+ {
+  "id": "eriksson2025",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Eriksson",
+    "given": "M."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2025
+    ]
+   ]
+  },
+  "title": "Can we trust AI benchmarks? An interdisciplinary review of current issues in AI evaluation",
+  "container-title": "Proceedings of the AAAI/ACM Conference on AI, Ethics, and Society (AIES 2025)",
+  "URL": "https://arxiv.org/abs/2502.06559"
+ },
+ {
+  "id": "ethayarajh2020",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Ethayarajh",
+    "given": "K."
+   },
+   {
+    "family": "Jurafsky",
+    "given": "D."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2020
+    ]
+   ]
+  },
+  "title": "Utility is in the eye of the user: A critique of NLP leaderboards",
+  "container-title": "Proceedings of EMNLP 2020",
+  "URL": "https://arxiv.org/abs/2009.13888"
+ },
+ {
+  "id": "eu2024",
+  "type": "legislation",
+  "author": [
+   {
+    "literal": "European Union"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "title": "Regulation (EU) 2024/1689 laying down harmonised rules on artificial intelligence (Artificial Intelligence Act)",
+  "container-title": "Official Journal of the European Union",
+  "URL": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
+  "note": "Regulation"
+ },
+ {
+  "id": "feng2019",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Feng",
+    "given": "S."
+   },
+   {
+    "family": "Wallace",
+    "given": "E."
+   },
+   {
+    "family": "Boyd-Graber",
+    "given": "J."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2019
+    ]
+   ]
+  },
+  "title": "Misleading failures of partial-input baselines",
+  "container-title": "Proceedings of ACL 2019",
+  "URL": "https://aclanthology.org/P19-1554/"
+ },
+ {
+  "id": "ferraridacrema2019",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Ferrari Dacrema",
+    "given": "M."
+   },
+   {
+    "family": "Cremonesi",
+    "given": "P."
+   },
+   {
+    "family": "Jannach",
+    "given": "D."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2019
+    ]
+   ]
+  },
+  "title": "Are we really making much progress? A worrying analysis of recent neural recommendation approaches",
+  "container-title": "Proceedings of the ACM Conference on Recommender Systems (RecSys 2019)",
+  "URL": "https://arxiv.org/abs/1907.06902"
+ },
+ {
+  "id": "ganguli2022",
+  "type": "article",
+  "author": [
+   {
+    "family": "Ganguli",
+    "given": "D."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2022
+    ]
+   ]
+  },
+  "title": "Red teaming language models to reduce harms: Methods, scaling behaviors, and lessons learned",
+  "container-title": "arXiv:2209.07858",
+  "URL": "https://arxiv.org/abs/2209.07858",
+  "note": "Preprint"
+ },
+ {
+  "id": "gao2023",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Gao",
+    "given": "L."
+   },
+   {
+    "family": "Schulman",
+    "given": "J."
+   },
+   {
+    "family": "Hilton",
+    "given": "J."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2023
+    ]
+   ]
+  },
+  "title": "Scaling laws for reward model overoptimization",
+  "container-title": "Proceedings of the International Conference on Machine Learning (ICML 2023)",
+  "URL": "https://arxiv.org/abs/2210.10760"
+ },
+ {
+  "id": "gebru2021",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Gebru",
+    "given": "T."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "Datasheets for datasets",
+  "container-title": "Communications of the ACM, 64(12), 86-92",
+  "URL": "https://arxiv.org/abs/1803.09010"
+ },
+ {
+  "id": "geirhos2020",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Geirhos",
+    "given": "R."
+   },
+   {
+    "family": "Jacobsen",
+    "given": "J.-H."
+   },
+   {
+    "family": "Michaelis",
+    "given": "C."
+   },
+   {
+    "family": "Zemel",
+    "given": "R."
+   },
+   {
+    "family": "Brendel",
+    "given": "W."
+   },
+   {
+    "family": "Bethge",
+    "given": "M."
+   },
+   {
+    "family": "Wichmann",
+    "given": "F. A."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2020
+    ]
+   ]
+  },
+  "title": "Shortcut learning in deep neural networks",
+  "container-title": "Nature Machine Intelligence, 2, 665-673",
+  "URL": "https://arxiv.org/abs/2004.07780"
+ },
+ {
+  "id": "goodhart1975",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Goodhart",
+    "given": "C. A. E."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1975
+    ]
+   ]
+  },
+  "title": "Problems of monetary management: The U.K. experience",
+  "container-title": "Papers in Monetary Economics, Vol. 1. Reserve Bank of Australia",
+  "note": "Conference paper"
+ },
+ {
+  "id": "guo2017",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Guo",
+    "given": "C."
+   },
+   {
+    "family": "Pleiss",
+    "given": "G."
+   },
+   {
+    "family": "Sun",
+    "given": "Y."
+   },
+   {
+    "family": "Weinberger",
+    "given": "K. Q."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2017
+    ]
+   ]
+  },
+  "title": "On calibration of modern neural networks",
+  "container-title": "Proceedings of the International Conference on Machine Learning (ICML 2017)",
+  "URL": "https://arxiv.org/abs/1706.04599"
+ },
+ {
+  "id": "gururangan2018",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Gururangan",
+    "given": "S."
+   },
+   {
+    "family": "Swayamdipta",
+    "given": "S."
+   },
+   {
+    "family": "Levy",
+    "given": "O."
+   },
+   {
+    "family": "Schwartz",
+    "given": "R."
+   },
+   {
+    "family": "Bowman",
+    "given": "S. R."
+   },
+   {
+    "family": "Smith",
+    "given": "N. A."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2018
+    ]
+   ]
+  },
+  "title": "Annotation artifacts in natural language inference data",
+  "container-title": "Proceedings of NAACL-HLT 2018",
+  "URL": "https://arxiv.org/abs/1803.02324"
+ },
+ {
+  "id": "hand2006",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Hand",
+    "given": "D. J."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2006
+    ]
+   ]
+  },
+  "title": "Classifier technology and the illusion of progress",
+  "container-title": "Statistical Science, 21(1), 1-14",
+  "URL": "https://arxiv.org/abs/math/0606441"
+ },
+ {
+  "id": "holstein2019",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Holstein",
+    "given": "K."
+   },
+   {
+    "family": "Wortman Vaughan",
+    "given": "J."
+   },
+   {
+    "family": "Daumé III",
+    "given": "H."
+   },
+   {
+    "family": "Dudík",
+    "given": "M."
+   },
+   {
+    "family": "Wallach",
+    "given": "H."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2019
+    ]
+   ]
+  },
+  "title": "Improving fairness in machine learning systems: What do industry practitioners need?",
+  "container-title": "Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2019)",
+  "URL": "https://arxiv.org/abs/1812.05239"
+ },
+ {
+  "id": "hutchinson2022",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Hutchinson",
+    "given": "B."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2022
+    ]
+   ]
+  },
+  "title": "Evaluation gaps in machine learning practice",
+  "container-title": "Proceedings of the ACM Conference on Fairness, Accountability, and Transparency (FAccT 2022)",
+  "URL": "https://doi.org/10.1145/3531146.3533233"
+ },
+ {
+  "id": "jacobs2021",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Jacobs",
+    "given": "A. Z."
+   },
+   {
+    "family": "Wallach",
+    "given": "H."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "Measurement and fairness",
+  "container-title": "Proceedings of the ACM Conference on Fairness, Accountability, and Transparency (FAccT 2021)",
+  "URL": "https://doi.org/10.1145/3442188.3445901"
+ },
+ {
+  "id": "kapoor2023",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Kapoor",
+    "given": "S."
+   },
+   {
+    "family": "Narayanan",
+    "given": "A."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2023
+    ]
+   ]
+  },
+  "title": "Leakage and the reproducibility crisis in machine-learning-based science",
+  "container-title": "Patterns, 4(9), 100804",
+  "URL": "https://doi.org/10.1016/j.patter.2023.100804"
+ },
+ {
+  "id": "kapoor2025",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Kapoor",
+    "given": "S."
+   },
+   {
+    "family": "Stroebl",
+    "given": "B."
+   },
+   {
+    "family": "Siegel",
+    "given": "Z. S."
+   },
+   {
+    "family": "Nadgir",
+    "given": "N."
+   },
+   {
+    "family": "Narayanan",
+    "given": "A."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2025
+    ]
+   ]
+  },
+  "title": "AI agents that matter",
+  "container-title": "Transactions on Machine Learning Research (TMLR)",
+  "URL": "https://arxiv.org/abs/2407.01502"
+ },
+ {
+  "id": "karpinska2021",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Karpinska",
+    "given": "M."
+   },
+   {
+    "family": "Akoury",
+    "given": "N."
+   },
+   {
+    "family": "Iyyer",
+    "given": "M."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "The perils of using Mechanical Turk to evaluate open-ended text generation",
+  "container-title": "Proceedings of EMNLP 2021",
+  "URL": "https://arxiv.org/abs/2109.06835"
+ },
+ {
+  "id": "kiela2021",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Kiela",
+    "given": "D."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "Dynabench: Rethinking benchmarking in NLP",
+  "container-title": "Proceedings of NAACL-HLT 2021",
+  "URL": "https://arxiv.org/abs/2104.14337"
+ },
+ {
+  "id": "koh2021",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Koh",
+    "given": "P. W."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "WILDS: A benchmark of in-the-wild distribution shifts",
+  "container-title": "Proceedings of the International Conference on Machine Learning (ICML 2021)",
+  "URL": "https://arxiv.org/abs/2012.07421"
+ },
+ {
+  "id": "kohavi2020",
+  "type": "book",
+  "author": [
+   {
+    "family": "Kohavi",
+    "given": "R."
+   },
+   {
+    "family": "Tang",
+    "given": "D."
+   },
+   {
+    "family": "Xu",
+    "given": "Y."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2020
+    ]
+   ]
+  },
+  "title": "Trustworthy online controlled experiments: A practical guide to A/B testing",
+  "container-title": "Cambridge University Press",
+  "note": "Book"
+ },
+ {
+  "id": "lapuschkin2019",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Lapuschkin",
+    "given": "S."
+   },
+   {
+    "family": "Wäldchen",
+    "given": "S."
+   },
+   {
+    "family": "Binder",
+    "given": "A."
+   },
+   {
+    "family": "Montavon",
+    "given": "G."
+   },
+   {
+    "family": "Samek",
+    "given": "W."
+   },
+   {
+    "family": "Müller",
+    "given": "K.-R."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2019
+    ]
+   ]
+  },
+  "title": "Unmasking Clever Hans predictors and assessing what machines really learn",
+  "container-title": "Nature Communications, 10, 1096",
+  "URL": "https://doi.org/10.1038/s41467-019-08987-4"
+ },
+ {
+  "id": "liang2023",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Liang",
+    "given": "P."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2023
+    ]
+   ]
+  },
+  "title": "Holistic evaluation of language models",
+  "container-title": "Transactions on Machine Learning Research (TMLR)",
+  "URL": "https://arxiv.org/abs/2211.09110"
+ },
+ {
+  "id": "liao2023",
+  "type": "article",
+  "author": [
+   {
+    "family": "Liao",
+    "given": "Q. V."
+   },
+   {
+    "family": "Xiao",
+    "given": "Z."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2023
+    ]
+   ]
+  },
+  "title": "Rethinking model evaluation as narrowing the socio-technical gap",
+  "container-title": "arXiv:2306.03100",
+  "URL": "https://arxiv.org/abs/2306.03100",
+  "note": "Preprint"
+ },
+ {
+  "id": "lin2019",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Lin",
+    "given": "J."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2019
+    ]
+   ]
+  },
+  "title": "The neural hype and comparisons against weak baselines",
+  "container-title": "ACM SIGIR Forum, 52(2), 40-51 (opinion article)",
+  "URL": "https://doi.org/10.1145/3308774.3308781",
+  "note": "Opinion paper"
+ },
+ {
+  "id": "lipton2019",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Lipton",
+    "given": "Z. C."
+   },
+   {
+    "family": "Steinhardt",
+    "given": "J."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2019
+    ]
+   ]
+  },
+  "title": "Troubling trends in machine learning scholarship",
+  "container-title": "ACM Queue (a practitioner magazine), 17(1), 45-77. First presented at ICML 2018 (The Debates)",
+  "URL": "https://arxiv.org/abs/1807.03341",
+  "note": "Magazine article"
+ },
+ {
+  "id": "madaio2020",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Madaio",
+    "given": "M. A."
+   },
+   {
+    "family": "Stark",
+    "given": "L."
+   },
+   {
+    "family": "Wortman Vaughan",
+    "given": "J."
+   },
+   {
+    "family": "Wallach",
+    "given": "H."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2020
+    ]
+   ]
+  },
+  "title": "Co-designing checklists to understand organizational challenges and opportunities around fairness in AI",
+  "container-title": "Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2020)",
+  "URL": "https://doi.org/10.1145/3313831.3376445"
+ },
+ {
+  "id": "madaio2022",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Madaio",
+    "given": "M."
+   },
+   {
+    "family": "Egede",
+    "given": "L."
+   },
+   {
+    "family": "Subramonyam",
+    "given": "H."
+   },
+   {
+    "family": "Wortman Vaughan",
+    "given": "J."
+   },
+   {
+    "family": "Wallach",
+    "given": "H."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2022
+    ]
+   ]
+  },
+  "title": "Assessing the fairness of AI systems: AI practitioners' processes, challenges, and needs for support",
+  "container-title": "Proceedings of the ACM on Human-Computer Interaction, 6(CSCW1), Article 52",
+  "URL": "https://doi.org/10.1145/3512899"
+ },
+ {
+  "id": "manheim2018",
+  "type": "article",
+  "author": [
+   {
+    "family": "Manheim",
+    "given": "D."
+   },
+   {
+    "family": "Garrabrant",
+    "given": "S."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2018
+    ]
+   ]
+  },
+  "title": "Categorizing variants of Goodhart's Law",
+  "container-title": "arXiv:1803.04585",
+  "URL": "https://arxiv.org/abs/1803.04585",
+  "note": "Preprint"
+ },
+ {
+  "id": "mccoy2019",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "McCoy",
+    "given": "R. T."
+   },
+   {
+    "family": "Pavlick",
+    "given": "E."
+   },
+   {
+    "family": "Linzen",
+    "given": "T."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2019
+    ]
+   ]
+  },
+  "title": "Right for the wrong reasons: Diagnosing syntactic heuristics in natural language inference",
+  "container-title": "Proceedings of ACL 2019",
+  "URL": "https://arxiv.org/abs/1902.01007"
+ },
+ {
+  "id": "melis2018",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Melis",
+    "given": "G."
+   },
+   {
+    "family": "Dyer",
+    "given": "C."
+   },
+   {
+    "family": "Blunsom",
+    "given": "P."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2018
+    ]
+   ]
+  },
+  "title": "On the state of the art of evaluation in neural language models",
+  "container-title": "International Conference on Learning Representations (ICLR 2018)",
+  "URL": "https://arxiv.org/abs/1707.05589"
+ },
+ {
+  "id": "messick1995",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Messick",
+    "given": "S."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1995
+    ]
+   ]
+  },
+  "title": "Validity of psychological assessment: Validation of inferences from persons' responses and performances as scientific inquiry into score meaning",
+  "container-title": "American Psychologist, 50(9), 741-749",
+  "URL": "https://doi.org/10.1037/0003-066X.50.9.741"
+ },
+ {
+  "id": "miller2024",
+  "type": "article",
+  "author": [
+   {
+    "family": "Miller",
+    "given": "E."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "title": "Adding error bars to evals: A statistical approach to language model evaluations",
+  "container-title": "arXiv:2411.00640",
+  "URL": "https://arxiv.org/abs/2411.00640",
+  "note": "Preprint"
+ },
+ {
+  "id": "mitchell2019",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Mitchell",
+    "given": "M."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2019
+    ]
+   ]
+  },
+  "title": "Model cards for model reporting",
+  "container-title": "Proceedings of the Conference on Fairness, Accountability, and Transparency (FAT\\* 2019)",
+  "URL": "https://arxiv.org/abs/1810.03993"
+ },
+ {
+  "id": "mizrahi2024",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Mizrahi",
+    "given": "M."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "title": "State of what art? A call for multi-prompt LLM evaluation",
+  "container-title": "Transactions of the Association for Computational Linguistics, 12",
+  "URL": "https://aclanthology.org/2024.tacl-1.52/"
+ },
+ {
+  "id": "moravec1988",
+  "type": "book",
+  "author": [
+   {
+    "family": "Moravec",
+    "given": "H."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1988
+    ]
+   ]
+  },
+  "title": "Mind children: The future of robot and human intelligence",
+  "container-title": "Harvard University Press",
+  "note": "Book"
+ },
+ {
+  "id": "nist2023",
+  "type": "report",
+  "author": [
+   {
+    "literal": "National Institute of Standards and Technology"
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2023
+    ]
+   ]
+  },
+  "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0), NIST AI 100-1",
+  "container-title": "U.S. Department of Commerce",
+  "URL": "https://doi.org/10.6028/NIST.AI.100-1",
+  "note": "Report"
+ },
+ {
+  "id": "needham2025",
+  "type": "article",
+  "author": [
+   {
+    "family": "Needham",
+    "given": "J."
+   },
+   {
+    "family": "Edkins",
+    "given": "G."
+   },
+   {
+    "family": "Pimpale",
+    "given": "G."
+   },
+   {
+    "family": "Bartsch",
+    "given": "H."
+   },
+   {
+    "family": "Hobbhahn",
+    "given": "M."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2025
+    ]
+   ]
+  },
+  "title": "Large language models often know when they are being evaluated",
+  "container-title": "arXiv:2505.23836",
+  "URL": "https://arxiv.org/abs/2505.23836",
+  "note": "Preprint"
+ },
+ {
+  "id": "northcutt2021",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Northcutt",
+    "given": "C. G."
+   },
+   {
+    "family": "Athalye",
+    "given": "A."
+   },
+   {
+    "family": "Mueller",
+    "given": "J."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "Pervasive label errors in test sets destabilize machine learning benchmarks",
+  "container-title": "NeurIPS 2021 Datasets and Benchmarks Track",
+  "URL": "https://arxiv.org/abs/2103.14749"
+ },
+ {
+  "id": "novikova2017",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Novikova",
+    "given": "J."
+   },
+   {
+    "family": "Dušek",
+    "given": "O."
+   },
+   {
+    "family": "Cercas Curry",
+    "given": "A."
+   },
+   {
+    "family": "Rieser",
+    "given": "V."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2017
+    ]
+   ]
+  },
+  "title": "Why we need new evaluation metrics for NLG",
+  "container-title": "Proceedings of EMNLP 2017",
+  "URL": "https://arxiv.org/abs/1707.06875"
+ },
+ {
+  "id": "oakdenrayner2020",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Oakden-Rayner",
+    "given": "L."
+   },
+   {
+    "family": "Dunnmon",
+    "given": "J."
+   },
+   {
+    "family": "Carneiro",
+    "given": "G."
+   },
+   {
+    "family": "Ré",
+    "given": "C."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2020
+    ]
+   ]
+  },
+  "title": "Hidden stratification causes clinically meaningful failures in machine learning for medical imaging",
+  "container-title": "Proceedings of the ACM Conference on Health, Inference, and Learning (CHIL 2020)",
+  "URL": "https://arxiv.org/abs/1909.12475"
+ },
+ {
+  "id": "ott2022",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Ott",
+    "given": "S."
+   },
+   {
+    "family": "Barbosa-Silva",
+    "given": "A."
+   },
+   {
+    "family": "Blagec",
+    "given": "K."
+   },
+   {
+    "family": "Brauner",
+    "given": "J."
+   },
+   {
+    "family": "Samwald",
+    "given": "M."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2022
+    ]
+   ]
+  },
+  "title": "Mapping global dynamics of benchmark creation and saturation in artificial intelligence",
+  "container-title": "Nature Communications, 13, 6793",
+  "URL": "https://doi.org/10.1038/s41467-022-34591-0"
+ },
+ {
+  "id": "pan2022",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Pan",
+    "given": "A."
+   },
+   {
+    "family": "Bhatia",
+    "given": "K."
+   },
+   {
+    "family": "Steinhardt",
+    "given": "J."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2022
+    ]
+   ]
+  },
+  "title": "The effects of reward misspecification: Mapping and mitigating misaligned models",
+  "container-title": "International Conference on Learning Representations (ICLR 2022)",
+  "URL": "https://arxiv.org/abs/2201.03544"
+ },
+ {
+  "id": "panickssery2024",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Panickssery",
+    "given": "A."
+   },
+   {
+    "family": "Bowman",
+    "given": "S. R."
+   },
+   {
+    "family": "Feng",
+    "given": "S."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "title": "LLM evaluators recognize and favor their own generations",
+  "container-title": "Advances in Neural Information Processing Systems (NeurIPS 2024)",
+  "URL": "https://arxiv.org/abs/2404.13076"
+ },
+ {
+  "id": "parasuraman1997",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Parasuraman",
+    "given": "R."
+   },
+   {
+    "family": "Riley",
+    "given": "V."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1997
+    ]
+   ]
+  },
+  "title": "Humans and automation: Use, misuse, disuse, abuse",
+  "container-title": "Human Factors, 39(2), 230-253",
+  "URL": "https://doi.org/10.1518/001872097778543886"
+ },
+ {
+  "id": "parnin2025",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Parnin",
+    "given": "C."
+   },
+   {
+    "family": "Soares",
+    "given": "G."
+   },
+   {
+    "family": "Pandita",
+    "given": "R."
+   },
+   {
+    "family": "Gulwani",
+    "given": "S."
+   },
+   {
+    "family": "Rich",
+    "given": "J."
+   },
+   {
+    "family": "Henley",
+    "given": "A. Z."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2025
+    ]
+   ]
+  },
+  "title": "Building your own product copilot: Challenges, opportunities, and needs",
+  "container-title": "Proceedings of the IEEE International Conference on Software Analysis, Evolution and Reengineering (SANER 2025)",
+  "URL": "https://arxiv.org/abs/2312.14231"
+ },
+ {
+  "id": "pfungst1911",
+  "type": "book",
+  "author": [
+   {
+    "family": "Pfungst",
+    "given": "O."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1911
+    ]
+   ]
+  },
+  "title": "Clever Hans (the horse of Mr. von Osten): A contribution to experimental animal and human psychology",
+  "container-title": "Henry Holt. English translation by C. L. Rahn of the 1907 German original",
+  "URL": "https://www.gutenberg.org/ebooks/33936",
+  "note": "Book"
+ },
+ {
+  "id": "pineau2021",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Pineau",
+    "given": "J."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "Improving reproducibility in machine learning research (A report from the NeurIPS 2019 Reproducibility Program)",
+  "container-title": "Journal of Machine Learning Research, 22(164), 1-20",
+  "URL": "https://arxiv.org/abs/2003.12206"
+ },
+ {
+  "id": "rabanser2026",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Rabanser",
+    "given": "S."
+   },
+   {
+    "family": "Kapoor",
+    "given": "S."
+   },
+   {
+    "family": "Kirgis",
+    "given": "P."
+   },
+   {
+    "family": "Liu",
+    "given": "K."
+   },
+   {
+    "family": "Utpala",
+    "given": "S."
+   },
+   {
+    "family": "Narayanan",
+    "given": "A."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2026
+    ]
+   ]
+  },
+  "title": "Towards a science of AI agent reliability",
+  "container-title": "Proceedings of the 43rd International Conference on Machine Learning (ICML 2026), PMLR 306, 102769-102820",
+  "URL": "https://proceedings.mlr.press/v306/rabanser26a.html"
+ },
+ {
+  "id": "raji2021",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Raji",
+    "given": "I. D."
+   },
+   {
+    "family": "Bender",
+    "given": "E. M."
+   },
+   {
+    "family": "Paullada",
+    "given": "A."
+   },
+   {
+    "family": "Denton",
+    "given": "E."
+   },
+   {
+    "family": "Hanna",
+    "given": "A."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "AI and the everything in the whole wide world benchmark",
+  "container-title": "NeurIPS 2021 Datasets and Benchmarks Track",
+  "URL": "https://arxiv.org/abs/2111.15366"
+ },
+ {
+  "id": "raji2022",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Raji",
+    "given": "I. D."
+   },
+   {
+    "family": "Kumar",
+    "given": "I. E."
+   },
+   {
+    "family": "Horowitz",
+    "given": "A."
+   },
+   {
+    "family": "Selbst",
+    "given": "A."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2022
+    ]
+   ]
+  },
+  "title": "The fallacy of AI functionality",
+  "container-title": "Proceedings of the ACM Conference on Fairness, Accountability, and Transparency (FAccT 2022)",
+  "URL": "https://doi.org/10.1145/3531146.3533158"
+ },
+ {
+  "id": "raji2020",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Raji",
+    "given": "I. D."
+   },
+   {
+    "family": "Smart",
+    "given": "A."
+   },
+   {
+    "family": "White",
+    "given": "R. N."
+   },
+   {
+    "family": "Mitchell",
+    "given": "M."
+   },
+   {
+    "family": "Gebru",
+    "given": "T."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2020
+    ]
+   ]
+  },
+  "title": "Closing the AI accountability gap: Defining an end-to-end framework for internal algorithmic auditing",
+  "container-title": "Proceedings of the Conference on Fairness, Accountability, and Transparency (FAT\\* 2020)",
+  "URL": "https://arxiv.org/abs/2001.00973"
+ },
+ {
+  "id": "rakova2021",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Rakova",
+    "given": "B."
+   },
+   {
+    "family": "Yang",
+    "given": "J."
+   },
+   {
+    "family": "Cramer",
+    "given": "H."
+   },
+   {
+    "family": "Chowdhury",
+    "given": "R."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "Where responsible AI meets reality: Practitioner perspectives on enablers for shifting organizational practices",
+  "container-title": "Proceedings of the ACM on Human-Computer Interaction, 5(CSCW1)",
+  "URL": "https://doi.org/10.1145/3449081"
+ },
+ {
+  "id": "recht2019",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Recht",
+    "given": "B."
+   },
+   {
+    "family": "Roelofs",
+    "given": "R."
+   },
+   {
+    "family": "Schmidt",
+    "given": "L."
+   },
+   {
+    "family": "Shankar",
+    "given": "V."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2019
+    ]
+   ]
+  },
+  "title": "Do ImageNet classifiers generalize to ImageNet?",
+  "container-title": "Proceedings of the International Conference on Machine Learning (ICML 2019)",
+  "URL": "https://arxiv.org/abs/1902.10811"
+ },
+ {
+  "id": "reiter2018",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Reiter",
+    "given": "E."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2018
+    ]
+   ]
+  },
+  "title": "A structured review of the validity of BLEU",
+  "container-title": "Computational Linguistics, 44(3), 393-401",
+  "URL": "https://doi.org/10.1162/coli_a_00322"
+ },
+ {
+  "id": "reuel2024",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Reuel",
+    "given": "A."
+   },
+   {
+    "family": "Hardy",
+    "given": "A."
+   },
+   {
+    "family": "Smith",
+    "given": "C."
+   },
+   {
+    "family": "Lamparth",
+    "given": "M."
+   },
+   {
+    "family": "Hardy",
+    "given": "M."
+   },
+   {
+    "family": "Kochenderfer",
+    "given": "M. J."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "title": "BetterBench: Assessing AI benchmarks, uncovering issues, and establishing best practices",
+  "container-title": "NeurIPS 2024 Datasets and Benchmarks Track",
+  "URL": "https://arxiv.org/abs/2411.12990"
+ },
+ {
+  "id": "ribeiro2020",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Ribeiro",
+    "given": "M. T."
+   },
+   {
+    "family": "Wu",
+    "given": "T."
+   },
+   {
+    "family": "Guestrin",
+    "given": "C."
+   },
+   {
+    "family": "Singh",
+    "given": "S."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2020
+    ]
+   ]
+  },
+  "title": "Beyond accuracy: Behavioral testing of NLP models with CheckList",
+  "container-title": "Proceedings of ACL 2020",
+  "URL": "https://arxiv.org/abs/2005.04118"
+ },
+ {
+  "id": "roelofs2019",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Roelofs",
+    "given": "R."
+   },
+   {
+    "family": "Shankar",
+    "given": "V."
+   },
+   {
+    "family": "Recht",
+    "given": "B."
+   },
+   {
+    "family": "Fridovich-Keil",
+    "given": "S."
+   },
+   {
+    "family": "Hardt",
+    "given": "M."
+   },
+   {
+    "family": "Miller",
+    "given": "J."
+   },
+   {
+    "family": "Schmidt",
+    "given": "L."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2019
+    ]
+   ]
+  },
+  "title": "A meta-analysis of overfitting in machine learning",
+  "container-title": "Advances in Neural Information Processing Systems 32 (NeurIPS 2019)",
+  "URL": "https://proceedings.neurips.cc/paper/2019/hash/ee39e503b6bedf0c98c388b7e8589aca-Abstract.html"
+ },
+ {
+  "id": "rogers2003",
+  "type": "book",
+  "author": [
+   {
+    "family": "Rogers",
+    "given": "E. M."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2003
+    ]
+   ]
+  },
+  "title": "Diffusion of innovations (5th ed.)",
+  "container-title": "Free Press",
+  "note": "Book"
+ },
+ {
+  "id": "sainz2023",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Sainz",
+    "given": "O."
+   },
+   {
+    "family": "Campos",
+    "given": "J. A."
+   },
+   {
+    "family": "García-Ferrero",
+    "given": "I."
+   },
+   {
+    "family": "Etxaniz",
+    "given": "J."
+   },
+   {
+    "family": "Lopez de Lacalle",
+    "given": "O."
+   },
+   {
+    "family": "Agirre",
+    "given": "E."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2023
+    ]
+   ]
+  },
+  "title": "NLP evaluation in trouble: On the need to measure LLM data contamination for each benchmark",
+  "container-title": "Findings of EMNLP 2023",
+  "URL": "https://arxiv.org/abs/2310.18018"
+ },
+ {
+  "id": "salaudeen2025",
+  "type": "article",
+  "author": [
+   {
+    "family": "Salaudeen",
+    "given": "O."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2025
+    ]
+   ]
+  },
+  "title": "Measurement to meaning: A validity-centered framework for AI evaluation",
+  "container-title": "arXiv:2505.10573",
+  "URL": "https://arxiv.org/abs/2505.10573",
+  "note": "Preprint"
+ },
+ {
+  "id": "schaeffer2023",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Schaeffer",
+    "given": "R."
+   },
+   {
+    "family": "Miranda",
+    "given": "B."
+   },
+   {
+    "family": "Koyejo",
+    "given": "S."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2023
+    ]
+   ]
+  },
+  "title": "Are emergent abilities of large language models a mirage?",
+  "container-title": "Advances in Neural Information Processing Systems (NeurIPS 2023)",
+  "URL": "https://arxiv.org/abs/2304.15004"
+ },
+ {
+  "id": "sclar2024",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Sclar",
+    "given": "M."
+   },
+   {
+    "family": "Choi",
+    "given": "Y."
+   },
+   {
+    "family": "Tsvetkov",
+    "given": "Y."
+   },
+   {
+    "family": "Suhr",
+    "given": "A."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "title": "Quantifying language models' sensitivity to spurious features in prompt design or: How I learned to start worrying about prompt formatting",
+  "container-title": "International Conference on Learning Representations (ICLR 2024)",
+  "URL": "https://arxiv.org/abs/2310.11324"
+ },
+ {
+  "id": "selbst2019",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Selbst",
+    "given": "A. D."
+   },
+   {
+    "family": "boyd",
+    "given": "d."
+   },
+   {
+    "family": "Friedler",
+    "given": "S. A."
+   },
+   {
+    "family": "Venkatasubramanian",
+    "given": "S."
+   },
+   {
+    "family": "Vertesi",
+    "given": "J."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2019
+    ]
+   ]
+  },
+  "title": "Fairness and abstraction in sociotechnical systems",
+  "container-title": "Proceedings of the Conference on Fairness, Accountability, and Transparency (FAT\\* 2019)",
+  "URL": "https://doi.org/10.1145/3287560.3287598"
+ },
+ {
+  "id": "shankar2024",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Shankar",
+    "given": "S."
+   },
+   {
+    "family": "Garcia",
+    "given": "R."
+   },
+   {
+    "family": "Hellerstein",
+    "given": "J. M."
+   },
+   {
+    "family": "Parameswaran",
+    "given": "A. G."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "title": "\"We have no idea how models will behave in production until production\": How engineers operationalize machine learning",
+  "container-title": "Proceedings of the ACM on Human-Computer Interaction, 8(CSCW1), Article 206",
+  "URL": "https://doi.org/10.1145/3653697"
+ },
+ {
+  "id": "shankar2024a",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Shankar",
+    "given": "S."
+   },
+   {
+    "family": "Zamfirescu-Pereira",
+    "given": "J. D."
+   },
+   {
+    "family": "Hartmann",
+    "given": "B."
+   },
+   {
+    "family": "Parameswaran",
+    "given": "A. G."
+   },
+   {
+    "family": "Arawjo",
+    "given": "I."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "title": "Who validates the validators? Aligning LLM-assisted evaluation of LLM outputs with human preferences",
+  "container-title": "Proceedings of the ACM Symposium on User Interface Software and Technology (UIST 2024)",
+  "URL": "https://doi.org/10.1145/3654777.3676450"
+ },
+ {
+  "id": "shevlane2023",
+  "type": "article",
+  "author": [
+   {
+    "family": "Shevlane",
+    "given": "T."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2023
+    ]
+   ]
+  },
+  "title": "Model evaluation for extreme risks",
+  "container-title": "arXiv:2305.15324",
+  "URL": "https://arxiv.org/abs/2305.15324",
+  "note": "Preprint"
+ },
+ {
+  "id": "singh2025",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Singh",
+    "given": "S."
+   },
+   {
+    "family": "Nan",
+    "given": "Y."
+   },
+   {
+    "family": "Wang",
+    "given": "A."
+   },
+   {
+    "family": "D'Souza",
+    "given": "D."
+   },
+   {
+    "family": "Kapoor",
+    "given": "S."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2025
+    ]
+   ]
+  },
+  "title": "The leaderboard illusion",
+  "container-title": "Advances in Neural Information Processing Systems (NeurIPS 2025), Datasets and Benchmarks Track",
+  "URL": "https://arxiv.org/abs/2504.20879"
+ },
+ {
+  "id": "strathern1997",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Strathern",
+    "given": "M."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     1997
+    ]
+   ]
+  },
+  "title": "'Improving ratings': Audit in the British university system",
+  "container-title": "European Review, 5(3), 305-321"
+ },
+ {
+  "id": "sturm2014",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Sturm",
+    "given": "B. L."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2014
+    ]
+   ]
+  },
+  "title": "A simple method to determine if a music information retrieval system is a \"horse\"",
+  "container-title": "IEEE Transactions on Multimedia, 16(6), 1636-1644",
+  "URL": "https://doi.org/10.1109/TMM.2014.2330697"
+ },
+ {
+  "id": "turpin2023",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Turpin",
+    "given": "M."
+   },
+   {
+    "family": "Michael",
+    "given": "J."
+   },
+   {
+    "family": "Perez",
+    "given": "E."
+   },
+   {
+    "family": "Bowman",
+    "given": "S. R."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2023
+    ]
+   ]
+  },
+  "title": "Language models don't always say what they think: Unfaithful explanations in chain-of-thought prompting",
+  "container-title": "Advances in Neural Information Processing Systems 36 (NeurIPS 2023)",
+  "URL": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/ed3fea9033a80fea1376299fa7863f4a-Abstract-Conference.html"
+ },
+ {
+  "id": "vaccaro2024",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Vaccaro",
+    "given": "M."
+   },
+   {
+    "family": "Almaatouq",
+    "given": "A."
+   },
+   {
+    "family": "Malone",
+    "given": "T."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "title": "When combinations of humans and AI are useful: A systematic review and meta-analysis",
+  "container-title": "Nature Human Behaviour, 8, 2293-2303",
+  "URL": "https://doi.org/10.1038/s41562-024-02024-1"
+ },
+ {
+  "id": "vanderlee2021",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "van der Lee",
+    "given": "C."
+   },
+   {
+    "family": "Gatt",
+    "given": "A."
+   },
+   {
+    "family": "van Miltenburg",
+    "given": "E."
+   },
+   {
+    "family": "Krahmer",
+    "given": "E."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "Human evaluation of automatically generated text: Current trends and best practice guidelines",
+  "container-title": "Computer Speech & Language, 67, 101151",
+  "URL": "https://doi.org/10.1016/j.csl.2020.101151"
+ },
+ {
+  "id": "vandermaden2026",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "van der Maden",
+    "given": "W."
+   },
+   {
+    "family": "Sadek",
+    "given": "M."
+   },
+   {
+    "family": "Xiao",
+    "given": "Z."
+   },
+   {
+    "family": "Mottelson",
+    "given": "A."
+   },
+   {
+    "family": "Liao",
+    "given": "Q. V."
+   },
+   {
+    "family": "Zhu",
+    "given": "J."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2026
+    ]
+   ]
+  },
+  "title": "Results-actionability gap: Understanding how practitioners evaluate LLM products in the wild",
+  "container-title": "Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2026)",
+  "URL": "https://doi.org/10.1145/3772318.3791069"
+ },
+ {
+  "id": "vanderweij2025",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "van der Weij",
+    "given": "T."
+   },
+   {
+    "family": "Hofstätter",
+    "given": "F."
+   },
+   {
+    "family": "Jaffe",
+    "given": "O."
+   },
+   {
+    "family": "Brown",
+    "given": "S. F."
+   },
+   {
+    "family": "Ward",
+    "given": "F. R."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2025
+    ]
+   ]
+  },
+  "title": "AI sandbagging: Language models can strategically underperform on evaluations",
+  "container-title": "International Conference on Learning Representations (ICLR 2025)",
+  "URL": "https://arxiv.org/abs/2406.07358"
+ },
+ {
+  "id": "wallach2025",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Wallach",
+    "given": "H."
+   },
+   {
+    "family": "Desai",
+    "given": "M."
+   },
+   {
+    "family": "Cooper",
+    "given": "A. F."
+   },
+   {
+    "family": "Wang",
+    "given": "A."
+   },
+   {
+    "family": "Atalla",
+    "given": "C."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2025
+    ]
+   ]
+  },
+  "title": "Position: Evaluating generative AI systems is a social science measurement challenge",
+  "container-title": "Proceedings of the International Conference on Machine Learning (ICML 2025), PMLR 267",
+  "URL": "https://arxiv.org/abs/2502.00561"
+ },
+ {
+  "id": "wang2024",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Wang",
+    "given": "P."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "title": "Large language models are not fair evaluators",
+  "container-title": "Proceedings of ACL 2024",
+  "URL": "https://aclanthology.org/2024.acl-long.511/"
+ },
+ {
+  "id": "weidinger2023",
+  "type": "article",
+  "author": [
+   {
+    "family": "Weidinger",
+    "given": "L."
+   },
+   {
+    "family": "Rauh",
+    "given": "M."
+   },
+   {
+    "family": "Marchal",
+    "given": "N."
+   },
+   {
+    "family": "Manzini",
+    "given": "A."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2023
+    ]
+   ]
+  },
+  "title": "Sociotechnical safety evaluation of generative AI systems",
+  "container-title": "arXiv:2310.11986",
+  "URL": "https://arxiv.org/abs/2310.11986",
+  "note": "Preprint"
+ },
+ {
+  "id": "wong2021",
+  "type": "article-journal",
+  "author": [
+   {
+    "family": "Wong",
+    "given": "A."
+   },
+   {
+    "family": "Otles",
+    "given": "E."
+   },
+   {
+    "family": "Donnelly",
+    "given": "J. P."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2021
+    ]
+   ]
+  },
+  "title": "External validation of a widely implemented proprietary sepsis prediction model in hospitalized patients",
+  "container-title": "JAMA Internal Medicine, 181(8), 1065-1070",
+  "URL": "https://pubmed.ncbi.nlm.nih.gov/34152373/"
+ },
+ {
+  "id": "wu2019",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Wu",
+    "given": "T."
+   },
+   {
+    "family": "Ribeiro",
+    "given": "M. T."
+   },
+   {
+    "family": "Heer",
+    "given": "J."
+   },
+   {
+    "family": "Weld",
+    "given": "D."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2019
+    ]
+   ]
+  },
+  "title": "Errudite: Scalable, reproducible, and testable error analysis",
+  "container-title": "Proceedings of ACL 2019",
+  "URL": "https://aclanthology.org/P19-1073/"
+ },
+ {
+  "id": "yao2025",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Yao",
+    "given": "S."
+   },
+   {
+    "family": "Shinn",
+    "given": "N."
+   },
+   {
+    "family": "Razavi",
+    "given": "P."
+   },
+   {
+    "family": "Narasimhan",
+    "given": "K."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2025
+    ]
+   ]
+  },
+  "title": "τ-bench: A benchmark for tool-agent-user interaction in real-world domains",
+  "container-title": "International Conference on Learning Representations (ICLR 2025)",
+  "URL": "https://arxiv.org/abs/2406.12045"
+ },
+ {
+  "id": "zhang2024",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Zhang",
+    "given": "H."
+   },
+   {
+    "family": "Da",
+    "given": "J."
+   },
+   {
+    "family": "Lee",
+    "given": "D."
+   },
+   {
+    "family": "Robinson",
+    "given": "V."
+   },
+   {
+    "family": "Wu",
+    "given": "C."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2024
+    ]
+   ]
+  },
+  "title": "A careful examination of large language model performance on grade school arithmetic",
+  "container-title": "NeurIPS 2024 Datasets and Benchmarks Track",
+  "URL": "https://arxiv.org/abs/2405.00332"
+ },
+ {
+  "id": "zheng2023",
+  "type": "paper-conference",
+  "author": [
+   {
+    "family": "Zheng",
+    "given": "L."
+   },
+   {
+    "family": "Chiang",
+    "given": "W.-L."
+   },
+   {
+    "family": "Sheng",
+    "given": "Y."
+   },
+   {
+    "family": "Zhuang",
+    "given": "S."
+   },
+   {
+    "family": "Wu",
+    "given": "Z."
+   }
+  ],
+  "issued": {
+   "date-parts": [
+    [
+     2023
+    ]
+   ]
+  },
+  "title": "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena",
+  "container-title": "NeurIPS 2023 Datasets and Benchmarks Track",
+  "URL": "https://arxiv.org/abs/2306.05685"
+ }
+]
