@@ -770,15 +770,15 @@ A leaderboard that only shows accuracy invites a quiet arms race. Call the model
 
 ##### What it means
 
-If a model scores 80% on 200 questions, the "true" score on similar questions could easily be a few points higher or lower. A rough standard error for accuracy is the square root of p(1 \- p) / n. For 80% on 200 items, that's about 2.8 points, so a 95% confidence interval runs roughly 5.5 points in each direction. A rival model at 83% on the same test hasn't clearly won anything.
+If a model scores 80% on 200 questions, the "true" score on similar questions could easily be a few points higher or lower. A rough standard error for accuracy is the square root of p(1 \- p) / n. For 80% on 200 items, that's about 2.8 points, so a 95% confidence interval runs roughly 5.5 points in each direction. (For small samples or scores near 0% or 100%, use a Wilson interval instead of this rough formula.) A rival model at 83% on the same test hasn't clearly won anything. Comparing the two on the same questions can cut the noise, but a 3-point gap on 200 items still stands out only if the models disagree on roughly 3% to 5% of items or fewer, meaning they give nearly identical answers.
 
 Randomness adds more noise: sampling temperature, random seeds, and data order all shift results between runs.
 
 ##### The evidence
 
 - **Significance testing is often skipped.** Dror et al. (2018) surveyed NLP research practice, found statistical significance testing was often missing or misapplied, and wrote a practical guide to choosing the right test.  
-- **Many experiments are underpowered.** Card et al. (2020) showed that many NLP experiments don't have enough data to reliably detect the small improvements typically claimed, which means published gains can be exaggerated.  
-- **Variance rivals the gains.** Bouthillier et al. (2021) found that variance from sources like data sampling, weight initialization, and hyperparameter choices is often as large as the differences papers report. They recommend randomizing as many sources of variation as possible.  
+- **Many experiments are underpowered.** Card et al. (2020) showed that many NLP experiments don't have enough data to reliably detect the small improvements typically claimed, and warned that this increases the chance of exaggerated findings.  
+- **Variance rivals the gains.** Bouthillier et al. (2021) studied five benchmark tasks and found that variance from sources like data sampling, weight initialization, and hyperparameter choices is not small next to the improvements typically published on them. They recommend randomizing as many sources of variation as possible.  
 - **A playbook for LLM evals.** Miller (2024) treats eval questions as a sample from a larger population and lays out how to compute standard errors, cluster them when questions are related, compare models with paired differences, and plan sample sizes with power analysis.  
 - **Benchmarks rarely report it.** Reuel et al. (2024) assessed 24 AI benchmarks against 46 best practices and found most don't report statistical significance.
 
@@ -787,8 +787,8 @@ Randomness adds more noise: sampling temperature, random seeds, and data order a
 - Put a 95% confidence interval next to every score.  
 - Compare models on the same items with paired tests.  
 - Cluster standard errors when items come in groups, like several questions about one document.  
-- For stochastic outputs, run multiple samples per item.  
-- Treat any gap inside the interval as a tie.
+- For stochastic outputs, run multiple samples per item. This reduces run-to-run noise, not noise from which items you chose.  
+- Judge a comparison by the confidence interval for the difference between the two systems, not by whether their separate intervals overlap. If the difference's interval includes zero, the systems are not shown to differ. That is not the same as showing they are equal.
 
 ##### Origins
 
@@ -819,15 +819,15 @@ A 95% overall score can be 99% for most people and 70% for a group that makes up
 
 ##### The evidence
 
-- **Gender Shades.** Buolamwini and Gebru (2018) evaluated commercial gender classification systems and found error rates up to 34.7% for darker-skinned women, compared to at most 0.8% for lighter-skinned men.  
-- **Hidden stratification in medicine.** Oakden-Rayner et al. (2020) showed that medical imaging models can have relative performance differences of over 20% on clinically important subsets. A model detecting pneumothorax (collapsed lung) had an AUC of 0.94 on X-rays that showed a chest drain, but only 0.77 on X-rays without one. Chest drains are the treatment, so the model did worst on the untreated, most urgent cases.  
-- **Report the breakdown.** Burnell et al. (2023), writing in Science, argue that aggregate metrics and lack of access to instance-level results limit understanding of AI systems, and call for granular reporting.  
-- **Build it into documentation.** Mitchell et al. (2019) made disaggregated evaluation across relevant groups a standard section of model cards.
+- **Gender Shades.** Buolamwini and Gebru (2018) tested three commercial gender classification systems in April and May 2017 and found error rates up to 34.7% for darker-skinned women, compared to at most 0.8% for lighter-skinned men. Overall accuracy was 87.9% to 93.7%. The figures describe the systems as they were then, not today's versions.  
+- **Hidden stratification in medicine.** Oakden-Rayner et al. (2020) showed that medical imaging models can have relative performance differences of over 20% on some clinically important subsets. A model detecting pneumothorax (collapsed lung) had an AUC of 0.94 on X-rays that showed a chest drain, but only 0.77 on X-rays without one. Chest drains are the treatment, so the model did worst on the untreated, most urgent cases.  
+- **Report the breakdown.** Burnell et al. (2023), in a Science policy forum article, argue that aggregate metrics and lack of access to instance-level results limit understanding of AI systems, and call for granular reporting.  
+- **Build it into documentation.** Mitchell et al. (2019) proposed model cards, with a quantitative analysis section broken down by groups and conditions and reported with confidence intervals where possible.
 
 ##### Use it
 
 - Define the slices that matter for your users before you look at the overall number.  
-- Report the worst-performing slice next to the average.  
+- Report the worst-performing slice next to the average, and say how many slices you looked at.  
 - Make sure each important slice has enough examples to support its own error bars.  
 - Read failures by hand. Clusters often reveal slices you didn't think to define.
 
@@ -855,13 +855,13 @@ A 95% overall score can be 99% for most people and 70% for a group that makes up
 
 ##### What it means
 
-"Our model is 20% better" means nothing until you know better than what. New methods usually get weeks of tuning. Baselines often get copied from an old paper with default settings. The gap between them can be mostly effort, not ideas. In product settings, teams sometimes compare an AI feature to a different AI feature and forget to compare it to the plain workflow people already use.
+"Our model is 20% better" means nothing until you know better than what. New methods are often tuned heavily. Baselines are sometimes copied from earlier papers without being tuned for the new setting. The gap between them can be mostly effort, not ideas. In product settings, teams sometimes compare an AI feature to a different AI feature and forget to compare it to the plain workflow people already use.
 
 ##### The evidence
 
-- **Tuned old methods win.** Melis, Dyer, and Blunsom (2018) found that standard LSTM language models, carefully tuned, outperformed more recent and more complex architectures.  
-- **Neural hype in search.** Lin (2019) documented information retrieval papers reporting gains over weak baselines that didn't hold against well-tuned classic methods.  
-- **Recommenders didn't reproduce.** Ferrari Dacrema, Cremonesi, and Jannach (2019) tried to reproduce 18 neural recommendation algorithms from top conferences. Only 7 could be reproduced with reasonable effort, and 6 of those were often outperformed by simple heuristic methods.  
+- **Tuned old methods win.** Melis, Dyer, and Blunsom (2018) found that standard LSTM language models, carefully tuned, outperformed more recent and more complex architectures on language-modelling benchmarks.  
+- **Neural hype in search.** In an opinion piece, Lin (2019) compared two recent neural ranking papers with well-tuned classic methods on one test collection (Robust04). He argued their baselines were weak: in one paper the gains mostly disappeared, and in the other no neural model came close to the tuned classic method.  
+- **Few recommenders could be rerun.** Ferrari Dacrema, Cremonesi, and Jannach (2019) examined 18 neural recommendation algorithms from top conferences (2015 to 2018). Only 7 had enough public code and data to be reproduced with reasonable effort, and 6 of those could often be outperformed by simple, well-tuned methods. The seventh did not consistently beat a well-tuned non-neural linear method. The other 11 could not be rerun, so the study says nothing about how they would have fared.  
 - **Simple methods capture most of the value.** Hand (2006) argued that simple classifiers often capture most of the achievable predictive power, and that the gains from sophisticated methods can vanish in real use.
 
 ##### Use it
@@ -873,13 +873,13 @@ A 95% overall score can be 99% for most people and 70% for a group that makes up
 
 ##### Origins
 
-"The Baseline Rule" is this site's name for a principle that shows up in nearly every field that runs experiments. Hand's "illusion of progress" (2006) is an early, clear statement in machine learning.
+"The Baseline Rule" is this site's name for a principle that shows up in nearly every field that runs experiments. Hand's "illusion of progress" (2006) is an early, clear statement in supervised classification research.
 
 ##### Sources
 
 - Ferrari Dacrema, M., Cremonesi, P., & Jannach, D. (2019). [Are we really making much progress? A worrying analysis of recent neural recommendation approaches](https://arxiv.org/abs/1907.06902). Proceedings of the ACM Conference on Recommender Systems (RecSys 2019).  
 - Hand, D. J. (2006). [Classifier technology and the illusion of progress](https://arxiv.org/abs/math/0606441). Statistical Science, 21(1), 1-14.  
-- Lin, J. (2019). [The neural hype and comparisons against weak baselines](https://doi.org/10.1145/3308774.3308781). ACM SIGIR Forum, 52(2), 40-51.  
+- Lin, J. (2019). [The neural hype and comparisons against weak baselines](https://doi.org/10.1145/3308774.3308781). ACM SIGIR Forum, 52(2), 40-51 (opinion article).  
 - Melis, G., Dyer, C., & Blunsom, P. (2018). [On the state of the art of evaluation in neural language models](https://arxiv.org/abs/1707.05589). International Conference on Learning Representations (ICLR 2018).
 
 #### The Benchmark Lottery
@@ -895,14 +895,14 @@ A 95% overall score can be 99% for most people and 70% for a group that makes up
 
 ##### What it means
 
-There are thousands of benchmarks. Any given paper or product announcement reports a handful. If the handful was chosen after seeing results, the table tells you more about the selection than about the system. Even without bad intent, communities settle on benchmarks that happen to favor certain approaches, and newcomers get judged by rules that weren't written for them.
+There are very many benchmarks. Any given paper or product announcement reports a handful. If the handful was chosen after seeing results, the table tells you more about the selection than about the system. Even without bad intent, communities settle on benchmarks that happen to favor certain approaches, and newcomers get judged by rules that weren't written for them.
 
 ##### The evidence
 
-- **Named and measured.** Dehghani et al. (2021) showed that the relative ranking of methods can change substantially depending on the benchmark tasks chosen, and called this the benchmark lottery.  
-- **Models weren't even compared on the same tests.** Liang et al. (2023) found that before HELM, language models had on average been evaluated on just 17.9% of HELM's core scenarios, with some prominent models sharing no scenarios at all. HELM raised that to 96%.  
-- **Whose utility?** Ethayarajh and Jurafsky (2020) show that a leaderboard's ranking reflects one implicit set of priorities that may not match any particular user's.  
-- **An interdisciplinary warning.** Eriksson et al. (2025) reviewed about 100 studies on benchmark shortcomings and found recurring problems, including data contamination, construct validity issues, misaligned incentives, and gaming of results, all shaped by commercial and competitive pressure.
+- **Named and measured.** Dehghani et al. (2021) showed that across several common benchmark setups the relative ranking of methods can change substantially depending on the benchmark tasks chosen, and proposed the term benchmark lottery.  
+- **Models weren't even compared on the same tests.** Liang et al. (2023) found that before HELM, the 30 language models they benchmarked had on average been evaluated, under any conditions and counting earlier work, on just 17.9% of HELM's 16 core scenarios, with some prominent models sharing no scenarios at all. HELM raised that to 96.0%, with the remaining gap due to technical issues.  
+- **Whose utility?** In an opinion paper, Ethayarajh and Jurafsky (2020) argue that leaderboards rank models on performance alone and ignore costs that matter to practitioners, such as model size and energy use, so a leaderboard can be a poor proxy for what a given user needs.  
+- **An interdisciplinary warning.** Eriksson et al. (2025) reviewed about 100 studies on benchmark shortcomings and found recurring problems, including data contamination, construct validity issues, misaligned incentives, and gaming of results, in a field shaped by cultural, commercial, and competitive dynamics.
 
 ##### Use it
 
@@ -913,7 +913,7 @@ There are thousands of benchmarks. Any given paper or product announcement repor
 
 ##### Origins
 
-The term comes from Mostafa Dehghani and colleagues' 2021 paper, "The Benchmark Lottery."
+Mostafa Dehghani and colleagues proposed the term in their 2021 paper, "The Benchmark Lottery."
 
 ##### Sources
 
@@ -935,14 +935,14 @@ The term comes from Mostafa Dehghani and colleagues' 2021 paper, "The Benchmark 
 
 ##### What it means
 
-Hosted AI models change under the same name. Prompts get tweaked. Scoring scripts get patched. Six months later, nobody can say why the number was 82% or whether today's 79% is worse. A result you can't reproduce can't be trusted, and it can't be compared to anything.
+Hosted AI models can change under the same name. Prompts get tweaked. Scoring scripts get patched. Six months later, nobody can say why the number was 82% or whether today's 79% is worse. A result you can't reproduce can't be trusted, and it can't be compared to anything.
 
 ##### The evidence
 
-- **The field built programs for it.** Pineau et al. (2021) report on the NeurIPS 2019 reproducibility program, which introduced a code submission policy, a community reproducibility challenge, and a reproducibility checklist.  
+- **NeurIPS built a program for it.** Pineau et al. (2021) report on the NeurIPS 2019 reproducibility program, which introduced a code submission policy, a community reproducibility challenge, and a reproducibility checklist. There, reproducibility meant getting similar results from the same code and data.  
 - **Details change scores.** Biderman et al. (2024) share lessons from maintaining a widely used language model evaluation harness and show how small methodological choices shift results. They recommend sharing code, prompts, and outputs.  
 - **Benchmarks fall short.** Reuel et al. (2024) found most of the 24 AI benchmarks they assessed can't be easily replicated.  
-- **Agents especially.** Kapoor et al. (2025) describe a pervasive lack of reproducibility in AI agent evaluation caused by nonstandard practices.  
+- **Agents especially.** Kapoor et al. (2025) report pervasive shortcomings in the reproducibility of agent evaluations, focusing on HumanEval and WebArena, and attribute them to a lack of standardization in evaluation practices.  
 - **Standard formats exist.** Mitchell et al. (2019) proposed model cards to document intended use and evaluation results. Gebru et al. (2021) proposed datasheets to document how datasets were created and what they're suited for.
 
 ##### Use it

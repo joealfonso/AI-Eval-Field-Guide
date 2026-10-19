@@ -1198,7 +1198,7 @@
       "Decide how many test items you need before running the eval."
     ],
     "whatItMeans": [
-      "If a model scores 80% on 200 questions, the \"true\" score on similar questions could easily be a few points higher or lower. A rough standard error for accuracy is the square root of p(1 - p) / n. For 80% on 200 items, that's about 2.8 points, so a 95% confidence interval runs roughly 5.5 points in each direction. A rival model at 83% on the same test hasn't clearly won anything.",
+      "If a model scores 80% on 200 questions, the \"true\" score on similar questions could easily be a few points higher or lower. A rough standard error for accuracy is the square root of p(1 - p) / n. For 80% on 200 items, that's about 2.8 points, so a 95% confidence interval runs roughly 5.5 points in each direction. (For small samples or scores near 0% or 100%, use a Wilson interval instead of this rough formula.) A rival model at 83% on the same test hasn't clearly won anything. Comparing the two on the same questions can cut the noise, but a 3-point gap on 200 items still stands out only if the models disagree on roughly 3% to 5% of items or fewer, meaning they give nearly identical answers.",
       "Randomness adds more noise: sampling temperature, random seeds, and data order all shift results between runs."
     ],
     "evidence": [
@@ -1208,11 +1208,11 @@
       },
       {
         "lead": "Many experiments are underpowered.",
-        "text": "Card et al. (2020) showed that many NLP experiments don't have enough data to reliably detect the small improvements typically claimed, which means published gains can be exaggerated."
+        "text": "Card et al. (2020) showed that many NLP experiments don't have enough data to reliably detect the small improvements typically claimed, and warned that this increases the chance of exaggerated findings."
       },
       {
         "lead": "Variance rivals the gains.",
-        "text": "Bouthillier et al. (2021) found that variance from sources like data sampling, weight initialization, and hyperparameter choices is often as large as the differences papers report. They recommend randomizing as many sources of variation as possible."
+        "text": "Bouthillier et al. (2021) studied five benchmark tasks and found that variance from sources like data sampling, weight initialization, and hyperparameter choices is not small next to the improvements typically published on them. They recommend randomizing as many sources of variation as possible."
       },
       {
         "lead": "A playbook for LLM evals.",
@@ -1227,8 +1227,8 @@
       "Put a 95% confidence interval next to every score.",
       "Compare models on the same items with paired tests.",
       "Cluster standard errors when items come in groups, like several questions about one document.",
-      "For stochastic outputs, run multiple samples per item.",
-      "Treat any gap inside the interval as a tie."
+      "For stochastic outputs, run multiple samples per item. This reduces run-to-run noise, not noise from which items you chose.",
+      "Judge a comparison by the confidence interval for the difference between the two systems, not by whether their separate intervals overlap. If the difference's interval includes zero, the systems are not shown to differ. That is not the same as showing they are equal."
     ],
     "origins": [
       "\"No Error Bars, No Result\" is this site's name for a basic principle of statistics that AI evaluation has been slow to adopt consistently."
@@ -1294,24 +1294,24 @@
     "evidence": [
       {
         "lead": "Gender Shades.",
-        "text": "Buolamwini and Gebru (2018) evaluated commercial gender classification systems and found error rates up to 34.7% for darker-skinned women, compared to at most 0.8% for lighter-skinned men."
+        "text": "Buolamwini and Gebru (2018) tested three commercial gender classification systems in April and May 2017 and found error rates up to 34.7% for darker-skinned women, compared to at most 0.8% for lighter-skinned men. Overall accuracy was 87.9% to 93.7%. The figures describe the systems as they were then, not today's versions."
       },
       {
         "lead": "Hidden stratification in medicine.",
-        "text": "Oakden-Rayner et al. (2020) showed that medical imaging models can have relative performance differences of over 20% on clinically important subsets. A model detecting pneumothorax (collapsed lung) had an AUC of 0.94 on X-rays that showed a chest drain, but only 0.77 on X-rays without one. Chest drains are the treatment, so the model did worst on the untreated, most urgent cases."
+        "text": "Oakden-Rayner et al. (2020) showed that medical imaging models can have relative performance differences of over 20% on some clinically important subsets. A model detecting pneumothorax (collapsed lung) had an AUC of 0.94 on X-rays that showed a chest drain, but only 0.77 on X-rays without one. Chest drains are the treatment, so the model did worst on the untreated, most urgent cases."
       },
       {
         "lead": "Report the breakdown.",
-        "text": "Burnell et al. (2023), writing in Science, argue that aggregate metrics and lack of access to instance-level results limit understanding of AI systems, and call for granular reporting."
+        "text": "Burnell et al. (2023), in a Science policy forum article, argue that aggregate metrics and lack of access to instance-level results limit understanding of AI systems, and call for granular reporting."
       },
       {
         "lead": "Build it into documentation.",
-        "text": "Mitchell et al. (2019) made disaggregated evaluation across relevant groups a standard section of model cards."
+        "text": "Mitchell et al. (2019) proposed model cards, with a quantitative analysis section broken down by groups and conditions and reported with confidence intervals where possible."
       }
     ],
     "useIt": [
       "Define the slices that matter for your users before you look at the overall number.",
-      "Report the worst-performing slice next to the average.",
+      "Report the worst-performing slice next to the average, and say how many slices you looked at.",
       "Make sure each important slice has enough examples to support its own error bars.",
       "Read failures by hand. Clusters often reveal slices you didn't think to define."
     ],
@@ -1366,20 +1366,20 @@
       "In product work, the real baseline is how people do the task right now."
     ],
     "whatItMeans": [
-      "\"Our model is 20% better\" means nothing until you know better than what. New methods usually get weeks of tuning. Baselines often get copied from an old paper with default settings. The gap between them can be mostly effort, not ideas. In product settings, teams sometimes compare an AI feature to a different AI feature and forget to compare it to the plain workflow people already use."
+      "\"Our model is 20% better\" means nothing until you know better than what. New methods are often tuned heavily. Baselines are sometimes copied from earlier papers without being tuned for the new setting. The gap between them can be mostly effort, not ideas. In product settings, teams sometimes compare an AI feature to a different AI feature and forget to compare it to the plain workflow people already use."
     ],
     "evidence": [
       {
         "lead": "Tuned old methods win.",
-        "text": "Melis, Dyer, and Blunsom (2018) found that standard LSTM language models, carefully tuned, outperformed more recent and more complex architectures."
+        "text": "Melis, Dyer, and Blunsom (2018) found that standard LSTM language models, carefully tuned, outperformed more recent and more complex architectures on language-modelling benchmarks."
       },
       {
         "lead": "Neural hype in search.",
-        "text": "Lin (2019) documented information retrieval papers reporting gains over weak baselines that didn't hold against well-tuned classic methods."
+        "text": "In an opinion piece, Lin (2019) compared two recent neural ranking papers with well-tuned classic methods on one test collection (Robust04). He argued their baselines were weak: in one paper the gains mostly disappeared, and in the other no neural model came close to the tuned classic method."
       },
       {
-        "lead": "Recommenders didn't reproduce.",
-        "text": "Ferrari Dacrema, Cremonesi, and Jannach (2019) tried to reproduce 18 neural recommendation algorithms from top conferences. Only 7 could be reproduced with reasonable effort, and 6 of those were often outperformed by simple heuristic methods."
+        "lead": "Few recommenders could be rerun.",
+        "text": "Ferrari Dacrema, Cremonesi, and Jannach (2019) examined 18 neural recommendation algorithms from top conferences (2015 to 2018). Only 7 had enough public code and data to be reproduced with reasonable effort, and 6 of those could often be outperformed by simple, well-tuned methods. The seventh did not consistently beat a well-tuned non-neural linear method. The other 11 could not be rerun, so the study says nothing about how they would have fared."
       },
       {
         "lead": "Simple methods capture most of the value.",
@@ -1393,7 +1393,7 @@
       "For AI features, compare against the non-AI workflow with real users."
     ],
     "origins": [
-      "\"The Baseline Rule\" is this site's name for a principle that shows up in nearly every field that runs experiments. Hand's \"illusion of progress\" (2006) is an early, clear statement in machine learning."
+      "\"The Baseline Rule\" is this site's name for a principle that shows up in nearly every field that runs experiments. Hand's \"illusion of progress\" (2006) is an early, clear statement in supervised classification research."
     ],
     "sources": [
       {
@@ -1416,7 +1416,7 @@
         "authors": "Lin, J.",
         "year": "2019",
         "title": "The neural hype and comparisons against weak baselines",
-        "venue": "ACM SIGIR Forum, 52(2), 40-51",
+        "venue": "ACM SIGIR Forum, 52(2), 40-51 (opinion article)",
         "url": "https://doi.org/10.1145/3308774.3308781",
         "label": null
       },
@@ -1443,24 +1443,24 @@
       "Pick benchmarks that match your use case, and pick them before you run anything."
     ],
     "whatItMeans": [
-      "There are thousands of benchmarks. Any given paper or product announcement reports a handful. If the handful was chosen after seeing results, the table tells you more about the selection than about the system. Even without bad intent, communities settle on benchmarks that happen to favor certain approaches, and newcomers get judged by rules that weren't written for them."
+      "There are very many benchmarks. Any given paper or product announcement reports a handful. If the handful was chosen after seeing results, the table tells you more about the selection than about the system. Even without bad intent, communities settle on benchmarks that happen to favor certain approaches, and newcomers get judged by rules that weren't written for them."
     ],
     "evidence": [
       {
         "lead": "Named and measured.",
-        "text": "Dehghani et al. (2021) showed that the relative ranking of methods can change substantially depending on the benchmark tasks chosen, and called this the benchmark lottery."
+        "text": "Dehghani et al. (2021) showed that across several common benchmark setups the relative ranking of methods can change substantially depending on the benchmark tasks chosen, and proposed the term benchmark lottery."
       },
       {
         "lead": "Models weren't even compared on the same tests.",
-        "text": "Liang et al. (2023) found that before HELM, language models had on average been evaluated on just 17.9% of HELM's core scenarios, with some prominent models sharing no scenarios at all. HELM raised that to 96%."
+        "text": "Liang et al. (2023) found that before HELM, the 30 language models they benchmarked had on average been evaluated, under any conditions and counting earlier work, on just 17.9% of HELM's 16 core scenarios, with some prominent models sharing no scenarios at all. HELM raised that to 96.0%, with the remaining gap due to technical issues."
       },
       {
         "lead": "Whose utility?",
-        "text": "Ethayarajh and Jurafsky (2020) show that a leaderboard's ranking reflects one implicit set of priorities that may not match any particular user's."
+        "text": "In an opinion paper, Ethayarajh and Jurafsky (2020) argue that leaderboards rank models on performance alone and ignore costs that matter to practitioners, such as model size and energy use, so a leaderboard can be a poor proxy for what a given user needs."
       },
       {
         "lead": "An interdisciplinary warning.",
-        "text": "Eriksson et al. (2025) reviewed about 100 studies on benchmark shortcomings and found recurring problems, including data contamination, construct validity issues, misaligned incentives, and gaming of results, all shaped by commercial and competitive pressure."
+        "text": "Eriksson et al. (2025) reviewed about 100 studies on benchmark shortcomings and found recurring problems, including data contamination, construct validity issues, misaligned incentives, and gaming of results, in a field shaped by cultural, commercial, and competitive dynamics."
       }
     ],
     "useIt": [
@@ -1470,7 +1470,7 @@
       "Look at the full results table, not just the highlighted wins."
     ],
     "origins": [
-      "The term comes from Mostafa Dehghani and colleagues' 2021 paper, \"The Benchmark Lottery.\""
+      "Mostafa Dehghani and colleagues proposed the term in their 2021 paper, \"The Benchmark Lottery.\""
     ],
     "sources": [
       {
@@ -1520,12 +1520,12 @@
       "Save everything needed to rerun the eval, including raw outputs."
     ],
     "whatItMeans": [
-      "Hosted AI models change under the same name. Prompts get tweaked. Scoring scripts get patched. Six months later, nobody can say why the number was 82% or whether today's 79% is worse. A result you can't reproduce can't be trusted, and it can't be compared to anything."
+      "Hosted AI models can change under the same name. Prompts get tweaked. Scoring scripts get patched. Six months later, nobody can say why the number was 82% or whether today's 79% is worse. A result you can't reproduce can't be trusted, and it can't be compared to anything."
     ],
     "evidence": [
       {
-        "lead": "The field built programs for it.",
-        "text": "Pineau et al. (2021) report on the NeurIPS 2019 reproducibility program, which introduced a code submission policy, a community reproducibility challenge, and a reproducibility checklist."
+        "lead": "NeurIPS built a program for it.",
+        "text": "Pineau et al. (2021) report on the NeurIPS 2019 reproducibility program, which introduced a code submission policy, a community reproducibility challenge, and a reproducibility checklist. There, reproducibility meant getting similar results from the same code and data."
       },
       {
         "lead": "Details change scores.",
@@ -1537,7 +1537,7 @@
       },
       {
         "lead": "Agents especially.",
-        "text": "Kapoor et al. (2025) describe a pervasive lack of reproducibility in AI agent evaluation caused by nonstandard practices."
+        "text": "Kapoor et al. (2025) report pervasive shortcomings in the reproducibility of agent evaluations, focusing on HumanEval and WebArena, and attribute them to a lack of standardization in evaluation practices."
       },
       {
         "lead": "Standard formats exist.",
