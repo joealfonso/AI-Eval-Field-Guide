@@ -3,10 +3,10 @@
   "laws": {
     "goodharts-law": {
       "roles": ["Building", "Buying"],
-      "version": "v1.2",
+      "version": "v1.3",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
-      "history": [{"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."}, {"v": "v1.1", "d": "2026-10-19", "t": "Clarified the Singh et al. (2025) findings (inferred attribution, one controlled experiment), the Amodei and Pan descriptions, and that the Gao study used a synthetic setup; corrected the venue and relabeled related terms."}, {"v": "v1.0", "d": "2026-10-05", "t": "Published."}],
+      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Clarified that the 27 Meta variants were tested in March 2025 alone (the data window is January to March 2025)."}, {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."}, {"v": "v1.1", "d": "2026-10-19", "t": "Clarified the Singh et al. (2025) findings (inferred attribution, one controlled experiment), the Amodei and Pan descriptions, and that the Gao study used a synthetic setup; corrected the venue and relabeled related terms."}, {"v": "v1.0", "d": "2026-10-05", "t": "Published."}],
       "bottomLine": "Check a result against a second measure that nobody optimized, not only the number everyone pushed up.",
       "bottomLineCaveat": "Not every target gets gamed; a measure that is hard to move without doing the real work holds up far better.",
       "plainTerms": "If you reward people or models for hitting a number, they get good at the number. Whether they got better at the actual job is a separate question that needs its own check.",
@@ -104,10 +104,10 @@
     },
     "data-contamination": {
       "roles": ["Buying", "Building"],
-      "version": "v1.3",
+      "version": "v1.4",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
-      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Reworded the aphorism to match the evidence on the page. Tightened the bottom line and its caveat."}, 
+      "history": [{"v": "v1.4", "d": "2026-10-19", "t": "Stated the GSM1k correlation as the paper reports it (a Spearman statistic of 0.36, written as r² in its abstract)."}, {"v": "v1.3", "d": "2026-10-19", "t": "Reworded the aphorism to match the evidence on the page. Tightened the bottom line and its caveat."}, 
         {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."},
         {"v": "v1.1", "d": "2026-10-19", "t": "Corrected how the GSM1k link between memorization and score gaps is measured, added the authors' caveats, counted Kapoor and Narayanan's leakage figure as a lower bound, and warned that private test sets can leak through vendor services."},
         {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
@@ -161,10 +161,10 @@
     },
     "the-gold-standard-myth": {
       "roles": ["Building", "Designing"],
-      "version": "v1.3",
+      "version": "v1.4",
       "revised": "2026-10-19",
       "evidenceChecked": "2026-10-19",
-      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, 
+      "history": [{"v": "v1.4", "d": "2026-10-19", "t": "Retitled the Clark et al. (2021) point to say it concerns spotting machine text, not rating quality."}, {"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, 
         {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."},
         {"v": "v1.1", "d": "2026-10-19", "t": "Corrected the third author of Karpinska et al. (Iyyer, not Krishna) and added scope notes for the Clark et al., Karpinska et al., Northcutt et al. and Aroyo and Welty evidence."},
         {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
@@ -263,9 +263,9 @@
         "What is the 95% confidence interval on each score, and how many items and runs does it rest on?",
         "Does the confidence interval for the difference between systems exclude zero, using a paired comparison on the same items?"
       ],
-      "version": "v1.3",
+      "version": "v1.4",
       "evidenceChecked": "2026-10-19",
-      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, 
+      "history": [{"v": "v1.4", "d": "2026-10-19", "t": "Aligned the paired-gap rule with the sample-size page: roughly 3% to 4% disagreement (about 4% by the normal approximation, 3% by the exact test)."}, {"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, 
         { "v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat." },
         { "v": "v1.1", "d": "2026-10-19", "t": "Corrected the rule for comparing two scores: judge the difference between systems, not overlapping intervals, and say \"not shown to differ\" rather than \"tie\". Added the paired-comparison caveat for a 3-point gap, and softened the Bouthillier and Card summaries to match those papers." },
         { "v": "v1.0", "d": "2026-10-05", "t": "Published." }
@@ -381,9 +381,9 @@
     },
     "distribution-shift": {
       "roles": ["Building", "Buying"],
-      "version": "v1.3",
+      "version": "v1.4",
       "evidenceChecked": "2026-10-19",
-      "history": [{"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, 
+      "history": [{"v": "v1.4", "d": "2026-10-19", "t": "Removed Wong et al. (2021), which the page itself called not a clean case of distribution shift. It stays on the Functionality Fallacy page and the sepsis case study."}, {"v": "v1.3", "d": "2026-10-19", "t": "Tightened the bottom line and its caveat."}, 
         {"v": "v1.2", "d": "2026-10-19", "t": "Added a one-sentence bottom line with its main caveat."},
         {"v": "v1.1", "d": "2026-10-19", "t": "Reworded the sepsis-model example, which the authors attribute mostly to how timing was handled, and gave the Recht et al. drops in percentage points with a note that follow-up work disputes part of the ImageNet drop."},
         {"v": "v1.0", "d": "2026-10-05", "t": "Published."}
