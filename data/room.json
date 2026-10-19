@@ -16,7 +16,7 @@
         "data-contamination"
       ],
       "weak": "“It's a standard benchmark, so it's a fair test. We ran it once and it came out on top.”",
-      "whyWeak": "The answer never says what the benchmark measures, gives one run with no spread, and treats “standard” as proof that the test questions were not in the training data. Each of the three questions goes unanswered (The Construct Gap, Once Is Not Reliable, Data Contamination)."
+      "whyWeak": "The answer never says what the benchmark measures, reports one run with no spread, and treats “standard” as proof that the test questions were not in the training data. None of the three questions gets a real answer (The Construct Gap, Once Is Not Reliable, Data Contamination)."
     },
     {
       "id": "better",
@@ -50,7 +50,7 @@
         "presence-not-absence"
       ],
       "weak": "“Those were just typical examples. It works great on everything we've tried.”",
-      "whyWeak": "“Typical” does not say how the examples were picked, and no failure is shown. A demo can show that something works; it cannot show where it stops working (Presence, Not Absence, The Jagged Frontier)."
+      "whyWeak": "“Typical” does not say how the examples were picked, and no failure is shown. A demo can show that something works; on its own it cannot show where it stops working (Presence, Not Absence, The Jagged Frontier)."
     },
     {
       "id": "judge",

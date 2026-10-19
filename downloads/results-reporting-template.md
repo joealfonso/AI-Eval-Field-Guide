@@ -63,7 +63,7 @@ Slices defined in the plan before the overall number was seen.
 
 Worst-performing slice, and whether it has enough items to support its own interval:
 
-Examples of failures a person read (at least five), and what they have in common:
+Examples of failures a person read (we suggest at least five), and what they have in common:
 
 ## Grader
 

@@ -1077,23 +1077,23 @@ def build_rubric():
         '<p class="page__lede">A quick scoring checklist for judging a single AI feature or design. Each of the six groups has three checks. '
         'Use it in a design critique or before a launch review, then follow the checks that fail back to the patterns.</p>'
     )
-    note = "This page is a reference list of the checks: it does not calculate a score. Check numbers (A1, T2, and so on) are labels used on this site."
+    note = "This page is a reference list of the checks: it does not calculate a score. It is a design-review aid, not a standard or a compliance test. Check numbers (A1, H2, and so on) are labels used on this site. They are unrelated to the Tier labels on the Readiness Review."
     write("design-rubric.html", tool_page("AI Design Evaluation Rubric", "An 18-check rubric for evaluating an AI feature across agency, transparency, honesty, equity, real reduction, and failure design.", "rubric", intro, "".join(secs), note))
 
 
 REVIEW_SOURCES = {
-    "HAX G1\u2013G18": "Microsoft\u2019s Guidelines for Human-AI Interaction, eighteen guidelines for how an AI feature should behave with the people using it.",
-    "NIST AI 100-1": "NIST\u2019s AI Risk Management Framework 1.0, a U.S. framework for identifying and managing AI risk.",
-    "NIST AI 600-1": "NIST\u2019s Generative AI Profile, which applies the AI Risk Management Framework to generative AI.",
+    "HAX G1\u2013G18": "Microsoft\u2019s Guidelines for Human-AI Interaction (Amershi et al., CHI 2019): eighteen guidelines for how an AI feature should behave with the people using it.",
+    "NIST AI 100-1": "NIST\u2019s Artificial Intelligence Risk Management Framework (AI RMF 1.0, NIST AI 100-1, January 2023), a U.S. voluntary framework for identifying and managing AI risk. NIST has said that AI RMF 1.0 is being revised.",
+    "NIST AI 600-1": "NIST AI 600-1, Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile (July 2024), which applies the AI RMF to generative AI.",
     "PAIR Guidebook": "Google\u2019s People + AI Guidebook, design guidance for AI-powered products.",
-    "AI Act Art. 13": "EU AI Act, Article 13: transparency and the information a system must provide to the people who deploy it.",
-    "AI Act Art. 14": "EU AI Act, Article 14: human oversight of high-risk AI systems.",
-    "AI Act Art. 50": "EU AI Act, Article 50: transparency duties, including telling people when they are interacting with an AI system.",
-    "ISO/IEC 42001": "The international standard for AI management systems.",
-    "WCAG 2.2": "W3C\u2019s Web Content Accessibility Guidelines, version 2.2.",
-    "W3C AI-A11y": "W3C work on accessibility and AI.",
-    "Parasuraman 1997": "Parasuraman and Riley (1997), research on how people use, over-rely on, and neglect automation.",
-    "Mosier 1996": "Mosier and Skitka (1996), research on automation bias in human decision-making.",
+    "AI Act Art. 13": "EU AI Act (Regulation (EU) 2024/1689), Article 13: transparency and provision of information to deployers. It sets a requirement for high-risk AI systems, about the instructions for use given to the organizations that deploy them. Criteria that cite it apply the same idea to what users are shown.",
+    "AI Act Art. 14": "EU AI Act (Regulation (EU) 2024/1689), Article 14: human oversight. It sets a requirement for high-risk AI systems: suitable tools so that people can oversee the system, and the ability to disregard, override, reverse, or stop it. It does not require confirmation of every action.",
+    "AI Act Art. 50": "EU AI Act (Regulation (EU) 2024/1689), Article 50: transparency obligations for providers and deployers of certain AI systems, including telling people when they are interacting directly with an AI system unless that is obvious. It is not limited to high-risk systems.",
+    "ISO/IEC 42001": "ISO/IEC 42001:2023, Information technology \u2014 Artificial intelligence \u2014 Management system (edition 1, December 2023): requirements for establishing, implementing, maintaining, and improving an AI management system in an organization. It works at organization level; criteria that cite it draw on its management practices.",
+    "WCAG 2.2": "W3C\u2019s Web Content Accessibility Guidelines (WCAG) 2.2, a W3C Recommendation (12 December 2024).",
+    "W3C AI accessibility draft": "\u201cAccessibility of machine learning and generative AI\u201d, an Editor\u2019s Draft (28 March 2026 when checked) from the W3C Accessible Platform Architectures Working Group. It is a work in progress, not a standard, and is not endorsed by W3C or its members. Background reading, not a requirement.",
+    "Parasuraman 1997": "Parasuraman and Riley (1997), \u201cHumans and automation: use, misuse, disuse, abuse\u201d, Human Factors: research on how people use, over-rely on, and neglect automation.",
+    "Mosier 1996": "Mosier and Skitka (1996), \u201cHuman decision makers and automated decision aids: made for each other?\u201d, in Automation and Human Performance: research on automation bias in human decision-making.",
 }
 
 
@@ -1109,9 +1109,11 @@ def build_review():
         crits = [c for c in AIRR["criteria"] if c["dimension"] == code]
         rows = ""
         for c in crits:
-            gate = '<span class="gate">Gate \u00b7 T%d</span>' % c["gateTier"] if c["gateTier"] else ""
+            gate = '<span class="gate">Gate \u00b7 Tier %d</span>' % c["gateTier"] if c["gateTier"] else ""
             refs = "".join('<li><a href="#%s">%s</a></li>' % (src_id(r), esc(r)) for r in c["references"])
-            rows += '<li id="%s"><span class="crit__id">%s</span><span class="crit__text">%s<span class="crit__meta">%s<span class="crit__label" id="%s-src">Based on</span><ul class="refs" aria-labelledby="%s-src">%s</ul></span></span></li>' % (c["id"], c["id"], esc(typo(c["criterion"])), gate, c["id"], c["id"], refs)
+            based = '<span class="crit__label" id="%s-src">Based on</span><ul class="refs" aria-labelledby="%s-src">%s</ul>' % (c["id"], c["id"], refs) if c["references"] else ""
+            note_c = '<span class="crit__label">Note</span><span>%s</span>' % esc(typo(c["note"])) if c.get("note") else ""
+            rows += '<li id="%s"><span class="crit__id">%s</span><span class="crit__text">%s<span class="crit__meta">%s%s%s</span></span></li>' % (c["id"], c["id"], esc(typo(c["criterion"])), gate, based, note_c)
         secs.append(
             '<section class="tool-sec" aria-labelledby="%s"><h2 id="%s"><span class="tool-sec__code">%s</span>%s</h2><ol class="crit">%s</ol></section>'
             % (code, code, code, esc(typo(dims[code]["title"])), rows)
@@ -1119,8 +1121,17 @@ def build_review():
     intro = (
         '<p class="page__lede">A more rigorous instrument for launch review. Five screening questions come first, then 27 criteria across seven dimensions. '
         'Under each criterion, the labels marked "Based on" name the standards and guidelines it draws on; the key at the bottom of the page explains each one. Some criteria are marked as gates.</p>'
+        '<p class="case__note"><strong>Scope.</strong> As of 19 October 2026. This is a design and launch-review checklist, not legal advice, a conformity assessment, or a compliance determination. '
+        'The standards named under \u201cBased on\u201d are sources the criteria draw on; this page does not claim that meeting a criterion satisfies any of them. '
+        'EU AI Act Articles 13 and 14 set requirements for high-risk AI systems only; Article 50 covers certain other systems, including ones that interact directly with people. '
+        'As amended by Regulation (EU) 2026/1744 (in force 27 July 2026), the Commission\u2019s AI Act Service Desk lists the high-risk rules as applying from 2 December 2027 (Annex III systems) and 2 August 2028 (AI embedded in products covered by Annex I), and Article 50 from 2 August 2026. Check current application dates before relying on them.</p>'
     )
-    note = "This page lists the instrument (AIRR v%s). This page does not score a system or assign a tier; use it as a checklist. A Gate badge shows the risk tier recorded for that criterion in the instrument." % esc(AIRR["instrument"]["version"])
+    note = (
+        "This page lists the instrument (AIRR v%s). This page does not score a system or assign a tier; use it as a checklist. "
+        "Tiers: Tier 1 to Tier 3 are this instrument\u2019s own risk tiers, running from lower to higher risk. They are not EU AI Act risk categories and are unrelated to the check labels on the Design Rubric. "
+        "A Gate badge marks a criterion treated as a gate: it should be met before launch for a feature at that tier or higher. \u201cGate \u00b7 Tier 2\u201d applies at Tier 2 and Tier 3; \u201cGate \u00b7 Tier 3\u201d applies at Tier 3 only. "
+        "Criteria with no badge are not gates. The page does not say how to place a feature in a tier; the five screening questions are the starting point for that judgment."
+    ) % esc(AIRR["instrument"]["version"])
     used = []
     for c in AIRR["criteria"]:
         for r in c["references"]:
@@ -1759,13 +1770,18 @@ def build_cases():
     secs = []
     for c in CASES["cases"]:
         tags = ", ".join(law_link(s) for s in c["patterns"])
+        dispute = '<p>%s</p>' % esc(typo(c["dispute"])) if c.get("dispute") else ""
+        also = ""
+        if c.get("alsoRead"):
+            also = '<p class="case__src"><span class="case__k">Also read</span> <a href="%s" rel="noopener">%s</a></p>' % (esc(c["alsoRead"]["url"]), esc(typo(c["alsoRead"]["label"])))
         secs.append(
             '<section class="case" id="%s" aria-labelledby="%s-h"><h2 id="%s-h">%s</h2>'
             '<p class="case__patterns"><span class="case__k">Patterns</span> %s</p>'
-            '<h3>What the source reports</h3><p>%s</p>'
+            '<h3>What the source reports</h3><p>%s</p>%s'
+            '<h3>What this case does not show</h3><p>%s</p>'
             '<h3>The check that helps</h3><p>%s</p>'
-            '<p class="case__src"><span class="case__k">Primary source</span> <a href="%s" rel="noopener">%s</a></p></section>'
-            % (c["id"], c["id"], c["id"], esc(typo(c["title"])), tags, esc(typo(c["what"])), esc(typo(c["check"])), esc(c["source"]["url"]), esc(typo(c["source"]["label"])))
+            '<p class="case__src"><span class="case__k">Primary source</span> <a href="%s" rel="noopener">%s</a></p>%s</section>'
+            % (c["id"], c["id"], c["id"], esc(typo(c["title"])), tags, esc(typo(c["what"])), dispute, esc(typo(c["limits"])), esc(typo(c["check"])), esc(c["source"]["url"]), esc(typo(c["source"]["label"])), also)
         )
     toc = "".join('<li><a href="#%s">%s</a></li>' % (c["id"], esc(typo(c["title"]))) for c in CASES["cases"])
     lede = '<p class="page__lede">%s</p>' % esc(typo(CASES["intro"]))
@@ -1818,7 +1834,7 @@ def build_templates():
             % (t["id"], t["id"], t["id"], esc(typo(t["title"])), esc(typo(t["blurb"])), t["file"], rendered)
         )
     lede = '<p class="page__lede">Three plain-text templates you can copy into a document, a ticket, or a repository. Each is on this page and also downloadable as a Markdown file.</p>'
-    intro = lede + '<p>They are licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>: copy, adapt, and share them with credit to the AI Evaluation Field Guide. They are starting points. Delete what does not fit and add what does.</p>'
+    intro = lede + '<p>They are licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>: copy, adapt, and share them with credit to the AI Evaluation Field Guide. They are starting points, not a standard, and filling one in does not by itself show that an evaluation is sound. Delete what does not fit and add what does.</p>'
     practitioner_page(
         "templates.html",
         "Templates for AI evaluation",

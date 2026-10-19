@@ -7,7 +7,7 @@ You may copy, adapt, and share this with attribution to "AI Evaluation Field Gui
 
 # Eval plan (one page)
 
-Fill this in before running the evaluation and keep it with the results. Writing the choices down first is what makes them credible later: metrics, test set, and stopping rules chosen after seeing results can be bent to fit them.
+Fill this in before running the evaluation and keep it with the results. Writing the choices down first helps make them credible later: metrics, test set, and stopping rules chosen after seeing results can be bent to fit them.
 
 **System and version:**
 **Owner (a named person):**
@@ -53,8 +53,8 @@ Out of scope (what a high score would not tell us):
 
 ## 6. Prompt variants and repeats
 
-- Prompt variants (at least 3 to 5), listed or linked:
-- Runs per item (at least 3 to 5 for stochastic outputs):
+- Prompt variants (this guide's rule of thumb is at least 3 to 5; use more if results swing widely), listed or linked:
+- Runs per item (this guide's rule of thumb is at least 3 to 5 for stochastic outputs; use more if results vary a lot):
 - Settings held fixed (model version or date, temperature, system prompt):
 - Reported as: average, range across variants, and all-runs-pass rate.
 

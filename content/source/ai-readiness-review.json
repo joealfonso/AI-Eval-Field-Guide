@@ -201,7 +201,7 @@
       "references": [
         "WCAG 2.2",
         "AI Act Art. 50",
-        "W3C AI-A11y"
+        "W3C AI accessibility draft"
       ],
       "score": null,
       "evidence": null
@@ -235,9 +235,8 @@
       "dimension": "D3",
       "criterion": "Consequential actions require explicit human confirmation; the system does not execute them silently.",
       "gateTier": 2,
-      "references": [
-        "AI Act Art. 14"
-      ],
+      "references": [],
+      "note": "A design practice rather than a requirement of a listed source. It is related to the human-oversight duties in AI Act Art. 14 for high-risk systems, which call for oversight tools and the ability to disregard, override, reverse, or stop the system (see D3.2), not for confirmation of every action.",
       "score": null,
       "evidence": null
     },
@@ -311,7 +310,7 @@
       "gateTier": 2,
       "references": [
         "WCAG 2.2",
-        "W3C AI-A11y"
+        "W3C AI accessibility draft"
       ],
       "score": null,
       "evidence": null
@@ -336,7 +335,7 @@
       "criterion": "AI-generated accessibility content is human-reviewed before it is relied upon.",
       "gateTier": null,
       "references": [
-        "W3C AI-A11y",
+        "W3C AI accessibility draft",
         "WCAG 2.2"
       ],
       "score": null,
