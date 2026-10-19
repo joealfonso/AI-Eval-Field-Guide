@@ -2037,7 +2037,7 @@ TEMPLATES = [
         "id": "vendor-questionnaire",
         "file": "ai-vendor-questionnaire.md",
         "title": "AI vendor questionnaire",
-        "blurb": "Seventeen questions to send a vendor or internal team before you rely on an AI system, each with what a good answer and a red flag look like. Built from the questions on the pattern pages and the buying-a-model list.",
+        "blurb": "Thirty-four questions in four parts (does it work, contract and operations, data handling, security and misuse) to send a vendor or internal team before you rely on an AI system. Each has what a good answer and a red flag look like, with a 0 to 2 scoring scheme, a list of which questions to ask at which risk tier, and a summary sheet. Part A comes from the pattern pages; parts B to D are this guide's own.",
     },
     {
         "id": "eval-plan",

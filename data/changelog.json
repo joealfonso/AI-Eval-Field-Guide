@@ -2,6 +2,16 @@
   "entries": [
     {
       "date": "2026-10-19",
+      "text": "The AI vendor questionnaire template now has four parts and 34 questions. Part A is the original 17 evidence questions. New parts cover contract and operations, data handling, and security and misuse; these are this guide’s own questions, not drawn from the patterns. It adds a 0 to 2 scoring scheme that reports each part separately instead of one total, a list of which questions to ask at which risk tier, fallbacks for when a vendor will not answer, and a summary sheet.",
+      "links": [
+        {
+          "label": "Templates: AI vendor questionnaire",
+          "href": "templates.html#vendor-questionnaire"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-19",
       "text": "Wording corrections after an independent content review. The GSM1k correlation is now stated as the paper reports it (a Spearman statistic of 0.36, written as r² in its abstract). The Goodhart’s Law page now says the 27 Meta variants were tested in March 2025 alone. The paired-comparison rule on the No Error Bars page matches the sample-size page (about 3% to 4% disagreement). Wong et al. (2021) is removed from the Distribution Shift page, which had called it not a clean case, and the Clark et al. (2021) point on the Gold Standard Myth page now says it concerns spotting machine text.",
       "links": [
         {
