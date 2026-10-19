@@ -3,7 +3,6 @@
   "established": [
     "goodharts-law",
     "campbells-law",
-    "the-functionality-fallacy",
     "benchmark-saturation",
     "data-contamination",
     "adaptive-overfitting",
@@ -17,6 +16,7 @@
   ],
   "namedHere": [
     "the-construct-gap",
+    "the-functionality-fallacy",
     "the-metric-mirage",
     "the-gold-standard-myth",
     "judge-bias",

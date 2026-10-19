@@ -3,6 +3,10 @@
   "laws": {
     "goodharts-law": {
       "roles": ["Building", "Buying"],
+      "version": "v1.1",
+      "revised": "2026-10-19",
+      "evidenceChecked": "2026-10-19",
+      "history": [{"v": "v1.1", "d": "2026-10-19", "t": "Clarified the Singh et al. (2025) findings (inferred attribution, one controlled experiment), the Amodei and Pan descriptions, and that the Gao study used a synthetic setup; corrected the venue and relabeled related terms."}, {"v": "v1.0", "d": "2026-10-05", "t": "Published."}],
       "plainTerms": "If you reward people or models for hitting a number, they get good at the number. Whether they got better at the actual job is a separate question that needs its own check.",
       "questionsSource": "handoff",
       "questions": [
@@ -19,6 +23,10 @@
     },
     "campbells-law": {
       "roles": ["Buying", "Building"],
+      "version": "v1.1",
+      "revised": "2026-10-19",
+      "evidenceChecked": "2026-10-19",
+      "history": [{"v": "v1.1", "d": "2026-10-19", "t": "Corrected the Campbell quotation (\"is intended to monitor\") and added that it was first issued in 1976; added caveats on Lipton and Steinhardt (2019) and on how Singh et al. (2025) estimated data shares."}, {"v": "v1.0", "d": "2026-10-05", "t": "Published."}],
       "plainTerms": "The more a score decides who gets funded, hired, or bought, the more people bend their work around the score. The damage reaches the work itself, not just the number.",
       "questionsSource": "derived",
       "questions": [
@@ -28,6 +36,10 @@
     },
     "the-construct-gap": {
       "roles": ["Buying", "Designing"],
+      "version": "v1.1",
+      "revised": "2026-10-19",
+      "evidenceChecked": "2026-10-19",
+      "history": [{"v": "v1.1", "d": "2026-10-19", "t": "Replaced an unsupported claim about most benchmarks with figures from Bean et al. (2025), and tightened how Raji et al. (2021), Jacobs and Wallach (2021) and Wallach et al. (2025) are described."}, {"v": "v1.0", "d": "2026-10-05", "t": "Published."}],
       "plainTerms": "A test called \"reasoning\" only measures how a system does on that test's items, in that format. Whether that says anything about reasoning in general needs its own evidence.",
       "questionsSource": "handoff",
       "questions": [
@@ -37,7 +49,11 @@
     },
     "the-functionality-fallacy": {
       "roles": ["Buying", "Designing"],
-      "plainTerms": "Before asking whether an AI system is fair or safe, ask whether it works at all. Plenty of deployed systems fail at their stated job, and a vendor's claim is not evidence.",
+      "version": "v1.1",
+      "revised": "2026-10-19",
+      "evidenceChecked": "2026-10-19",
+      "history": [{"v": "v1.1", "d": "2026-10-19", "t": "Removed wording that implied a failure rate, added the scope of the Wong et al. (2021) sepsis study, narrowed the Hutchinson et al. (2022) and NIST descriptions, and clarified that the pattern name is this site's shortening of the paper's title."}, {"v": "v1.0", "d": "2026-10-05", "t": "Published."}],
+      "plainTerms": "Before asking whether an AI system is fair or safe, ask whether it works at all. Documented cases show deployed systems failing at their stated job, and a vendor's claim is not evidence.",
       "questionsSource": "derived",
       "questions": [
         "What evidence shows the system works on data like ours, gathered by someone other than the vendor?",
@@ -46,6 +62,10 @@
     },
     "the-metric-mirage": {
       "roles": ["Building"],
+      "version": "v1.1",
+      "revised": "2026-10-19",
+      "evidenceChecked": "2026-10-19",
+      "history": [{"v": "v1.1", "d": "2026-10-19", "t": "Added scope to Novikova et al. (2017), Schaeffer et al. (2023) and Reiter (2018), and clarified where the pattern name comes from."}, {"v": "v1.0", "d": "2026-10-05", "t": "Published."}],
       "plainTerms": "The scoring method is part of the result. Score the same outputs a different way and a sudden leap can turn into steady progress, or the reverse.",
       "questionsSource": "derived",
       "questions": [

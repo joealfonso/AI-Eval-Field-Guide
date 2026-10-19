@@ -13,20 +13,20 @@
     ],
     "whatItMeans": [
       "Every eval is a proxy. Accuracy on a coding benchmark stands in for \"writes useful software.\" Win rate in a chatbot arena stands in for \"people find it helpful.\" A proxy works fine while nobody leans on it. Once the number becomes the goal, people and systems find ways to move the number that don't move the thing behind it.",
-      "Manheim and Garrabrant (2018) split the problem into four variants. Regressional: the proxy and the goal only partly overlap, so picking the top scorers also picks up noise. Extremal: the relationship holds in normal ranges and breaks at the extremes. Causal: pushing the proxy doesn't cause the goal. Adversarial: someone, or something, games the metric on purpose."
+      "Manheim and Garrabrant (2018) split the problem into four variants. Regressional: the proxy and the goal only partly overlap, so picking the top scorers also picks up noise. Extremal: the relationship holds in normal ranges and breaks at the extremes. Causal: the proxy and the goal are linked only indirectly, so pushing on the proxy may not move the goal. Adversarial: someone, or something, games the metric on purpose."
     ],
     "evidence": [
       {
         "lead": "It can be measured.",
-        "text": "Gao, Schulman, and Hilton (2023) optimized language models against a proxy reward model and tracked a separate \"gold\" reward model. The gold score rose at first, then fell as optimization continued, and the pattern scaled predictably with reward model size."
+        "text": "In a synthetic setup where a fixed \"gold\" reward model stood in for human raters, Gao, Schulman, and Hilton (2023) optimized language models against a proxy reward model and tracked the gold score. It rose at first, then fell as optimization continued, and the fitted trends scaled smoothly with reward model size."
       },
       {
-        "lead": "More capable systems game harder.",
-        "text": "Amodei et al. (2016) named reward hacking as a core safety problem. Pan, Bhatia, and Steinhardt (2022) found that more capable agents exploited misspecified rewards more, sometimes with sudden jumps in bad behavior."
+        "lead": "More capable systems often game harder.",
+        "text": "Amodei et al. (2016) listed reward hacking as one of five concrete AI-safety problems. Pan, Bhatia, and Steinhardt (2022) built four reinforcement-learning environments with misspecified rewards and found that more capable agents often exploited them more, with some sharp capability thresholds where behavior shifted and true reward dropped."
       },
       {
         "lead": "Leaderboards feel it too.",
-        "text": "Singh et al. (2025) documented how private testing on Chatbot Arena let some providers try many model variants and publish only the best. Meta tested 27 private variants before the Llama 4 release. Extra Arena data alone produced relative gains of up to 112% on the Arena distribution."
+        "text": "Singh et al. (2025) documented how private testing on Chatbot Arena let some providers try many model variants and publish only the best. The authors identified 27 private variants they attribute to Meta in the lead-up to the Llama 4 release (attribution inferred from each model's self-identification, January to March 2025). In a controlled fine-tuning experiment, adding Arena data raised one model's win rate on ArenaHard, a test set drawn from Arena prompts, by up to 112% relative, with limited gains on other tasks."
       },
       {
         "lead": "It's getting more common.",
@@ -96,7 +96,7 @@
         "authors": "Singh, S., Nan, Y., Wang, A., D'Souza, D., Kapoor, S., et al.",
         "year": "2025",
         "title": "The leaderboard illusion",
-        "venue": "Advances in Neural Information Processing Systems (NeurIPS 2025)",
+        "venue": "Advances in Neural Information Processing Systems (NeurIPS 2025), Datasets and Benchmarks Track",
         "url": "https://arxiv.org/abs/2504.20879",
         "label": null
       },
@@ -129,15 +129,15 @@
     "evidence": [
       {
         "lead": "Scholarship bends.",
-        "text": "Lipton and Steinhardt (2019) documented troubling trends in ML papers, including failing to identify where empirical gains came from (for example, crediting a new architecture when the gains came from tuning) and presenting speculation as explanation."
+        "text": "Lipton and Steinhardt (2019) documented troubling trends in ML papers, including failing to identify where empirical gains came from (for example, crediting a new architecture when the gains came from tuning) and presenting speculation as explanation. They call the causes uncertain, with misaligned incentives (such as pressure for short-term measures of success) as one possibility."
       },
       {
         "lead": "Access is uneven.",
-        "text": "Singh et al. (2025) estimated that Google and OpenAI received about 19.2% and 20.4% of all Chatbot Arena data, while 83 open-weight models together received about 29.7%. More data from the arena means more ability to fit the arena."
+        "text": "Singh et al. (2025) estimated, from each provider's share of battles played, that Google and OpenAI received about 19.2% and 20.4% of all Chatbot Arena test prompts, while 83 open-weight models together received about 29.7%. More data from the arena means more ability to fit the arena."
       },
       {
         "lead": "Leaderboards encode someone's values.",
-        "text": "Ethayarajh and Jurafsky (2020) argue that leaderboards reward accuracy while ignoring things real users care about, like model size, energy use, and robustness. A leaderboard's idea of \"best\" is not yours."
+        "text": "Ethayarajh and Jurafsky (2020) argue that leaderboards reward accuracy while ignoring things practitioners care about, like model size, energy use, and fairness. A leaderboard's idea of \"best\" is not yours."
       },
       {
         "lead": "Selection shapes the story.",
@@ -151,7 +151,7 @@
       "Reward people for finding flaws in the eval, not only for moving it."
     ],
     "origins": [
-      "Social scientist Donald T. Campbell wrote in 1979: \"The more any quantitative social indicator is used for social decision-making, the more subject it will be to corruption pressures and the more apt it will be to distort and corrupt the social processes it was intended to monitor.\" He was writing about program evaluation in areas like education and policing. AI leaderboards fit the pattern closely."
+      "Social scientist Donald T. Campbell stated it in a 1976 report, published in 1979: \"The more any quantitative social indicator is used for social decision-making, the more subject it will be to corruption pressures and the more apt it will be to distort and corrupt the social processes it is intended to monitor.\" He was writing about evaluating social programs, with examples from education and policing. AI leaderboards fit the pattern closely."
     ],
     "sources": [
       {
@@ -182,7 +182,7 @@
         "authors": "Lipton, Z. C., & Steinhardt, J.",
         "year": "2019",
         "title": "Troubling trends in machine learning scholarship",
-        "venue": "ACM Queue, 17(1)",
+        "venue": "ACM Queue (a practitioner magazine), 17(1), 45-77. First presented at ICML 2018 (The Debates)",
         "url": "https://arxiv.org/abs/1807.03341",
         "label": null
       },
@@ -190,7 +190,7 @@
         "authors": "Singh, S., Nan, Y., Wang, A., D'Souza, D., Kapoor, S., et al.",
         "year": "2025",
         "title": "The leaderboard illusion",
-        "venue": "Advances in Neural Information Processing Systems (NeurIPS 2025)",
+        "venue": "Advances in Neural Information Processing Systems (NeurIPS 2025), Datasets and Benchmarks Track",
         "url": "https://arxiv.org/abs/2504.20879",
         "label": null
       }
@@ -206,20 +206,20 @@
       "Reasoning, safety, understanding, and helpfulness are constructs. Nothing measures them directly.",
       "A benchmark is one way of turning a construct into a test. Treat its name as a claim to check.",
       "Trace the chain before trusting a score: concept, definition, test items, scoring, number.",
-      "Most LLM benchmarks don't spell that chain out."
+      "Many LLM benchmarks leave links in that chain weak. In one review of 445 of them, about half of the definitions given were contested, and about half of the benchmarks presented evidence of construct validity."
     ],
     "whatItMeans": [
       "Measurement researchers separate the thing you care about (the construct) from the thing you can observe (the measurement). Validity is how well the evidence supports the jump from one to the other. A \"reasoning\" benchmark made of multiple-choice logic puzzles measures performance on those puzzles, in that format. Whether that says anything about reasoning in general is a separate question that needs its own evidence.",
-      "Wallach et al. (2025), building on Adcock and Collier (2001), lay out four levels: a **background concept** (the broad, fuzzy idea), a **systematized concept** (an explicit definition), a **measurement instrument** (the actual test), and the **measurements** it produces. Moving between levels takes systematization, operationalization, and application, and then the whole chain has to be interrogated for validity. A lot of AI eval arguments happen because people skip the first two levels and fight about the numbers."
+      "Wallach et al. (2025), building on Adcock and Collier (2001), lay out four levels: a **background concept** (the broad, fuzzy idea), a **systematized concept** (an explicit definition), a **measurement instrument** (the actual test), and the **measurements** it produces. Moving between levels takes systematization, operationalization, and application, and then the whole chain has to be interrogated for validity. Wallach et al. argue that making the first two levels explicit lets people debate the concept itself, separately from the numbers."
     ],
     "evidence": [
       {
         "lead": "Big names, narrow tests.",
-        "text": "Raji et al. (2021) show how benchmarks like ImageNet and GLUE get treated as measures of general capability, the \"everything in the whole wide world,\" which no finite dataset can support."
+        "text": "Raji et al. (2021) argue that benchmarks like ImageNet and GLUE are treated as measures of general ability, like a children's-book museum that claims to hold \"everything in the whole wide world,\" when any finite dataset is specific and limited."
       },
       {
         "lead": "The problem is widespread.",
-        "text": "Bean et al. (2025) had 29 expert reviewers systematically review 445 LLM benchmarks from leading NLP and ML venues and found recurring patterns that undermine the validity of the claims made from them. They offer eight recommendations."
+        "text": "Bean et al. (2025) had 29 expert reviewers systematically review 445 LLM benchmarks from leading NLP and ML venues and found recurring patterns that undermine the validity of the claims made from them. For example, fewer than 10% used complete real-world tasks, and 16% used uncertainty estimates or statistical tests. They offer eight recommendations."
       },
       {
         "lead": "Validity lives in the interpretation.",
@@ -227,7 +227,7 @@
       },
       {
         "lead": "Mismatches cause harm.",
-        "text": "Jacobs and Wallach (2021) show how gaps between constructs like \"risk\" or \"fairness\" and their operational definitions lead to real-world harm."
+        "text": "Jacobs and Wallach (2021) argue that many fairness-related harms come from mismatches between a construct, such as teacher effectiveness or risk of recidivism, and how it is measured."
       },
       {
         "lead": "Claims need matching evidence.",
@@ -237,11 +237,11 @@
     "useIt": [
       "Finish this sentence: \"This score is evidence that the system can \\_\\_\\_ under \\_\\_\\_ conditions.\" If you can't fill in the blanks, you don't know what the score means.",
       "Read 20 test items yourself. Would a person who aced them actually have the skill in the benchmark's name?",
-      "Match the size of the claim to the evidence. \"Scores 85% on X\" is safe. \"Can reason\" is not.",
+      "Match the size of the claim to the evidence. \"Scores 85% on X, on this version, with this prompt format, over this many runs\" is a safe claim. \"Can reason\" is not.",
       "Check whether the test format (multiple choice, single turn, short answer) matches how the system will actually be used."
     ],
     "origins": [
-      "Lee Cronbach and Paul Meehl introduced construct validity in psychology in 1955. Samuel Messick's 1995 framework made it the center of modern validity theory. ML researchers brought these ideas into AI evaluation over the last several years. \"The Construct Gap\" is the name this site uses for the idea."
+      "Lee Cronbach and Paul Meehl introduced construct validity in psychology in 1955. Samuel Messick's unified framework (1989, summarized in 1995) made it the center of modern validity theory. ML researchers brought these ideas into AI evaluation over the last several years. \"The Construct Gap\" is the name this site uses for the idea."
     ],
     "sources": [
       {
@@ -318,39 +318,39 @@
     "aphorism": "Don't assume an AI system works. Whether it works is the first question, not a settled one.",
     "takeaways": [
       "Debates about fairness, ethics, and safety often skip a more basic question: does the system do what it claims?",
-      "Plenty of deployed AI systems fail at their stated task. That failure is a harm on its own.",
+      "Many documented cases show deployed AI systems failing at their stated task, and those failures cause harm.",
       "Vendor-reported performance is a claim. Independent validation on your own population is evidence.",
       "Put \"does it work, for whom, and how do we know?\" at the top of every review."
     ],
     "whatItMeans": [
-      "Raji et al. (2022) point out that critics and policymakers often accept a vendor's performance claims at face value and jump straight to downstream concerns. Meanwhile, some systems don't work at all, some work only in narrow conditions, and some have capabilities that were overstated from the start. If nobody checks functionality, broken systems ship and nobody measures the damage."
+      "Raji et al. (2022) point out that scholars, the press, and policymakers often assume AI systems work and move straight to downstream concerns such as fairness or safety. Meanwhile, some systems don't work at all, some work only in narrow conditions, and some have capabilities that were overstated from the start. If nobody checks functionality, broken systems ship and nobody measures the damage."
     ],
     "evidence": [
       {
-        "lead": "Failure is common and varied.",
-        "text": "Raji et al. (2022) catalog deployed AI failures, from tasks that can't be done at all, to engineering mistakes, to failures that appear after deployment, to capabilities that were misrepresented."
+        "lead": "Failure takes many forms.",
+        "text": "Raji et al. (2022) built a taxonomy from 283 reported cases of deployed AI failing (2012 to 2021), ranging from tasks that can't be done at all, to engineering mistakes, to failures that appear after deployment, to capabilities that were misrepresented. It shows the kinds of failure, not how often they occur."
       },
       {
         "lead": "A widely used model underperformed badly.",
-        "text": "Wong et al. (2021) externally validated the Epic Sepsis Model, which was in use at hundreds of US hospitals. Its area under the curve was 0.63, well below the 0.76 to 0.83 the developer reported. It missed 67% of patients who had sepsis while generating alerts for 18% of all hospitalized patients."
+        "text": "Wong et al. (2021) externally validated the Epic Sepsis Model, which was in use at hundreds of US hospitals, using 2018 to 2019 data from one academic medical center. Its area under the curve, measured per hospitalization, was 0.63, well below the 0.76 to 0.83 the developer reported in internal documentation. At the alert threshold the authors chose, it missed 67% of patients who had sepsis while generating alerts for 18% of all hospitalized patients."
       },
       {
         "lead": "Practice lags need.",
-        "text": "Hutchinson et al. (2022) found that ML evaluation practice focuses on a narrow set of metrics and datasets that often don't match what deployment contexts actually require."
+        "text": "Hutchinson et al. (2022) studied papers from computer vision and natural language processing conferences and found evaluation concentrated on a handful of methods that capture a narrow range of decontextualized behaviors. They argue this leaves gaps for real deployment contexts."
       },
       {
-        "lead": "Standards bodies agree.",
-        "text": "The NIST AI Risk Management Framework (2023) makes measuring whether a system is valid and reliable a core function, not an afterthought."
+        "lead": "Official guidance agrees.",
+        "text": "The NIST AI Risk Management Framework (2023) treats being valid and reliable as the necessary base of trustworthy AI, and its Measure function includes demonstrating that a system is valid and reliable."
       }
     ],
     "useIt": [
       "Ask for evidence the system works on data like yours, gathered by someone other than the vendor.",
       "Ask what the system does when it's wrong, and how often that happens.",
       "Define \"works\" in terms of the outcome you care about (patients treated, tickets resolved, time saved), not only model metrics.",
-      "If nobody has checked, run a small pilot with a real comparison group before scaling."
+      "If nobody has checked, run a pilot with a real comparison group, large enough to detect the error rate you care about, before scaling."
     ],
     "origins": [
-      "The term comes from Inioluwa Deborah Raji, I. Elizabeth Kumar, Aaron Horowitz, and Andrew Selbst's 2022 FAccT paper, \"The Fallacy of AI Functionality.\""
+      "The idea comes from Inioluwa Deborah Raji, I. Elizabeth Kumar, Aaron Horowitz, and Andrew Selbst's 2022 FAccT paper, \"The Fallacy of AI Functionality,\" which also describes a \"functionality assumption.\" \"The Functionality Fallacy\" is the name this site uses, shortened from the paper's title."
     ],
     "sources": [
       {
@@ -396,7 +396,7 @@
     "takeaways": [
       "The same model outputs can look like steady progress or a sudden leap, depending on how you score them.",
       "All-or-nothing metrics like exact match make gradual improvement look abrupt.",
-      "Cheap automatic metrics often disagree with people about quality.",
+      "Cheap automatic metrics can disagree with people about the quality of individual outputs.",
       "Before believing a trend, re-score it with another reasonable metric and see if the story holds."
     ],
     "whatItMeans": [
@@ -405,19 +405,19 @@
     "evidence": [
       {
         "lead": "Emergence can be a scoring artifact.",
-        "text": "Schaeffer, Miranda, and Koyejo (2023) argue that many \"emergent abilities\" in large language models appear because of the researcher's choice of metric. Nonlinear or discontinuous metrics produce sharp jumps. Linear or continuous metrics applied to the same models show smooth, predictable change."
+        "text": "Schaeffer, Miranda, and Koyejo (2023) argue that, for the tasks and model families they examined, many \"emergent abilities\" appear because of the researcher's choice of metric. Nonlinear or discontinuous metrics produce sharp jumps. Linear or continuous metrics applied to the same models show smooth, predictable change."
       },
       {
         "lead": "Automatic metrics have narrow validity.",
-        "text": "Reiter (2018) reviewed the evidence on BLEU and found it supports using BLEU for diagnostic evaluation of machine translation systems, not for evaluating individual texts or other language generation tasks."
+        "text": "Reiter (2018) reviewed the evidence on BLEU and found it supports using BLEU for diagnostic evaluation of machine translation systems, not for evaluating individual texts, for tasks outside machine translation, or for scientific hypothesis testing."
       },
       {
         "lead": "Overlap isn't quality.",
-        "text": "Novikova et al. (2017) found that widely used word-overlap metrics correlate weakly with human judgments of generated text."
+        "text": "Novikova et al. (2017) tested widely used word-overlap metrics on three data-to-text datasets and found they only weakly reflect human judgments of system outputs, though they performed more reliably when comparing systems overall."
       },
       {
         "lead": "One metric hides tradeoffs.",
-        "text": "Liang et al. (2023) built HELM around seven metrics (accuracy, calibration, robustness, fairness, bias, toxicity, efficiency) because accuracy alone hides the tradeoffs that matter in use."
+        "text": "Liang et al. (2023) built HELM to measure seven metrics (accuracy, calibration, robustness, fairness, bias, toxicity, efficiency) on its core scenarios where possible, because accuracy alone hides the tradeoffs that matter in use."
       }
     ],
     "useIt": [
@@ -427,7 +427,7 @@
       "Choose metrics before seeing results, and write down why."
     ],
     "origins": [
-      "\"The Metric Mirage\" is the name this site uses, borrowed from the title of Schaeffer, Miranda, and Koyejo's 2023 paper. The broader concern about automatic metrics goes back years in natural language generation research."
+      "\"The Metric Mirage\" is the name this site uses, borrowing \"mirage\" from the title of Schaeffer, Miranda, and Koyejo's 2023 paper. The broader concern about automatic metrics goes back years in natural language generation research."
     ],
     "sources": [
       {
