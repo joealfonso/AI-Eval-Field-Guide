@@ -18,6 +18,7 @@
 <link rel="alternate" type="application/rss+xml" title="AI Evaluation Field Guide changelog" href="feed.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="js/boot.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Public+Sans:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/styles.css">
@@ -30,26 +31,38 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <a class="wordmark" href="index.html"><span class="wordmark__mark" aria-hidden="true">§</span><span class="wordmark__text">AI Evaluation Field Guide</span></a>
-  <nav class="site-nav" id="site-nav" aria-label="Primary"><a href="index.html">Patterns</a><a href="use-it-now.html">Use it now</a><div class="nav-group"><button type="button" class="nav-group__btn" aria-expanded="false" aria-controls="nav-tools" data-nav-group>Tools</button><div class="nav-group__menu" id="nav-tools"><a href="situation-finder.html">Find your patterns</a><a href="claim-checker.html">Claim checker</a><a href="design-rubric.html">Design Rubric</a><a href="readiness-review.html">Readiness Review</a></div></div><a href="about.html">About</a></nav>
-  <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog"><span>Search patterns</span><kbd data-kbd>⌘K</kbd></button>
+  <nav class="site-nav" id="site-nav" aria-label="Primary"><a href="index.html">Patterns</a><a href="use-it-now.html">Use it now</a><details class="nav-group"><summary>Tools</summary><div class="nav-group__menu"><a href="situation-finder.html">Find your patterns</a><a href="claim-checker.html">Claim checker</a><a href="design-rubric.html">Design Rubric</a><a href="readiness-review.html">Readiness Review</a><a href="sample-size.html">Sample size</a><a href="case-studies.html">Case studies</a><a href="templates.html">Templates</a></div></details><a href="guide.html" aria-current="true">Guide</a><a href="about.html">About</a></nav>
   <div class="header-actions">
-    <button class="icon-btn" type="button" data-search-open aria-haspopup="dialog">Find</button>
-    <button class="icon-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <button class="search-btn" type="button" data-search-open aria-haspopup="dialog"><svg aria-hidden="true" focusable="false" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6.5" cy="6.5" r="4.75"/><path d="M10 10l4.5 4.5" stroke-linecap="round"/></svg><span class="search-btn__text">Search</span></button>
+    <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
   </div>
 </header>
 <main id="main" class="page page--prose">
-  <nav class="guide-nav" aria-label="Guide sections"><ul><li><a href="guide.html">Overview</a></li><li><a href="being-pragmatic.html">Being Pragmatic</a></li><li><a href="playbook.html">Playbook</a></li><li><a href="glossary.html">Glossary</a></li><li><a href="bibliography.html">Bibliography</a></li><li><a href="methodology.html" aria-current="page">Methodology</a></li></ul></nav>
+  <nav class="guide-nav" aria-label="Guide sections"><a class="guide-nav__home" href="guide.html">Guide</a><div class="guide-nav__group"><p class="guide-nav__label">Read in order</p><ul><li><a href="overview.html">1. Overview</a></li><li><a href="playbook.html">2. Playbook</a></li><li><a href="being-pragmatic.html">3. Being Pragmatic</a></li></ul></div><div class="guide-nav__group"><p class="guide-nav__label">Playbooks by situation</p><ul><li><a href="questions-to-ask-ai-vendor.html">Buying a model or vendor</a></li><li><a href="ai-launch-review-questions.html">Launch review</a></li><li><a href="how-to-build-an-ai-evaluation.html">Building an evaluation</a></li></ul></div><div class="guide-nav__group"><p class="guide-nav__label">Reference</p><ul><li><a href="glossary.html">Glossary</a></li><li><a href="bibliography.html">Bibliography</a></li><li><a href="methodology.html" aria-current="page">Methodology</a></li></ul></div></nav>
   <header class="page__head"><p class="eyebrow">Guide</p><h1>Methodology</h1>
   <p class="page__lede">How the patterns were chosen, what counts as a source, how the evidence was checked, and what this guide does not claim to be.</p></header>
   <section><h2 id="selection">How patterns are chosen</h2>
-  <p>The 26 patterns are an editorial selection of recurring ways AI evaluation goes wrong, each with published research behind it. They are not the result of a systematic review, and another reasonable list would differ. Each pattern page says whether its name is an established term or this site’s own name for an established idea. The full list is on the <a href="about.html#status">About page</a>.</p></section>
+  <p>The 26 patterns are an editorial selection of recurring ways AI evaluation goes wrong, each with published research behind it. They are not the result of a systematic review, and another reasonable list would differ. Each pattern page says whether its name is an established term or this site’s own name for an established idea (see <a href="about.html#evidence">how the evidence base is described</a>). The full list is on the <a href="about.html#status">About page</a>.</p></section>
   <section><h2 id="sources">What counts as a source</h2>
   <p>The guide cites 114 sources across all patterns. Of these, 92 are peer-reviewed or classic works, 15 are preprints, 5 are reports, 1 is a working paper, and 1 is a book. Anything that is not peer reviewed or a classic in its field is labeled on the pattern page. The Evidence section reports what the authors found, and where results are mixed or limited the page says so, for example in <a href="patterns/adaptive-overfitting.html">Adaptive Overfitting</a> and <a href="patterns/data-contamination.html">Data Contamination</a>. Every pattern also has a “Where this doesn’t apply” section.</p></section>
   <section><h2 id="checking">How the evidence was checked</h2>
   <p>Each pattern shows when its evidence was last reviewed. In October 2026, more than 40 specific figures and findings on the pattern pages were compared with the source’s abstract or full text, covering at least one claim in 25 of the 26 patterns. No discrepancies were found. Every source link was also tested, and every DOI resolves.</p>
   <p>The limits of that check: it covered numbers and the main finding of each source, not whether every interpretation or piece of advice goes beyond the source. A few details were confirmed through secondary descriptions rather than the paper itself, such as the exact “19 percentage points” figure in <a href="patterns/the-jagged-frontier.html">The Jagged Frontier</a>. It was a spot-check, not an audit.</p></section>
   <section><h2 id="tools">The tools</h2>
-  <p>The claim checker, Find your patterns, the checklist, the quick brief, and Use it now are reading aids. The claim checker and Find your patterns match your text against published rules, which you can read on each page. They do not assess a system, and they run in your browser. The Design Rubric and Readiness Review are checklists. They do not calculate a score.</p></section>
+  <p>The claim checker, Find your patterns, the checklist, the quick brief, and Use it now are reading aids. The claim checker and Find your patterns match your text against published rules, which you can read on each page. They do not assess a system, and they run in your browser. The Design Rubric and Readiness Review are checklists. They do not calculate a score. The <a href="sample-size.html">sample-size calculators</a> apply standard formulas, listed on that page and checked by a test script in the site repository. The <a href="case-studies.html">case studies</a> summarize published studies and link to each primary source. The <a href="templates.html">templates</a> are editorial starting points.</p></section>
+  <section><h2 id="not-covered">What this guide does not cover</h2>
+  <p>These are gaps, not oversights. Each is a field of its own, and the guide treats it only briefly or not at all.</p>
+  <ul>
+    <li><strong>Statistics beyond the basics.</strong> The <a href="sample-size.html">sample-size page</a> covers confidence intervals and the number of items for one or two comparisons. It does not cover statistical power in complex designs, corrections for many comparisons, Bayesian methods, or items that come in correlated groups beyond a brief mention.</li>
+    <li><strong>Calibration.</strong> Whether a system’s stated confidence matches how often it is right is not covered.</li>
+    <li><strong>Agent and tool-use evaluation.</strong> Agents appear through a few benchmarks and studies, such as τ-bench. Designing evaluations for multi-step agents, tool use, and long-running tasks is not covered in depth.</li>
+    <li><strong>Safety and red-team methods.</strong> <a href="patterns/presence-not-absence.html">Presence, Not Absence</a> explains why a failure to find a risk is weak evidence. How to run a red-team exercise, design adversarial tests, or assess dangerous capabilities is not covered.</li>
+    <li><strong>Validating an AI grader.</strong> <a href="patterns/judge-bias.html">Judge Bias</a> says to check a grader against people on a sample. It does not cover agreement measures, rubric design for judges, or how many labels are enough.</li>
+    <li><strong>Building evaluation sets at scale.</strong> Sampling, annotation pipelines, quality control, and keeping a set fresh over time are not covered.</li>
+    <li><strong>Fairness auditing, privacy, security, and legal compliance.</strong> These are touched on by the Readiness Review, which points to standards, but they are not treated as evaluation methods here.</li>
+    <li><strong>Evidence from the last few months.</strong> Each pattern shows when its evidence was last checked. Newer work may not be reflected yet.</li>
+  </ul>
+  <p>If you know a good source for any of these, please say so through the contact page.</p></section>
   <section><h2 id="not">What this guide is not</h2>
   <ul>
     <li>It is not a ranking or benchmark of any AI model or vendor.</li>
@@ -60,8 +73,9 @@
   <p>Each pattern has a version number and a revision history, and site-wide changes are in the <a href="changelog.html">changelog</a>. Corrections are made in the open and logged there. If you find a mistake or a better source, every pattern page has a “Report it” link, or you can use the <a href="https://josephalfonso.com/pages/contact.html">contact page</a>.</p></section>
 </main>
 <footer class="site-footer">
+  <nav class="site-footer__nav" aria-label="Footer"><a href="index.html">Patterns</a> · <a href="use-it-now.html">Use it now</a> · <a href="situation-finder.html">Find your patterns</a> · <a href="claim-checker.html">Claim checker</a> · <a href="design-rubric.html">Design Rubric</a> · <a href="readiness-review.html">Readiness Review</a> · <a href="sample-size.html">Sample size</a> · <a href="case-studies.html">Case studies</a> · <a href="templates.html">Templates</a> · <a href="guide.html">Guide</a> · <a href="about.html">About</a></nav>
   <p>Independent reference. No vendor funding. <a href="about.html#editorial-policy">Editorial policy</a></p>
-  <p>CC BY 4.0 · <a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="changelog.html">Changelog</a> · <a href="feed.xml">RSS</a> · Last updated 7 Oct 2026</p>
+  <p>CC BY 4.0 · <a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="changelog.html">Changelog</a> · <a href="feed.xml">RSS</a> · Last updated 19 Oct 2026</p>
 </footer>
 <script src="js/collection.js" defer></script>
 <script src="js/site.js" defer></script>

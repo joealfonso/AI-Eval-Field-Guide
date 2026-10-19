@@ -382,14 +382,32 @@ def mark_nav(rel, content):
     return content[: m.start()] + block + content[m.end() :]
 
 
+def fit_desc(desc, limit=155):
+    """Meta descriptions truncate near 155-160 characters in search results: keep whole sentences that fit, else cut at a word."""
+    desc = re.sub(r"\s+", " ", desc).strip()
+    if len(desc) <= limit:
+        return desc
+    out = ""
+    for sent in sentences(desc):
+        cand = (out + " " + sent).strip()
+        if len(cand) > limit:
+            break
+        out = cand
+    if len(out) >= 90:
+        return out
+    cut = desc[: limit - 1].rsplit(" ", 1)[0].rstrip(",;:")
+    return cut + "\u2026"
+
+
 def layout(title, desc, body, depth=0, current=None, scripts=(), data=False, skip="Skip to content", page_class="", head_extra="", og_image=None):
     p = "../" * depth
+    desc = fit_desc(desc)
     if title == SITE["title"]:
         full_title = "%s: %d sourced principles for judging AI claims" % (SITE["title"], len(LAWS))
     else:
         tag = TITLE_TAGS.get(title) or ("%s in AI evaluation" % title if title in BY_SLUG_NAMES else title)
         full_title = "%s \u00b7 %s" % (tag, SITE["title"])
-        if len(full_title) > 72:
+        if len(full_title) > 62:
             full_title = tag
     nav = nav_html(p)
     footer_nav = footer_nav_html(p)
@@ -916,8 +934,8 @@ def build_law(i, law):
         aside.append('<details class="aside-block" open><summary>Also known as</summary><ul class="chips">%s</ul></details>' % "".join("<li>%s</li>" % esc(typo(a)) for a in law["alsoKnownAs"]))
     aside.append(
         '<details class="aside-block" open><summary>Take it with you</summary><ul class="takeaway">'
-        '<li><a href="../brief.html?laws=%s" data-collection-link="../brief.html" data-collection-extra="%s">Quick brief <span>Short overview</span></a></li>'
-        '<li><a href="../checklist.html?preset=custom&amp;laws=%s" data-collection-link="../checklist.html?preset=custom" data-collection-extra="%s">Printable checklist <span>Print \u00b7 PDF</span></a></li>'
+        '<li><a href="../brief.html?patterns=%s" data-collection-link="../brief.html" data-collection-extra="%s">Quick brief <span>Short overview</span></a></li>'
+        '<li><a href="../checklist.html?preset=custom&amp;patterns=%s" data-collection-link="../checklist.html?preset=custom" data-collection-extra="%s">Printable checklist <span>Print \u00b7 PDF</span></a></li>'
         '<li><a href="#cite-this-law">Cite this pattern <span>APA \u00b7 BibTeX</span></a></li></ul></details>' % (law["no"], law["no"], law["no"], law["no"])
     )
 
@@ -991,7 +1009,7 @@ def build_law(i, law):
         "evidence": evidence,
         "h_use": h2("use-it", "Use it"),
         "use_it": use_it,
-        "h_q": h2("questions-to-ask", "Questions to ask", '<div class="sec-head__actions">%s<a class="btn btn--ink btn--sm" href="../checklist.html?preset=custom&amp;laws=%s" data-collection-link="../checklist.html?preset=custom" data-collection-extra="%s">Print checklist</a></div>' % (pick_button(law, "pick pick--btn", "Add to My patterns", "In My patterns"), law["no"], law["no"])),
+        "h_q": h2("questions-to-ask", "Questions to ask", '<div class="sec-head__actions">%s<a class="btn btn--ink btn--sm" href="../checklist.html?preset=custom&amp;patterns=%s" data-collection-link="../checklist.html?preset=custom" data-collection-extra="%s">Print checklist</a></div>' % (pick_button(law, "pick pick--btn", "Add to My patterns", "In My patterns"), law["no"], law["no"])),
         "questions": questions,
         "report": esc(report_url(law)),
         "h_lim": h2("limits", "Where this doesn\u2019t apply"),
@@ -1125,7 +1143,7 @@ def build_changelog():
   <ol class="changelog">%s</ol>
   <p class="page__note"><a href="feed.xml">RSS feed</a></p>
 </main>""" % items
-    write("changelog.html", layout("Changelog", "What changed on the AI Evaluation Field Guide, and when.", body, current="changelog"))
+    write("changelog.html", layout("Changelog", "Every change to the AI Evaluation Field Guide: new patterns, tools, corrections, and source checks, with dates.", body, current="changelog"))
 
 
 def build_about():
@@ -1266,7 +1284,7 @@ def build_guide_pages():
         "overview.html",
         "AI Evaluation, an Overview",
         "Guide \u00b7 Chapter 1",
-        "What AI evaluation is, why it is hard, and how to use the patterns.",
+        "What AI evaluation is, why it is hard, the three layers it works at, and how to use the 26 patterns to read an AI claim.",
         "",
         md_blocks(overview),
     )
@@ -1301,7 +1319,7 @@ def build_guide_pages():
     gl = "".join('<div class="gloss__row"><dt id="%s">%s</dt><dd>%s%s</dd></div>' % (
         slugify(g["term"]), esc(typo(g["term"])), inline(g["definition"]),
         (" See " + ", ".join(link_laws(inline(n)) for n in g["see"]) + ".") if g["see"] else "") for g in GLOSS)
-    guide_page("glossary.html", "Glossary", "Guide \u00b7 Reference", "Definitions of the terms used across the patterns.", "", '<dl class="gloss">%s</dl>' % gl + glossary_jsonld())
+    guide_page("glossary.html", "Glossary", "Guide \u00b7 Reference", "Plain-language definitions of the terms used across the patterns, such as contamination, construct validity, and judge bias.", "", '<dl class="gloss">%s</dl>' % gl + glossary_jsonld())
 
     bib_lines = manuscript_region("## Bibliography", "\u0000end")
     entries, cur = [], None
@@ -1324,7 +1342,7 @@ def build_guide_pages():
             if label in rest:
                 cited.append('<a href="%s">%s</a>' % (href, label))
         items += '<li class="bib__item"><span>%s</span><span class="bib__cited">Cited in: %s</span></li>' % (inline(e["ref"]), ", ".join(cited))
-    guide_page("bibliography.html", "Bibliography", "Guide \u00b7 Reference", "Every source cited on this site.", '<p class="page__lede">%s</p>' % inline(intro), '<ul class="bib">%s</ul>' % items)
+    guide_page("bibliography.html", "Bibliography", "Guide \u00b7 Reference", "Every source cited across the 26 patterns, with its type (peer-reviewed, preprint, report, book) and where it is used on this site.", '<p class="page__lede">%s</p>' % inline(intro), '<ul class="bib">%s</ul>' % items)
 
 
 # ---------------------------------------------------------------- situation finder
@@ -1865,7 +1883,7 @@ def build_privacy():
   </ul></section>
   <section><h2 id="analytics">Google Analytics</h2>
   <p>Every page loads Google Analytics (measurement ID %(ga)s) from Google\u2019s servers. Each page view sends Google the page address, the page you came from, your IP address, and your browser, device, and language details. Google uses the IP address to estimate roughly where visitors are. This site\u2019s code does not apply any extra IP-masking setting. It does not turn off Google\u2019s advertising-related storage outside the regions below, and it does not set user IDs or send anything you type. Depending on how the Google Analytics property is configured, which the page code does not control, Google may also record events such as outbound link clicks and scrolling.</p>
-  <p>The page address includes any query string. On the quick brief, the checklist, and the patterns index, the address can contain the patterns you selected or a role filter (for example <code>?laws=3,7</code>), so those selections are visible to Google Analytics along with the rest of the address.</p>
+  <p>The page address includes any query string. On the quick brief, the checklist, and the patterns index, the address can contain the patterns you selected or a role filter (for example <code>?patterns=3,7</code>), so those selections are visible to Google Analytics along with the rest of the address.</p>
   <h3>Cookies and consent</h3>
   <p>Outside the regions below, Google Analytics sets its cookies when the page loads. There is no consent banner and no opt-in or opt-out control on this site.</p>
   <p>For visitors in the EU, the European Economic Area (including Iceland, Liechtenstein, and Norway), the UK, and Switzerland, the site tells Google Analytics to deny analytics and advertising storage by default, so Google Analytics does not set cookies there. The Google script still loads and may still receive cookieless signals about the visit, such as the page address and your IP address. Because there is no banner, visitors in those regions have no way to opt in.</p>

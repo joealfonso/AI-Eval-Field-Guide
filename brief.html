@@ -18,6 +18,7 @@
 <link rel="alternate" type="application/rss+xml" title="AI Evaluation Field Guide changelog" href="feed.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="js/boot.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Public+Sans:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/styles.css">
@@ -30,11 +31,10 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <a class="wordmark" href="index.html"><span class="wordmark__mark" aria-hidden="true">§</span><span class="wordmark__text">AI Evaluation Field Guide</span></a>
-  <nav class="site-nav" id="site-nav" aria-label="Primary"><a href="index.html" aria-current="page">Patterns</a><a href="use-it-now.html">Use it now</a><div class="nav-group"><button type="button" class="nav-group__btn" aria-expanded="false" aria-controls="nav-tools" data-nav-group>Tools</button><div class="nav-group__menu" id="nav-tools"><a href="situation-finder.html">Find your patterns</a><a href="claim-checker.html">Claim checker</a><a href="design-rubric.html">Design Rubric</a><a href="readiness-review.html">Readiness Review</a></div></div><a href="about.html">About</a></nav>
-  <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog"><span>Search patterns</span><kbd data-kbd>⌘K</kbd></button>
+  <nav class="site-nav" id="site-nav" aria-label="Primary"><a href="index.html" aria-current="true">Patterns</a><a href="use-it-now.html">Use it now</a><details class="nav-group"><summary>Tools</summary><div class="nav-group__menu"><a href="situation-finder.html">Find your patterns</a><a href="claim-checker.html">Claim checker</a><a href="design-rubric.html">Design Rubric</a><a href="readiness-review.html">Readiness Review</a><a href="sample-size.html">Sample size</a><a href="case-studies.html">Case studies</a><a href="templates.html">Templates</a></div></details><a href="guide.html">Guide</a><a href="about.html">About</a></nav>
   <div class="header-actions">
-    <button class="icon-btn" type="button" data-search-open aria-haspopup="dialog">Find</button>
-    <button class="icon-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <button class="search-btn" type="button" data-search-open aria-haspopup="dialog"><svg aria-hidden="true" focusable="false" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6.5" cy="6.5" r="4.75"/><path d="M10 10l4.5 4.5" stroke-linecap="round"/></svg><span class="search-btn__text">Search</span></button>
+    <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
   </div>
 </header>
 <main id="main" class="page page--brief" data-page="brief">
@@ -48,8 +48,9 @@
   <p class="page__note">Assembled in your browser from each pattern’s own text. Read the full pattern and its sources before you rely on one.</p>
 </main>
 <footer class="site-footer">
+  <nav class="site-footer__nav" aria-label="Footer"><a href="index.html">Patterns</a> · <a href="use-it-now.html">Use it now</a> · <a href="situation-finder.html">Find your patterns</a> · <a href="claim-checker.html">Claim checker</a> · <a href="design-rubric.html">Design Rubric</a> · <a href="readiness-review.html">Readiness Review</a> · <a href="sample-size.html">Sample size</a> · <a href="case-studies.html">Case studies</a> · <a href="templates.html">Templates</a> · <a href="guide.html">Guide</a> · <a href="about.html">About</a></nav>
   <p>Independent reference. No vendor funding. <a href="about.html#editorial-policy">Editorial policy</a></p>
-  <p>CC BY 4.0 · <a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="changelog.html">Changelog</a> · <a href="feed.xml">RSS</a> · Last updated 7 Oct 2026</p>
+  <p>CC BY 4.0 · <a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="changelog.html">Changelog</a> · <a href="feed.xml">RSS</a> · Last updated 19 Oct 2026</p>
 </footer>
 <script src="js/data.js"></script>
 <script src="js/collection.js" defer></script>
