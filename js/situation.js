@@ -1,4 +1,4 @@
-/* Situation finder: rule-based matching of a described situation to the laws. Rules live in data/editorial.json (situationFinder). */
+/* Situation finder: rule-based matching of a described situation to the patterns. Rules live in data/editorial.json (situationFinder). */
 (function () {
   'use strict';
 
@@ -111,7 +111,7 @@
         window.LAIC.announce('Added ' + results.length + ' patterns to My patterns.');
       });
       var brief = el('a', 'btn btn--outline btn--sm', 'Quick brief of these');
-      brief.href = 'brief.html?laws=' + nos.slice().sort(function (a, b) { return a - b; }).join(',');
+      brief.href = 'brief.html?patterns=' + nos.slice().sort(function (a, b) { return a - b; }).join(',');
       tools.appendChild(addAll);
       tools.appendChild(brief);
       head.appendChild(tools);
